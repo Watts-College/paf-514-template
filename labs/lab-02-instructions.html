@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Lab 02 - Simulations</title>
+
+<script src="lab-02-instructions_files/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="lab-02-instructions_files/bootstrap-3.3.5/css/readable.min.css" rel="stylesheet" />
+<script src="lab-02-instructions_files/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="lab-02-instructions_files/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="lab-02-instructions_files/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="lab-02-instructions_files/navigation-1.1/tabsets.js"></script>
+<link href="lab-02-instructions_files/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="lab-02-instructions_files/pagedtable-1.1/js/pagedtable.js"></script>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  { background-color: #f8f8f8; }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #c4a000; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #000000; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #000000; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #000000; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="textbook.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Lab 02 - Simulations</h1>
+
+</div>
+
+<div id="TOC">
+<ul>
+<li><a href="#simulation-set-up">Simulation Set-Up</a></li>
+<li><a href="#adding-the-game-to-a-loop">Adding the Game to a Loop</a><ul>
+<li><a href="#note-on-append-functions">Note on Append Functions</a></li>
+</ul></li>
+<li><a href="#lab-02-questions">Lab 02 Questions</a><ul>
+<li><a href="#part-i">Part I</a></li>
+<li><a href="#part-ii">Part II</a></li>
+<li><a href="#challenge-question">Challenge Question</a></li>
+</ul></li>
+<li><a href="#submission-instructions">Submission Instructions</a></li>
+<li><a href="#some-notes-on-constructors">Some Notes on Constructors</a><ul>
+<li><a href="#efficient-collectors">Efficient Collectors</a></li>
+</ul></li>
+<li><a href="#notes-on-knitting">Notes on Knitting</a><ul>
+<li><a href="#markdown-trouble">Markdown Trouble?</a></li>
+</ul></li>
+</ul>
+</div>
+
+<div id="cpp-527-foundations-of-data-science-ii" class="section level4">
+<h4>CPP 527: Foundations of Data Science II</h4>
+<p><br></p>
+<hr />
+<p><br></p>
+<p>Lab 02 is an extension of the Monty Hall Problem that was implemented in Lab 01.</p>
+<p>In this lab you will be practicing <strong>loops</strong> <strong>constructors</strong>, and <strong>collectors</strong>.</p>
+<p>Last week you worked to build five distinct functions, one for each step of the game:</p>
+<ol style="list-style-type: decimal">
+<li>Game set-up</li>
+<li>Contestant selects first door</li>
+<li>Host opens a goat door</li>
+<li>Contestant decides to stay or switch doors</li>
+<li>Host reveals prize to determine if they won</li>
+</ol>
+<p>We now have all of the pieces that we need to start analyzing our problem. Which strategy is best in this scenario? Should we stay with our first selection? Or should we switch doors when given the option?</p>
+<p>We can answer some of these hard analytical questions either (1) with an explicit closed-form mathematical solution (i.e. a proof), or (2) using simulation to examine the effectiveness of both strategies by playing the game over and over and looking at which strategy yields higher returns.</p>
+</div>
+<div id="simulation-set-up" class="section level3">
+<h3>Simulation Set-Up</h3>
+<p>Using the functions you created last week or those provided in the solutions, package them all together into a single <strong><code class="sourceCode r"><span class="kw">play_game</span>()</code></strong> function which executes each step of a single game in order.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1">play_game &lt;-<span class="st"> </span><span class="cf">function</span>( )</a>
+<a class="sourceLine" id="cb1-2" title="2">{</a>
+<a class="sourceLine" id="cb1-3" title="3">  new.game &lt;-<span class="st"> </span><span class="kw">create_game</span>()</a>
+<a class="sourceLine" id="cb1-4" title="4">  first.pick &lt;-<span class="st"> </span><span class="kw">select_door</span>()</a>
+<a class="sourceLine" id="cb1-5" title="5">  opened.door &lt;-<span class="st"> </span><span class="kw">open_goat_door</span>( new.game, first.pick )</a>
+<a class="sourceLine" id="cb1-6" title="6">  final.pick.stay &lt;-<span class="st"> </span><span class="kw">change_door</span>( <span class="dt">stay=</span>T, opened.door, first.pick )</a>
+<a class="sourceLine" id="cb1-7" title="7">  final.pick.switch &lt;-<span class="st"> </span><span class="kw">change_door</span>( <span class="dt">stay=</span>F, opened.door, first.pick )</a>
+<a class="sourceLine" id="cb1-8" title="8">  outcome.stay &lt;-<span class="st"> </span><span class="kw">determine_winner</span>( final.pick.stay, new.game  )</a>
+<a class="sourceLine" id="cb1-9" title="9">  outcome.switch &lt;-<span class="st"> </span><span class="kw">determine_winner</span>( final.pick.switch, new.game )</a>
+<a class="sourceLine" id="cb1-10" title="10">  </a>
+<a class="sourceLine" id="cb1-11" title="11">  <span class="co"># game.results &lt;- bundle the results</span></a>
+<a class="sourceLine" id="cb1-12" title="12">  <span class="co"># return( &lt;&lt;&lt; game.results &gt;&gt;&gt; )</span></a>
+<a class="sourceLine" id="cb1-13" title="13">  </a>
+<a class="sourceLine" id="cb1-14" title="14">  strategy &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;stay&quot;</span>,<span class="st">&quot;switch&quot;</span>)</a>
+<a class="sourceLine" id="cb1-15" title="15">  outcome &lt;-<span class="st"> </span><span class="kw">c</span>(outcome.stay,outcome.switch)</a>
+<a class="sourceLine" id="cb1-16" title="16">  game.results &lt;-<span class="st"> </span><span class="kw">data.frame</span>( strategy, outcome,</a>
+<a class="sourceLine" id="cb1-17" title="17">                              <span class="dt">stringsAsFactors=</span>F )</a>
+<a class="sourceLine" id="cb1-18" title="18">  <span class="kw">return</span>( game.results )</a>
+<a class="sourceLine" id="cb1-19" title="19">}</a>
+<a class="sourceLine" id="cb1-20" title="20"></a>
+<a class="sourceLine" id="cb1-21" title="21"><span class="kw">play_game</span>()</a></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["strategy"],"name":[1],"type":["chr"],"align":["left"]},{"label":["outcome"],"name":[2],"type":["chr"],"align":["left"]}],"data":[{"1":"stay","2":"WIN"},{"1":"switch","2":"LOSE"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>Once we have this implemented, we are ready to ready to run the simulation.</p>
+</div>
+<div id="adding-the-game-to-a-loop" class="section level2">
+<h2>Adding the Game to a Loop</h2>
+<p>When running simulations for inferential purposes the general rule of thumb is they should run at least 10,000 times in order for the simulated statistics to converge close to the actual theoretial value (average proportion of wins achieved by each strategy in this case).</p>
+<p>Recall that our loop has three parts you will need to define:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1">results.df &lt;-<span class="st"> </span><span class="ot">NULL</span>   <span class="co"># collector</span></a>
+<a class="sourceLine" id="cb2-2" title="2"></a>
+<a class="sourceLine" id="cb2-3" title="3"><span class="cf">for</span>( i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">10000</span> )  <span class="co"># iterator</span></a>
+<a class="sourceLine" id="cb2-4" title="4">{</a>
+<a class="sourceLine" id="cb2-5" title="5">  game.outcome &lt;-<span class="st"> </span><span class="kw">play_game</span>()</a>
+<a class="sourceLine" id="cb2-6" title="6">  <span class="co"># binding step</span></a>
+<a class="sourceLine" id="cb2-7" title="7">  results.df &lt;-<span class="st"> </span><span class="kw">rbind</span>( results.df, game.outcome )</a>
+<a class="sourceLine" id="cb2-8" title="8">}</a>
+<a class="sourceLine" id="cb2-9" title="9"></a>
+<a class="sourceLine" id="cb2-10" title="10"><span class="kw">table</span>( results.df ) </a></code></pre></div>
+<pre><code>##         outcome
+## strategy LOSE  WIN
+##   stay   6737 3263
+##   switch 3263 6737</code></pre>
+<p>Or to make it a bit easier to interpret, what are the proportion of each outcome? Divide by the total number of games:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1">( <span class="kw">table</span>( results.df ) <span class="op">/</span><span class="st"> </span><span class="dv">10000</span> ) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb4-2" title="2"><span class="st">  </span><span class="kw">round</span>( <span class="dv">2</span> )</a></code></pre></div>
+<pre><code>##         outcome
+## strategy LOSE  WIN
+##   stay   0.67 0.33
+##   switch 0.33 0.67</code></pre>
+<p>Or use the table proportions function <strong>prop.table()</strong>. The default is to report each cell as a proportion of the total, <strong>margin=1</strong> returns row proportions (the total is the sum of all values across a row) and <strong>margin=2</strong> returns a column proportion.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1"><span class="kw">table</span>( results.df ) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb6-2" title="2"><span class="st">  </span><span class="kw">prop.table</span>( <span class="dt">margin=</span><span class="dv">1</span> ) <span class="op">%&gt;%</span><span class="st">  </span><span class="co"># row proportions</span></a>
+<a class="sourceLine" id="cb6-3" title="3"><span class="st">  </span><span class="kw">round</span>( <span class="dv">2</span> )</a></code></pre></div>
+<pre><code>##         outcome
+## strategy LOSE  WIN
+##   stay   0.67 0.33
+##   switch 0.33 0.67</code></pre>
+<p>Note that each game played produces a data frame with two rows and two columns:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1"><span class="kw">play_game</span>()</a></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["strategy"],"name":[1],"type":["chr"],"align":["left"]},{"label":["outcome"],"name":[2],"type":["chr"],"align":["left"]}],"data":[{"1":"stay","2":"LOSE"},{"1":"switch","2":"WIN"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>We use the collector data frame <strong>results.df</strong> to gather all of the results together. We do this by appending each new data frame on the end of the old data frame inside the loop:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1"><span class="co">####</span></a>
+<a class="sourceLine" id="cb9-2" title="2">game.outcome &lt;-<span class="st"> </span><span class="kw">play_game</span>()</a>
+<a class="sourceLine" id="cb9-3" title="3">results.df &lt;-<span class="st"> </span><span class="kw">rbind</span>( results.df, game.outcome )</a>
+<a class="sourceLine" id="cb9-4" title="4"><span class="co">####</span></a></code></pre></div>
+<div id="note-on-append-functions" class="section level3">
+<h3>Note on Append Functions</h3>
+<p>During simulations we play the game a bunch of times and save the results in the object called <strong>results.df</strong>:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1"><span class="co"># creating an empty collector object</span></a>
+<a class="sourceLine" id="cb10-2" title="2">results.df &lt;-<span class="st"> </span><span class="ot">NULL</span>   </a>
+<a class="sourceLine" id="cb10-3" title="3"><span class="co"># later, inside the loop</span></a>
+<a class="sourceLine" id="cb10-4" title="4">results.df &lt;-<span class="st"> </span><span class="kw">rbind</span>( results.df, game.outcome )</a></code></pre></div>
+<p>Note that <strong>c()</strong> is used to append items on the end of a a vector:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1">x &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="dv">4</span></a>
+<a class="sourceLine" id="cb11-2" title="2"><span class="kw">c</span>( x, <span class="dv">9</span> )</a></code></pre></div>
+<pre><code>## [1] 1 2 3 4 9</code></pre>
+<p>And <strong>rbind()</strong> is the equivalent for stacking new rows onto the bottom of an existing data frame:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" title="1">game1 &lt;-<span class="st"> </span><span class="kw">play_game</span>()</a>
+<a class="sourceLine" id="cb13-2" title="2">game2 &lt;-<span class="st"> </span><span class="kw">play_game</span>()</a>
+<a class="sourceLine" id="cb13-3" title="3"><span class="kw">rbind</span>( game1, game2 )</a></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["strategy"],"name":[1],"type":["chr"],"align":["left"]},{"label":["outcome"],"name":[2],"type":["chr"],"align":["left"]}],"data":[{"1":"stay","2":"WIN"},{"1":"switch","2":"LOSE"},{"1":"stay","2":"WIN"},{"1":"switch","2":"LOSE"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>If we would try to append new rows onto a data frame with c() we would break our object type and end up with a mess:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" title="1"><span class="kw">c</span>( game1, game2 )</a></code></pre></div>
+<pre><code>## $strategy
+## [1] &quot;stay&quot;   &quot;switch&quot;
+## 
+## $outcome
+## [1] &quot;WIN&quot;  &quot;LOSE&quot;
+## 
+## $strategy
+## [1] &quot;stay&quot;   &quot;switch&quot;
+## 
+## $outcome
+## [1] &quot;WIN&quot;  &quot;LOSE&quot;</code></pre>
+<p>So it’s important to use the proper appending functions when you are building objects inside of loops.</p>
+<p>The other thing to note is you need to create or “declare” your collector object before you can use it inside of the append function. We do this using a NULL assignment. If we skip this step we will get an error during the rbind() call.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" title="1">results.df &lt;-<span class="st"> </span><span class="ot">NULL</span> </a>
+<a class="sourceLine" id="cb16-2" title="2"><span class="kw">rbind</span>( results.df, game.outcome )</a></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["strategy"],"name":[1],"type":["chr"],"align":["left"]},{"label":["outcome"],"name":[2],"type":["chr"],"align":["left"]}],"data":[{"1":"stay","2":"LOSE"},{"1":"switch","2":"WIN"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+<div id="lab-02-questions" class="section level1">
+<h1>Lab 02 Questions</h1>
+<p>So far we have shown how to create a wrapper function that makes it easier to control and repeat the steps of the game in your simulation:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" title="1">play_game &lt;-<span class="st"> </span><span class="cf">function</span>( )</a>
+<a class="sourceLine" id="cb17-2" title="2">{</a>
+<a class="sourceLine" id="cb17-3" title="3">  new.game &lt;-<span class="st"> </span><span class="kw">create_game</span>()</a>
+<a class="sourceLine" id="cb17-4" title="4">  first.pick &lt;-<span class="st"> </span><span class="kw">select_door</span>()</a>
+<a class="sourceLine" id="cb17-5" title="5">  opened.door &lt;-<span class="st"> </span><span class="kw">open_goat_door</span>( new.game, first.pick )</a>
+<a class="sourceLine" id="cb17-6" title="6">  final.pick.stay &lt;-<span class="st"> </span><span class="kw">change_door</span>( <span class="dt">stay=</span>T, opened.door, first.pick )</a>
+<a class="sourceLine" id="cb17-7" title="7">  final.pick.switch &lt;-<span class="st"> </span><span class="kw">change_door</span>( <span class="dt">stay=</span>F, opened.door, first.pick )</a>
+<a class="sourceLine" id="cb17-8" title="8">  outcome.stay &lt;-<span class="st"> </span><span class="kw">determine_winner</span>( final.pick.stay, new.game  )</a>
+<a class="sourceLine" id="cb17-9" title="9">  outcome.switch &lt;-<span class="st"> </span><span class="kw">determine_winner</span>( final.pick.switch, new.game )</a>
+<a class="sourceLine" id="cb17-10" title="10">  </a>
+<a class="sourceLine" id="cb17-11" title="11">  strategy &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;stay&quot;</span>,<span class="st">&quot;switch&quot;</span>)</a>
+<a class="sourceLine" id="cb17-12" title="12">  outcome &lt;-<span class="st"> </span><span class="kw">c</span>(outcome.stay,outcome.switch)</a>
+<a class="sourceLine" id="cb17-13" title="13">  game.results &lt;-<span class="st"> </span><span class="kw">data.frame</span>( strategy, outcome,</a>
+<a class="sourceLine" id="cb17-14" title="14">                              <span class="dt">stringsAsFactors=</span>F )</a>
+<a class="sourceLine" id="cb17-15" title="15">  <span class="kw">return</span>( game.results )</a>
+<a class="sourceLine" id="cb17-16" title="16">}</a>
+<a class="sourceLine" id="cb17-17" title="17"></a>
+<a class="sourceLine" id="cb17-18" title="18"><span class="kw">play_game</span>()</a></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["strategy"],"name":[1],"type":["chr"],"align":["left"]},{"label":["outcome"],"name":[2],"type":["chr"],"align":["left"]}],"data":[{"1":"stay","2":"LOSE"},{"1":"switch","2":"WIN"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>And how to use that function inside of a loop to quickly generate a bunch of data:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" title="1">results.df &lt;-<span class="st"> </span><span class="ot">NULL</span>   <span class="co"># collector</span></a>
+<a class="sourceLine" id="cb18-2" title="2"></a>
+<a class="sourceLine" id="cb18-3" title="3"><span class="cf">for</span>( i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">10000</span> )  <span class="co"># iterator</span></a>
+<a class="sourceLine" id="cb18-4" title="4">{</a>
+<a class="sourceLine" id="cb18-5" title="5">  game.outcome &lt;-<span class="st"> </span><span class="kw">play_game</span>()</a>
+<a class="sourceLine" id="cb18-6" title="6">  <span class="co"># binding step</span></a>
+<a class="sourceLine" id="cb18-7" title="7">  results.df &lt;-<span class="st"> </span><span class="kw">rbind</span>( results.df, game.outcome )</a>
+<a class="sourceLine" id="cb18-8" title="8">}</a>
+<a class="sourceLine" id="cb18-9" title="9"></a>
+<a class="sourceLine" id="cb18-10" title="10"><span class="kw">table</span>( results.df ) </a></code></pre></div>
+<pre><code>##         outcome
+## strategy LOSE  WIN
+##   stay   6585 3415
+##   switch 3415 6585</code></pre>
+<p>We can then quickly determine the optimal outcome:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" title="1"><span class="kw">table</span>( results.df ) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb20-2" title="2"><span class="st">  </span><span class="kw">prop.table</span>( <span class="dt">margin=</span><span class="dv">1</span> ) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb20-3" title="3"><span class="st">  </span><span class="kw">round</span>( <span class="dv">2</span> )</a></code></pre></div>
+<pre><code>##         outcome
+## strategy LOSE  WIN
+##   stay   0.66 0.34
+##   switch 0.34 0.66</code></pre>
+<p>Last week there were two challenge questions that inquired about how the code could be modified slightly to allow for more flexible games. Use these games to answer the following questions:</p>
+<div id="part-i" class="section level3">
+<h3>Part I</h3>
+<p>The first challenge question required you build a game with 5 doors: 3 goats and 2 cars. The rest of the game is the same except instead of opening a single goat door after the contestant makes their initial selection, the host now opens a goat door AND a car door.</p>
+<p>In this new game set-up, is <em>SWITCH</em> still the dominant strategy for contestants?</p>
+<hr />
+<p>Using the solutions provided for Lab 01 (or your own functions if you were able to successfully implement it) wrap the game steps into a single <strong>play_game()</strong> function. Similar to the example above, return a data frame that contains results from one game.</p>
+<p>Use a loop to build a simulation that plays the game 10,000 times. Create a table to report the results.</p>
+<p><strong>Q1: Is <em>SWITCH</em> still the dominant strategy?</strong> Support your answer with your data.</p>
+<hr />
+</div>
+<div id="part-ii" class="section level3">
+<h3>Part II</h3>
+<p>The second challenge question asks that you create a game that allows the user to specify (1) how many goats and (2) how many cars are included in the game, also determining the number of doors the contestants can choose from. The host only opens one goat door, similar to the original game.</p>
+<p>Using solutions for the second challenge problem on Lab-01, create a wrapper <strong>play_game()</strong> function and build a simulation loop the same as the last problem.</p>
+<p>Create three separate simulations, each with 10 doors total but analyzing three different scenarios.</p>
+<ul>
+<li>1 car, 9 goats</li>
+<li>2 cars, 8 goats</li>
+<li>3 cars, 7 goats</li>
+</ul>
+<p>Use your results to answer the following questions:</p>
+<hr />
+<p><strong>Q1: Is <em>SWITCH</em> still the dominant strategy? Report your chances of winning for each strategy for each scenario.</strong></p>
+<p><strong>Q2: How much better off are you switching in the original game? How much did it improve your chances of winning?</strong></p>
+<ul>
+<li><span class="math inline">\(Pr( win | switch ) - Pr( win | stay )\)</span></li>
+</ul>
+<p><strong>Q3: How much better off are you switching in each of the three scenario with 10 doors and 1 to 3 cars?</strong></p>
+<hr />
+<p><br></p>
+</div>
+<div id="challenge-question" class="section level3">
+<h3>Challenge Question</h3>
+<p>Can you create a version of the first game above that not only returns the results, but all of the game metadata as well? It would need to return all of the following as part of a data frame:</p>
+<ul>
+<li>game set-up ( use <code>paste0( game, collapse=" " )</code> to turn it into a single character</li>
+<li>initial contestant selection</li>
+<li>opened door</li>
+<li>final selection</li>
+<li>strategy</li>
+<li>game outcome</li>
+</ul>
+<p><br> <br> <br></p>
+</div>
+</div>
+<div id="submission-instructions" class="section level1">
+<h1>Submission Instructions</h1>
+<p>When you have completed your assignment, knit your RMD file to generate your rendered HTML file. Platforms like BlackBoard and Canvas often disallow you from submitting HTML files when there is embedded computer code, so create a zipped folder with both the RMD and HTML files.</p>
+<p>Login to Canvas at <a href="http://canvas.asu.edu" class="uri">http://canvas.asu.edu</a> and navigate to the assignments tab in the course repository. Upload your zipped folder to the appropriate lab submission link.</p>
+<p>Remember to:</p>
+<ul>
+<li>name your files according to the convention: <strong>Lab-##-LastName.Rmd</strong></li>
+<li>show your solution, include your code.</li>
+<li>do not print excessive output (like a full data set).</li>
+<li>follow appropriate style guidelines (spaces between arguments, etc.).</li>
+</ul>
+<p><br> <br></p>
+<hr />
+<p><br> <br></p>
+</div>
+<div id="some-notes-on-constructors" class="section level1">
+<h1>Some Notes on Constructors</h1>
+<p>The term <strong>constructors</strong> refers to the act of creating a new object. We have typically used assignment to do this:</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" title="1">x &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="dv">5</span></a></code></pre></div>
+<p>There are many cases, however, where we might need to create an ** empty object** that we plan to use to store data. This is common step during simulation.</p>
+<p>There are several ways we can do this:</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" title="1">x &lt;-<span class="st"> </span><span class="ot">NULL</span></a>
+<a class="sourceLine" id="cb23-2" title="2">x</a></code></pre></div>
+<pre><code>## NULL</code></pre>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" title="1"><span class="kw">character</span>(<span class="dv">5</span>)</a></code></pre></div>
+<pre><code>## [1] &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot;</code></pre>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" title="1"><span class="kw">numeric</span>(<span class="dv">5</span>)</a></code></pre></div>
+<pre><code>## [1] 0 0 0 0 0</code></pre>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" title="1"><span class="co"># this one doesn&#39;t work as expected!!!</span></a>
+<a class="sourceLine" id="cb29-2" title="2"><span class="kw">data.frame</span>(<span class="dv">5</span>) </a></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["X5"],"name":[1],"type":["dbl"],"align":["right"]}],"data":[{"1":"5"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>Since we are comparing strategies we want to examine outcomes for each strategy each time we play the game and save the results as <strong>outcome.stay</strong> and <strong>outcome.switch</strong>.</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" title="1">  <span class="co">#####</span></a>
+<a class="sourceLine" id="cb30-2" title="2"></a>
+<a class="sourceLine" id="cb30-3" title="3">  final.pick.stay &lt;-<span class="st"> </span><span class="kw">change_door</span>( <span class="dt">stay=</span>T, opened.door, first.pick )</a>
+<a class="sourceLine" id="cb30-4" title="4">  final.pick.switch &lt;-<span class="st"> </span><span class="kw">change_door</span>( <span class="dt">stay=</span>F, opened.door, first.pick )</a>
+<a class="sourceLine" id="cb30-5" title="5">  outcome.stay &lt;-<span class="st"> </span><span class="kw">determine_winner</span>( final.pick.stay, new.game  )</a>
+<a class="sourceLine" id="cb30-6" title="6">  outcome.switch &lt;-<span class="st"> </span><span class="kw">determine_winner</span>( final.pick.switch, new.game )</a>
+<a class="sourceLine" id="cb30-7" title="7">  </a>
+<a class="sourceLine" id="cb30-8" title="8">  <span class="co">#####</span></a></code></pre></div>
+<p>Recall that functions in R can only return one object (or in some cases NULL).</p>
+<p>Since we have <strong>two outcomes of interest</strong> here, we need to bind them together in order to return them from the function.</p>
+<p>Here we have a bit of a connundrum. We need to decide how to efficiently bundle our results. We have a few options.</p>
+<p>We could simply bind the results together with the combine <strong>c()</strong> function and append them to the end of a collector vector.</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb31-1" title="1"><span class="co"># demo function</span></a>
+<a class="sourceLine" id="cb31-2" title="2">play_game &lt;-<span class="st"> </span><span class="cf">function</span>()</a>
+<a class="sourceLine" id="cb31-3" title="3">{</a>
+<a class="sourceLine" id="cb31-4" title="4">  outcome.stay &lt;-<span class="st"> </span><span class="kw">sample</span>( <span class="kw">c</span>(<span class="st">&quot;WIN&quot;</span>,<span class="st">&quot;LOSE&quot;</span>), <span class="dv">1</span> ) </a>
+<a class="sourceLine" id="cb31-5" title="5">  outcome.switch &lt;-<span class="st"> </span><span class="kw">sample</span>( <span class="kw">c</span>(<span class="st">&quot;WIN&quot;</span>,<span class="st">&quot;LOSE&quot;</span>), <span class="dv">1</span> ) </a>
+<a class="sourceLine" id="cb31-6" title="6">  game.results &lt;-<span class="st"> </span><span class="kw">c</span>( outcome.stay, outcome.switch )</a>
+<a class="sourceLine" id="cb31-7" title="7">  <span class="kw">return</span>( game.results )</a>
+<a class="sourceLine" id="cb31-8" title="8">}</a>
+<a class="sourceLine" id="cb31-9" title="9"></a>
+<a class="sourceLine" id="cb31-10" title="10"><span class="kw">play_game</span>()</a></code></pre></div>
+<pre><code>## [1] &quot;LOSE&quot; &quot;WIN&quot;</code></pre>
+<p>The problem is that now when we put the game function into a loop we have no idea how to interpret the results because we do not know which game they belong to.</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb33-1" title="1">results &lt;-<span class="st"> </span><span class="ot">NULL</span></a>
+<a class="sourceLine" id="cb33-2" title="2"></a>
+<a class="sourceLine" id="cb33-3" title="3"><span class="cf">for</span>( i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">10</span> )</a>
+<a class="sourceLine" id="cb33-4" title="4">{</a>
+<a class="sourceLine" id="cb33-5" title="5">    game.outcome &lt;-<span class="st"> </span><span class="kw">play_game</span>()</a>
+<a class="sourceLine" id="cb33-6" title="6">    results &lt;-<span class="st"> </span><span class="kw">c</span>( results, game.outcome  )</a>
+<a class="sourceLine" id="cb33-7" title="7">}</a>
+<a class="sourceLine" id="cb33-8" title="8"></a>
+<a class="sourceLine" id="cb33-9" title="9">results</a></code></pre></div>
+<pre><code>##  [1] &quot;WIN&quot;  &quot;WIN&quot;  &quot;LOSE&quot; &quot;WIN&quot;  &quot;LOSE&quot; &quot;WIN&quot;  &quot;WIN&quot;  &quot;WIN&quot;  &quot;LOSE&quot; &quot;WIN&quot; 
+## [11] &quot;WIN&quot;  &quot;LOSE&quot; &quot;WIN&quot;  &quot;WIN&quot;  &quot;WIN&quot;  &quot;LOSE&quot; &quot;LOSE&quot; &quot;WIN&quot;  &quot;WIN&quot;  &quot;LOSE&quot;</code></pre>
+<p>We can utilize vector attributes to assign each game outcome a label:</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb35-1" title="1"><span class="co">####</span></a>
+<a class="sourceLine" id="cb35-2" title="2"></a>
+<a class="sourceLine" id="cb35-3" title="3">  game.results &lt;-<span class="st"> </span><span class="kw">c</span>( <span class="dt">stay=</span>outcome.stay, </a>
+<a class="sourceLine" id="cb35-4" title="4">                     <span class="dt">switch=</span>outcome.switch )</a>
+<a class="sourceLine" id="cb35-5" title="5"></a>
+<a class="sourceLine" id="cb35-6" title="6"><span class="co">####</span></a></code></pre></div>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb36-1" title="1">results &lt;-<span class="st"> </span><span class="ot">NULL</span></a>
+<a class="sourceLine" id="cb36-2" title="2"></a>
+<a class="sourceLine" id="cb36-3" title="3"><span class="cf">for</span>( i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">5</span> )</a>
+<a class="sourceLine" id="cb36-4" title="4">{</a>
+<a class="sourceLine" id="cb36-5" title="5">    game.outcome &lt;-<span class="st"> </span><span class="kw">play_game</span>()</a>
+<a class="sourceLine" id="cb36-6" title="6">    results &lt;-<span class="st"> </span><span class="kw">c</span>( results, game.outcome  )</a>
+<a class="sourceLine" id="cb36-7" title="7">}</a>
+<a class="sourceLine" id="cb36-8" title="8"></a>
+<a class="sourceLine" id="cb36-9" title="9">results</a></code></pre></div>
+<pre><code>##   stay switch   stay switch   stay switch   stay switch   stay switch 
+## &quot;LOSE&quot; &quot;LOSE&quot; &quot;LOSE&quot;  &quot;WIN&quot;  &quot;WIN&quot; &quot;LOSE&quot; &quot;LOSE&quot; &quot;LOSE&quot; &quot;LOSE&quot; &quot;LOSE&quot;</code></pre>
+<p>This is a big improvement because now we won’t mix up which result belong to which strategy.</p>
+<p>The only problem is that we can’t access the strategy during the analysis.</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb38-1" title="1"><span class="kw">table</span>( results )</a></code></pre></div>
+<pre><code>## results
+## LOSE  WIN 
+##    8    2</code></pre>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb40-1" title="1">results <span class="op">==</span><span class="st"> &quot;stay&quot;</span></a></code></pre></div>
+<pre><code>##   stay switch   stay switch   stay switch   stay switch   stay switch 
+##  FALSE  FALSE  FALSE  FALSE  FALSE  FALSE  FALSE  FALSE  FALSE  FALSE</code></pre>
+<p>We would have to use the <strong>names()</strong> function to extract the attribute and store it as a new vector.</p>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb42-1" title="1"><span class="co"># names( results )</span></a>
+<a class="sourceLine" id="cb42-2" title="2">strategy &lt;-<span class="st"> </span><span class="kw">names</span>( results )</a>
+<a class="sourceLine" id="cb42-3" title="3"><span class="kw">table</span>( strategy, results )</a></code></pre></div>
+<pre><code>##         results
+## strategy LOSE WIN
+##   stay      4   1
+##   switch    4   1</code></pre>
+<p>Not horrible, but it makes our life a little harder. What if we organized them as a data frame instead of a vector?</p>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb44-1" title="1"><span class="co">####</span></a>
+<a class="sourceLine" id="cb44-2" title="2"></a>
+<a class="sourceLine" id="cb44-3" title="3">  game.results &lt;-<span class="st"> </span><span class="kw">data.frame</span>( <span class="dt">stay=</span>outcome.stay, </a>
+<a class="sourceLine" id="cb44-4" title="4">                              <span class="dt">switch=</span>outcome.switch, </a>
+<a class="sourceLine" id="cb44-5" title="5">                              <span class="dt">stringsAsFactors=</span>F )</a>
+<a class="sourceLine" id="cb44-6" title="6"></a>
+<a class="sourceLine" id="cb44-7" title="7"><span class="co">####</span></a></code></pre></div>
+<p>We now have a one-row data frame:</p>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb45-1" title="1"><span class="kw">play_game</span>()</a></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["stay"],"name":[1],"type":["chr"],"align":["left"]},{"label":["switch"],"name":[2],"type":["chr"],"align":["left"]}],"data":[{"1":"WIN","2":"LOSE"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>And we can bind our results using the row bind function <strong>rbind()</strong>.</p>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb46-1" title="1">results.df &lt;-<span class="st"> </span><span class="kw">data.frame</span>()</a>
+<a class="sourceLine" id="cb46-2" title="2"></a>
+<a class="sourceLine" id="cb46-3" title="3"><span class="cf">for</span>( i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">5</span> )</a>
+<a class="sourceLine" id="cb46-4" title="4">{</a>
+<a class="sourceLine" id="cb46-5" title="5">    game.outcome &lt;-<span class="st"> </span><span class="kw">play_game</span>()</a>
+<a class="sourceLine" id="cb46-6" title="6">    results.df &lt;-<span class="st"> </span><span class="kw">rbind</span>( results.df, game.outcome  )</a>
+<a class="sourceLine" id="cb46-7" title="7">}</a>
+<a class="sourceLine" id="cb46-8" title="8"></a>
+<a class="sourceLine" id="cb46-9" title="9">results.df</a></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["stay"],"name":[1],"type":["chr"],"align":["left"]},{"label":["switch"],"name":[2],"type":["chr"],"align":["left"]}],"data":[{"1":"LOSE","2":"WIN"},{"1":"WIN","2":"WIN"},{"1":"LOSE","2":"LOSE"},{"1":"LOSE","2":"LOSE"},{"1":"LOSE","2":"WIN"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>We can now analyze each column fairly easily:</p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb47-1" title="1"><span class="kw">mean</span>( results.df<span class="op">$</span>stay <span class="op">==</span><span class="st"> &quot;WIN&quot;</span> )</a></code></pre></div>
+<pre><code>## [1] 0.2</code></pre>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb49-1" title="1"><span class="kw">mean</span>( results.df<span class="op">$</span><span class="cf">switch</span> <span class="op">==</span><span class="st"> &quot;WIN&quot;</span> )</a></code></pre></div>
+<pre><code>## [1] 0.6</code></pre>
+<p>But we still can’t reference the strategy directly as it’s own variable. If we follow <strong>tidy data</strong> principles each attribute should be stored as it’s own column so it is easy to incorporate into analysis. They tidy version would look like this:</p>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb51-1" title="1"><span class="co">####</span></a>
+<a class="sourceLine" id="cb51-2" title="2"></a>
+<a class="sourceLine" id="cb51-3" title="3">  strategy &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;stay&quot;</span>,<span class="st">&quot;switch&quot;</span>)</a>
+<a class="sourceLine" id="cb51-4" title="4">  outcome &lt;-<span class="st"> </span><span class="kw">c</span>( outcome.stay, outcome.switch )</a>
+<a class="sourceLine" id="cb51-5" title="5">  game.results &lt;-<span class="st"> </span><span class="kw">data.frame</span>( strategy, outcome, </a>
+<a class="sourceLine" id="cb51-6" title="6">                              <span class="dt">stringsAsFactors=</span>F )</a>
+<a class="sourceLine" id="cb51-7" title="7"></a>
+<a class="sourceLine" id="cb51-8" title="8"><span class="co">####</span></a></code></pre></div>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb52-1" title="1"><span class="kw">play_game</span>()</a></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["strategy"],"name":[1],"type":["chr"],"align":["left"]},{"label":["outcome"],"name":[2],"type":["chr"],"align":["left"]}],"data":[{"1":"stay","2":"WIN"},{"1":"switch","2":"WIN"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb53-1" title="1">results.df &lt;-<span class="st"> </span><span class="kw">data.frame</span>()</a>
+<a class="sourceLine" id="cb53-2" title="2"></a>
+<a class="sourceLine" id="cb53-3" title="3"><span class="cf">for</span>( i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">5</span> )</a>
+<a class="sourceLine" id="cb53-4" title="4">{</a>
+<a class="sourceLine" id="cb53-5" title="5">    game.outcome &lt;-<span class="st"> </span><span class="kw">play_game</span>()</a>
+<a class="sourceLine" id="cb53-6" title="6">    results.df &lt;-<span class="st"> </span><span class="kw">rbind</span>( results.df, game.outcome  )</a>
+<a class="sourceLine" id="cb53-7" title="7">}</a>
+<a class="sourceLine" id="cb53-8" title="8"></a>
+<a class="sourceLine" id="cb53-9" title="9">results.df</a></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["strategy"],"name":[1],"type":["chr"],"align":["left"]},{"label":["outcome"],"name":[2],"type":["chr"],"align":["left"]}],"data":[{"1":"stay","2":"WIN"},{"1":"switch","2":"WIN"},{"1":"stay","2":"LOSE"},{"1":"switch","2":"LOSE"},{"1":"stay","2":"LOSE"},{"1":"switch","2":"WIN"},{"1":"stay","2":"WIN"},{"1":"switch","2":"LOSE"},{"1":"stay","2":"LOSE"},{"1":"switch","2":"WIN"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb54-1" title="1"><span class="kw">table</span>( results.df<span class="op">$</span>strategy, results.df<span class="op">$</span>outcome )</a></code></pre></div>
+<pre><code>##         
+##          LOSE WIN
+##   stay      3   2
+##   switch    2   3</code></pre>
+<p>This tidy format will make our analytical steps more efficient, so when possible default to that format.</p>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb56-1" title="1">play_game &lt;-<span class="st"> </span><span class="cf">function</span>( )</a>
+<a class="sourceLine" id="cb56-2" title="2">{</a>
+<a class="sourceLine" id="cb56-3" title="3">  new.game &lt;-<span class="st"> </span><span class="kw">create_game</span>()</a>
+<a class="sourceLine" id="cb56-4" title="4">  first.pick &lt;-<span class="st"> </span><span class="kw">select_door</span>()</a>
+<a class="sourceLine" id="cb56-5" title="5">  opened.door &lt;-<span class="st"> </span><span class="kw">open_goat_door</span>( new.game, first.pick )</a>
+<a class="sourceLine" id="cb56-6" title="6">  final.pick.stay &lt;-<span class="st"> </span><span class="kw">change_door</span>( <span class="dt">stay=</span>T, opened.door, first.pick )</a>
+<a class="sourceLine" id="cb56-7" title="7">  final.pick.switch &lt;-<span class="st"> </span><span class="kw">change_door</span>( <span class="dt">stay=</span>F, opened.door, first.pick )</a>
+<a class="sourceLine" id="cb56-8" title="8">  outcome.stay &lt;-<span class="st"> </span><span class="kw">determine_winner</span>( final.pick.stay, new.game  )</a>
+<a class="sourceLine" id="cb56-9" title="9">  outcome.switch &lt;-<span class="st"> </span><span class="kw">determine_winner</span>( final.pick.switch, new.game )</a>
+<a class="sourceLine" id="cb56-10" title="10">  </a>
+<a class="sourceLine" id="cb56-11" title="11">  strategy &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;stay&quot;</span>,<span class="st">&quot;switch&quot;</span>)</a>
+<a class="sourceLine" id="cb56-12" title="12">  outcome &lt;-<span class="st"> </span><span class="kw">c</span>( outcome.stay, outcome.switch )</a>
+<a class="sourceLine" id="cb56-13" title="13">  game.results &lt;-<span class="st"> </span><span class="kw">data.frame</span>( strategy, outcome, </a>
+<a class="sourceLine" id="cb56-14" title="14">                              <span class="dt">stringsAsFactors=</span>F )</a>
+<a class="sourceLine" id="cb56-15" title="15">  <span class="kw">return</span>( game.results )</a>
+<a class="sourceLine" id="cb56-16" title="16">}</a>
+<a class="sourceLine" id="cb56-17" title="17"></a>
+<a class="sourceLine" id="cb56-18" title="18"><span class="kw">play_game</span>()</a></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["strategy"],"name":[1],"type":["chr"],"align":["left"]},{"label":["outcome"],"name":[2],"type":["chr"],"align":["left"]}],"data":[{"1":"stay","2":"LOSE"},{"1":"switch","2":"WIN"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<div id="efficient-collectors" class="section level2">
+<h2>Efficient Collectors</h2>
+<p>The examples above used append operators like <strong>rbind()</strong> to build the results data frame inside of a loop:</p>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb57-1" title="1"><span class="co">####</span></a>
+<a class="sourceLine" id="cb57-2" title="2">  game.outcome &lt;-<span class="st"> </span><span class="kw">play_game</span>()</a>
+<a class="sourceLine" id="cb57-3" title="3">  results.df &lt;-<span class="st"> </span><span class="kw">rbind</span>( results.df, game.outcome  )</a>
+<a class="sourceLine" id="cb57-4" title="4"><span class="co">####</span></a></code></pre></div>
+<p>This is a quick and easy way to create a collector, but it turns out to also be a super inefficient implementation. The problem is that each time you add another element onto a vector or another row onto a data frame, you have changed the size of the object, which often forces the computer to create a new object in memory, then delete the old one. It can make the process slow, and also crash your RAM.</p>
+<p>It is typically best practice to create an empty collector object that is the right size, then fill each slot with the appropriate data.</p>
+<p>This works well when we are doing things like bootstrapping standard errors in statistics since each time through the loop we are creating a single parameter that can be stored in a vector.</p>
+<p>If we repeat the operation 10,000 times, our collector vector will have length 10,000.</p>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb58-1" title="1">results.vec &lt;-<span class="st"> </span><span class="kw">character</span>( <span class="dv">10000</span> )</a>
+<a class="sourceLine" id="cb58-2" title="2"></a>
+<a class="sourceLine" id="cb58-3" title="3"><span class="cf">for</span>( i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">10000</span> )</a>
+<a class="sourceLine" id="cb58-4" title="4">{</a>
+<a class="sourceLine" id="cb58-5" title="5">  <span class="co"># sample something </span></a>
+<a class="sourceLine" id="cb58-6" title="6">  x &lt;-<span class="st"> </span><span class="kw">sample</span>( <span class="kw">c</span>(<span class="st">&quot;car&quot;</span>,<span class="st">&quot;goat&quot;</span>,<span class="st">&quot;car&quot;</span>), <span class="dt">size=</span><span class="dv">1</span> )</a>
+<a class="sourceLine" id="cb58-7" title="7">  results.vec[ i ] &lt;-<span class="st"> </span>x</a>
+<a class="sourceLine" id="cb58-8" title="8">}</a></code></pre></div>
+<p>Unforunately we can’t create an empty data frame simply by declaring its size. But we have a couple of options.</p>
+<p>We can build it with empty values or NAs:</p>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb59-1" title="1">x &lt;-<span class="st"> </span><span class="kw">rep</span>( <span class="ot">NA</span>, <span class="dv">10</span> )</a>
+<a class="sourceLine" id="cb59-2" title="2">df &lt;-<span class="st"> </span><span class="kw">data.frame</span>( <span class="dt">stay=</span>x, <span class="dt">switch=</span>x, <span class="dt">stringsAsFactors=</span>F )</a>
+<a class="sourceLine" id="cb59-3" title="3">df</a></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["stay"],"name":[1],"type":["lgl"],"align":["right"]},{"label":["switch"],"name":[2],"type":["lgl"],"align":["right"]}],"data":[{"1":"NA","2":"NA"},{"1":"NA","2":"NA"},{"1":"NA","2":"NA"},{"1":"NA","2":"NA"},{"1":"NA","2":"NA"},{"1":"NA","2":"NA"},{"1":"NA","2":"NA"},{"1":"NA","2":"NA"},{"1":"NA","2":"NA"},{"1":"NA","2":"NA"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>And we can replace existing rows with new ones:</p>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb60-1" title="1"><span class="co"># row 3</span></a>
+<a class="sourceLine" id="cb60-2" title="2">df[ <span class="dv">3</span> , ] &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;WIN&quot;</span>,<span class="st">&quot;LOSE&quot;</span>)</a>
+<a class="sourceLine" id="cb60-3" title="3">df</a></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["stay"],"name":[1],"type":["chr"],"align":["left"]},{"label":["switch"],"name":[2],"type":["chr"],"align":["left"]}],"data":[{"1":"NA","2":"NA"},{"1":"NA","2":"NA"},{"1":"WIN","2":"LOSE"},{"1":"NA","2":"NA"},{"1":"NA","2":"NA"},{"1":"NA","2":"NA"},{"1":"NA","2":"NA"},{"1":"NA","2":"NA"},{"1":"NA","2":"NA"},{"1":"NA","2":"NA"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>The other option is to use a list, which is a more flexible data type. We can store a bunch of rows inside a list, and then easily convert it to a data frame when we are ready. Note that assignment to lists occurs with double brackets:</p>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb61-1" title="1">results.list &lt;-<span class="st"> </span><span class="kw">list</span>()</a>
+<a class="sourceLine" id="cb61-2" title="2"></a>
+<a class="sourceLine" id="cb61-3" title="3"><span class="cf">for</span>( i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">5</span> )</a>
+<a class="sourceLine" id="cb61-4" title="4">{</a>
+<a class="sourceLine" id="cb61-5" title="5">  game.outcomes &lt;-<span class="st"> </span><span class="kw">sample</span>( <span class="kw">c</span>(<span class="st">&quot;WIN&quot;</span>,<span class="st">&quot;LOSE&quot;</span>), <span class="dt">size=</span><span class="dv">2</span> )</a>
+<a class="sourceLine" id="cb61-6" title="6">  strategies &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;stay&quot;</span>,<span class="st">&quot;switch&quot;</span>) </a>
+<a class="sourceLine" id="cb61-7" title="7">  results.list[[ i ]] &lt;-<span class="st"> </span><span class="kw">data.frame</span>( strategies, game.outcomes, <span class="dt">stringsAsFactors=</span>F )</a>
+<a class="sourceLine" id="cb61-8" title="8">}</a>
+<a class="sourceLine" id="cb61-9" title="9"></a>
+<a class="sourceLine" id="cb61-10" title="10">results.list</a></code></pre></div>
+<pre><code>## [[1]]
+##   strategies game.outcomes
+## 1       stay          LOSE
+## 2     switch           WIN
+## 
+## [[2]]
+##   strategies game.outcomes
+## 1       stay           WIN
+## 2     switch          LOSE
+## 
+## [[3]]
+##   strategies game.outcomes
+## 1       stay           WIN
+## 2     switch          LOSE
+## 
+## [[4]]
+##   strategies game.outcomes
+## 1       stay          LOSE
+## 2     switch           WIN
+## 
+## [[5]]
+##   strategies game.outcomes
+## 1       stay          LOSE
+## 2     switch           WIN</code></pre>
+<p>Convert to a data frame with dplyr::bind_rows()</p>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb63-1" title="1">dplyr<span class="op">::</span><span class="kw">bind_rows</span>( results.list )</a></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["strategies"],"name":[1],"type":["chr"],"align":["left"]},{"label":["game.outcomes"],"name":[2],"type":["chr"],"align":["left"]}],"data":[{"1":"stay","2":"LOSE"},{"1":"switch","2":"WIN"},{"1":"stay","2":"WIN"},{"1":"switch","2":"LOSE"},{"1":"stay","2":"WIN"},{"1":"switch","2":"LOSE"},{"1":"stay","2":"LOSE"},{"1":"switch","2":"WIN"},{"1":"stay","2":"LOSE"},{"1":"switch","2":"WIN"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>Even if we do not pre-declare the size of the vector it will still scale well using this approach.</p>
+<p><br><br></p>
+<hr />
+<p><br></p>
+</div>
+</div>
+<div id="notes-on-knitting" class="section level1">
+<h1>Notes on Knitting</h1>
+<p>Note that when you knit a file, it starts from a blank slate. You might have packages loaded or datasets active on your local machine, so you can run code chunks fine. But when you knit you might get errors that functions cannot be located or datasets don’t exist. Be sure that you have included chunks to load these in your RMD file.</p>
+<p>Your RMD file will not knit if you have errors in your code. If you get stuck on a question, just add <code>eval=F</code> to the code chunk and it will be ignored when you knit your file. That way I can give you credit for attempting the question and provide guidance on fixing the problem.</p>
+<div id="markdown-trouble" class="section level2">
+<h2>Markdown Trouble?</h2>
+<p>If you are having problems with your RMD file, visit the <a href="https://ds4ps.org/cpp-526-spr-2020/labs/r-markdown-files.html"><strong>RMD File Styles and Knitting Tips</strong></a> manual.</p>
+<p><br> <br></p>
+<hr />
+<p><br> <br></p>
+<style>
+blockquote {
+    padding: 11px 22px;
+    margin: 0 0 22px;
+    font-size: 18px;
+    border-left: 5px solid lightgray;
+}
+</style>
+</div>
+</div>
+
+<div class="footer">
+    <div class="footerFloatOuter"><br></div>
+    <div class="footerFloatInner1">
+
+       <a  href="https://ds4ps.org/">
+         <img src="images/ps1-gray.png" alt="ds4ps" width="200" align="middle">
+         <h4 style="text-align:center;color:white;">Data Science for<br>Public Service</h4>
+       </a>
+
+    </div>
+
+    <div class="footerFloatInner2">
+
+     <br>
+     <ul style="list-style-type:none;">
+
+        <li>Labs designed by <a href=https:lecy.info target="_blank">Jesse D. Lecy</a></li>
+        <li>Source code is available on <a href=https://github.com/DS4PS/ target="_blank">GitHub</a></li>
+        <br>
+        <li>Creative Common License:</li>
+        <li><a href=https://creativecommons.org/licenses/by-nc-sa/4.0/ target="_blank"> (CC BY-NC-SA 4.0)</a></li>
+        <br>
+        <li>CPP 527 <a href="https://ds4ps.org/cpp-527-spr-2020/" target="_blank">Foundations of Data Science II</a></li>
+        <li>Part of the <a href=http://ds4ps.org/ms-prog-eval-data-analytics/ target="_blank">MS in Evaluation and Analytics</a></li>
+        <li>@ <a href=https://asuonline.asu.edu/online-degree-programs/graduate/program-evaluation-and-data-analytics-ms/ target="_blank">Arizona State University</a></li>
+        <br>
+        <li><p style="font-size:110%;color:#f0ead6;"><b>Solutions posted online</b><br>
+         are in violation of ASU student policies <br>and federal copyright laws <b>&copy;</b></li>
+     </ul>
+
+
+    </div>
+
+    <div class="footerFloatOuter"><br>
+    </div>
+
+</div>
+
+
+
+
+<style>
+
+blockquote {
+    padding: 11px 22px;
+    margin: 0 0 22px;
+    font-size: 18px;
+    border-left: 5px solid lightgray;
+}
+
+.footer {
+  color:white;
+  min-height: 450px !important;
+  background-color: #696969;
+  padding-bottom: 3em;
+  padding-top: 3em;
+  margin: auto;
+}
+
+.footer a {
+  color: orange;
+}
+
+.footer body{
+     font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+     font-size:calc(1.5em + 0.25vw);
+     font-weight:300;line-height:1.65;
+     -webkit-font-smoothing:antialiased;
+     -moz-osx-font-smoothing:grayscale;
+     margin-left:20%;
+     margin-right:20%
+}
+
+footer.body{
+     font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+     font-size:calc(1.5em + 0.25vw);
+     font-weight:300;line-height:1.65;
+     -webkit-font-smoothing:antialiased;
+     -moz-osx-font-smoothing:grayscale;
+     margin-left:20%;
+     margin-right:20%
+}
+
+.footerFloatOuter {
+	width: 25%;
+	float: left;
+}
+
+.footerFloatInner1 {
+	width: 20%;
+	float: left;
+	align: left;
+	margin-left: 0px;
+}
+
+.footerFloatInner2 {
+	width: 50%;
+	float: left;
+	text-align: left;
+}
+
+
+
+.footer ul li {
+	font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  font-size:calc(0.55em + 0.25vw) !important;
+  font-weight:300;
+  line-height:1.2 !important;
+  color: #FFF;
+	text-transform: uppercase;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+</style>
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,134 @@
+---
+title: "Batch Report Demo"
+output:
+  html_document:
+    theme: readable
+    highlight: zenburn
+    toc: true
+params:
+  url:
+    value: x  
+---
+
+
+
+<br>
+<hr>
+<br>
+
+
+### Example Report Assets Section 
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set( echo = TRUE, message=F, warning=F )
+```
+
+
+```{r}
+# Hide all of the extra messages and code in the final report:
+#
+#   knitr::opts_chunk$set( echo=F, message=F, warning=F )
+#
+
+library( dplyr )
+library( pander )
+library( knitr )
+library( gender )
+
+
+
+# SOURCE CUSTOM FUNCTIONS
+source( "utils.R" )
+
+
+# LOAD DATA
+URL <- params$url
+d <- read.csv( URL )
+
+
+# DATA STEPS 
+
+d$first.name <- get_first_name( d$Full.Name )
+d <- add_gender( d )
+d <- add_titles( d )
+d <- fix_salary( d )
+
+d <-      # report sample
+  d %>% 
+  filter( title != "" & ! is.na(title) ) %>% 
+  filter( Department.Description %in% academic.units )
+```
+
+
+<br>
+<hr>
+<br>
+
+
+
+
+
+# Salary Range by Rank and Gender 
+
+```{r, results="asis", fig.height=7, fig.width=10}
+# {r, results="asis", fig.height=7, fig.width=10}
+
+t.salary <- 
+  d %>% 
+  group_by( title, gender ) %>% 
+  summarize( q25=quantile(salary,0.25),
+             q50=quantile(salary,0.50),
+             q75=quantile(salary,0.75),
+             n=n() ) %>% 
+  ungroup() %>% 
+  mutate( p= round( n/sum(n), 2) )
+
+t.salary %>% build_graph( unit="ALL ASU")
+
+
+t.salary$q25 <- dollarize( t.salary$q25 )
+t.salary$q50 <- dollarize( t.salary$q50 )
+t.salary$q75 <- dollarize( t.salary$q75 )
+
+t.salary %>% knitr::kable(format="html")
+```
+
+
+
+<br>
+<hr>
+<br>
+
+
+
+
+<style>
+
+td {
+    padding: 3px 15px 3px 15px;
+    text-align: center !important;
+}
+
+th {
+    padding: 3px 15px 3px 15px;
+    text-align: center !important;
+    font-weight: bold;
+    color: SlateGray !important;
+}
+
+h1 { 
+    color: SlateGray !important;
+    font-size: 2.05em;
+    margin-top: 25px;
+    
+}
+
+h3 { 
+    color: SlateGray;
+    margin-top: 25px;
+}
+
+</style>
+
+

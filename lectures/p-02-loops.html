@@ -1,0 +1,1532 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Building Simulations in R:  Mastering Loops</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="" />
+    <link href="p-02-loops_files/remark-css-0.0.1/robot.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <link rel="stylesheet" href="slides.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Building Simulations in R: <br>Mastering Loops
+### <img src='https://ds4ps.github.io/cpp-524-spr-2020/assets/posts/experiment.png' alt='asu' height='150'>
+### <br> CPP 527 Foundations of Data Science II <br> <br> <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" style="height:1em;fill:currentColor;position:relative;display:inline-block;top:.1em;"> [ comment ] <path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"></path></svg> <a href="https://ds4ps.org/ms-prog-eval-data-analytics/courses/">MS PEDA</a> <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" style="height:1em;fill:currentColor;position:relative;display:inline-block;top:.1em;"> [ comment ] <path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"></path></svg> <a href="https://github.com/DS4PS/cpp-527-spr-2020/tree/master/lectures">Source Code</a>
+
+---
+
+
+
+
+
+
+
+
+
+
+
+
+# Table of Contents
+
+- #### [for loops](#for)
+- #### [while loops](#while)
+- #### [complex constructors](#complex)
+- #### [lists](#lists)
+- #### [lab-02](#lab-02)
+
+
+
+
+
+---
+  
+
+# Control Structures
+
+So far we have learned about:
+  
+* assignment operator: `&lt;- `
+* mathematical operators: `+ - * / ^`  
+* logical operators: `== &gt;= &lt;= != &amp; | %in%` 
+* subset operator: `[]` 
+* data wrangling function: select filter group_by arrange  
+
+For the most part these allow us to manipulate data.
+
+
+
+
+
+
+
+---
+
+class: center, middle 
+
+# Control Structures 
+
+![](images/control-structures.gif)
+
+
+
+
+Control structures are additional buildings blocks 
+&lt;br&gt;necessary for effective data programming. 
+
+
+---
+
+# Control Structures Allow Us To:
+
+&lt;br&gt;
+
+.pull-left[
+
+
+**if-else:**  
+Only run code if conditions are met:  
+ 
+ 
+**while loop:**  
+Run code while a condition is met:  
+
+**for loop:**  
+Run code a certain number of times:  
+
+]
+
+
+.pull-right[
+
+
+```r
+if( x &gt; 0 )
+{ return( log(x) ) } else
+{ print( "log not defined" ) }
+```
+
+
+```r
+while( pig.weight &lt; 300lbs )
+{ pig.weight &lt;- feed( pig ) }
+sell( pig )
+```
+
+
+```r
+for( i in 5:1 )
+{ print( i ) } # countdown
+print( "Happy New Year!" )
+```
+
+]
+
+
+---
+
+class: center, middle 
+
+# When Do We Use Control Structures? 
+
+&lt;img src="images/if-else.gif" width="300"&gt;
+
+**If-else** statements are used when &lt;br&gt;
+we only want the code to run when a &lt;br&gt;
+particular condition is met. 
+
+
+---
+
+class: center, middle 
+
+# When Do We Use Control Structures? 
+
+&lt;img src="images/work-together.gif" width="500"&gt;
+
+**Loops** are used when we want to &lt;br&gt;
+repeat the same operation &lt;br&gt;
+over and over and over. 
+
+
+---
+
+class: center, middle 
+
+## Loops are powerful because 
+
+
+.pull-left[ 
+
+&lt;img src="images/work-together.gif" width="300"&gt;
+
+&lt;img src="images/loops-work-together.gif" width="300"&gt;
+
+]
+
+.pull-right[
+
+&lt;img src="images/loops-work-together.gif" width="300"&gt;
+
+&lt;img src="images/work-together.gif" width="300"&gt;
+
+]
+
+Unlike humans, the computer does not get tired, so we can scale repetitive tasks. 
+
+
+
+
+---
+
+
+
+# Anatomy of a for() Loop
+
+.left-column[
+
+### No loop
+
+`\(2^1=2\)`
+
+`\(2^2=4\)`
+
+`\(2^3=8\)`
+
+`\(2^4=16\)`
+
+`\(2^5=32\)`
+
+&lt;br&gt;
+
+
+
+
+]
+
+
+.right-column[ 
+
+
+```r
+results &lt;- NULL
+results[1] &lt;- 2^1 
+results[2] &lt;- 2^2 
+results[3] &lt;- 2^3 
+results[4] &lt;- 2^4 
+results[5] &lt;- 2^5
+```
+
+
+```
+##   results
+## 1       2
+## 2       4
+## 3       8
+## 4      16
+## 5      32
+```
+
+
+]
+
+
+
+---
+
+name: for
+
+
+# Anatomy of a for() Loop
+
+.left-column[
+
+### First loop
+
+`\(i=1\)`
+
+`\(2^1=2\)`
+
+&lt;br&gt;
+
+
+
+]
+
+
+.right-column[ 
+
+
+```r
+results &lt;- NULL
+for( i in 1:5 )
+{
+  results[i] &lt;- 2^i   
+}
+```
+
+
+
+```
+##   results
+*## 1       2
+## 2       4
+## 3       8
+## 4      16
+## 5      32
+```
+
+]
+
+
+
+---
+
+# Anatomy of a for() Loop
+
+.left-column[
+
+### Second loop
+
+`\(i=2\)`
+
+`\(2^2=4\)`
+
+&lt;br&gt;
+
+
+
+]
+
+
+.right-column[ 
+
+
+```r
+results &lt;- NULL
+for( i in 1:5 )
+{
+  results[i] &lt;- 2^i   
+}
+```
+
+
+```
+##   results
+## 1       2
+*## 2       4
+## 3       8
+## 4      16
+## 5      32
+```
+
+]
+
+
+
+
+---
+
+
+
+
+
+# Anatomy of a for() Loop
+
+.left-column[
+
+### Third loop
+
+`\(i=3\)`
+
+`\(2^3=8\)`
+
+&lt;br&gt;
+
+
+
+
+]
+
+
+.right-column[ 
+
+
+```r
+results &lt;- NULL
+for( i in 1:5 )
+{
+  results[i] &lt;- 2^i   
+}
+```
+
+
+```
+##   results
+## 1       2
+## 2       4
+*## 3       8
+## 4      16
+## 5      32
+```
+
+]
+
+
+
+
+
+---
+
+
+# Anatomy of a for() Loop
+
+.pull-left[ 
+
+## This is your iterator
+
+You loop **over** vectors.
+
+The loop will visit every element of the vector once. 
+
+]
+
+.pull-right[
+
+
+```r
+results &lt;- NULL 
+*iterator.vec &lt;- 1:5
+*for( i in iterator.vec )
+{
+  results[i] &lt;- 2^i   
+}
+```
+]
+
+The first time through **_i_** takes on the first value of your iterator vector. 
+
+Each time the loop starts again, **_i_** takes on the next value in the vector.
+
+_We can use any letter instead of **i**, but it is the most commonly used letter in loops._ 
+
+
+
+---
+
+
+# Anatomy of a for() Loop
+
+.pull-left[ 
+
+## No assignment of results  
+
+Some loops do not save results. 
+
+They will have no **collector vector**.
+
+]
+
+.pull-right[
+
+
+```r
+for( i in 1:5 )  
+{
+  x.squared &lt;- i^2
+  print( x.squared )   
+}
+```
+
+```
+## [1] 1
+## [1] 4
+## [1] 9
+## [1] 16
+## [1] 25
+```
+]
+
+
+---
+
+# Anatomy of a for() Loop
+
+.pull-left[ 
+
+## This is your collector vector 
+
+If you want to store results, you need an object that can hold them.
+
+We will call this our **collector vector** because it gathers all of the results into one object for safe keeping.
+
+]
+
+.pull-right[
+
+
+```r
+*results &lt;- NULL
+iterator.vec &lt;- 1:5  
+for( i in iterator.vec )  
+{
+  results[i] &lt;- 2^i   
+}
+```
+]
+
+
+
+---
+
+
+
+# Anatomy of a for() Loop
+
+.pull-left[ 
+
+## Assignment to the collector 
+
+Note that the first example of assignment is problematic because each time we pass through the loop we will assign the new value to **results**, but we will over-write the value from the previous loop. 
+
+We need to assign the new value to an empty slot **results[i]**. 
+
+]
+
+.pull-right[
+
+
+```r
+results &lt;- NULL   
+iterator.vec &lt;- 1:5  
+for( i in iterator.vec )  
+{
+* results &lt;- 2^i
+}
+```
+
+
+```r
+results &lt;- NULL   
+iterator.vec &lt;- 1:5  
+for( i in iterator.vec )  
+{
+* results[i] &lt;- 2^i
+}
+```
+]
+
+
+---
+
+
+# Anatomy of a for() Loop
+
+
+.pull-left[ 
+
+## Assignment to the collector 
+
+Note that in the previous example our iterator vector contained values 1 to 5.
+
+In those cases collection is easy because we know that position **i** will be unique and sequential. 
+
+What happens when the iterator does not start with 1 and go to N?  
+
+
+
+]
+
+
+.pull-right[
+
+
+```r
+results &lt;- NULL   
+*iterator.vec &lt;- c(3,5,7)
+for( i in iterator.vec )  
+{
+  results[i] &lt;- 2^i   
+}
+```
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:right;"&gt; results &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; NA &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; NA &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; NA &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 32 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; NA &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 128 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+
+]
+
+
+
+
+---
+
+
+# Anatomy of a for() Loop
+
+
+.pull-left[ 
+
+## Assignment to the collector 
+
+Note that **i** starts at 3, so the first slot that a value is assigned to is the third position within our collector vector. 
+
+Then **i** becomes 5, so the 5th position is the next slot used in **results[i]** to store the new value.  
+
+If we skip positions during assignment, R will fill them with NAs. 
+
+]
+
+
+.pull-right[
+
+
+```r
+results &lt;- NULL   
+*iterator.vec &lt;- c(3,5,7)
+for( i in iterator.vec )  
+{
+  results[i] &lt;- 2^i   
+}
+```
+
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:right;"&gt; results &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; NA &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; NA &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; NA &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 32 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; NA &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 128 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+
+]
+
+
+
+---
+
+
+
+# Anatomy of a for() Loop
+
+
+.pull-left[ 
+
+## Assignment to the collector 
+
+There is a quick fix for this problem. We need to create a sequence that we can use for our iterator. 
+
+We know that **length(x)** will tell us the total number of elements in x. 
+]
+
+
+.pull-right[
+
+
+```r
+results &lt;- NULL   
+iterator.vec &lt;- c(3,5,7)  
+for( i in iterator.vec )  
+{
+* results[i] &lt;- 2^i
+}
+```
+
+
+```r
+results &lt;- NULL   
+x &lt;- c(3,5,7)  
+for( i in 1:length(x) )   
+{
+* results[i] &lt;- 2^x[i]
+}
+```
+
+]
+
+
+
+So the sequence **1:length(x)** will be the correct dimension, start with 1, and end with length(x). 
+
+
+
+
+
+
+
+---
+
+
+# Anatomy of a for() Loop
+
+
+.pull-left[ 
+
+## Assignment to the collector 
+
+Note that with the new iterator **i** is no longer taking on values of **x**. So we also need to start using the index **x[i]** to reference the current value of **x** in each loop. 
+]
+
+
+.pull-right[
+
+
+```r
+results &lt;- NULL   
+iterator.vec &lt;- c(3,5,7)  
+for( i in iterator.vec )  
+{
+* results[i] &lt;- 2^i
+}
+```
+
+
+```r
+results &lt;- NULL   
+x &lt;- c(3,5,7)  
+for( i in 1:length(x) )   
+{
+* results[i] &lt;- 2^x[i]
+}
+```
+
+]
+
+
+&lt;br&gt;
+
+
+
+
+
+---
+
+
+
+# Anatomy of a for() Loop
+
+
+.pull-left[ 
+
+## Assignment to the collector 
+
+We are now storing the new values sequentially in our collector vector. 
+
+
+]
+
+
+.pull-right[
+
+
+```r
+results &lt;- NULL   
+x &lt;- c(3,5,7)  
+*for( i in 1:length(x) )
+{
+* results[i] &lt;- 2^x[i]
+}
+```
+
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:right;"&gt; i &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; x &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; results &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 32 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 128 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+]
+
+
+
+
+---
+
+# Anatomy of a for() Loop
+
+
+.pull-left[ 
+
+## Looping over non-numeric vectors  
+
+Our iterators do not have to be numeric. We can loop over any kind of vector.  
+
+
+
+]
+
+
+.pull-right[
+
+
+```r
+results &lt;- NULL   
+*lat &lt;- c("lat1","lat2","lat3")
+*lon &lt;- c("lon1","lon2","lon3")
+for( i in 1:length(lat) )   
+{
+  # look up address at 
+  # position lat[i] lon[i]
+* results[i] &lt;-
+*   rev_geocode( lat[i], lon[i] )
+}
+```
+
+
+]
+
+In this example we have a database of latitude and longitude coordinates for crimes.
+
+We use a reverse geocoding function to find the street address of the locations. 
+
+
+
+---
+
+class: center, middle 
+
+## Let's take a random walk
+
+&lt;img src="images/random_walk.gif" width="350"&gt;
+
+Random walks are used to model games of chance in mathematics. 
+
+
+---
+
+class: center, middle 
+
+## Let's take a random walk
+
+&lt;img src="images/random_walk.gif" width="350"&gt;
+
+In each new time period the player flips a coin and can move either up or down on the chart. Up represents winning, down represents losing. 
+
+
+
+---
+
+class: center, middle 
+
+## Let's take a random walk
+
+&lt;img src="images/random_walk.gif" width="350"&gt;
+
+The position on the graph represents cumulative wealth. If you start at zero and win three times in a row you will be at position three. Win two and lose one you are at position one (cumulatively you won 2 and but then lost half of that). 
+
+
+---
+
+class: center, middle 
+
+## Let's take a random walk
+
+&lt;img src="images/random_walk.gif" width="350"&gt;
+
+Usually the player starts with a small dollar amount, and the model is used to study how long they can play the game before they go broke. Once they hit zero they can't bet anymore and have to go home. 
+
+
+---
+
+name: while
+
+
+# Anatomy of a while() Loop
+
+
+.pull-left[
+
+![](p-02-loops_files/figure-html/unnamed-chunk-30-1.png)&lt;!-- --&gt;
+
+]
+
+
+.pull-right[ 
+
+
+```r
+*cash &lt;- 10
+results &lt;- NULL
+count &lt;- 1  
+while( cash &gt; 0 )
+{
+* cash &lt;- cash +
+*   sample( c(-1,0,1), size=1 )
+  results[count] &lt;- cash  
+  count &lt;- count + 1  
+}
+```
+
+]
+
+Start game with $10 in cash and see how long you last. At each step you flip a coin and win a dollar, lose a dollar, or stay the same. What happened to the player here? 
+
+
+---
+
+# Anatomy of a while() Loop
+
+
+.pull-left[
+
+![](p-02-loops_files/figure-html/unnamed-chunk-32-1.png)&lt;!-- --&gt;
+
+]
+
+
+.pull-right[ 
+
+
+```r
+cash &lt;- 10  
+results &lt;- NULL 
+*count &lt;- 1
+while( cash &gt; 0 )
+{
+  cash &lt;- cash +   
+    sample( c(-1,0,1), size=1 )  
+* results[count] &lt;- cash
+* count &lt;- count + 1
+}
+```
+
+]
+
+Our **results** vector operates the same here, except you need to know what loop you are in. Here is where the **count** is important, because it keeps track of which loop we are currently in. 
+
+
+
+
+---
+
+
+name: complex 
+
+# Complex Constructors
+
+
+.pull-left[ 
+
+## Looping over non-numeric vectors  
+
+Our iterators do not have to be numeric. We can loop over any kind of vector.  
+
+
+]
+
+
+.pull-right[
+
+
+```r
+results &lt;- NULL   
+*lat &lt;- c("lat1","lat2","lat3")
+*lon &lt;- c("lon1","lon2","lon3")
+for( i in 1:length(lat) )   
+{
+  # look up address at 
+  # position lat[i] lon[i]
+* results[i] &lt;-
+*   rev_geocode( lat[i], lon[i] )
+}
+```
+
+]
+
+In this example we have a database of latitude and longitude coordinates for crimes.
+
+We use a reverse geocoding function to find the street address of the locations. 
+
+
+
+---
+
+
+
+# Complex Constructors
+
+
+.pull-left[ 
+
+## Building Data Frames 
+
+This example works fine in the istance where we get one text field back with the address. Since it's a single string value we can store it in the results vector. 
+
+]
+
+
+.pull-right[
+
+
+```r
+results &lt;- NULL   
+lat &lt;- c("lat1","lat2","lat3")   
+lon &lt;- c("lon1","lon2","lon3")   
+for( i in 1:length(lat) )   
+{
+  # look up address at 
+  # position lat[i] lon[i]
+* results[i] &lt;-
+*   rev_geocode( lat[i], lon[i] )
+}
+```
+
+
+]
+
+What happens, however, when  when the function returns an address with street, city, and zip separate? 
+
+Can we assign all of those values to a position in a results vector? 
+
+
+---
+
+
+# Complex Constructors
+
+
+.pull-left[ 
+
+## Building Data Frames 
+
+We can't store multiple vectors or part of a data from inside of a vector. We need a more flexible data type. 
+
+
+]
+
+
+.pull-right[
+
+
+```r
+*results &lt;- list()
+lat &lt;- c("lat1","lat2","lat3")   
+lon &lt;- c("lon1","lon2","lon3")   
+for( i in 1:length(lat) )   
+{
+  # look up address at 
+  # position lat[i] lon[i]
+* results[[i]]
+* &lt;- rev_geocode( lat[i], lon[i] )
+}
+*dat &lt;- dplyr::bind_rows( results )
+```
+
+]
+
+A **list** should do the trick. After constructing it, you can convert it to a data frame with the last line. 
+
+NOTE, **assignment to lists** uses a double-bracket`x[[ ]] &lt;- f()`. 
+
+
+
+
+---
+
+
+name: lists
+
+
+# Lists
+
+Lists are the grab bag of data structures. 
+
+Vectors are very sensitive to data type (when you add two types together you silently invoke implicit casting that can have serious effects on your data).
+
+Matrices and data frames have to maintain their rectangular structure at all times, making it challenging sometimes to add new data. 
+
+Lists allow you to combine different object types and tables with different dimensions easily because the list stores each object separately. It doesn't alter any of the data, but it also doesn't try to reconcile any of it (combining two vectors using c() invokes casting, combining two datasets requires row-congruence, column-congruence, or merges). 
+
+
+
+---
+
+
+#  Lists
+
+
+You can think of the double-brackets as shelves that store each object  separately 
+
+`x[[ ]] &lt;- f()`. 
+
+When you are ready to use it, you can take it off the shelf: 
+
+`x[[1]] # return first object in list`
+
+
+
+---
+
+#  Lists
+
+Lists are often used when we need to return a lot of information from a function, and the information comes in many object types or data dimensions
+
+For example, after running a regression we get an **lm** or linear model object. This is actually just a list of all of the results from the regression:
+
+.pull-left[
+
+```r
+x &lt;- 1:10
+y &lt;- 2*x + rnorm(10)
+m &lt;- lm( y ~ x )
+```
+]
+.pull-right[
+
+```r
+*class( m )
+```
+
+```
+## [1] "lm"
+```
+
+```r
+*mode( m )
+```
+
+```
+## [1] "list"
+```
+]
+
+
+---
+
+# Lists
+
+The **lm** object (class type) is stored using a list (object type or mode). 
+
+Here are all of the separate objects stored in each slot of the list:
+
+
+```r
+names(m)
+```
+
+```
+##  [1] "coefficients"  "residuals"     "effects"       "rank"         
+##  [5] "fitted.values" "assign"        "qr"            "df.residual"  
+##  [9] "xlevels"       "call"          "terms"         "model"
+```
+
+
+---
+
+#  Lists
+
+We can access the objects by position or by name:
+
+
+```r
+m$coefficients
+```
+
+```
+## (Intercept)           x 
+##   0.9185321   1.8907734
+```
+
+```r
+m[[1]]
+```
+
+```
+## (Intercept)           x 
+##   0.9185321   1.8907734
+```
+
+
+---
+
+#  Lists
+
+Each object retains its original type:
+
+.pull-left[
+
+
+```r
+class( m$residuals )
+```
+
+```
+## [1] "numeric"
+```
+
+```r
+head( m$residuals, 3 )
+```
+
+```
+##          1          2          3 
+## -0.2895673 -0.4253232 -0.6080408
+```
+
+]
+
+.pull-right[
+
+
+```r
+class( m$model )
+```
+
+```
+## [1] "data.frame"
+```
+
+```r
+head( m$model, 3 )
+```
+
+```
+##          y x
+## 1 2.519738 1
+## 2 4.274756 2
+## 3 5.982811 3
+```
+
+]
+
+---
+
+#  Lists
+
+Or print the full list structure using **str()**:
+
+
+```r
+str( m )
+```
+
+```
+## List of 12
+##  $ coefficients : Named num [1:2] 0.919 1.891
+##   ..- attr(*, "names")= chr [1:2] "(Intercept)" "x"
+##  $ residuals    : Named num [1:10] -0.2896 -0.4253 -0.608 0.0142 1.6451 ...
+##   ..- attr(*, "names")= chr [1:10] "1" "2" "3" "4" ...
+##  $ effects      : Named num [1:10] -35.79 17.1738 -0.4946 0.0967 1.6967 ...
+##   ..- attr(*, "names")= chr [1:10] "(Intercept)" "x" "" "" ...
+##  $ rank         : int 2
+##  $ fitted.values: Named num [1:10] 2.81 4.7 6.59 8.48 10.37 ...
+##   ..- attr(*, "names")= chr [1:10] "1" "2" "3" "4" ...
+##  $ assign       : int [1:2] 0 1
+##  $ qr           :List of 5
+##   ..$ qr   : num [1:10, 1:2] -3.162 0.316 0.316 0.316 0.316 ...
+##   .. ..- attr(*, "dimnames")=List of 2
+##   .. .. ..$ : chr [1:10] "1" "2" "3" "4" ...
+##   .. .. ..$ : chr [1:2] "(Intercept)" "x"
+##   .. ..- attr(*, "assign")= int [1:2] 0 1
+##   ..$ qraux: num [1:2] 1.32 1.27
+##   ..$ pivot: int [1:2] 1 2
+##   ..$ tol  : num 1e-07
+##   ..$ rank : int 2
+##   ..- attr(*, "class")= chr "qr"
+##  $ df.residual  : int 8
+##  $ xlevels      : Named list()
+##  $ call         : language lm(formula = y ~ x)
+##  $ terms        :Classes 'terms', 'formula'  language y ~ x
+##   .. ..- attr(*, "variables")= language list(y, x)
+##   .. ..- attr(*, "factors")= int [1:2, 1] 0 1
+##   .. .. ..- attr(*, "dimnames")=List of 2
+##   .. .. .. ..$ : chr [1:2] "y" "x"
+##   .. .. .. ..$ : chr "x"
+##   .. ..- attr(*, "term.labels")= chr "x"
+##   .. ..- attr(*, "order")= int 1
+##   .. ..- attr(*, "intercept")= int 1
+##   .. ..- attr(*, "response")= int 1
+##   .. ..- attr(*, ".Environment")=&lt;environment: R_GlobalEnv&gt; 
+##   .. ..- attr(*, "predvars")= language list(y, x)
+##   .. ..- attr(*, "dataClasses")= Named chr [1:2] "numeric" "numeric"
+##   .. .. ..- attr(*, "names")= chr [1:2] "y" "x"
+##  $ model        :'data.frame':	10 obs. of  2 variables:
+##   ..$ y: num [1:10] 2.52 4.27 5.98 8.5 12.02 ...
+##   ..$ x: int [1:10] 1 2 3 4 5 6 7 8 9 10
+##   ..- attr(*, "terms")=Classes 'terms', 'formula'  language y ~ x
+##   .. .. ..- attr(*, "variables")= language list(y, x)
+##   .. .. ..- attr(*, "factors")= int [1:2, 1] 0 1
+##   .. .. .. ..- attr(*, "dimnames")=List of 2
+##   .. .. .. .. ..$ : chr [1:2] "y" "x"
+##   .. .. .. .. ..$ : chr "x"
+##   .. .. ..- attr(*, "term.labels")= chr "x"
+##   .. .. ..- attr(*, "order")= int 1
+##   .. .. ..- attr(*, "intercept")= int 1
+##   .. .. ..- attr(*, "response")= int 1
+##   .. .. ..- attr(*, ".Environment")=&lt;environment: R_GlobalEnv&gt; 
+##   .. .. ..- attr(*, "predvars")= language list(y, x)
+##   .. .. ..- attr(*, "dataClasses")= Named chr [1:2] "numeric" "numeric"
+##   .. .. .. ..- attr(*, "names")= chr [1:2] "y" "x"
+##  - attr(*, "class")= chr "lm"
+```
+
+
+
+
+---
+
+class: center, middle  
+
+
+# Lab 02
+
+---
+
+name: lab-02
+
+# Monty Hall Problem
+
+
+
+```r
+play_game &lt;- function( )
+{
+ new.game &lt;- create_game()
+ door1 &lt;- pick_door()
+ opened.door &lt;- open_goat_door( new.game, door1 )
+ final.pick.stay &lt;- change_door( stay=T, ... )
+ final.pick.switch &lt;- change_door( stay=F, ... )
+ outcome.stay &lt;- determine_outcome( final.pick.stay, ... )
+ outcome.switch &lt;- determine_outcome( final.pack.switch, ... )
+*return( data.frame( stay=outcome.stay, switch=outcome.switch ) )
+}
+```
+
+Using the steps from last week we can create a new function that combines all of the individual functions you wrote into one master **play_game()** function. Note that it will return a data frame, not a vector. 
+
+How can we tell which strategy is efficient here? 
+
+
+
+---
+
+# Simulating Game Strategies 
+
+
+```r
+play_game &lt;- function( total.sims=10000 )
+{
+  
+    results &lt;- list()
+    
+    for( i in 1:total.sims )
+    {
+      results[[i]] &lt;- play_game() 
+    }
+  
+    dat &lt;- dplyr::bind_rows( results )
+    return( dat )
+}
+```
+
+The beautiful part of simulation is we do not need to do a formal proof of anything. We can just play the game lots of times and see what happens - comparing the "stay" cases to the "switch" cases. 
+
+
+---
+
+# Instructions 
+
+Using your code from last week (or the solutions if your code is not working properly) create a **play_game()** function that requires no inputs and returns two outcomes for each game played - what would have happened if you had stayed, and what would have happened if you had switched. 
+
+Embed your new game function inside of a loop for 10,000 iterations and collect wins and losses for each strategy. 
+
+Report your results as a table or an informative chart and discuss the results. What is the best strategy?
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "default",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

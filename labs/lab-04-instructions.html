@@ -1,0 +1,1138 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Lab 04 - Regular Expressions</title>
+
+<script src="lab-04-instructions_files/header-attrs-2.9/header-attrs.js"></script>
+<script src="lab-04-instructions_files/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="lab-04-instructions_files/bootstrap-3.3.5/css/readable.min.css" rel="stylesheet" />
+<script src="lab-04-instructions_files/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="lab-04-instructions_files/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="lab-04-instructions_files/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="lab-04-instructions_files/navigation-1.1/tabsets.js"></script>
+<link href="lab-04-instructions_files/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="lab-04-instructions_files/pagedtable-1.1/js/pagedtable.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  { color: #cccccc; background-color: #303030; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ffcfaf; } /* Alert */
+code span.an { color: #7f9f7f; font-weight: bold; } /* Annotation */
+code span.at { } /* Attribute */
+code span.bn { color: #dca3a3; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #f0dfaf; } /* ControlFlow */
+code span.ch { color: #dca3a3; } /* Char */
+code span.cn { color: #dca3a3; font-weight: bold; } /* Constant */
+code span.co { color: #7f9f7f; } /* Comment */
+code span.cv { color: #7f9f7f; font-weight: bold; } /* CommentVar */
+code span.do { color: #7f9f7f; } /* Documentation */
+code span.dt { color: #dfdfbf; } /* DataType */
+code span.dv { color: #dcdccc; } /* DecVal */
+code span.er { color: #c3bf9f; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #c0bed1; } /* Float */
+code span.fu { color: #efef8f; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #7f9f7f; font-weight: bold; } /* Information */
+code span.kw { color: #f0dfaf; } /* Keyword */
+code span.op { color: #f0efd0; } /* Operator */
+code span.ot { color: #efef8f; } /* Other */
+code span.pp { color: #ffcfaf; font-weight: bold; } /* Preprocessor */
+code span.sc { color: #dca3a3; } /* SpecialChar */
+code span.ss { color: #cc9393; } /* SpecialString */
+code span.st { color: #cc9393; } /* String */
+code span.va { } /* Variable */
+code span.vs { color: #cc9393; } /* VerbatimString */
+code span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<link rel="stylesheet" href="textbook.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Lab 04 - Regular Expressions</h1>
+
+</div>
+
+<div id="TOC">
+<ul>
+<li><a href="#setup">Setup</a>
+<ul>
+<li><a href="#packages">Packages</a></li>
+<li><a href="#data">Data</a></li>
+<li><a href="#data-dictionary">Data Dictionary:</a></li>
+</ul></li>
+<li><a href="#part-i">Part I</a></li>
+<li><a href="#part-ii">Part II</a>
+<ul>
+<li><a href="#tabulate-top-word-counts">Tabulate top word counts</a></li>
+<li><a href="#stemming">Stemming</a></li>
+<li><a href="#instructions">Instructions</a></li>
+</ul></li>
+<li><a href="#part-iii">Part III</a>
+<ul>
+<li><a href="#for-your-deliverables-for-part-iii">For your deliverables for Part III:</a></li>
+</ul></li>
+<li><a href="#challenge-question">Challenge Question</a>
+<ul>
+<li><a href="#part-1">Part 1:</a></li>
+<li><a href="#part-2">Part 2:</a></li>
+</ul></li>
+<li><a href="#submission-instructions">Submission Instructions</a>
+<ul>
+<li><a href="#notes-on-knitting">Notes on Knitting</a></li>
+<li><a href="#markdown-trouble">Markdown Trouble?</a></li>
+</ul></li>
+</ul>
+</div>
+
+<div id="cpp-527-foundations-of-data-science-ii" class="section level4">
+<h4>CPP 527: Foundations of Data Science II</h4>
+<p><br></p>
+<hr />
+<p><br></p>
+<p>Lab 04 introduces the tools of string operators and <strong>regular expressions</strong> that enable rich text analysis in R. They are important functions for cleaning data in large datasets, generating new variables, and qualitative analysis of text-based databases using tools like content analysis, sentiment analysis, and natural language processing libraries.</p>
+<p>The data for the lab comes from IRS archives of 1023-EZ applications that nonprofits submit when they are filing for tax-exempt status. We will use mission statements, organizational names, and activity codes.</p>
+<p>The lab consists of three parts. Part I is a warm-up that asks you to construct a few regular expressions to identify specific patterns in the mission text.</p>
+<p>Part II asks you to use the <strong>quanteda</strong> package, a popular text analysis package in R, to perform a simple content analysis by counting the most frequently-used words in the mission statements.</p>
+<p>Part III asks you to use text functions and regular expressions to search mission statements to develop a sample of specific nonprofits using keywords and phrases.</p>
+</div>
+<div id="setup" class="section level2">
+<h2>Setup</h2>
+<div id="packages" class="section level3">
+<h3>Packages</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># REMEMBER TO RUN ONCE AND NEVER INCLUDE</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># INSTALL STEPS IN RMD FILES!</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>quanteda.bundle <span class="ot">&lt;-</span> <span class="fu">c</span>( <span class="st">&quot;quanteda&quot;</span>, <span class="st">&quot;quanteda.textmodels&quot;</span>,</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>                      <span class="st">&quot;quanteda.textstats&quot;</span>, <span class="st">&quot;quanteda.textplots&quot;</span> )</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>( quanteda.bundle )</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>( dplyr )</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>( pander )</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>( quanteda )</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>( quanteda.textmodels )</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>( quanteda.textstats )</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>( quanteda.textplots )</span></code></pre></div>
+</div>
+<div id="data" class="section level3">
+<h3>Data</h3>
+<p>IRS documentation on 1023-EZ forms are <a href="https://www.irs.gov/charities-non-profits/exempt-organizations-form-1023ez-approvals">available here</a>.</p>
+<p><br></p>
+<p>Use this archived version of the data for the lab:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>URL <span class="ot">&lt;-</span> <span class="st">&quot;https://github.com/DS4PS/cpp-527-spr-2020/blob/master/labs/data/IRS-1023-EZ-MISSIONS.rds?raw=true&quot;</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="fu">gzcon</span>(<span class="fu">url</span>( URL )))</span></code></pre></div>
+<p>We will be working primarily with the nonprofit activity codes and mission text for this assignment:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>( dat[ <span class="fu">c</span>(<span class="st">&quot;orgname&quot;</span>,<span class="st">&quot;codedef01&quot;</span>,<span class="st">&quot;mission&quot;</span>) ] ) <span class="sc">%&gt;%</span> <span class="fu">pander</span>()</span></code></pre></div>
+<table style="width:88%;">
+<caption>Table continues below</caption>
+<colgroup>
+<col width="43%" />
+<col width="44%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">orgname</th>
+<th align="center">codedef01</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">NIA PERFORMING ARTS</td>
+<td align="center">Arts, Culture, and Humanities</td>
+</tr>
+<tr class="even">
+<td align="center">THE YOUNG ACTORS GUILD INC</td>
+<td align="center">Arts, Culture, and Humanities</td>
+</tr>
+<tr class="odd">
+<td align="center">RUTH STAGE INC</td>
+<td align="center">Arts, Culture, and Humanities</td>
+</tr>
+<tr class="even">
+<td align="center">STRIPLIGHT COMMUNITY THEATRE INC</td>
+<td align="center">Arts, Culture, and Humanities</td>
+</tr>
+<tr class="odd">
+<td align="center">NU BLACK ARTS WEST THEATRE</td>
+<td align="center">Arts, Culture, and Humanities</td>
+</tr>
+<tr class="even">
+<td align="center">OLIVE BRANCH THEATRICALS INC</td>
+<td align="center">Arts, Culture, and Humanities</td>
+</tr>
+</tbody>
+</table>
+<table style="width:46%;">
+<colgroup>
+<col width="45%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">mission</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">A community based art organization that inspires, nutures,educates and empower artist and community.</td>
+</tr>
+<tr class="even">
+<td align="center">We engage and educate children in the various aspect of theatrical productions, through acting, directing, and stage crew. We produce community theater productions for children as well as educational theater camps and workshops.</td>
+</tr>
+<tr class="odd">
+<td align="center">Theater performances and performing arts</td>
+</tr>
+<tr class="even">
+<td align="center">To produce high-quality theater productions for our local community, guiding performers and audience members to a greater appreciation of creativity through the theatrical arts - while leading with respect, organization, accountability.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="data-dictionary" class="section level3">
+<h3>Data Dictionary:</h3>
+<ul>
+<li><strong>ein</strong>: nonprofit tax ID</li>
+<li><strong>orgname</strong>: organizatoin name</li>
+<li><strong>mission</strong>: mission statement</li>
+<li><strong>code01</strong>: NTEE mission code top level</li>
+<li><strong>codedef01</strong>: mission code definition</li>
+<li><strong>code02</strong>: NTEE mission code second level</li>
+<li><strong>codedef02</strong>: mission code definition</li>
+<li><strong>orgpurposecharitable</strong>: Organization is organized and operated exclusively for Charitable purposes</li>
+<li><strong>orgpurposereligious</strong>: Organization is organized and operated exclusively for Religious purposes</li>
+<li><strong>orgpurposeeducational</strong>: Organization is organized and operated exclusively for Educational purposes</li>
+<li><strong>orgpurposescientific</strong>: Organization is organized and operated exclusively for Scientific purposes</li>
+<li><strong>orgpurposeliterary</strong>: Organization is organized and operated exclusively for Literary purposes</li>
+<li><strong>orgpurposepublicsafety</strong>: Organization is organized and operated exclusively for x purposes</li>
+<li><strong>orgpurposeamateursports</strong>: Organization is organized and operated exclusively for x purposes</li>
+<li><strong>orgpurposecrueltyprevention</strong>: Organization is organized and operated exclusively for x purposes</li>
+<li><strong>leginflno</strong>: Organization has NOT attempted or has no plans to attempt to influence legislation</li>
+<li><strong>leginflyes</strong>: Organization has attempted or has plans to attempt to influence legislation</li>
+<li><strong>donatefundsno</strong>: Organization has no plans to donate funds or pay expenses to any individuals</li>
+<li><strong>donatefundsyes</strong>: Organization plans to donate funds or pay expenses to individuals</li>
+<li><strong>conductactyoutsideusno</strong>: Plans to conduct activities outside of the US?</li>
+<li><strong>conductactyoutsideusyes</strong>: Plans to conduct activities outside of the US?</li>
+<li><strong>compofcrdirtrustno</strong>: Organization has no plans to pay compensation to any officers, directors, or trustees</li>
+<li><strong>compofcrdirtrustyes</strong>: Organization plans to pay compensation to any officers, directors, or trustees</li>
+<li><strong>financialtransofcrsno</strong>: Organization has no plans to engage in financial transactions (for example, loans, grants, or other assistance, payments for goods or services, rents, etc.) with their officers, directors, or trustees, or any entities they own or control</li>
+<li><strong>financialtransofcrsyes</strong>: Organization plans to engage in financial transactions (for example, loans, grants, or other assistance, payments for goods or services, rents, etc.) with their officers, directors, or trustees, or any entities they own or control</li>
+<li><strong>unrelgrossincm1000moreno</strong>: Unrelated gross income of more than $1,000?</li>
+<li><strong>unrelgrossincm1000moreyes</strong>: Unrelated gross income of more than $1,000?</li>
+<li><strong>gamingactyno</strong>: Organization has no plans to conduct bingo or other gaming activities</li>
+<li><strong>gamingactyyes</strong>: Organization plans to conduct bingo or other gaming activities</li>
+<li><strong>disasterreliefno</strong>: Organization has no plans to provide Disaster Relief assistance</li>
+<li><strong>disasterreliefyes</strong>: Organization plans to provide Disaster Relief assistance</li>
+<li><strong>onethirdsupportpublic</strong>: Organization normally receives at least one-third of their support from public sources</li>
+<li><strong>onethirdsupportgifts</strong>: Organization normally receives at least one-third of their support from a combination of gifts, grants, contributions, membership fees, and gross receipts (from permitted sources) from activities related to their exempt functions</li>
+<li><strong>benefitofcollege</strong>: Organization is organized and operated exclusively to receive, hold, invest, and administer property for and make expenditures to or for the benefit of a state or municipal college or university</li>
+<li><strong>privatefoundation508e</strong>: Organization’s organizing document contains specific provisions required by section 508(e)</li>
+<li><strong>hospitalorchurchno</strong>: Organization does not qualify as a hospital or a church</li>
+<li><strong>hospitalorchurchyes</strong>: Organization qualifies as a hospital or a church</li>
+</ul>
+</div>
+</div>
+<div id="part-i" class="section level2">
+<h2>Part I</h2>
+<p>You need to search for the following patterns below, print the first six missions that meet the criteria, and report a total count of missions that meet the criteria.</p>
+<p>You will use <strong>grep()</strong> and <strong>grepl()</strong>. The <strong>grep()</strong> function will find missions that match the criteria and return the full string. <strong>grepl()</strong> is the logical version of <strong>grep()</strong>, so it returns a vector of TRUE or FALSE, with TRUE representing the cases that match the specified criteria.</p>
+<pre><code>grep(  pattern=&quot;some.reg.ex&quot;, x=&quot;mission statements&quot;, value=TRUE )</code></pre>
+<p>You will print and count matches as follows. As an example, let’s search for missions that contain numbers.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span>( <span class="at">pattern=</span><span class="st">&quot;[0-9]&quot;</span>, <span class="at">x=</span>dat<span class="sc">$</span>mission, <span class="at">value=</span><span class="cn">TRUE</span> ) <span class="sc">%&gt;%</span> <span class="fu">head</span>()</span></code></pre></div>
+<pre><code>## [1] &quot;Provide entertainment and education to private residence of a private residential community over 55.&quot;                                                                                                                                                 
+## [2] &quot;To serve the community as a nonprofit organization dedicated to producing live theatre and educational opportunities in the theater arts. The theater&#39;s primary activity is to put on 3-5 plays annually in Colorado Springs, CO.&quot;                    
+## [3] &quot;The organization is a theater company that performs 3-4 plays per year.&quot;                                                                                                                                                                              
+## [4] &quot;Our mission is to facilitate personal growth and social development through the creativity of the Theatre Arts.  We offer musical theatre camps for ages 4-7, 8-12, and 13-20 in the summers &amp; community theatre and classes for all ages fall-spring&quot;
+## [5] &quot;Nurture minority actors, directors, playwrights, and theater artists by offering them the opportunity to participate in the best classic, contemporary, and original theater (A65 and R30).&quot;                                                          
+## [6] &quot;The 574 Theatre Company strives to be a professional theatre company located in St. Joseph County, IN who seeks to create, inspire, and educate the members of the 574 community by producing high quality and innovative theatrical entertainment.&quot;</code></pre>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grepl</span>( <span class="st">&quot;[0-9]&quot;</span>, dat<span class="sc">$</span>mission ) <span class="sc">%&gt;%</span> <span class="fu">sum</span>()</span></code></pre></div>
+<pre><code>## [1] 4142</code></pre>
+<ol style="list-style-type: decimal">
+<li><p>How many missions start with the word “to”? Make sure it is the word “to” and not words that start with “to” like “towards”. You can ignore capitalization.</p></li>
+<li><p>How many mission fields are blank? How many mission fields contain only spaces (one or more)?</p></li>
+<li><p>How many missions have trailing spaces (extra spaces at the end)? After identifying the cases with trailing spaces use the trim white space function <strong>trimws()</strong> to clean them up.</p></li>
+<li><p>How many missions contain the dollar sign? Note that the dollar sign is a special symbol, so you need to use an escape character to search for it.</p></li>
+<li><p>How many mission statements contain numbers that are at least two digits long? You will need to use a quantity qualifier from regular expressions.</p></li>
+</ol>
+<p>Report your code and answers for these five questions.</p>
+<p><br></p>
+</div>
+<div id="part-ii" class="section level2">
+<h2>Part II</h2>
+<p>Perform a very basic content analysis with the mission text. Report the ten most frequently-used words in mission statements. Exclude punctuation, and “stem” the words.</p>
+<p>You will be using the <a href="https://quanteda.io/">quanteda</a> package in R for the language processing functions. It is an extremely powerful tool that integrates with a variety of natural language processing tools, qualitative analysis packages, and machine learning frameworks for predictive analytics using text inputs.</p>
+<p>In general, languages and thus text are semi-structured data sources. There are patterns and rules to languages, but rules are less rigid and patterns can be more subtle (computers are much better at picking out patterns in language use from large amounts of text than humans are). As a result of the nature of text as data, you will find that the cleaning, processing, and preparation steps can be more intensive than quantitative data. They are designed to filter out large portions of text that hold sentences together and create subtle meaning in context, but offer little in terms of general pattern recognition. Eliminating capitalization and punctuation help simplify the text. Paragraphs and sentences are atomized into lists of words. And things like stemming or converting multiple words to single compound words (e.g. White House to white_house) help reduce the complexity of the text.</p>
+<p>The short tutorial below is meant to introduce you to a few functions that can be useful for initiating analysis with text and introduce you to common pre-processing steps.</p>
+<p>Note that in the field of literature we refer to an author’s or a field’s body of work. In text analysis, we refer to a database of text-based documents as a “corpus” (Latin for <em>body</em>). Each document has text, which is the unit of analysis. But it also has meta-data that is useful for making sense of the text and identifying patterns. Common meta-data might be things like year of publication, author, type of document (newspaper article, tweet, email, spoken speech, etc.). The <strong>corpus()</strong> function primarily serves to make the text database easy to use by keeping the text and meta-data connected and simpatico during pre-processing steps.</p>
+<p>Typically large texts are broken into smaller parts, or “tokenized”. Paragraphs can be split into sentences, sentences split into words. In regression we pay attention to correlations between numbers - when one variable X is increasing, is another variable Y also increasing, decreasing, or not covarying with X? In text analysis the analogous operation is co-occurrence. How often do words co-occur in sentences or documents? Or do we expect them to co-occur more frequently than they actually do given their frequency in the corpus (the equivalent of two words being negatively correlated). It is through tokenization that these relationships can be established.</p>
+<p>In the example below we will split missions into sets of words, apply a “dictionary” or “thesaurus” to join multiple words that describe a single concept (e.g. New York City), stem the words to standardize them as much as possible, then conduct the simplest type of content analysis possible - count word frequency.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># library( quanteda )</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co"># convert missions to all lower-case </span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>mission <span class="ot">&lt;-</span> <span class="fu">tolower</span>( dat<span class="sc">$</span>mission )</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co"># use a sample for demo purposes</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>dat.sample <span class="ot">&lt;-</span> dat[ <span class="fu">sample</span>( <span class="dv">1</span><span class="sc">:</span><span class="dv">50000</span>, <span class="at">size=</span><span class="dv">1000</span> ) , ]</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>corp <span class="ot">&lt;-</span> <span class="fu">corpus</span>( dat.sample,  <span class="at">text_field=</span><span class="st">&quot;mission&quot;</span> )</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>corp</span></code></pre></div>
+<pre><code>## Corpus consisting of 1,000 documents and 36 docvars.
+## text1 :
+## &quot;we are advocacy group that provides free or low cost legal r...&quot;
+## 
+## text2 :
+## &quot;to enlist volunteers, promote the social, educational and re...&quot;
+## 
+## text3 :
+## &quot;raise funds and support necessary to support hospital staff ...&quot;
+## 
+## text4 :
+## &quot;sole purpose is raising funds to support our local high scho...&quot;
+## 
+## text5 :
+## &quot;help dedicated/responsible pet owners with partial financial...&quot;
+## 
+## text6 :
+## &quot;gurdon baseball and softball mission is to provide a league ...&quot;
+## 
+## [ reached max_ndoc ... 994 more documents ]</code></pre>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># print first five missions </span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>corp[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>] </span></code></pre></div>
+<pre><code>## Corpus consisting of 5 documents and 36 docvars.
+## text1 :
+## &quot;we are advocacy group that provides free or low cost legal r...&quot;
+## 
+## text2 :
+## &quot;to enlist volunteers, promote the social, educational and re...&quot;
+## 
+## text3 :
+## &quot;raise funds and support necessary to support hospital staff ...&quot;
+## 
+## text4 :
+## &quot;sole purpose is raising funds to support our local high scho...&quot;
+## 
+## text5 :
+## &quot;help dedicated/responsible pet owners with partial financial...&quot;</code></pre>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># summarize corpus</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(corp)[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>,] </span></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Text"],"name":[1],"type":["chr"],"align":["left"]},{"label":["Types"],"name":[2],"type":["int"],"align":["right"]},{"label":["Tokens"],"name":[3],"type":["int"],"align":["right"]},{"label":["Sentences"],"name":[4],"type":["int"],"align":["right"]},{"label":["ein"],"name":[5],"type":["chr"],"align":["left"]},{"label":["orgname"],"name":[6],"type":["chr"],"align":["left"]},{"label":["code01"],"name":[7],"type":["chr"],"align":["left"]},{"label":["codedef01"],"name":[8],"type":["chr"],"align":["left"]},{"label":["code02"],"name":[9],"type":["chr"],"align":["left"]},{"label":["codedef02"],"name":[10],"type":["chr"],"align":["left"]},{"label":["orgpurposecharitable"],"name":[11],"type":["int"],"align":["right"]},{"label":["orgpurposereligious"],"name":[12],"type":["int"],"align":["right"]},{"label":["orgpurposeeducational"],"name":[13],"type":["int"],"align":["right"]},{"label":["orgpurposescientific"],"name":[14],"type":["int"],"align":["right"]},{"label":["orgpurposeliterary"],"name":[15],"type":["int"],"align":["right"]},{"label":["orgpurposepublicsafety"],"name":[16],"type":["int"],"align":["right"]},{"label":["orgpurposeamateursports"],"name":[17],"type":["int"],"align":["right"]},{"label":["orgpurposecrueltyprevention"],"name":[18],"type":["int"],"align":["right"]},{"label":["leginflno"],"name":[19],"type":["int"],"align":["right"]},{"label":["leginflyes"],"name":[20],"type":["int"],"align":["right"]},{"label":["donatefundsno"],"name":[21],"type":["int"],"align":["right"]},{"label":["donatefundsyes"],"name":[22],"type":["int"],"align":["right"]},{"label":["conductactyoutsideusno"],"name":[23],"type":["int"],"align":["right"]},{"label":["conductactyoutsideusyes"],"name":[24],"type":["int"],"align":["right"]},{"label":["compofcrdirtrustno"],"name":[25],"type":["int"],"align":["right"]},{"label":["compofcrdirtrustyes"],"name":[26],"type":["int"],"align":["right"]},{"label":["financialtransofcrsno"],"name":[27],"type":["int"],"align":["right"]},{"label":["financialtransofcrsyes"],"name":[28],"type":["int"],"align":["right"]},{"label":["unrelgrossincm1000moreno"],"name":[29],"type":["int"],"align":["right"]},{"label":["unrelgrossincm1000moreyes"],"name":[30],"type":["int"],"align":["right"]},{"label":["gamingactyno"],"name":[31],"type":["int"],"align":["right"]},{"label":["gamingactyyes"],"name":[32],"type":["int"],"align":["right"]},{"label":["disasterreliefno"],"name":[33],"type":["int"],"align":["right"]},{"label":["disasterreliefyes"],"name":[34],"type":["int"],"align":["right"]},{"label":["onethirdsupportpublic"],"name":[35],"type":["int"],"align":["right"]},{"label":["onethirdsupportgifts"],"name":[36],"type":["int"],"align":["right"]},{"label":["benefitofcollege"],"name":[37],"type":["int"],"align":["right"]},{"label":["privatefoundation508e"],"name":[38],"type":["int"],"align":["right"]},{"label":["hospitalorchurchno"],"name":[39],"type":["int"],"align":["right"]},{"label":["hospitalorchurchyes"],"name":[40],"type":["int"],"align":["right"]}],"data":[{"1":"text1","2":"29","3":"38","4":"1","5":"825431272","6":"OHIO CENTER FOR JUSTICE INC","7":"I","8":"Crime, Legal Related","9":"I80","10":"Legal Services","11":"1","12":"0","13":"0","14":"0","15":"0","16":"0","17":"0","18":"0","19":"1","20":"0","21":"0","22":"1","23":"1","24":"0","25":"1","26":"0","27":"1","28":"0","29":"1","30":"0","31":"1","32":"0","33":"1","34":"0","35":"0","36":"0","37":"0","38":"1","39":"1","40":"0","_rn_":"1"},{"1":"text2","2":"27","3":"41","4":"1","5":"824135589","6":"FRIENDS OF THE MORTON PARKS INC","7":"S","8":"Community Improvement, Capacity Building","9":"S20","10":"Community/Neighborhood Development, Improvement","11":"1","12":"0","13":"1","14":"0","15":"0","16":"0","17":"0","18":"0","19":"1","20":"0","21":"1","22":"0","23":"1","24":"0","25":"1","26":"0","27":"1","28":"0","29":"1","30":"0","31":"1","32":"0","33":"1","34":"0","35":"0","36":"1","37":"0","38":"0","39":"1","40":"0","_rn_":"2"},{"1":"text3","2":"13","3":"15","4":"1","5":"830565682","6":"LIL G S WAGONS OF HOPE","7":"T","8":"Philanthropy, Voluntarism, and Grantmaking","9":"T12","10":"Fundraising and/or Fund Distribution","11":"1","12":"0","13":"0","14":"0","15":"0","16":"0","17":"0","18":"0","19":"1","20":"0","21":"1","22":"0","23":"1","24":"0","25":"1","26":"0","27":"1","28":"0","29":"0","30":"1","31":"1","32":"0","33":"1","34":"0","35":"0","36":"1","37":"0","38":"0","39":"1","40":"0","_rn_":"3"},{"1":"text4","2":"31","3":"36","4":"1","5":"831943874","6":"GROESBECK AG BOOSTERS","7":"P","8":"Human Services","9":"P12","10":"Fundraising and/or Fund Distribution","11":"1","12":"0","13":"1","14":"0","15":"0","16":"0","17":"0","18":"0","19":"1","20":"0","21":"0","22":"1","23":"1","24":"0","25":"1","26":"0","27":"1","28":"0","29":"1","30":"0","31":"1","32":"0","33":"1","34":"0","35":"1","36":"0","37":"0","38":"0","39":"1","40":"0","_rn_":"4"},{"1":"text5","2":"34","3":"41","4":"1","5":"371874805","6":"HAVE A HEART FOUNDATION","7":"D","8":"Animal related","9":"D02","10":"Management & Technical Assistance","11":"1","12":"0","13":"0","14":"0","15":"0","16":"0","17":"0","18":"0","19":"1","20":"0","21":"1","22":"0","23":"1","24":"0","25":"1","26":"0","27":"1","28":"0","29":"1","30":"0","31":"1","32":"0","33":"1","34":"0","35":"1","36":"0","37":"0","38":"0","39":"1","40":"0","_rn_":"5"},{"1":"text6","2":"29","3":"33","4":"1","5":"270120189","6":"GURDON BASEBALL AND SOFTBALL BOOSTER CLUB INC","7":"N","8":"Recreation, Sports, Leisure, Athletics","9":"N63","10":"Baseball, Softball (includes Little Leagues)","11":"1","12":"0","13":"0","14":"0","15":"0","16":"0","17":"0","18":"0","19":"1","20":"0","21":"1","22":"0","23":"1","24":"0","25":"1","26":"0","27":"1","28":"0","29":"1","30":"0","31":"1","32":"0","33":"1","34":"0","35":"1","36":"0","37":"0","38":"0","39":"1","40":"0","_rn_":"6"},{"1":"text7","2":"29","3":"40","4":"1","5":"823480790","6":"NEW HAMPSHIRE SCHOOL LIBRARY MEDIA ASSOCIATION","7":"B","8":"Educational Institutions","9":"B03","10":"Professional Societies & Associations","11":"0","12":"0","13":"1","14":"0","15":"0","16":"0","17":"0","18":"0","19":"1","20":"0","21":"0","22":"1","23":"1","24":"0","25":"1","26":"0","27":"1","28":"0","29":"1","30":"0","31":"1","32":"0","33":"1","34":"0","35":"0","36":"1","37":"0","38":"0","39":"1","40":"0","_rn_":"7"},{"1":"text8","2":"32","3":"46","4":"1","5":"830816184","6":"RADCA RANCH SCHOOL OF CERAMICS","7":"A","8":"Arts, Culture, and Humanities","9":"A25","10":"Arts Education/Schools","11":"0","12":"0","13":"1","14":"0","15":"0","16":"0","17":"0","18":"0","19":"1","20":"0","21":"1","22":"0","23":"1","24":"0","25":"1","26":"0","27":"1","28":"0","29":"1","30":"0","31":"1","32":"0","33":"1","34":"0","35":"0","36":"1","37":"0","38":"0","39":"1","40":"0","_rn_":"8"},{"1":"text9","2":"33","3":"39","4":"1","5":"830720344","6":"HAITI SCHOLARS INC","7":"B","8":"Educational Institutions","9":"B24","10":"Primary/Elementary School","11":"1","12":"0","13":"1","14":"0","15":"0","16":"0","17":"0","18":"0","19":"1","20":"0","21":"1","22":"0","23":"0","24":"1","25":"1","26":"0","27":"1","28":"0","29":"0","30":"1","31":"1","32":"0","33":"1","34":"0","35":"1","36":"0","37":"0","38":"0","39":"1","40":"0","_rn_":"9"},{"1":"text10","2":"12","3":"14","4":"1","5":"830570623","6":"BLUE FEATHER MEDIA GROUP","7":"A","8":"Arts, Culture, and Humanities","9":"A34","10":"Radio","11":"1","12":"0","13":"0","14":"0","15":"0","16":"0","17":"0","18":"0","19":"1","20":"0","21":"1","22":"0","23":"1","24":"0","25":"1","26":"0","27":"1","28":"0","29":"1","30":"0","31":"1","32":"0","33":"1","34":"0","35":"1","36":"0","37":"0","38":"0","39":"1","40":"0","_rn_":"10"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># pre-processing steps:</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co"># remove mission statements that are less than 3 sentences long</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>corp <span class="ot">&lt;-</span> <span class="fu">corpus_trim</span>( corp, <span class="at">what=</span><span class="st">&quot;sentences&quot;</span>, <span class="at">min_ntoken=</span><span class="dv">3</span> )</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="co"># remove punctuation </span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>tokens <span class="ot">&lt;-</span> <span class="fu">tokens</span>( corp, <span class="at">what=</span><span class="st">&quot;word&quot;</span>, <span class="at">remove_punct=</span><span class="cn">TRUE</span> )</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>( tokens )</span></code></pre></div>
+<pre><code>## Tokens consisting of 6 documents and 36 docvars.
+## text1 :
+##  [1] &quot;we&quot;             &quot;are&quot;            &quot;advocacy&quot;       &quot;group&quot;         
+##  [5] &quot;that&quot;           &quot;provides&quot;       &quot;free&quot;           &quot;or&quot;            
+##  [9] &quot;low&quot;            &quot;cost&quot;           &quot;legal&quot;          &quot;representation&quot;
+## [ ... and 22 more ]
+## 
+## text2 :
+##  [1] &quot;to&quot;           &quot;enlist&quot;       &quot;volunteers&quot;   &quot;promote&quot;      &quot;the&quot;         
+##  [6] &quot;social&quot;       &quot;educational&quot;  &quot;and&quot;          &quot;recreational&quot; &quot;well-being&quot;  
+## [11] &quot;of&quot;           &quot;the&quot;         
+## [ ... and 23 more ]
+## 
+## text3 :
+##  [1] &quot;raise&quot;     &quot;funds&quot;     &quot;and&quot;       &quot;support&quot;   &quot;necessary&quot; &quot;to&quot;       
+##  [7] &quot;support&quot;   &quot;hospital&quot;  &quot;staff&quot;     &quot;in&quot;        &quot;care&quot;      &quot;and&quot;      
+## [ ... and 3 more ]
+## 
+## text4 :
+##  [1] &quot;sole&quot;    &quot;purpose&quot; &quot;is&quot;      &quot;raising&quot; &quot;funds&quot;   &quot;to&quot;      &quot;support&quot;
+##  [8] &quot;our&quot;     &quot;local&quot;   &quot;high&quot;    &quot;school&quot;  &quot;ffa&quot;    
+## [ ... and 21 more ]
+## 
+## text5 :
+##  [1] &quot;help&quot;        &quot;dedicated&quot;   &quot;responsible&quot; &quot;pet&quot;         &quot;owners&quot;     
+##  [6] &quot;with&quot;        &quot;partial&quot;     &quot;financial&quot;   &quot;assistance&quot;  &quot;for&quot;        
+## [11] &quot;specialty&quot;   &quot;medical&quot;    
+## [ ... and 24 more ]
+## 
+## text6 :
+##  [1] &quot;gurdon&quot;   &quot;baseball&quot; &quot;and&quot;      &quot;softball&quot; &quot;mission&quot;  &quot;is&quot;      
+##  [7] &quot;to&quot;       &quot;provide&quot;  &quot;a&quot;        &quot;league&quot;   &quot;within&quot;   &quot;our&quot;     
+## [ ... and 19 more ]</code></pre>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># remove filler words like the, and, a, to</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>tokens <span class="ot">&lt;-</span> <span class="fu">tokens_remove</span>( tokens, <span class="fu">c</span>( <span class="fu">stopwords</span>(<span class="st">&quot;english&quot;</span>), <span class="st">&quot;nbsp&quot;</span> ), <span class="at">padding=</span>F )</span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>my_dictionary <span class="ot">&lt;-</span> <span class="fu">dictionary</span>( <span class="fu">list</span>( <span class="at">five01_c_3=</span> <span class="fu">c</span>(<span class="st">&quot;501 c 3&quot;</span>,<span class="st">&quot;section 501 c 3&quot;</span>) ,</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>                             <span class="at">united_states =</span> <span class="fu">c</span>(<span class="st">&quot;united states&quot;</span>),</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>                             <span class="at">high_school=</span><span class="fu">c</span>(<span class="st">&quot;high school&quot;</span>),</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>                             <span class="at">non_profit=</span><span class="fu">c</span>(<span class="st">&quot;non-profit&quot;</span>, <span class="st">&quot;non profit&quot;</span>),</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>                             <span class="at">stem=</span><span class="fu">c</span>(<span class="st">&quot;science technology engineering math&quot;</span>, </span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>                                    <span class="st">&quot;science technology engineering mathematics&quot;</span> ),</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>                             <span class="at">los_angeles=</span><span class="fu">c</span>(<span class="st">&quot;los angeles&quot;</span>),</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>                             <span class="at">ny_state=</span><span class="fu">c</span>(<span class="st">&quot;new york state&quot;</span>),</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>                             <span class="at">ny=</span><span class="fu">c</span>(<span class="st">&quot;new york&quot;</span>)</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>                           ))</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a><span class="co"># apply the dictionary to the text </span></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>tokens <span class="ot">&lt;-</span> <span class="fu">tokens_compound</span>( tokens, <span class="at">pattern=</span>my_dictionary )</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>( tokens )</span></code></pre></div>
+<pre><code>## Tokens consisting of 6 documents and 36 docvars.
+## text1 :
+##  [1] &quot;advocacy&quot;        &quot;group&quot;           &quot;provides&quot;        &quot;free&quot;           
+##  [5] &quot;low&quot;             &quot;cost&quot;            &quot;legal&quot;           &quot;representation&quot; 
+##  [9] &quot;underprivileged&quot; &quot;individuals&quot;     &quot;families&quot;        &quot;plan&quot;           
+## [ ... and 10 more ]
+## 
+## text2 :
+##  [1] &quot;enlist&quot;       &quot;volunteers&quot;   &quot;promote&quot;      &quot;social&quot;       &quot;educational&quot; 
+##  [6] &quot;recreational&quot; &quot;well-being&quot;   &quot;city&#39;s&quot;       &quot;residents&quot;    &quot;visitors&quot;    
+## [11] &quot;lessen&quot;       &quot;burdens&quot;     
+## [ ... and 9 more ]
+## 
+## text3 :
+##  [1] &quot;raise&quot;     &quot;funds&quot;     &quot;support&quot;   &quot;necessary&quot; &quot;support&quot;   &quot;hospital&quot; 
+##  [7] &quot;staff&quot;     &quot;care&quot;      &quot;comfort&quot;   &quot;children&quot; 
+## 
+## text4 :
+##  [1] &quot;sole&quot;        &quot;purpose&quot;     &quot;raising&quot;     &quot;funds&quot;       &quot;support&quot;    
+##  [6] &quot;local&quot;       &quot;high_school&quot; &quot;ffa&quot;         &quot;chapter&quot;     &quot;provide&quot;    
+## [11] &quot;educational&quot; &quot;materials&quot;  
+## [ ... and 10 more ]
+## 
+## text5 :
+##  [1] &quot;help&quot;        &quot;dedicated&quot;   &quot;responsible&quot; &quot;pet&quot;         &quot;owners&quot;     
+##  [6] &quot;partial&quot;     &quot;financial&quot;   &quot;assistance&quot;  &quot;specialty&quot;   &quot;medical&quot;    
+## [11] &quot;care&quot;        &quot;bridge&quot;     
+## [ ... and 15 more ]
+## 
+## text6 :
+##  [1] &quot;gurdon&quot;     &quot;baseball&quot;   &quot;softball&quot;   &quot;mission&quot;    &quot;provide&quot;   
+##  [6] &quot;league&quot;     &quot;within&quot;     &quot;community&quot;  &quot;children&quot;   &quot;play&quot;      
+## [11] &quot;ball&quot;       &quot;non_profit&quot;
+## [ ... and 4 more ]</code></pre>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># find frequently co-occuring words (typically compound words)</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>ngram2 <span class="ot">&lt;-</span> <span class="fu">tokens_ngrams</span>( tokens, <span class="at">n=</span><span class="dv">2</span> ) <span class="sc">%&gt;%</span> <span class="fu">dfm</span>()</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>ngram2 <span class="sc">%&gt;%</span> <span class="fu">textstat_frequency</span>( <span class="at">n=</span><span class="dv">10</span> )</span></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["feature"],"name":[1],"type":["chr"],"align":["left"]},{"label":["frequency"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["rank"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["docfreq"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["group"],"name":[5],"type":["chr"],"align":["left"]}],"data":[{"1":"mission_provide","2":"28","3":"1","4":"28","5":"all","_rn_":"1"},{"1":"raise_funds","2":"23","3":"2","4":"23","5":"all","_rn_":"2"},{"1":"provide_support","2":"20","3":"3","4":"19","5":"all","_rn_":"3"},{"1":"exclusively_charitable","2":"17","3":"4","4":"17","5":"all","_rn_":"4"},{"1":"quality_life","2":"16","3":"5","4":"16","5":"all","_rn_":"5"},{"1":"organized_exclusively","2":"14","3":"6","4":"14","5":"all","_rn_":"6"},{"1":"charitable_purposes","2":"14","3":"6","4":"14","5":"all","_rn_":"7"},{"1":"financial_assistance","2":"13","3":"8","4":"13","5":"all","_rn_":"8"},{"1":"educational_purposes","2":"13","3":"8","4":"13","5":"all","_rn_":"9"},{"1":"charitable_educational","2":"12","3":"10","4":"12","5":"all","_rn_":"10"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>ngram3 <span class="ot">&lt;-</span> <span class="fu">tokens_ngrams</span>( tokens, <span class="at">n=</span><span class="dv">3</span> ) <span class="sc">%&gt;%</span> <span class="fu">dfm</span>()</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>ngram3 <span class="sc">%&gt;%</span> <span class="fu">textstat_frequency</span>( <span class="at">n=</span><span class="dv">10</span> )</span></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["feature"],"name":[1],"type":["chr"],"align":["left"]},{"label":["frequency"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["rank"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["docfreq"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["group"],"name":[5],"type":["chr"],"align":["left"]}],"data":[{"1":"organized_exclusively_charitable","2":"10","3":"1","4":"10","5":"all","_rn_":"1"},{"1":"exclusively_charitable_purposes","2":"7","3":"2","4":"7","5":"all","_rn_":"2"},{"1":"youth_young_adults","2":"7","3":"2","4":"7","5":"all","_rn_":"3"},{"1":"provide_financial_assistance","2":"6","3":"4","4":"6","5":"all","_rn_":"4"},{"1":"provide_scholarship_opportunities","2":"5","3":"5","4":"5","5":"all","_rn_":"5"},{"1":"charitable_educational_purposes","2":"5","3":"5","4":"5","5":"all","_rn_":"6"},{"1":"corporation_organized_exclusively","2":"5","3":"5","4":"5","5":"all","_rn_":"7"},{"1":"exclusively_charitable_educational","2":"5","3":"5","4":"5","5":"all","_rn_":"8"},{"1":"improve_quality_life","2":"5","3":"5","4":"5","5":"all","_rn_":"9"},{"1":"within_meaning_section_501_c_3","2":"4","3":"10","4":"4","5":"all","_rn_":"10"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<div id="tabulate-top-word-counts" class="section level3">
+<h3>Tabulate top word counts</h3>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>tokens <span class="sc">%&gt;%</span> <span class="fu">dfm</span>( <span class="at">stem=</span>F ) <span class="sc">%&gt;%</span> <span class="fu">topfeatures</span>( )</span></code></pre></div>
+<pre><code>##    provid      educ communiti     organ   support   mission     youth    purpos 
+##       390       281       274       233       206       167       143       136 
+##    promot    famili 
+##       130       117</code></pre>
+</div>
+<div id="stemming" class="section level3">
+<h3>Stemming</h3>
+<p>Many words have a stem that is altered when conjugated (if a verb) or made pluran (if a noun). As a result, it can be hard to consistently count the appearance of specific word.</p>
+<p>Stemming removes the last part of the word such that the word is reduced to it’s most basic stem. For example, <em>running</em> would become <em>run</em>, and <em>Tuesdays</em> would become <em>Tuesday</em>.</p>
+<p>Quanteda already has a powerful stemming function included.</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>tokens <span class="sc">%&gt;%</span> <span class="fu">dfm</span>( <span class="at">stem=</span>T ) <span class="sc">%&gt;%</span> <span class="fu">topfeatures</span>( )</span></code></pre></div>
+<pre><code>##    provid      educ communiti     organ   support   mission     youth    purpos 
+##       390       281       274       233       206       167       143       136 
+##    promot    famili 
+##       130       117</code></pre>
+</div>
+<div id="instructions" class="section level3">
+<h3>Instructions</h3>
+<p>Replicate the steps above with the following criteria:</p>
+<ul>
+<li>Use the full mission dataset, not the small sample used in the demo.</li>
+<li>Add at least ten concepts to your dictionary to convert compound words into single words.</li>
+<li>Report the ten most frequently-used words in the missions statements after applying stemming.</li>
+</ul>
+<p><br></p>
+</div>
+</div>
+<div id="part-iii" class="section level2">
+<h2>Part III</h2>
+<p>For the last part of this lab, you will use text to classify nonprofits.</p>
+<p>A large foundation is interested in knowing how many new nonprofits created in 2018 have an explicit mission of serving minority communities. We will start by trying to identify nonprofits that are membership organizations for Black communities or provide services to Black communities.</p>
+<p>To do this, you will create a set of words or phrases that you believe indicates that the nonprofit works with or for the target population.</p>
+<p>You will need to think about different ways that language might be used distinctively within the mission statements of nonprofit that serve Black communities. There is a lot of trial and error involved, as you can test several words and phrases, preview the mission statements that are identified, then refine your methods.</p>
+<p>Your final product will be a data frame of the nonprofit names, activity codes, and mission statements for the organizations identified by your criteria. The goal is to identify as many as possible while minimizing errors that occur when you include a nonprofit that does not serve the Black community. This example was selected specifically because “black” is a common and ambiguous term.</p>
+<p>To get you started, let’s look at a similar example where we want to identify immigrants rights nonprofits. We would begin as follows:</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># start with key phrases</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="co"># use grep( ..., value=TRUE ) so you can view mission statements</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="co"># that meet your criteria and adjust the language as necessary </span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span>( <span class="st">&quot;immigrant rights&quot;</span>, dat<span class="sc">$</span>mission, <span class="at">value=</span><span class="cn">TRUE</span> ) <span class="sc">%&gt;%</span> <span class="fu">head</span>()</span></code></pre></div>
+<pre><code>## [1] &quot;community justice alliance, inc. promotes social change through advocacy, communications, community education, and litigation in the areas of racial justice, immigrant rights, and political access.&quot;
+## [2] &quot;to provide fair, trustworthy immigration legal counsel. to provide information on immigrant rights and opportunities within the community.&quot;</code></pre>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span>( <span class="st">&quot;immigration&quot;</span>, dat<span class="sc">$</span>mission, <span class="at">value=</span><span class="cn">TRUE</span> ) <span class="sc">%&gt;%</span> <span class="fu">head</span>()</span></code></pre></div>
+<pre><code>## [1] &quot;charitable and educational hereditary society, encourages the study of the history of ancient wales and welsh immigration to america. research and preserve documents. support the restoration of sites and landmarks.&quot;                                          
+## [2] &quot;1.provide immigration and other social assistance services\n\nto new oromo immigrants and refugees;\n\n2.provide health awareness and education services to\n\nmembers and the community at large;\n\n3.promote self-help and social assistance among the oromos&quot;
+## [3] &quot;helping the immigration community with education, culture and humanity.&quot;                                                                                                                                                                                         
+## [4] &quot;provides legal immigration service to low income immigrants&quot;                                                                                                                                                                                                     
+## [5] &quot;to research migration and immigration patterns impacting economic, political and social landscape in the united states.&quot;                                                                                                                                         
+## [6] &quot;to provide immigration services for low-income population in new york city, educating the public about information and issues related to immigration law as well as organizing educational programs for youth and women.&quot;</code></pre>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span>( <span class="st">&quot;refugee&quot;</span>, dat<span class="sc">$</span>mission, <span class="at">value=</span><span class="cn">TRUE</span> ) <span class="sc">%&gt;%</span> <span class="fu">head</span>()</span></code></pre></div>
+<pre><code>## [1] &quot;the purposes of this organization are to unite various faiths under the umbrella of love one another, love go, and respect your environment.  in addition, we wish to help the homeless, refugees and be an educational resource.&quot;                               
+## [2] &quot;dance beyond borders provides dance fitness instructor, financial literacy and leadership training to legal immigrants and refugees. we provide a platform for instructors to teach dance to the public which fosters cultural and ethnic awareness.&quot;            
+## [3] &quot;1.provide immigration and other social assistance services\n\nto new oromo immigrants and refugees;\n\n2.provide health awareness and education services to\n\nmembers and the community at large;\n\n3.promote self-help and social assistance among the oromos&quot;
+## [4] &quot;ethiopian and eritrean cultural and resource center (eecrc) is a non profit organization that assists african refugee and immigrant communities in oregon. it provides education, advocacy, direct services, referrals and connection to resources.&quot;             
+## [5] &quot;fostering original written and vocal artworks and encouraging people to write with a particular focus on working class individuals, women, refugees and immigrants as well as the lgbtq and disability communities and survivors of violence.&quot;                   
+## [6] &quot;the corporation is formed for the charitable purposes of educating refugees about music through demonstration and live music making, music history and the effects of music on society.&quot;</code></pre>
+<p>After you feel comfortable that individual statements are primarily identifying nonprofits within your desired group and have low error rates, you will need to combine all of the criteria to create one group. Note that any organization that has more than one keyword or phrase in it’s mission statement would be double-counted if you use the raw groups, so we need to make sure we include each organizaton only once. We can do this using compound logical statements.</p>
+<p>Note that <strong>grepl()</strong> returns a logical vector, so we can combine multiple statements using AND and OR conditions.</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>criteria<span class="fl">.01</span> <span class="ot">&lt;-</span> <span class="fu">grepl</span>( <span class="st">&quot;immigrant rights&quot;</span>, dat<span class="sc">$</span>mission ) </span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>criteria<span class="fl">.02</span> <span class="ot">&lt;-</span> <span class="fu">grepl</span>( <span class="st">&quot;immigration&quot;</span>, dat<span class="sc">$</span>mission ) </span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>criteria<span class="fl">.03</span> <span class="ot">&lt;-</span> <span class="fu">grepl</span>( <span class="st">&quot;refugee&quot;</span>, dat<span class="sc">$</span>mission ) </span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>criteria<span class="fl">.04</span> <span class="ot">&lt;-</span> <span class="fu">grepl</span>( <span class="st">&quot;humanitarian&quot;</span>, dat<span class="sc">$</span>mission ) </span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>criteria<span class="fl">.05</span> <span class="ot">&lt;-</span> <span class="sc">!</span> <span class="fu">grepl</span>( <span class="st">&quot;humanities&quot;</span>, dat<span class="sc">$</span>mission )  <span class="co"># exclude humanities </span></span></code></pre></div>
+<p>Note that to select all high school boys you would write:</p>
+<pre><code>( grade_9 | grade_10 | grade_11 | grade_12 ) &amp; ( boys )</code></pre>
+<p>You would NOT specify:</p>
+<pre><code>( grade_9 | grade_10 | grade_11 | grade_12 ) | boys </code></pre>
+<p>Because that would then include boys at all levels and all people in grades 9-12.</p>
+<p>Now create your sample:</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>these.nonprofits <span class="ot">&lt;-</span> ( criteria<span class="fl">.01</span> <span class="sc">|</span> criteria<span class="fl">.02</span> <span class="sc">|</span> criteria<span class="fl">.03</span> <span class="sc">|</span> criteria<span class="fl">.04</span> ) <span class="sc">&amp;</span>  criteria<span class="fl">.05</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>( these.nonprofits )</span></code></pre></div>
+<pre><code>## [1] 406</code></pre>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>activity.code <span class="ot">&lt;-</span> <span class="fu">paste0</span>( dat<span class="sc">$</span>codedef01, <span class="st">&quot;: &quot;</span>, dat<span class="sc">$</span>codedef02 )</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>d.immigrant <span class="ot">&lt;-</span> dat[ these.nonprofits, <span class="fu">c</span>(<span class="st">&quot;orgname&quot;</span>,<span class="st">&quot;activity.code&quot;</span>,<span class="st">&quot;mission&quot;</span>) ] </span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a><span class="fu">row.names</span>( d.immigrant ) <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>d.immigrant <span class="sc">%&gt;%</span> <span class="fu">head</span>(<span class="dv">25</span>) <span class="sc">%&gt;%</span> <span class="fu">pander</span>()</span></code></pre></div>
+<table style="width:92%;">
+<caption>Table continues below</caption>
+<colgroup>
+<col width="45%" />
+<col width="45%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">orgname</th>
+<th align="center">activity.code</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">WALK OF STARS FOUNDATION</td>
+<td align="center">Arts, Culture, and Humanities: Media, Communications Organizations</td>
+</tr>
+<tr class="even">
+<td align="center">UNITED ARAB-AMERICAN SOCIETY</td>
+<td align="center">Arts, Culture, and Humanities: Cultural/Ethnic Awareness</td>
+</tr>
+<tr class="odd">
+<td align="center">INCLUSIVE MOVEMENT FOR BOSNIA AND HERZEGOVINA INC</td>
+<td align="center">Arts, Culture, and Humanities: Cultural/Ethnic Awareness</td>
+</tr>
+<tr class="even">
+<td align="center">HEREDITARY ORDER OF THE RED DRAGON</td>
+<td align="center">Arts, Culture, and Humanities: Cultural/Ethnic Awareness</td>
+</tr>
+<tr class="odd">
+<td align="center">FILIPINO-AMERICAN ASSOCIATION OF COASTAL GEORGIA INC</td>
+<td align="center">Arts, Culture, and Humanities: Cultural/Ethnic Awareness</td>
+</tr>
+<tr class="even">
+<td align="center">CYRUS THE GREAT KING OF PERSIA FOUNDATION</td>
+<td align="center">Arts, Culture, and Humanities: Cultural/Ethnic Awareness</td>
+</tr>
+<tr class="odd">
+<td align="center">DANCE BEYOND BORDERS</td>
+<td align="center">Arts, Culture, and Humanities: Cultural/Ethnic Awareness</td>
+</tr>
+<tr class="even">
+<td align="center">SIKKO-MANDO RELIEF ASSOCIATION</td>
+<td align="center">Arts, Culture, and Humanities: Arts, Cultural Organizations—Multipurpose</td>
+</tr>
+<tr class="odd">
+<td align="center">ETHIOPIAN AND ERITREAN CULTURAL ANDRESOURCE CENTER</td>
+<td align="center">Arts, Culture, and Humanities: Arts, Cultural Organizations—Multipurpose</td>
+</tr>
+<tr class="even">
+<td align="center">HARYANVI BAYAREA ASSOCIATION</td>
+<td align="center">Arts, Culture, and Humanities: Arts, Cultural Organizations—Multipurpose</td>
+</tr>
+<tr class="odd">
+<td align="center">STREET CRY INC</td>
+<td align="center">Arts, Culture, and Humanities: Arts, Cultural Organizations—Multipurpose</td>
+</tr>
+<tr class="even">
+<td align="center">ASOCIACION DE MIGRANTES TIERRA Y LIBERTAD</td>
+<td align="center">Arts, Culture, and Humanities: Arts, Cultural Organizations—Multipurpose</td>
+</tr>
+<tr class="odd">
+<td align="center">CONCERTS FOR COMPASSION INCORPORATED</td>
+<td align="center">Arts, Culture, and Humanities: Arts, Cultural Organizations—Multipurpose</td>
+</tr>
+<tr class="even">
+<td align="center">ARTOGETHER</td>
+<td align="center">Arts, Culture, and Humanities: Arts, Cultural Organizations—Multipurpose</td>
+</tr>
+<tr class="odd">
+<td align="center">TEEN TREEHUGGERS INC</td>
+<td align="center">Arts, Culture, and Humanities: Arts, Cultural Organizations—Multipurpose</td>
+</tr>
+<tr class="even">
+<td align="center">UMUKABIA EHIME DEVELOPMENT ASSOC</td>
+<td align="center">Arts, Culture, and Humanities: Single Organization Support</td>
+</tr>
+<tr class="odd">
+<td align="center">EVAN WALKER ORGANIZATION</td>
+<td align="center">Arts, Culture, and Humanities: Single Organization Support</td>
+</tr>
+<tr class="even">
+<td align="center">SAEA INC</td>
+<td align="center">Arts, Culture, and Humanities: Professional Societies &amp; Associations</td>
+</tr>
+<tr class="odd">
+<td align="center">ROSEDALE PICTURES INC</td>
+<td align="center">Arts, Culture, and Humanities: Film, Video</td>
+</tr>
+<tr class="even">
+<td align="center">AMERICAN DELEGATION OF THE ORDER OFDANILO 1 INC</td>
+<td align="center">Arts, Culture, and Humanities: Other Art, Culture, Humanities Organizations/Services N.E.C.</td>
+</tr>
+<tr class="odd">
+<td align="center">VALLEY MOO DUK KWAN</td>
+<td align="center">Arts, Culture, and Humanities: Other Art, Culture, Humanities Organizations/Services N.E.C.</td>
+</tr>
+<tr class="even">
+<td align="center">MOVE THE WORLD</td>
+<td align="center">Arts, Culture, and Humanities: Dance</td>
+</tr>
+<tr class="odd">
+<td align="center">BOOTHEEL CULTURAL AND PERFORMING ARTS CENTER</td>
+<td align="center">Arts, Culture, and Humanities: Arts Service Activities/ Organizations</td>
+</tr>
+<tr class="even">
+<td align="center">GREAT NSASS ALUMNI ASSOCIATION OF NORTH AMERICA INC</td>
+<td align="center">Arts, Culture, and Humanities: Humanities Organizations</td>
+</tr>
+<tr class="odd">
+<td align="center">CHULA VISTA SUNSET ROTARY FOUNDATION INC</td>
+<td align="center">Arts, Culture, and Humanities: Humanities Organizations</td>
+</tr>
+</tbody>
+</table>
+<table style="width:46%;">
+<colgroup>
+<col width="45%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">mission</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">the mission of the walk of stars foundation is to honor those who have excelled and made major contributions in their respective capacity in the entertainment area in motion pictures, radio and television, humanitarians, civic leaders, medal of hono</td>
+</tr>
+<tr class="even">
+<td align="center">to serve as a social organization for arab-americans to preserve the arab heritage, culture and traditions. to promote and support humanitarian and community outreach efforts locally and internationally.</td>
+</tr>
+<tr class="odd">
+<td align="center">to promote the advancement of bosnia and herzegovina by fostering an inclusive platform for innovation and entrepreneurship; cultural and humanitarian activities; and networking.</td>
+</tr>
+<tr class="even">
+<td align="center">charitable and educational hereditary society, encourages the study of the history of ancient wales and welsh immigration to america. research and preserve documents. support the restoration of sites and landmarks.</td>
+</tr>
+<tr class="odd">
+<td align="center">to engage in humanitarian, civic, educational , cultural, and charitable activities that would preserve, promote, and share with the community the customs, values and heritage of the filipino culture.</td>
+</tr>
+<tr class="even">
+<td align="center">the purposes of this organization are to unite various faiths under the umbrella of love one another, love go, and respect your environment. in addition, we wish to help the homeless, refugees and be an educational resource.</td>
+</tr>
+<tr class="odd">
+<td align="center">dance beyond borders provides dance fitness instructor, financial literacy and leadership training to legal immigrants and refugees. we provide a platform for instructors to teach dance to the public which fosters cultural and ethnic awareness.</td>
+</tr>
+<tr class="even">
+<td align="center">1.provide immigration and other social assistance services to new oromo immigrants and refugees; 2.provide health awareness and education services to members and the community at large; 3.promote self-help and social assistance among the oromos</td>
+</tr>
+<tr class="odd">
+<td align="center">ethiopian and eritrean cultural and resource center (eecrc) is a non profit organization that assists african refugee and immigrant communities in oregon. it provides education, advocacy, direct services, referrals and connection to resources.</td>
+</tr>
+<tr class="even">
+<td align="center">hba is involved in multiple non-profit activities including haryanvi cultural promotion and preservation, community services, educational activities, humanitarian aid and social activities.</td>
+</tr>
+<tr class="odd">
+<td align="center">fostering original written and vocal artworks and encouraging people to write with a particular focus on working class individuals, women, refugees and immigrants as well as the lgbtq and disability communities and survivors of violence.</td>
+</tr>
+<tr class="even">
+<td align="center">helping the immigration community with education, culture and humanity.</td>
+</tr>
+<tr class="odd">
+<td align="center">the corporation is formed for the charitable purposes of educating refugees about music through demonstration and live music making, music history and the effects of music on society.</td>
+</tr>
+<tr class="even">
+<td align="center">artogether is a community building creative arts project that hosts free creative art workshops, social gatherings, and family picnics to forge connections between the refugee community and the general public.</td>
+</tr>
+<tr class="odd">
+<td align="center">the purpose for which the corporation is organized is to provide youth the platform to address wildlife, environmental, and humanitarian issues through arts journalism.</td>
+</tr>
+<tr class="even">
+<td align="center">umukabia ehime development association, usa, is organized exclusively for charitable purposes, which includes assisting nigerian abandoned and disabled children and to support humanitarian programs in our community and the public in general.</td>
+</tr>
+<tr class="odd">
+<td align="center">our mission is to spread prosperity and compassion for all by achieving our commitment to excellence in humanitarian, environmental, and scientific initiatives. we recently conducted a successful food drive for evacuees of wildfires in ca.</td>
+</tr>
+<tr class="even">
+<td align="center">sudanese american engineers association is a non-profit, non-political, educational and humanitarian organization. its members are engineer professionals of sudanese descent.</td>
+</tr>
+<tr class="odd">
+<td align="center">to train employ underprivileged individuals particularly refugees in the visual media industry. build moviemaking skills with learn by doing approach creating content to be produced by the organization with profits to partially fund future projects</td>
+</tr>
+<tr class="even">
+<td align="center">perpetuating the traditions of the dynastic and hereditary chivalric orders of the royal house of petrovi-njegos by supporting charitable, humanitarian. educational and artistic works that promote a continuing public interest in their history.</td>
+</tr>
+<tr class="odd">
+<td align="center">to undertake charitable activities, both through group and individual action consistent with the practice of the art and in the interest of humanitarian principles. to facilitate participation in, and stugy of the martial arts of soo bah do.</td>
+</tr>
+<tr class="even">
+<td align="center">through the powerful expression of dance, our youth dance company performs on a local, nat’l and global stage to raise awareness of social and environmental issues. example: pollution, hunger, global refugee crisis</td>
+</tr>
+<tr class="odd">
+<td align="center">to meet the cultural and humanitarian needs of the under served in the bootheel region</td>
+</tr>
+<tr class="even">
+<td align="center">humanitarian aid educational services for children and adults that are in hardships or in disaster areas within and outside united states</td>
+</tr>
+<tr class="odd">
+<td align="center">world and local humanitarian, educational and cultural community service</td>
+</tr>
+</tbody>
+</table>
+<div id="for-your-deliverables-for-part-iii" class="section level3">
+<h3>For your deliverables for Part III:</h3>
+<p><strong>P3-Q1.</strong> Report the total count of organizations you have identified as serving Black communities.</p>
+<p><strong>P3-Q2.</strong> Take a random sample of 20 of the organizations in your sample and verify that your search criteria are identifying nonprofits that serve Black communities.</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>sample <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">sample_n</span>( d.immigrant, <span class="dv">20</span> )</span></code></pre></div>
+<p><strong>Report your rate of false positives in this sample (how many organizations in your sample do NOT belong there).</strong></p>
+<p>Note that an error rate of 10% in a classification model is very good. An error rate above 40% suggests poor performance.</p>
+<p>We are measuring false positives, here, not overall accuracy. You can have a very low false positive rate by using extremely narrow search criteria, but then you will miss a large portion of the population you are trying to capture and study (the false negative rate).</p>
+<p>The more inclusive your criteria are, the larger your false positive rate will be. The goal is to design search criteria that identify a large number of organizations while keeping false positive rates reasonable.</p>
+<p><strong>P3-Q3.</strong> Similar to the immigrant example, print a data frame that contains the nonprofit names, activity codes (see above on how to combine them), and their mission statements. Print the full data frame for your sample so all missions are visible.</p>
+<p><br> <br></p>
+</div>
+</div>
+<div id="challenge-question" class="section level1">
+<h1>Challenge Question</h1>
+<p>If you selected three nonprofit subsectors from the activity codes (<em>code01</em>), then created three data subsets based upon these criteria you could conduct something like content analysis as a way to compare how the three groups use language difference.</p>
+<div id="part-1" class="section level2">
+<h2>Part 1:</h2>
+<p>Re-run the content analysis to identify the most frequently-used words. But this time run it separately for each subsector.</p>
+<p>How do the most frequently used words vary by subsector? Which words are shared between the three subsectors? Which are distinct?</p>
+</div>
+<div id="part-2" class="section level2">
+<h2>Part 2:</h2>
+<p>Another way to compare differences in language use is by creating semantic networks:</p>
+<p><a href="https://nonprofit-open-data-collective.github.io/machine_learning_mission_codes/tutorials/semantic_networks.html">TUTORIAL</a></p>
+<p>Compare prominent word relationships in mission statements of arts, environmental, and education nonprofits (<em>codedef01</em>). Build semantic networks for each, then compare and contrast the prominence of specific words within the networks.</p>
+<p><br> <br></p>
+</div>
+</div>
+<div id="submission-instructions" class="section level1">
+<h1>Submission Instructions</h1>
+<p>When you have completed your assignment, knit your RMD file to generate your rendered HTML file.</p>
+<p>Login to Canvas at <a href="http://canvas.asu.edu" class="uri">http://canvas.asu.edu</a> and navigate to the assignments tab in the course repository. Upload your HTML and RMD files to the appropriate lab submission link.</p>
+<p>Remember to:</p>
+<ul>
+<li>name your files according to the convention: <strong>Lab-##-LastName.Rmd</strong></li>
+<li>show your solution, include your code.</li>
+<li>do not print excessive output (like a full data set).</li>
+<li>follow appropriate style guidelines (spaces between arguments, etc.).</li>
+</ul>
+<p>See <a href="https://google.github.io/styleguide/Rguide.xml">Google’s R Style Guide</a> for examples.</p>
+<hr />
+<p><br></p>
+<div id="notes-on-knitting" class="section level2">
+<h2>Notes on Knitting</h2>
+<p>Note that when you knit a file, it starts from a blank slate. You might have packages loaded or datasets active on your local machine, so you can run code chunks fine. But when you knit you might get errors that functions cannot be located or datasets don’t exist. Be sure that you have included chunks to load these in your RMD file.</p>
+<p>Your RMD file will not knit if you have errors in your code. If you get stuck on a question, just add <code>eval=F</code> to the code chunk and it will be ignored when you knit your file. That way I can give you credit for attempting the question and provide guidance on fixing the problem.</p>
+</div>
+<div id="markdown-trouble" class="section level2">
+<h2>Markdown Trouble?</h2>
+<p>If you are having problems with your RMD file, visit the <a href="https://ds4ps.org/cpp-526-spr-2020/labs/r-markdown-files.html"><strong>RMD File Styles and Knitting Tips</strong></a> manual.</p>
+<p><br> <br></p>
+<hr />
+<p><br> <br></p>
+<style>
+blockquote {
+    padding: 11px 22px;
+    margin: 0 0 22px;
+    font-size: 18px;
+    border-left: 5px solid lightgray;
+}
+</style>
+</div>
+</div>
+
+<div class="footer">
+    <div class="footerFloatOuter"><br></div>
+    <div class="footerFloatInner1">
+
+       <a  href="https://ds4ps.org/">
+         <img src="images/ps1-gray.png" alt="ds4ps" width="200" align="middle">
+         <h4 style="text-align:center;color:white;">Data Science for<br>Public Service</h4>
+       </a>
+
+    </div>
+
+    <div class="footerFloatInner2">
+
+     <br>
+     <ul style="list-style-type:none;">
+
+        <li>Labs designed by <a href=https:lecy.info target="_blank">Jesse D. Lecy</a></li>
+        <li>Source code is available on <a href=https://github.com/DS4PS/ target="_blank">GitHub</a></li>
+        <br>
+        <li>Creative Common License:</li>
+        <li><a href=https://creativecommons.org/licenses/by-nc-sa/4.0/ target="_blank"> (CC BY-NC-SA 4.0)</a></li>
+        <br>
+        <li>CPP 527 <a href="https://ds4ps.org/cpp-527-spr-2020/" target="_blank">Foundations of Data Science II</a></li>
+        <li>Part of the <a href=http://ds4ps.org/ms-prog-eval-data-analytics/ target="_blank">MS in Evaluation and Analytics</a></li>
+        <li>@ <a href=https://asuonline.asu.edu/online-degree-programs/graduate/program-evaluation-and-data-analytics-ms/ target="_blank">Arizona State University</a></li>
+        <br>
+        <li><p style="font-size:110%;color:#f0ead6;"><b>Solutions posted online</b><br>
+         are in violation of ASU student policies <br>and federal copyright laws <b>&copy;</b></li>
+     </ul>
+
+
+    </div>
+
+    <div class="footerFloatOuter"><br>
+    </div>
+
+</div>
+
+
+
+
+<style>
+
+blockquote {
+    padding: 11px 22px;
+    margin: 0 0 22px;
+    font-size: 18px;
+    border-left: 5px solid lightgray;
+}
+
+.footer {
+  color:white;
+  min-height: 450px !important;
+  background-color: #696969;
+  padding-bottom: 3em;
+  padding-top: 3em;
+  margin: auto;
+}
+
+.footer a {
+  color: orange;
+}
+
+.footer body{
+     font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+     font-size:calc(1.5em + 0.25vw);
+     font-weight:300;line-height:1.65;
+     -webkit-font-smoothing:antialiased;
+     -moz-osx-font-smoothing:grayscale;
+     margin-left:20%;
+     margin-right:20%
+}
+
+footer.body{
+     font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+     font-size:calc(1.5em + 0.25vw);
+     font-weight:300;line-height:1.65;
+     -webkit-font-smoothing:antialiased;
+     -moz-osx-font-smoothing:grayscale;
+     margin-left:20%;
+     margin-right:20%
+}
+
+.footerFloatOuter {
+	width: 25%;
+	float: left;
+}
+
+.footerFloatInner1 {
+	width: 20%;
+	float: left;
+	align: left;
+	margin-left: 0px;
+}
+
+.footerFloatInner2 {
+	width: 50%;
+	float: left;
+	text-align: left;
+}
+
+
+
+.footer ul li {
+	font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  font-size:calc(0.55em + 0.25vw) !important;
+  font-weight:300;
+  line-height:1.2 !important;
+  color: #FFF;
+	text-transform: uppercase;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+</style>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

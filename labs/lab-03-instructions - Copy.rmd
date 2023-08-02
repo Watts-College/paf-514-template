@@ -1,0 +1,11 @@
+https://github.com/rstudio/pagedown
+
+
+https://mnjul.net/cv/resume.pdf
+
+https://pagedown.rbind.io/html-resume
+
+
+
+
+https://github.com/DS4PS/cv

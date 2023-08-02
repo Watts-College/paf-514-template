@@ -1,0 +1,1098 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Lab 03 - Regular Expressions</title>
+
+<script src="lab-03-instructions_files/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="lab-03-instructions_files/bootstrap-3.3.5/css/readable.min.css" rel="stylesheet" />
+<script src="lab-03-instructions_files/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="lab-03-instructions_files/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="lab-03-instructions_files/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="lab-03-instructions_files/navigation-1.1/tabsets.js"></script>
+<script src="lab-03-instructions_files/accessible-code-block-0.0.1/empty-anchor.js"></script>
+<link href="lab-03-instructions_files/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="lab-03-instructions_files/pagedtable-1.1/js/pagedtable.js"></script>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  background-color: #f8f8f8; }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #c4a000; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #000000; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #000000; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #000000; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="labs.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Lab 03 - Regular Expressions</h1>
+
+</div>
+
+<div id="TOC">
+<ul>
+<li><a href="#data">Data</a><ul>
+<li><a href="#text-pre-processing-steps">Text Pre-Processing Steps</a></li>
+<li><a href="#create-a-performance-measure">Create a Performance Measure</a></li>
+</ul></li>
+<li><a href="#lab-questions">Lab Questions</a><ul>
+<li><a href="#q1---comparing-title-styles">Q1 - Comparing Title Styles</a></li>
+<li><a href="#q2---content-analysis">Q2 - Content Analysis</a></li>
+<li><a href="#q3---length-of-title">Q3 - Length of Title</a></li>
+<li><a href="#challenge-question">Challenge Question</a></li>
+</ul></li>
+<li><a href="#submission-instructions">Submission Instructions</a></li>
+</ul>
+</div>
+
+<div id="data" class="section level1">
+<h1>Data</h1>
+<p>This lab utilizes a <a href="https://www.kaggle.com/dorianlazar/medium-articles-dataset/notebooks">free Kaggle dataset</a> describing the popularity of articles on the blogging platform Medium. We will use the following fields:</p>
+<ul>
+<li><strong>title</strong> - the blog title</li>
+<li><strong>subtitle</strong> - blog subtitle (optional)</li>
+<li><strong>claps</strong> - the number of “likes” each article received</li>
+<li><strong>reading_time</strong> - time (in minutes) it takes to reach each article</li>
+<li><strong>publication</strong> - Medium community in which the blog was published</li>
+<li><strong>date</strong> - date of publication in style YYYY-MM-DD</li>
+</ul>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="co"># URL &lt;- &quot;https://www.dropbox.com/s/tizgdsat2mziod6/medium-data-utf8.csv?dl=1&quot;</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a>URL &lt;-<span class="st"> &quot;https://raw.githubusercontent.com/DS4PS/cpp-527-fall-2020/master/labs/data/medium-data-utf8-v2.csv&quot;</span></span>
+<span id="cb1-3"><a href="#cb1-3"></a>d &lt;-<span class="st"> </span><span class="kw">read.csv</span>( URL )</span>
+<span id="cb1-4"><a href="#cb1-4"></a></span>
+<span id="cb1-5"><a href="#cb1-5"></a>preview.these &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;title&quot;</span>, <span class="st">&quot;subtitle&quot;</span>, <span class="st">&quot;claps&quot;</span>, <span class="st">&quot;reading_time&quot;</span>, <span class="st">&quot;publication&quot;</span>, <span class="st">&quot;date&quot;</span>)</span>
+<span id="cb1-6"><a href="#cb1-6"></a><span class="kw">head</span>( d[preview.these] ) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">pander</span>()</span></code></pre></div>
+<table style="width:100%;">
+<caption>Table continues below</caption>
+<colgroup>
+<col width="41%" />
+<col width="30%" />
+<col width="10%" />
+<col width="18%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">title</th>
+<th align="center">subtitle</th>
+<th align="center">claps</th>
+<th align="center">reading_time</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">A Beginnerâ€™s Guide to Word Embedding with Gensim Word2VecÂ Model</td>
+<td align="center"></td>
+<td align="center">850</td>
+<td align="center">8</td>
+</tr>
+<tr class="even">
+<td align="center">Hands-on Graph Neural Networks with PyTorch &amp; PyTorch Geometric</td>
+<td align="center"></td>
+<td align="center">1100</td>
+<td align="center">9</td>
+</tr>
+<tr class="odd">
+<td align="center">How to Use ggplot2 inÃ‚Â Python</td>
+<td align="center">A Grammar of Graphics forÂ Python</td>
+<td align="center">767</td>
+<td align="center">5</td>
+</tr>
+<tr class="even">
+<td align="center">Databricks: How to Save Files in CSV on Your LocalÂ Computer</td>
+<td align="center">When I work on Python projectsÂ dealingâ€¦</td>
+<td align="center">354</td>
+<td align="center">4</td>
+</tr>
+<tr class="odd">
+<td align="center">A Step-by-Step Implementation of Gradient Descent and Backpropagation</td>
+<td align="center">One example of buildingÂ neuralâ€¦</td>
+<td align="center">211</td>
+<td align="center">4</td>
+</tr>
+<tr class="even">
+<td align="center">An Easy Introduction to SQL for Data Scientists</td>
+<td align="center"></td>
+<td align="center">563</td>
+<td align="center">8</td>
+</tr>
+</tbody>
+</table>
+<table style="width:49%;">
+<colgroup>
+<col width="31%" />
+<col width="16%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">publication</th>
+<th align="center">date</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">Towards Data Science</td>
+<td align="center">5/30/2019</td>
+</tr>
+<tr class="even">
+<td align="center">Towards Data Science</td>
+<td align="center">5/30/2019</td>
+</tr>
+<tr class="odd">
+<td align="center">Towards Data Science</td>
+<td align="center">5/30/2019</td>
+</tr>
+<tr class="even">
+<td align="center">Towards Data Science</td>
+<td align="center">5/30/2019</td>
+</tr>
+<tr class="odd">
+<td align="center">Towards Data Science</td>
+<td align="center">5/30/2019</td>
+</tr>
+<tr class="even">
+<td align="center">Towards Data Science</td>
+<td align="center">5/30/2019</td>
+</tr>
+</tbody>
+</table>
+<div id="text-pre-processing-steps" class="section level2">
+<h2>Text Pre-Processing Steps</h2>
+<p>The article title text is fairly clean and needs little pre-processing, but there are a couple of important issues that need to be addressed.</p>
+<ol style="list-style-type: decimal">
+<li>Remove strange spaces</li>
+<li>Remove HTML tags</li>
+<li>Remove “hair space” dash marks</li>
+</ol>
+<p>There are special spaces that appear randomly in some titles. They will appear identical to the invisible eye but will cause problems when you are trying to split titles into words. Replace them with regular spaces:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="co"># replace all versions of space </span></span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="co"># including special styles like</span></span>
+<span id="cb2-3"><a href="#cb2-3"></a><span class="co"># the &#39;hair space&#39;  with regular spaces</span></span>
+<span id="cb2-4"><a href="#cb2-4"></a>d<span class="op">$</span>title &lt;-<span class="st"> </span><span class="kw">gsub</span>( <span class="st">&quot;</span><span class="ch">\\</span><span class="st">s&quot;</span>, <span class="st">&quot; &quot;</span>, d<span class="op">$</span>title )</span></code></pre></div>
+<p>Some titles include HTML tags for emphasis. They will always occur at the start and end of the titles:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="st">&quot;&lt;strong class=</span><span class="ch">\&quot;</span><span class="st">markup--strong markup--h3-strong</span><span class="ch">\&quot;</span><span class="st">&gt;Why 70% of Entrepreneurs Are Ending Their Pitches the Wrong Way&lt;/strong&gt;&quot;</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="st">&quot;&lt;strong class=</span><span class="ch">\&quot;</span><span class="st">markup--strong markup--h3-strong</span><span class="ch">\&quot;</span><span class="st">&gt;Tackle Negative Core Beliefs&lt;/strong&gt;&quot;</span></span></code></pre></div>
+<p>There are some stylized dashes in the text that are book-ended with “hair space” characters, which are thinner-than-usual spaces.</p>
+<p>In the UTF-8 text encoding they come out as:</p>
+<pre><code>&lt;U+200A&gt;—&lt;U+200A&gt;</code></pre>
+<p>Since they are not actual words, remove all of these hairspace-dashes from the text.</p>
+</div>
+<div id="create-a-performance-measure" class="section level2">
+<h2>Create a Performance Measure</h2>
+<p>We can track article performance in many ways. This dataset contains “claps”, which are the equivalent of a thumbs-up or like on other platforms.</p>
+<p>It also contains a responses category, but that is a little more complicated to interpret because comment might be asking for clarification because the article was poorly-written or arguing a counter-point becaue the article was controversial.</p>
+<p>We will use <strong>claps</strong> to measure article popularity, but note the skew in the raw measure:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="kw">hist</span>( d<span class="op">$</span>clap, <span class="dt">main=</span><span class="st">&quot;Raw Clap Count&quot;</span>,</span>
+<span id="cb5-2"><a href="#cb5-2"></a>      <span class="dt">xlim=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">950</span>), <span class="dt">breaks=</span><span class="dv">5000</span>, <span class="dt">col=</span><span class="st">&quot;gray20&quot;</span>, <span class="dt">border=</span><span class="st">&quot;white&quot;</span> )</span></code></pre></div>
+<p><img src="lab-03-instructions_files/figure-html/unnamed-chunk-4-1.png" width="960" /></p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="kw">hist</span>( <span class="kw">log10</span>(d<span class="op">$</span>clap<span class="op">+</span><span class="dv">1</span>), <span class="dt">main=</span><span class="st">&quot;Logged Clap Score&quot;</span>,</span>
+<span id="cb6-2"><a href="#cb6-2"></a>      <span class="dt">col=</span><span class="st">&quot;gray20&quot;</span>, <span class="dt">border=</span><span class="st">&quot;white&quot;</span>, <span class="dt">breaks=</span><span class="dv">100</span> )</span></code></pre></div>
+<p><img src="lab-03-instructions_files/figure-html/unnamed-chunk-4-2.png" width="960" /></p>
+<p>Create a new <strong>clap score</strong> to measure performance using the following log transformation:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>d<span class="op">$</span>clap.score &lt;-<span class="st"> </span><span class="kw">log10</span>( d<span class="op">$</span>clap <span class="op">+</span><span class="st"> </span><span class="dv">1</span> )</span></code></pre></div>
+</div>
+</div>
+<div id="lab-questions" class="section level1">
+<h1>Lab Questions</h1>
+<div id="q1---comparing-title-styles" class="section level2">
+<h2>Q1 - Comparing Title Styles</h2>
+<p>Which title style consistently gets the most claps (clap score)?</p>
+<p><strong>Power Lists:</strong></p>
+<ul>
+<li>“Six Recommendations for Aspiring Data Scientists”<br />
+</li>
+<li>“13 Essential Newsletters for Data Scientists: Remastered”<br />
+</li>
+<li>“7 Machine Learning lessons that stuck with me this year”</li>
+</ul>
+<p><strong>How to guides:</strong></p>
+<ul>
+<li>“How to measure progress with outcomes”</li>
+<li>“How We Dumped A/B Testing For Machine Learning”</li>
+<li>“How To Be Productive Without Being Hard on Yourself”</li>
+</ul>
+<p><strong>Something Colon Something:</strong></p>
+<ul>
+<li>“Business Checkup: 10 Ways to Improve your 2020 Communications”</li>
+<li>“ReFocus: Making Out-of-Focus Microscopy Images In-Focus Again”</li>
+<li>“Review: SqueezeNet (Image Classification)”</li>
+</ul>
+<p><strong>Questions:</strong></p>
+<ul>
+<li>“Why Do Financial Models Break?”</li>
+<li>“What Is Econometrics?”</li>
+<li>“Can AI Robots Rebel Against Us, as Shown in Films?”</li>
+<li>“Can You Invest Like a Top Fund Manager?”</li>
+<li>“So you’re building a “Superhuman of X”?"</li>
+</ul>
+<p><strong>Other:</strong></p>
+<p>All other styles not included in these.</p>
+<p>Use regular expressions in order to identify all of the titles that belong in each category.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="co"># grepl returns TRUE for all cases that </span></span>
+<span id="cb8-2"><a href="#cb8-2"></a><span class="co"># match the expression and FALSE otherwise </span></span>
+<span id="cb8-3"><a href="#cb8-3"></a></span>
+<span id="cb8-4"><a href="#cb8-4"></a>category.members &lt;-<span class="st"> </span><span class="kw">grepl</span>( <span class="st">&quot;expression&quot;</span>, titles )</span></code></pre></div>
+<p><strong>Q1-A:</strong>What is the average performance (clap score) of each type of title?</p>
+<p><strong>Q1-B:</strong>Which style of title performs the best overall?</p>
+</div>
+<div id="q2---content-analysis" class="section level2">
+<h2>Q2 - Content Analysis</h2>
+<p>Split each title into a group of distinct words.</p>
+<p><strong>Q2-A:</strong> What are the 25 most common words used in the titles?</p>
+<p><strong>Q2-B:</strong> What is the most common word used at the beginning of a title?</p>
+<p><strong>Q2-C:</strong> What is the most common word used at the end of a title?</p>
+<p><em>Hint: be sure to convert all words to the same case so that variants like “How” and “how” are treated the same.</em></p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>x &lt;-<span class="st"> </span><span class="kw">tolower</span>( x )</span></code></pre></div>
+<p>When splitting a title into words note that the string split function returns a list.</p>
+<p>This is a sensible data structure since you want to keep the atomized words grouped by their original titles, but it makes it hard to do content analysis:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>first.six.titles &lt;-<span class="st"> </span></span>
+<span id="cb10-2"><a href="#cb10-2"></a><span class="st">  </span><span class="kw">c</span>(<span class="st">&quot;A Beginner’s Guide to Word Embedding with Gensim Word2Vec Model&quot;</span>, </span>
+<span id="cb10-3"><a href="#cb10-3"></a>    <span class="st">&quot;Hands-on Graph Neural Networks with PyTorch &amp; PyTorch Geometric&quot;</span>, </span>
+<span id="cb10-4"><a href="#cb10-4"></a>    <span class="st">&quot;How to Use ggplot2 in Python&quot;</span>, <span class="st">&quot;Databricks: How to Save Files in CSV on Your Local Computer&quot;</span>, </span>
+<span id="cb10-5"><a href="#cb10-5"></a>    <span class="st">&quot;A Step-by-Step Implementation of Gradient Descent and Backpropagation&quot;</span>, </span>
+<span id="cb10-6"><a href="#cb10-6"></a>    <span class="st">&quot;An Easy Introduction to SQL for Data Scientists&quot;</span>)</span>
+<span id="cb10-7"><a href="#cb10-7"></a></span>
+<span id="cb10-8"><a href="#cb10-8"></a>word.list &lt;-<span class="st"> </span><span class="kw">strsplit</span>( first.six.titles, <span class="st">&quot; &quot;</span> )</span>
+<span id="cb10-9"><a href="#cb10-9"></a>word.list</span></code></pre></div>
+<pre><code>## [[1]]
+##  [1] &quot;A&quot;          &quot;Beginner’s&quot; &quot;Guide&quot;      &quot;to&quot;         &quot;Word&quot;      
+##  [6] &quot;Embedding&quot;  &quot;with&quot;       &quot;Gensim&quot;     &quot;Word2Vec&quot;   &quot;Model&quot;     
+## 
+## [[2]]
+## [1] &quot;Hands-on&quot;  &quot;Graph&quot;     &quot;Neural&quot;    &quot;Networks&quot;  &quot;with&quot;      &quot;PyTorch&quot;  
+## [7] &quot;&amp;&quot;         &quot;PyTorch&quot;   &quot;Geometric&quot;
+## 
+## [[3]]
+## [1] &quot;How&quot;     &quot;to&quot;      &quot;Use&quot;     &quot;ggplot2&quot; &quot;in&quot;      &quot;Python&quot; 
+## 
+## [[4]]
+##  [1] &quot;Databricks:&quot; &quot;How&quot;         &quot;to&quot;          &quot;Save&quot;        &quot;Files&quot;      
+##  [6] &quot;in&quot;          &quot;CSV&quot;         &quot;on&quot;          &quot;Your&quot;        &quot;Local&quot;      
+## [11] &quot;Computer&quot;   
+## 
+## [[5]]
+## [1] &quot;A&quot;               &quot;Step-by-Step&quot;    &quot;Implementation&quot;  &quot;of&quot;             
+## [5] &quot;Gradient&quot;        &quot;Descent&quot;         &quot;and&quot;             &quot;Backpropagation&quot;
+## 
+## [[6]]
+## [1] &quot;An&quot;           &quot;Easy&quot;         &quot;Introduction&quot; &quot;to&quot;           &quot;SQL&quot;         
+## [6] &quot;for&quot;          &quot;Data&quot;         &quot;Scientists&quot;</code></pre>
+<p>Similar to re-casting data types, you can convert the list to a character vector using <strong>unlist()</strong>:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a>word.vector &lt;-<span class="st"> </span><span class="kw">unlist</span>( word.list )</span>
+<span id="cb12-2"><a href="#cb12-2"></a>word.vector</span></code></pre></div>
+<pre><code>##  [1] &quot;A&quot;               &quot;Beginner’s&quot;      &quot;Guide&quot;           &quot;to&quot;             
+##  [5] &quot;Word&quot;            &quot;Embedding&quot;       &quot;with&quot;            &quot;Gensim&quot;         
+##  [9] &quot;Word2Vec&quot;        &quot;Model&quot;           &quot;Hands-on&quot;        &quot;Graph&quot;          
+## [13] &quot;Neural&quot;          &quot;Networks&quot;        &quot;with&quot;            &quot;PyTorch&quot;        
+## [17] &quot;&amp;&quot;               &quot;PyTorch&quot;         &quot;Geometric&quot;       &quot;How&quot;            
+## [21] &quot;to&quot;              &quot;Use&quot;             &quot;ggplot2&quot;         &quot;in&quot;             
+## [25] &quot;Python&quot;          &quot;Databricks:&quot;     &quot;How&quot;             &quot;to&quot;             
+## [29] &quot;Save&quot;            &quot;Files&quot;           &quot;in&quot;              &quot;CSV&quot;            
+## [33] &quot;on&quot;              &quot;Your&quot;            &quot;Local&quot;           &quot;Computer&quot;       
+## [37] &quot;A&quot;               &quot;Step-by-Step&quot;    &quot;Implementation&quot;  &quot;of&quot;             
+## [41] &quot;Gradient&quot;        &quot;Descent&quot;         &quot;and&quot;             &quot;Backpropagation&quot;
+## [45] &quot;An&quot;              &quot;Easy&quot;            &quot;Introduction&quot;    &quot;to&quot;             
+## [49] &quot;SQL&quot;             &quot;for&quot;             &quot;Data&quot;            &quot;Scientists&quot;</code></pre>
+<p><strong>Counting the first or last words:</strong></p>
+<p>These questions require you to break into the list version of the results and extract either the first or last word from each.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="co"># x is a single title</span></span>
+<span id="cb14-2"><a href="#cb14-2"></a>get_first_word &lt;-<span class="st"> </span><span class="cf">function</span>( x )</span>
+<span id="cb14-3"><a href="#cb14-3"></a>{</span>
+<span id="cb14-4"><a href="#cb14-4"></a>  <span class="co"># split title x into words</span></span>
+<span id="cb14-5"><a href="#cb14-5"></a>  <span class="co"># unlist results</span></span>
+<span id="cb14-6"><a href="#cb14-6"></a>  <span class="co"># select the first word</span></span>
+<span id="cb14-7"><a href="#cb14-7"></a>  <span class="co"># return first word</span></span>
+<span id="cb14-8"><a href="#cb14-8"></a>}</span>
+<span id="cb14-9"><a href="#cb14-9"></a></span>
+<span id="cb14-10"><a href="#cb14-10"></a><span class="co"># test your function</span></span>
+<span id="cb14-11"><a href="#cb14-11"></a>x &lt;-<span class="st"> </span>d<span class="op">$</span>title[<span class="dv">1</span>]</span>
+<span id="cb14-12"><a href="#cb14-12"></a><span class="kw">get_first_word</span>( x )</span></code></pre></div>
+<p>When results are stored as lists there is an extra step to the analysis.</p>
+<p>You need to <strong>apply</strong> your function to each element in the list. There are several versions of apply() functions in R.</p>
+<ul>
+<li><strong>lapply()</strong> applies the function to a list and returns a list</li>
+<li><strong>sapply()</strong> applies the function to a list and returns a vector</li>
+</ul>
+<p><strong>lapply version:</strong></p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="co"># lapply applies the length function to each list element and returns a list</span></span>
+<span id="cb15-2"><a href="#cb15-2"></a></span>
+<span id="cb15-3"><a href="#cb15-3"></a>word.list &lt;-<span class="st"> </span><span class="kw">strsplit</span>( first.six.titles, <span class="st">&quot; &quot;</span> )</span>
+<span id="cb15-4"><a href="#cb15-4"></a>word.count &lt;-<span class="st"> </span><span class="kw">lapply</span>( word.list, length )</span>
+<span id="cb15-5"><a href="#cb15-5"></a>word.count &lt;-<span class="st"> </span><span class="kw">unlist</span>( word.count ) <span class="co"># convert to a vector</span></span>
+<span id="cb15-6"><a href="#cb15-6"></a>word.count</span></code></pre></div>
+<pre><code>## [1] 10  9  6 11  8  8</code></pre>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="co"># sapply applies the function to all titles in the vector</span></span>
+<span id="cb17-2"><a href="#cb17-2"></a><span class="co"># the default prints the original title with the return values</span></span>
+<span id="cb17-3"><a href="#cb17-3"></a></span>
+<span id="cb17-4"><a href="#cb17-4"></a>word.list &lt;-<span class="st"> </span><span class="kw">strsplit</span>( first.six.titles, <span class="st">&quot; &quot;</span> )</span>
+<span id="cb17-5"><a href="#cb17-5"></a><span class="kw">sapply</span>( word.list, length )</span></code></pre></div>
+<pre><code>## [1] 10  9  6 11  8  8</code></pre>
+<p>To create a vector of the first title words only would then be something like:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a><span class="co"># add USE.NAMES=F to only print return values</span></span>
+<span id="cb19-2"><a href="#cb19-2"></a><span class="kw">sapply</span>( first.six.titles, get_first_word, <span class="dt">USE.NAMES=</span><span class="ot">FALSE</span> )</span></code></pre></div>
+<p>The apply functions are a more efficient version of loops - the repetition of a single operation over and over on different data elements. So the logic would be equivalent to this loop version:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a>results &lt;-<span class="st"> </span><span class="ot">NULL</span></span>
+<span id="cb20-2"><a href="#cb20-2"></a><span class="cf">for</span>( i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(d<span class="op">$</span>title) )</span>
+<span id="cb20-3"><a href="#cb20-3"></a>{</span>
+<span id="cb20-4"><a href="#cb20-4"></a>  results[i] &lt;-<span class="st"> </span><span class="kw">get_first_word</span>( d<span class="op">$</span>title[i] )</span>
+<span id="cb20-5"><a href="#cb20-5"></a>}</span></code></pre></div>
+<p>Loops are effective for these types of analysis, but are extremely inefficient as the size of your dataset grows and should be avoided when possible.</p>
+<p>And as you become more comfortable with lists they become easier to manage:</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a><span class="co"># efficiently core R version:  </span></span>
+<span id="cb21-2"><a href="#cb21-2"></a>first.six.titles <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">strsplit</span>( <span class="st">&quot; &quot;</span> ) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">sapply</span>( length )  </span></code></pre></div>
+<pre><code>## [1] 10  9  6 11  8  8</code></pre>
+<p><strong>CHALLENGE QUESTION:</strong></p>
+<p>Is it better to use common words or unique words in your title?</p>
+<p>Create a count of the number of times each word appears in the collection of titles.</p>
+<p>Create a variable for the group of words that appear in the bottom quartile (0-25%) of frequencies.</p>
+<p>Create a variable for the group of words that appear in the top quartile (75-100%) of frequencies.</p>
+<p><strong>Q-A: Are simple titles better?</strong></p>
+<p>Is performance a function of common words used?</p>
+<p>Create a box and whisker plot showing clap scores as a function of the number of common words used.</p>
+<p>Regress the clap score onto the numer or proportion of common words.</p>
+<p><strong>Q-B: Are niche titles better?</strong></p>
+<p>Is performance a function of uncommon words used?</p>
+<p>Create a box and whisker plot showing clap scores as a function of the number of uncommon words used.</p>
+<p>Regress the clap score onto the numer or proportion of uncommon words.</p>
+<p><strong>Creating top and bottom percentile categories:</strong></p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a><span class="co"># x &lt;- sample( 1:100, 25, replace=T )</span></span>
+<span id="cb23-2"><a href="#cb23-2"></a><span class="co"># dput( sort( x ) )</span></span>
+<span id="cb23-3"><a href="#cb23-3"></a></span>
+<span id="cb23-4"><a href="#cb23-4"></a>x &lt;-<span class="st"> </span><span class="kw">c</span>(1L, 2L, 19L, 19L, 20L, 21L, 23L, 24L, 31L, 34L, 36L, 40L, 48L, </span>
+<span id="cb23-5"><a href="#cb23-5"></a>50L, 51L, 56L, 63L, 67L, 73L, 74L, 83L, 84L, 91L, 92L, 96L)</span>
+<span id="cb23-6"><a href="#cb23-6"></a></span>
+<span id="cb23-7"><a href="#cb23-7"></a><span class="kw">summary</span>( x )</span></code></pre></div>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##    1.00   23.00   48.00   47.92   73.00   96.00</code></pre>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a><span class="co"># get cut points</span></span>
+<span id="cb25-2"><a href="#cb25-2"></a><span class="kw">quantile</span>( x, <span class="dt">probs=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="fl">0.25</span>,<span class="fl">0.5</span>,<span class="fl">0.75</span>,<span class="dv">1</span>) )</span></code></pre></div>
+<pre><code>##   0%  25%  50%  75% 100% 
+##    1   23   48   73   96</code></pre>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a><span class="co"># rank x by order and percentile </span></span>
+<span id="cb27-2"><a href="#cb27-2"></a>rank.x &lt;-<span class="st"> </span><span class="kw">rank</span>(x)</span>
+<span id="cb27-3"><a href="#cb27-3"></a>centile.x &lt;-<span class="st"> </span><span class="dv">100</span> <span class="op">*</span><span class="st"> </span>( <span class="kw">rank</span>(x) <span class="op">/</span><span class="st"> </span><span class="kw">length</span>(x) )</span>
+<span id="cb27-4"><a href="#cb27-4"></a></span>
+<span id="cb27-5"><a href="#cb27-5"></a><span class="co"># create variable by values break points</span></span>
+<span id="cb27-6"><a href="#cb27-6"></a>x<span class="fl">.25</span> &lt;-<span class="st"> </span><span class="kw">quantile</span>( x, <span class="dt">probs=</span><span class="fl">0.25</span> )</span>
+<span id="cb27-7"><a href="#cb27-7"></a>x<span class="fl">.75</span> &lt;-<span class="st"> </span><span class="kw">quantile</span>( x, <span class="dt">probs=</span><span class="fl">0.75</span> )</span>
+<span id="cb27-8"><a href="#cb27-8"></a>top.<span class="fl">25.</span>x &lt;-<span class="st"> </span><span class="kw">as.numeric</span>( x <span class="op">&gt;=</span><span class="st"> </span>x<span class="fl">.75</span> )  <span class="co"># x &gt;= 73</span></span>
+<span id="cb27-9"><a href="#cb27-9"></a>bot.<span class="fl">25.</span>x &lt;-<span class="st"> </span><span class="kw">as.numeric</span>( x <span class="op">&lt;=</span><span class="st"> </span>x<span class="fl">.25</span> )  <span class="co"># x &lt;= 23 </span></span>
+<span id="cb27-10"><a href="#cb27-10"></a></span>
+<span id="cb27-11"><a href="#cb27-11"></a><span class="co"># create variable by percentile break points </span></span>
+<span id="cb27-12"><a href="#cb27-12"></a>top.<span class="fl">25.</span>x &lt;-<span class="st"> </span><span class="kw">as.numeric</span>( centile.x <span class="op">&gt;=</span><span class="st"> </span><span class="dv">75</span> )  <span class="co"># x &gt;= 73</span></span>
+<span id="cb27-13"><a href="#cb27-13"></a>bot.<span class="fl">25.</span>x &lt;-<span class="st"> </span><span class="kw">as.numeric</span>( centile.x <span class="op">&lt;=</span><span class="st"> </span><span class="dv">25</span> )  <span class="co"># x &lt;= 23 </span></span>
+<span id="cb27-14"><a href="#cb27-14"></a></span>
+<span id="cb27-15"><a href="#cb27-15"></a><span class="kw">data.frame</span>( x, rank.x, centile.x, top.<span class="fl">25.</span>x, bot.<span class="fl">25.</span>x ) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">pander</span>()</span></code></pre></div>
+<table style="width:67%;">
+<colgroup>
+<col width="6%" />
+<col width="12%" />
+<col width="16%" />
+<col width="15%" />
+<col width="15%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">x</th>
+<th align="center">rank.x</th>
+<th align="center">centile.x</th>
+<th align="center">top.25.x</th>
+<th align="center">bot.25.x</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">4</td>
+<td align="center">0</td>
+<td align="center">1</td>
+</tr>
+<tr class="even">
+<td align="center">2</td>
+<td align="center">2</td>
+<td align="center">8</td>
+<td align="center">0</td>
+<td align="center">1</td>
+</tr>
+<tr class="odd">
+<td align="center">19</td>
+<td align="center">3.5</td>
+<td align="center">14</td>
+<td align="center">0</td>
+<td align="center">1</td>
+</tr>
+<tr class="even">
+<td align="center">19</td>
+<td align="center">3.5</td>
+<td align="center">14</td>
+<td align="center">0</td>
+<td align="center">1</td>
+</tr>
+<tr class="odd">
+<td align="center">20</td>
+<td align="center">5</td>
+<td align="center">20</td>
+<td align="center">0</td>
+<td align="center">1</td>
+</tr>
+<tr class="even">
+<td align="center">21</td>
+<td align="center">6</td>
+<td align="center">24</td>
+<td align="center">0</td>
+<td align="center">1</td>
+</tr>
+<tr class="odd">
+<td align="center">23</td>
+<td align="center">7</td>
+<td align="center">28</td>
+<td align="center">0</td>
+<td align="center">0</td>
+</tr>
+<tr class="even">
+<td align="center">24</td>
+<td align="center">8</td>
+<td align="center">32</td>
+<td align="center">0</td>
+<td align="center">0</td>
+</tr>
+<tr class="odd">
+<td align="center">31</td>
+<td align="center">9</td>
+<td align="center">36</td>
+<td align="center">0</td>
+<td align="center">0</td>
+</tr>
+<tr class="even">
+<td align="center">34</td>
+<td align="center">10</td>
+<td align="center">40</td>
+<td align="center">0</td>
+<td align="center">0</td>
+</tr>
+<tr class="odd">
+<td align="center">36</td>
+<td align="center">11</td>
+<td align="center">44</td>
+<td align="center">0</td>
+<td align="center">0</td>
+</tr>
+<tr class="even">
+<td align="center">40</td>
+<td align="center">12</td>
+<td align="center">48</td>
+<td align="center">0</td>
+<td align="center">0</td>
+</tr>
+<tr class="odd">
+<td align="center">48</td>
+<td align="center">13</td>
+<td align="center">52</td>
+<td align="center">0</td>
+<td align="center">0</td>
+</tr>
+<tr class="even">
+<td align="center">50</td>
+<td align="center">14</td>
+<td align="center">56</td>
+<td align="center">0</td>
+<td align="center">0</td>
+</tr>
+<tr class="odd">
+<td align="center">51</td>
+<td align="center">15</td>
+<td align="center">60</td>
+<td align="center">0</td>
+<td align="center">0</td>
+</tr>
+<tr class="even">
+<td align="center">56</td>
+<td align="center">16</td>
+<td align="center">64</td>
+<td align="center">0</td>
+<td align="center">0</td>
+</tr>
+<tr class="odd">
+<td align="center">63</td>
+<td align="center">17</td>
+<td align="center">68</td>
+<td align="center">0</td>
+<td align="center">0</td>
+</tr>
+<tr class="even">
+<td align="center">67</td>
+<td align="center">18</td>
+<td align="center">72</td>
+<td align="center">0</td>
+<td align="center">0</td>
+</tr>
+<tr class="odd">
+<td align="center">73</td>
+<td align="center">19</td>
+<td align="center">76</td>
+<td align="center">1</td>
+<td align="center">0</td>
+</tr>
+<tr class="even">
+<td align="center">74</td>
+<td align="center">20</td>
+<td align="center">80</td>
+<td align="center">1</td>
+<td align="center">0</td>
+</tr>
+<tr class="odd">
+<td align="center">83</td>
+<td align="center">21</td>
+<td align="center">84</td>
+<td align="center">1</td>
+<td align="center">0</td>
+</tr>
+<tr class="even">
+<td align="center">84</td>
+<td align="center">22</td>
+<td align="center">88</td>
+<td align="center">1</td>
+<td align="center">0</td>
+</tr>
+<tr class="odd">
+<td align="center">91</td>
+<td align="center">23</td>
+<td align="center">92</td>
+<td align="center">1</td>
+<td align="center">0</td>
+</tr>
+<tr class="even">
+<td align="center">92</td>
+<td align="center">24</td>
+<td align="center">96</td>
+<td align="center">1</td>
+<td align="center">0</td>
+</tr>
+<tr class="odd">
+<td align="center">96</td>
+<td align="center">25</td>
+<td align="center">100</td>
+<td align="center">1</td>
+<td align="center">0</td>
+</tr>
+</tbody>
+</table>
+<p><strong>CHALLENGE QUESTION:</strong></p>
+<p>Find a package in R that will tabulate sentiment scores for a set of text.</p>
+<p>These packages will return counts or percentages of words with positive salience (e.g. <em>happiness, joy, laughed</em>) and counts or percentages with negative salience (e.g. <em>hate, disdain, smirk</em>).</p>
+<p><strong>Which titles perform better? Those with high positive salience? Or those with high negative salience?</strong></p>
+</div>
+<div id="q3---length-of-title" class="section level2">
+<h2>Q3 - Length of Title</h2>
+<p>Does the length of the title matter?</p>
+<p><strong>Q3-A: Do titles with more words get better clap scores?</strong></p>
+<p>Count the number of words in each title.</p>
+<p>Then examine the clap score as a function of word count by regressing the clap score onto word count.</p>
+<p>Visualize the relationship using a box and whisker plot:</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a><span class="co"># creating random non-meaningful data for demo</span></span>
+<span id="cb28-2"><a href="#cb28-2"></a>x &lt;-<span class="st"> </span><span class="kw">sample</span>( <span class="dv">1</span><span class="op">:</span><span class="dv">10</span>, <span class="dt">size=</span><span class="dv">1000</span>, <span class="dt">replace=</span><span class="ot">TRUE</span> )</span>
+<span id="cb28-3"><a href="#cb28-3"></a>y &lt;-<span class="st"> </span><span class="dv">3</span><span class="op">*</span>x <span class="op">-</span><span class="st"> </span><span class="fl">0.5</span><span class="op">*</span>x<span class="op">*</span>x <span class="op">+</span><span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">1000</span>,<span class="dv">0</span>,<span class="dv">5</span>)</span>
+<span id="cb28-4"><a href="#cb28-4"></a>f &lt;-<span class="st"> </span><span class="kw">factor</span>(x)</span>
+<span id="cb28-5"><a href="#cb28-5"></a></span>
+<span id="cb28-6"><a href="#cb28-6"></a><span class="co"># plot( factor, numeric.vector )</span></span>
+<span id="cb28-7"><a href="#cb28-7"></a><span class="kw">plot</span>( f, y )</span></code></pre></div>
+<p><img src="lab-03-instructions_files/figure-html/unnamed-chunk-18-1.png" width="960" /></p>
+<p><strong>Q3-B: Do longer titles get better clap scores?</strong></p>
+<p>Repeat the analysis from Q3-A but this time measuring title length by the number of characters in the title.</p>
+</div>
+<div id="challenge-question" class="section level2">
+<h2>Challenge Question</h2>
+<p>Put all of the steps above together into a single regression model:</p>
+<ul>
+<li>Title style</li>
+<li>Title length</li>
+<li>Large proportion of 100 most common words</li>
+</ul>
+<p>Add some additional controls:</p>
+<ul>
+<li>Presence or absence of a subtitle</li>
+<li>Length of the article (time it takes to read)</li>
+<li>Months since it was published</li>
+<li>The Medium community in which the blog appears:</li>
+</ul>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a><span class="kw">table</span>( d<span class="op">$</span>publication ) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">pander</span>()</span></code></pre></div>
+<table>
+<caption>Table continues below</caption>
+<colgroup>
+<col width="22%" />
+<col width="26%" />
+<col width="31%" />
+<col width="19%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Better Humans</th>
+<th align="center">Better Marketing</th>
+<th align="center">Data Driven Investor</th>
+<th align="center">The Startup</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">28</td>
+<td align="center">242</td>
+<td align="center">778</td>
+<td align="center">3041</td>
+</tr>
+</tbody>
+</table>
+<table style="width:90%;">
+<colgroup>
+<col width="36%" />
+<col width="31%" />
+<col width="22%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">The Writing Cooperative</th>
+<th align="center">Towards Data Science</th>
+<th align="center">UX Collective</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">403</td>
+<td align="center">1461</td>
+<td align="center">555</td>
+</tr>
+</tbody>
+</table>
+<p>You are also free to add additional features of the titles that you create with regular expressions.</p>
+<p><strong>Q: Which factors best predict article performance overall?</strong></p>
+<p><br> <br> <br></p>
+</div>
+</div>
+<div id="submission-instructions" class="section level1">
+<h1>Submission Instructions</h1>
+<p>When you have completed your assignment, knit your RMD file to generate your rendered HTML file. Platforms like BlackBoard and Canvas often disallow you from submitting HTML files when there is embedded computer code, so create a zipped folder with both the RMD and HTML files.</p>
+<p>Login to Canvas at <a href="http://canvas.asu.edu" class="uri">http://canvas.asu.edu</a> and navigate to the assignments tab in the course repository. Upload your zipped folder to the appropriate lab submission link.</p>
+<p>Remember to:</p>
+<ul>
+<li>name your files according to the convention: <strong>Lab-##-LastName.Rmd</strong></li>
+<li>show your solution, include your code.</li>
+<li>do not print excessive output (like a full data set).</li>
+<li>follow appropriate style guidelines (spaces between arguments, etc.).</li>
+</ul>
+<p><br> <br></p>
+<hr />
+<p><br> <br></p>
+<p><strong>Notes on Knitting</strong></p>
+<p>Note that when you knit a file, it starts from a blank slate. You might have packages loaded or datasets active on your local machine, so you can run code chunks fine. But when you knit you might get errors that functions cannot be located or datasets don’t exist. Be sure that you have included chunks to load these in your RMD file.</p>
+<p>Your RMD file will not knit if you have errors in your code. If you get stuck on a question, just add <code>eval=F</code> to the code chunk and it will be ignored when you knit your file. That way I can give you credit for attempting the question and provide guidance on fixing the problem.</p>
+<p><strong>Markdown Trouble?</strong></p>
+<p>If you are having problems with your RMD file, visit the <a href="https://ds4ps.org/cpp-526-spr-2020/labs/r-markdown-files.html"><strong>RMD File Styles and Knitting Tips</strong></a> manual.</p>
+<p><br> <br></p>
+<hr />
+<p><br> <br></p>
+<style>
+blockquote {
+    padding: 11px 22px;
+    margin: 0 0 22px;
+    font-size: 18px;
+    border-left: 5px solid lightgray;
+}
+</style>
+</div>
+
+<div class="footer">
+    <div class="footerFloatOuter"><br></div>
+    <div class="footerFloatInner1">
+
+       <a  href="https://ds4ps.org/">
+         <img src="images/ps1-gray.png" alt="ds4ps" width="200" align="middle">
+         <h4 style="text-align:center;color:white;">Data Science for<br>Public Service</h4>
+       </a>
+
+    </div>
+
+    <div class="footerFloatInner2">
+
+     <br>
+     <ul style="list-style-type:none;">
+
+        <li>Labs designed by <a href=https:lecy.info target="_blank">Jesse D. Lecy</a></li>
+        <li>Source code is available on <a href=https://github.com/DS4PS/ target="_blank">GitHub</a></li>
+        <br>
+        <li>Creative Common License:</li>
+        <li><a href=https://creativecommons.org/licenses/by-nc-sa/4.0/ target="_blank"> (CC BY-NC-SA 4.0)</a></li>
+        <br>
+        <li>CPP 527 <a href="https://ds4ps.org/cpp-527-spr-2020/" target="_blank">Foundations of Data Science II</a></li>
+        <li>Part of the <a href=http://ds4ps.org/ms-prog-eval-data-analytics/ target="_blank">MS in Evaluation and Analytics</a></li>
+        <li>@ <a href=https://asuonline.asu.edu/online-degree-programs/graduate/program-evaluation-and-data-analytics-ms/ target="_blank">Arizona State University</a></li>
+        <br>
+        <li><p style="font-size:110%;color:#f0ead6;"><b>Solutions posted online</b><br>
+         are in violation of ASU student policies <br>and federal copyright laws <b>&copy;</b></li>
+     </ul>
+
+
+    </div>
+
+    <div class="footerFloatOuter"><br>
+    </div>
+
+</div>
+
+
+
+
+<style>
+
+blockquote {
+    padding: 11px 22px;
+    margin: 0 0 22px;
+    font-size: 18px;
+    border-left: 5px solid lightgray;
+}
+
+.footer {
+  color:white;
+  min-height: 450px !important;
+  background-color: #696969;
+  padding-bottom: 3em;
+  padding-top: 3em;
+  margin: auto;
+}
+
+.footer a {
+  color: orange;
+}
+
+.footer body{
+     font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+     font-size:calc(1.5em + 0.25vw);
+     font-weight:300;line-height:1.65;
+     -webkit-font-smoothing:antialiased;
+     -moz-osx-font-smoothing:grayscale;
+     margin-left:20%;
+     margin-right:20%
+}
+
+footer.body{
+     font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+     font-size:calc(1.5em + 0.25vw);
+     font-weight:300;line-height:1.65;
+     -webkit-font-smoothing:antialiased;
+     -moz-osx-font-smoothing:grayscale;
+     margin-left:20%;
+     margin-right:20%
+}
+
+.footerFloatOuter {
+	width: 25%;
+	float: left;
+}
+
+.footerFloatInner1 {
+	width: 20%;
+	float: left;
+	align: left;
+	margin-left: 0px;
+}
+
+.footerFloatInner2 {
+	width: 50%;
+	float: left;
+	text-align: left;
+}
+
+
+
+.footer ul li {
+	font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  font-size:calc(0.55em + 0.25vw) !important;
+  font-weight:300;
+  line-height:1.2 !important;
+  color: #FFF;
+	text-transform: uppercase;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+</style>
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

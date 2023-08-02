@@ -1,0 +1,453 @@
+---
+title: 'Lab 04 - Regular Expressions'
+output:
+  html_document:
+    theme: readable
+    df_print: paged
+    highlight: zenburn
+    toc: true
+    self_contained: false
+    number_sections: false
+    css: textbook.css
+    include:
+      after_body: footer.html    
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set( echo = TRUE, message=F, warning=F, fig.width=10, fig.height=12 )
+```
+
+
+
+#### CPP 527: Foundations of Data Science II
+
+<br>
+
+---
+
+<br>
+
+Lab 04 introduces the tools of string operators and **regular expressions** that enable rich text analysis in R. They are important functions for cleaning data in large datasets, generating new variables, and qualitative analysis of text-based databases using tools like content analysis, sentiment analysis, and natural language processing libraries. 
+
+The data for the lab comes from IRS archives of 1023-EZ applications that nonprofits submit when they are filing for tax-exempt status. We will use mission statements, organizational names, and activity codes. 
+
+The lab consists of three parts. Part I is a warm-up that asks you to construct a few regular expressions to identify specific patterns in the mission text. 
+
+Part II asks you to use the **quanteda** package, a popular text analysis package in R, to perform a simple content analysis by counting the most frequently-used words in the mission statements. 
+
+Part III asks you to use text functions and regular expressions to search mission statements to develop a sample of specific nonprofits using keywords and phrases. 
+
+
+## Setup
+
+
+### Packages
+
+```{r, eval=F}
+# REMEMBER TO RUN ONCE AND NEVER INCLUDE
+# INSTALL STEPS IN RMD FILES!
+
+quanteda.bundle <- c( "quanteda", "quanteda.textmodels",
+                      "quanteda.textstats", "quanteda.textplots" )
+install.packages( quanteda.bundle )
+```
+
+
+```{r}
+library( dplyr )
+library( pander )
+library( quanteda )
+library( quanteda.textmodels )
+library( quanteda.textstats )
+library( quanteda.textplots )
+```
+
+
+### Data
+
+IRS documentation on 1023-EZ forms are [available here](https://www.irs.gov/charities-non-profits/exempt-organizations-form-1023ez-approvals). 
+
+
+
+<br>
+
+Use this archived version of the data for the lab: 
+
+```{r}
+URL <- "https://github.com/DS4PS/cpp-527-spr-2020/blob/master/labs/data/IRS-1023-EZ-MISSIONS.rds?raw=true"
+dat <- readRDS(gzcon(url( URL )))
+```
+
+We will be working primarily with the nonprofit activity codes and mission text for this assignment: 
+
+```{r}
+head( dat[ c("orgname","codedef01","mission") ] ) %>% pander()
+```
+
+
+
+### Data Dictionary: 
+
+* **ein**: nonprofit tax ID 
+* **orgname**:  organizatoin name
+* **mission**:  mission statement 
+* **code01**:  NTEE mission code top level 
+* **codedef01**:  mission code definition 
+* **code02**:  NTEE mission code second level 
+* **codedef02**:  mission code definition 
+* **orgpurposecharitable**:  Organization is organized and operated exclusively for Charitable purposes 
+* **orgpurposereligious**:  Organization is organized and operated exclusively for Religious purposes 
+* **orgpurposeeducational**:  Organization is organized and operated exclusively for Educational purposes 
+* **orgpurposescientific**:  Organization is organized and operated exclusively for Scientific purposes 
+* **orgpurposeliterary**:  Organization is organized and operated exclusively for Literary purposes 
+* **orgpurposepublicsafety**:  Organization is organized and operated exclusively for x purposes 
+* **orgpurposeamateursports**:  Organization is organized and operated exclusively for x purposes 
+* **orgpurposecrueltyprevention**:  Organization is organized and operated exclusively for x purposes 
+* **leginflno**:  Organization has NOT attempted or has no plans to attempt to influence legislation 
+* **leginflyes**:  Organization has attempted or has plans to attempt to influence legislation 
+* **donatefundsno**:  Organization has no plans to donate funds or pay expenses to any individuals 
+* **donatefundsyes**:  Organization plans to donate funds or pay expenses to individuals 
+* **conductactyoutsideusno**: Plans to conduct activities outside of the US? 
+* **conductactyoutsideusyes**:  Plans to conduct activities outside of the US? 
+* **compofcrdirtrustno**:  Organization has no plans to pay compensation to any officers, directors, or trustees 
+* **compofcrdirtrustyes**:  Organization plans to pay compensation to any officers, directors, or trustees 
+* **financialtransofcrsno**:  Organization has no plans to engage in financial transactions (for example, loans, grants, or other assistance, payments for goods or services, rents, etc.) with their officers, directors, or trustees, or any entities they own or control 
+* **financialtransofcrsyes**:  Organization plans to engage in financial transactions (for example, loans, grants, or other assistance, payments for goods or services, rents, etc.) with their officers, directors, or trustees, or any entities they own or control 
+* **unrelgrossincm1000moreno**:  Unrelated gross income of more than $1,000?
+* **unrelgrossincm1000moreyes**:  Unrelated gross income of more than $1,000?
+* **gamingactyno**:  Organization has no plans to conduct bingo or other gaming activities 
+* **gamingactyyes**:  Organization plans to conduct bingo or other gaming activities 
+* **disasterreliefno**:  Organization has no plans to provide Disaster Relief assistance 
+* **disasterreliefyes**:  Organization plans to provide Disaster Relief assistance 
+* **onethirdsupportpublic**:  Organization normally receives at least one-third of their support from public sources
+* **onethirdsupportgifts**:  Organization normally receives at least one-third of their support from  a combination of gifts, grants, contributions, membership fees, and gross receipts (from permitted sources) from activities related to their exempt functions
+* **benefitofcollege**:  Organization is organized and operated exclusively to receive, hold, invest, and administer property for and make expenditures to or for the benefit of a state or municipal college or university
+* **privatefoundation508e**:  Organization’s organizing document contains specific provisions required by section 508(e) 
+* **hospitalorchurchno**:  Organization does not qualify as a hospital or a church
+* **hospitalorchurchyes**:  Organization qualifies as a hospital or a church
+
+
+
+
+## Part I
+
+You need to search for the following patterns below, print the first six missions that meet the criteria, and report a total count of missions that meet the criteria. 
+
+You will use **grep()** and **grepl()**. The **grep()** function will find missions that match the criteria and return the full string. **grepl()** is the logical version of **grep()**, so it returns a vector of TRUE or FALSE, with TRUE representing the cases that match the specified criteria. 
+
+```
+grep(  pattern="some.reg.ex", x="mission statements", value=TRUE )
+```
+
+You will print and count matches as follows. As an example, let's search for missions that contain numbers. 
+
+```{r}
+grep( pattern="[0-9]", x=dat$mission, value=TRUE ) %>% head()
+grepl( "[0-9]", dat$mission ) %>% sum()
+```
+
+
+1. How many missions start with the word "to"? Make sure it is the word "to" and not words that start with "to" like "towards". You can ignore capitalization. 
+
+2. How many mission fields are blank? How many mission fields contain only spaces (one or more)? 
+
+3. How many missions have trailing spaces (extra spaces at the end)? After identifying the cases with trailing spaces use the trim white space function **trimws()** to clean them up.
+
+4. How many missions contain the dollar sign? Note that the dollar sign is a special symbol, so you need to use an escape character to search for it. 
+
+5. How many mission statements contain numbers that are at least two digits long? You will need to use a quantity qualifier from regular expressions. 
+
+
+Report your code and answers for these five questions. 
+
+<br>
+
+
+## Part II
+
+Perform a very basic content analysis with the mission text. Report the ten most frequently-used words in mission statements. Exclude punctuation, and "stem" the words. 
+
+You will be using the [quanteda](https://quanteda.io/) package in R for the language processing functions. It is an extremely powerful tool that integrates with a variety of natural language processing tools, qualitative analysis packages, and machine learning frameworks for predictive analytics using text inputs. 
+
+In general, languages and thus text are semi-structured data sources. There are patterns and rules to languages, but rules are less rigid and patterns can be more subtle (computers are much better at picking out patterns in language use from large amounts of text than humans are). As a result of the nature of text as data, you will find that the cleaning, processing, and preparation steps can be more intensive than quantitative data. They are designed to filter out large portions of text that hold sentences together and create subtle meaning in context, but offer little in terms of general pattern recognition. Eliminating capitalization and punctuation help simplify the text. Paragraphs and sentences are atomized into lists of words. And things like stemming or converting multiple words to single compound words (e.g. White House to white_house) help reduce the complexity of the text. 
+
+The short tutorial below is meant to introduce you to a few functions that can be useful for initiating analysis with text and introduce you to common pre-processing steps. 
+
+Note that in the field of literature we refer to an author's or a field's body of work. In text analysis, we refer to a database of text-based documents as a "corpus" (Latin for *body*). Each document has text, which is the unit of analysis. But it also has meta-data that is useful for making sense of the text and identifying patterns. Common meta-data might be things like year of publication, author, type of document (newspaper article, tweet, email, spoken speech, etc.). The **corpus()** function primarily serves to make the text database easy to use by keeping the text and meta-data connected and simpatico during pre-processing steps. 
+
+Typically large texts are broken into smaller parts, or "tokenized". Paragraphs can be split into sentences, sentences split into words. In regression we pay attention to correlations between numbers - when one variable X is increasing, is another variable Y also increasing, decreasing, or not covarying with X? In text analysis the analogous operation is co-occurrence. How often do words co-occur in sentences or documents? Or do we expect them to co-occur more frequently than they actually do given their frequency in the corpus (the equivalent of two words being negatively correlated). It is through tokenization that these relationships can be established. 
+
+In the example below we will split missions into sets of words, apply a "dictionary" or "thesaurus" to join multiple words that describe a single concept (e.g. New York City), stem the words to standardize them as much as possible, then conduct the simplest type of content analysis possible - count word frequency. 
+
+
+```{r}
+# library( quanteda )
+
+# convert missions to all lower-case 
+dat$mission <- tolower( dat$mission )
+
+# use a sample for demo purposes
+dat.sample <- dat[ sample( 1:50000, size=1000 ) , ]
+
+corp <- corpus( dat.sample,  text_field="mission" )
+corp
+
+# print first five missions 
+corp[1:5] 
+
+# summarize corpus
+summary(corp)[1:10,] 
+
+# pre-processing steps:
+
+# remove mission statements that are less than 3 sentences long
+corp <- corpus_trim( corp, what="sentences", min_ntoken=3 )
+
+# remove punctuation 
+tokens <- tokens( corp, what="word", remove_punct=TRUE )
+head( tokens )
+
+# remove filler words like the, and, a, to
+tokens <- tokens_remove( tokens, c( stopwords("english"), "nbsp" ), padding=F )
+```
+
+
+
+
+```{r}
+my_dictionary <- dictionary( list( five01_c_3= c("501 c 3","section 501 c 3") ,
+                             united_states = c("united states"),
+                             high_school=c("high school"),
+                             non_profit=c("non-profit", "non profit"),
+                             stem=c("science technology engineering math", 
+                                    "science technology engineering mathematics" ),
+                             los_angeles=c("los angeles"),
+                             ny_state=c("new york state"),
+                             ny=c("new york")
+                           ))
+
+# apply the dictionary to the text 
+tokens <- tokens_compound( tokens, pattern=my_dictionary )
+head( tokens )
+```
+
+
+
+
+```{r}
+# find frequently co-occuring words (typically compound words)
+ngram2 <- tokens_ngrams( tokens, n=2 ) %>% dfm()
+ngram2 %>% textstat_frequency( n=10 )
+
+ngram3 <- tokens_ngrams( tokens, n=3 ) %>% dfm()
+ngram3 %>% textstat_frequency( n=10 )
+```
+
+
+### Tabulate top word counts 
+
+
+```{r}
+tokens %>% dfm( stem=F ) %>% topfeatures( )
+```
+
+
+
+### Stemming
+
+Many words have a stem that is altered when conjugated (if a verb) or made pluran (if a noun). As a result, it can be hard to consistently count the appearance of specific word. 
+
+Stemming removes the last part of the word such that the word is reduced to it's most basic stem. For example, *running* would become *run*, and *Tuesdays* would become *Tuesday*. 
+
+Quanteda already has a powerful stemming function included. 
+
+```{r}
+tokens %>% dfm( stem=T ) %>% topfeatures( )
+```
+
+
+### Instructions 
+
+Replicate the steps above with the following criteria:
+
+* Use the full mission dataset, not the small sample used in the demo. 
+* Add at least ten concepts to your dictionary to convert compound words into single words. 
+* Report the ten most frequently-used words in the missions statements after applying stemming. 
+
+<br>
+
+
+
+
+## Part III
+
+For the last part of this lab, you will use text to classify nonprofits. 
+
+A large foundation is interested in knowing how many new nonprofits created in 2018 have an explicit mission of serving minority communities. We will start by trying to identify nonprofits that are membership organizations for Black communities or provide services to Black communities. 
+
+To do this, you will create a set of words or phrases that you believe indicates that the nonprofit works with or for the target population. 
+
+You will need to think about different ways that language might be used distinctively within the mission statements of nonprofit that serve Black communities. There is a lot of trial and error involved, as you can test several words and phrases, preview the mission statements that are identified, then refine your methods.
+
+Your final product will be a data frame of the nonprofit names, activity codes, and mission statements for the organizations identified by your criteria. The goal is to identify as many as possible while minimizing errors that occur when you include a nonprofit that does not serve the Black community. This example was selected specifically because "black" is a common and ambiguous term.   
+
+To get you started, let's look at a similar example where we want to identify immigrants rights nonprofits. We would begin as follows: 
+
+```{r}
+# start with key phrases
+#
+# use grep( ..., value=TRUE ) so you can view mission statements
+# that meet your criteria and adjust the language as necessary 
+grep( "immigrant rights", dat$mission, value=TRUE ) %>% head()
+grep( "immigration", dat$mission, value=TRUE ) %>% head()
+grep( "refugee", dat$mission, value=TRUE ) %>% head()
+```
+
+After you feel comfortable that individual statements are primarily identifying nonprofits within your desired group and have low error rates, you will need to combine all of the criteria to create one group. Note that any organization that has more than one keyword or phrase in it's mission statement would be double-counted if you use the raw groups, so we need to make sure we include each organizaton only once. We can do this using compound logical statements. 
+
+Note that **grepl()** returns a logical vector, so we can combine multiple statements using AND and OR conditions. 
+
+
+```{r}
+criteria.01 <- grepl( "immigrant rights", dat$mission ) 
+criteria.02 <- grepl( "immigration", dat$mission ) 
+criteria.03 <- grepl( "refugee", dat$mission ) 
+criteria.04 <- grepl( "humanitarian", dat$mission ) 
+criteria.05 <- ! grepl( "humanities", dat$mission )  # exclude humanities 
+```
+
+Note that to select all high school boys you would write:
+
+```
+( grade_9 | grade_10 | grade_11 | grade_12 ) & ( boys )
+```
+You would NOT specify: 
+
+```
+( grade_9 | grade_10 | grade_11 | grade_12 ) | boys 
+```
+Because that would then include boys at all levels and all people in grades 9-12.
+
+Now create your sample: 
+
+```{r}
+these.nonprofits <- ( criteria.01 | criteria.02 | criteria.03 | criteria.04 ) &  criteria.05
+sum( these.nonprofits )
+
+dat$activity.code <- paste0( dat$codedef01, ": ", dat$codedef02 )
+d.immigrant <- dat[ these.nonprofits, c("orgname","activity.code","mission") ] 
+row.names( d.immigrant ) <- NULL
+d.immigrant %>% head(25) %>% pander()
+```
+
+
+### For your deliverables for Part III: 
+
+**P3-Q1.** Report the total count of organizations you have identified as serving Black communities.  
+
+
+**P3-Q2.** Take a random sample of 20 of the organizations in your sample and verify that your search criteria are identifying nonprofits that serve Black communities.  
+
+```{r}
+sample <- dplyr::sample_n( d.immigrant, 20 )
+```
+
+**Report your rate of false positives in this sample (how many organizations in your sample do NOT belong there).** 
+
+Note that an error rate of 10% in a classification model is very good. An error rate above 40% suggests poor performance. 
+
+We are measuring false positives, here, not overall accuracy. You can have a very low false positive rate by using extremely narrow search criteria, but then you will miss a large portion of the population you are trying to capture and study (the false negative rate). 
+
+The more inclusive your criteria are, the larger your false positive rate will be. The goal is to design search criteria that identify a large number of organizations while keeping false positive rates reasonable.
+
+**P3-Q3.** Similar to the immigrant example, print a data frame that contains the nonprofit names, activity codes (see above on how to combine them), and their mission statements. Print the full data frame for your sample so all missions are visible.  
+
+<br>
+<br>
+
+
+
+# Challenge Question 
+
+If you selected three nonprofit subsectors from the activity codes (*code01*), then created three data subsets based upon these criteria you could conduct something like content analysis as a way to compare how the three groups use language difference. 
+
+## Part 1:
+
+Re-run the content analysis to identify the most frequently-used words. But this time run it separately for each subsector. 
+
+How do the most frequently used words vary by subsector? Which words are shared between the three subsectors? Which are distinct? 
+
+
+
+## Part 2:
+
+Another way to compare differences in language use is by creating semantic networks: 
+
+[TUTORIAL](https://nonprofit-open-data-collective.github.io/machine_learning_mission_codes/tutorials/semantic_networks.html)
+
+
+Compare prominent word relationships in mission statements of arts, environmental, and education nonprofits (*codedef01*). Build semantic networks for each, then compare and contrast the prominence of specific words within the networks. 
+
+
+
+
+
+
+
+<br>
+<br>
+
+
+
+# Submission Instructions
+
+When you have completed your assignment, knit your RMD file to generate your rendered HTML file. 
+
+Login to Canvas at <http://canvas.asu.edu> and navigate to the assignments tab in the course repository. Upload your HTML and RMD files to the appropriate lab submission link.
+
+Remember to:
+
+* name your files according to the convention: **Lab-##-LastName.Rmd**
+* show your solution, include your code.
+* do not print excessive output (like a full data set).
+* follow appropriate style guidelines (spaces between arguments, etc.).
+
+See [Google's R Style Guide](https://google.github.io/styleguide/Rguide.xml) for examples.
+
+
+---
+
+<br>
+
+## Notes on Knitting
+
+Note that when you knit a file, it starts from a blank slate. You might have packages loaded or datasets active on your local machine, so you can run code chunks fine. But when you knit you might get errors that functions cannot be located or datasets don't exist. Be sure that you have included chunks to load these in your RMD file.
+
+Your RMD file will not knit if you have errors in your code. If you get stuck on a question, just add `eval=F` to the code chunk and it will be ignored when you knit your file. That way I can give you credit for attempting the question and provide guidance on fixing the problem.
+
+
+## Markdown Trouble?
+
+If you are having problems with your RMD file, visit the [**RMD File Styles and Knitting Tips**](https://ds4ps.org/cpp-526-spr-2020/labs/r-markdown-files.html) manual.
+
+
+
+<br>
+<br>
+
+----
+
+<br>
+<br>
+
+
+
+
+<style>
+blockquote {
+    padding: 11px 22px;
+    margin: 0 0 22px;
+    font-size: 18px;
+    border-left: 5px solid lightgray;
+}
+</style>

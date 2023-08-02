@@ -1,0 +1,761 @@
+---
+title: 'Lab 02 - Simulations'
+output:
+  html_document:
+    theme: readable
+    df_print: paged
+    highlight: tango
+    toc: true
+    self_contained: false
+    number_sections: false
+    css: textbook.css
+    include:
+      after_body: footer.html    
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set( echo = TRUE, message=F, warning=F, fig.width=10, fig.height=12 )
+library( dplyr )
+library( pander )
+```
+
+
+
+```{r, echo=F}
+create_game <- function( )
+{
+    a.game <- sample( x=c("goat","goat","car"), size=3, replace=F )
+    return( a.game )
+} 
+
+select_door <- function( )
+{
+  doors <- c(1,2,3) 
+  a.pick <- sample( doors, size=1 )
+  return( a.pick )  # number between 1 and 3
+}
+
+open_goat_door <- function( game, a.pick )
+{
+   doors <- c(1,2,3)
+   # if contestant selected car,
+   # randomly select one of two goats 
+   if( game[ a.pick ] == "car" )
+   { 
+     goat.doors <- doors[ game != "car" ] 
+     opened.door <- sample( goat.doors, size=1 )
+   }
+   if( game[ a.pick ] == "goat" )
+   { 
+     opened.door <- doors[ game != "car" & doors != a.pick ] 
+   }
+   return( opened.door ) # number between 1 and 3
+}
+
+change_door <- function( stay=T, opened.door, a.pick )
+{
+   doors <- c(1,2,3) 
+   
+   if( stay )
+   {
+     final.pick <- a.pick
+   }
+   if( ! stay )
+   {
+     final.pick <- doors[ doors != opened.door & doors != a.pick ] 
+   }
+  
+   return( final.pick )  # number between 1 and 3
+}
+
+determine_winner <- function( final.pick, game )
+{
+   if( game[ final.pick ] == "car" )
+   {
+      return( "WIN" )
+   }
+   if( game[ final.pick ] == "goat" )
+   {
+      return( "LOSE" )
+   }
+}
+```
+
+
+
+#### CPP 527: Foundations of Data Science II
+
+<br>
+
+---
+
+<br>
+
+Lab 02 is an extension of the Monty Hall Problem that was implemented in Lab 01. 
+
+In this lab you will be practicing **loops** **constructors**, and **collectors**. 
+
+Last week you worked to build five distinct functions, one for each step of the game:
+
+1. Game set-up 
+2. Contestant selects first door 
+3. Host opens a goat door 
+4. Contestant decides to stay or switch doors 
+5. Host reveals prize to determine if they won 
+
+We now have all of the pieces that we need to start analyzing our problem. Which strategy is best in this scenario? Should we stay with our first selection? Or should we switch doors when given the option? 
+
+We can answer some of these hard analytical questions either (1) with an explicit closed-form mathematical solution (i.e. a proof), or (2) using simulation to examine the effectiveness of both strategies by playing the game over and over and looking at which strategy yields higher returns. 
+
+### Simulation Set-Up
+
+Using the functions you created last week or those provided in the solutions, package them all together into a single **`play_game()`{.R}** function which executes each step of a single game in order. 
+
+
+```{r, eval=T}
+play_game <- function( )
+{
+  new.game <- create_game()
+  first.pick <- select_door()
+  opened.door <- open_goat_door( new.game, first.pick )
+  final.pick.stay <- change_door( stay=T, opened.door, first.pick )
+  final.pick.switch <- change_door( stay=F, opened.door, first.pick )
+  outcome.stay <- determine_winner( final.pick.stay, new.game  )
+  outcome.switch <- determine_winner( final.pick.switch, new.game )
+  
+  # game.results <- bundle the results
+  # return( <<< game.results >>> )
+  
+  strategy <- c("stay","switch")
+  outcome <- c(outcome.stay,outcome.switch)
+  game.results <- data.frame( strategy, outcome,
+                              stringsAsFactors=F )
+  return( game.results )
+}
+
+play_game()
+```
+
+
+Once we have this implemented, we are ready to ready to run the simulation.
+
+## Adding the Game to a Loop
+
+When running simulations for inferential purposes the general rule of thumb is they should run at least 10,000 times in order for the simulated statistics to converge close to the actual theoretial value (average proportion of wins achieved by each strategy in this case). 
+
+Recall that our loop has three parts you will need to define:
+
+```{r}
+results.df <- NULL   # collector
+
+for( i in 1:10000 )  # iterator
+{
+  game.outcome <- play_game()
+  # binding step
+  results.df <- rbind( results.df, game.outcome )
+}
+
+table( results.df ) 
+```
+
+Or to make it a bit easier to interpret, what are the proportion of each outcome? Divide by the total number of games:
+
+```{r}
+( table( results.df ) / 10000 ) %>% 
+  round( 2 )
+```
+
+Or use the table proportions function **prop.table()**. The default is to report each cell as a proportion of the total, **margin=1** returns row proportions (the total is the sum of all values across a row) and **margin=2** returns a column proportion. 
+
+```{r}
+table( results.df ) %>% 
+  prop.table( margin=1 ) %>%  # row proportions
+  round( 2 )
+```
+
+Note that each game played produces a data frame with two rows and two columns: 
+
+```{r}
+play_game()
+```
+
+We use the collector data frame **results.df** to gather all of the results together. We do this by appending each new data frame on the end of the old data frame inside the loop: 
+
+```{r, eval=F}
+####
+game.outcome <- play_game()
+results.df <- rbind( results.df, game.outcome )
+####
+```
+
+
+
+### Note on Append Functions 
+
+
+During simulations we play the game a bunch of times and save the results in the object called **results.df**:
+
+```{r, eval=F}
+# creating an empty collector object
+results.df <- NULL   
+# later, inside the loop
+results.df <- rbind( results.df, game.outcome )
+```
+
+
+Note that **c()** is used to append items on the end of a a vector: 
+
+```{r}
+x <- 1:4
+c( x, 9 )
+```
+
+And **rbind()** is the equivalent for stacking new rows onto the bottom of an existing data frame:
+
+```{r}
+game1 <- play_game()
+game2 <- play_game()
+rbind( game1, game2 )
+```
+
+If we would try to append new rows onto a data frame with c() we would break our object type and end up with a mess: 
+
+```{r}
+c( game1, game2 )
+```
+
+So it's important to use the proper appending functions when you are building objects inside of loops. 
+
+
+The other thing to note is you need to create or "declare" your collector object before you can use it inside of the append function. We do this using a NULL assignment. If we skip this step we will get an error during the rbind() call. 
+
+```{r}
+results.df <- NULL 
+rbind( results.df, game.outcome )
+```
+
+
+
+
+
+# Lab 02 Questions
+
+
+So far we have shown how to create a wrapper function that makes it easier to control and repeat the steps of the game in your simulation:
+
+
+
+```{r, eval=T}
+play_game <- function( )
+{
+  new.game <- create_game()
+  first.pick <- select_door()
+  opened.door <- open_goat_door( new.game, first.pick )
+  final.pick.stay <- change_door( stay=T, opened.door, first.pick )
+  final.pick.switch <- change_door( stay=F, opened.door, first.pick )
+  outcome.stay <- determine_winner( final.pick.stay, new.game  )
+  outcome.switch <- determine_winner( final.pick.switch, new.game )
+  
+  strategy <- c("stay","switch")
+  outcome <- c(outcome.stay,outcome.switch)
+  game.results <- data.frame( strategy, outcome,
+                              stringsAsFactors=F )
+  return( game.results )
+}
+
+play_game()
+```
+
+
+And how to use that function inside of a loop to quickly generate a bunch of data:
+
+
+```{r}
+results.df <- NULL   # collector
+
+for( i in 1:10000 )  # iterator
+{
+  game.outcome <- play_game()
+  # binding step
+  results.df <- rbind( results.df, game.outcome )
+}
+
+table( results.df ) 
+```
+
+
+We can then quickly determine the optimal outcome:
+
+```{r}
+table( results.df ) %>% 
+  prop.table( margin=1 ) %>% 
+  round( 2 )
+```
+
+
+Last week there were two challenge questions that inquired about how the code could be modified slightly to allow for more flexible games. Use these games to answer the following questions: 
+
+
+
+### Part I
+
+The first challenge question required you build a game with 5 doors: 3 goats and 2 cars. The rest of the game is the same except instead of opening a single goat door after the contestant makes their initial selection, the host now opens a goat door AND a car door. 
+
+In this new game set-up, is *SWITCH* still the dominant strategy for contestants? 
+
+---- 
+
+Using the solutions provided for Lab 01 (or your own functions if you were able to successfully implement it) wrap the game steps into a single **play_game()** function. Similar to the example above, return a data frame that contains results from one game. 
+
+Use a loop to build a simulation that plays the game 10,000 times. Create a table to report the results.
+
+**Q1: Is _SWITCH_ still the dominant strategy?** Support your answer with your data. 
+
+-----
+
+
+
+### Part II
+
+The second challenge question asks that you create a game that allows the user to specify (1) how many goats and (2) how many cars are included in the game, also determining the number of doors the contestants can choose from. The host only opens one goat door, similar to the original game.  
+
+Using solutions for the second challenge problem on Lab-01, create a wrapper **play_game()** function and build a simulation loop the same as the last problem. 
+
+Create three separate simulations, each with 10 doors total but analyzing three different scenarios. 
+
+* 1 car, 9 goats
+* 2 cars, 8 goats 
+* 3 cars, 7 goats 
+
+Use your results to answer the following questions: 
+
+-----
+
+
+**Q1: Is _SWITCH_ still the dominant strategy? Report your chances of winning for each strategy for each scenario.**
+
+**Q2: How much better off are you switching in the original game? How much did it improve your chances of winning?** 
+
+* $Pr( win | switch ) - Pr( win | stay )$  
+
+**Q3: How much better off are you switching in each of the three scenario with 10 doors and 1 to 3 cars?**  
+
+-----
+
+
+<br>
+
+### Challenge Question
+
+Can you create a version of the first game above that not only returns the results, but all of the game metadata as well? It would need to return all of the following as part of a data frame:
+
+* game set-up ( use `paste0( game, collapse=" " )` to turn it into a single character 
+* initial contestant selection 
+* opened door 
+* final selection 
+* strategy 
+* game outcome 
+
+<br>
+<br>
+<br>
+
+# Submission Instructions
+
+When you have completed your assignment, knit your RMD file to generate your rendered HTML file. Platforms like BlackBoard and Canvas often disallow you from submitting HTML files when there is embedded computer code, so create a zipped folder with both the RMD and HTML files.
+
+Login to Canvas at <http://canvas.asu.edu> and navigate to the assignments tab in the course repository. Upload your zipped folder to the appropriate lab submission link.
+
+Remember to:
+
+* name your files according to the convention: **Lab-##-LastName.Rmd**
+* show your solution, include your code.
+* do not print excessive output (like a full data set).
+* follow appropriate style guidelines (spaces between arguments, etc.).
+
+
+<br>
+<br>
+
+----
+
+<br>
+<br>
+
+
+
+
+# Some Notes on Constructors 
+
+The term **constructors** refers to the act of creating a new object. We have typically used assignment to do this:
+
+```{r}
+x <- 1:5
+```
+
+There are many cases, however, where we might need to create an ** empty object** that we plan to use to store data. This is common step during simulation. 
+
+There are several ways we can do this: 
+
+```{r}
+x <- NULL
+x
+character(5)
+numeric(5)
+# this one doesn't work as expected!!!
+data.frame(5) 
+```
+
+
+Since we are comparing strategies we want to examine outcomes for each strategy each time we play the game and save the results as **outcome.stay** and **outcome.switch**.
+
+```{r, eval=F}
+  #####
+
+  final.pick.stay <- change_door( stay=T, opened.door, first.pick )
+  final.pick.switch <- change_door( stay=F, opened.door, first.pick )
+  outcome.stay <- determine_winner( final.pick.stay, new.game  )
+  outcome.switch <- determine_winner( final.pick.switch, new.game )
+  
+  #####
+```
+
+Recall that functions in R can only return one object (or in some cases NULL). 
+
+Since we have **two outcomes of interest** here, we need to bind them together in order to return them from the function. 
+
+Here we have a bit of a connundrum. We need to decide how to efficiently bundle our results. We have a few options. 
+
+We could simply bind the results together with the combine **c()** function and append them to the end of a collector vector. 
+
+```{r}
+# demo function
+play_game <- function()
+{
+  outcome.stay <- sample( c("WIN","LOSE"), 1 ) 
+  outcome.switch <- sample( c("WIN","LOSE"), 1 ) 
+  game.results <- c( outcome.stay, outcome.switch )
+  return( game.results )
+}
+
+play_game()
+```
+
+
+The problem is that now when we put the game function into a loop we have no idea how to interpret the results because we do not know which game they belong to.  
+
+```{r}
+results <- NULL
+
+for( i in 1:10 )
+{
+    game.outcome <- play_game()
+    results <- c( results, game.outcome  )
+}
+
+results
+```
+
+We can utilize vector attributes to assign each game outcome a label:
+
+
+```{r, echo=F}
+# demo function
+play_game <- function()
+{
+  outcome.stay <- sample( c("WIN","LOSE"), 1 ) 
+  outcome.switch <- sample( c("WIN","LOSE"), 1 ) 
+  game.results <- c( stay=outcome.stay, switch=outcome.switch )
+  return( game.results )
+}
+```
+
+
+```{r, eval=F}
+####
+
+  game.results <- c( stay=outcome.stay, 
+                     switch=outcome.switch )
+
+####
+```
+
+```{r}
+results <- NULL
+
+for( i in 1:5 )
+{
+    game.outcome <- play_game()
+    results <- c( results, game.outcome  )
+}
+
+results
+```
+
+This is a big improvement because now we won't mix up which result belong to which strategy. 
+
+The only problem is that we can't access the strategy during the analysis. 
+
+```{r}
+table( results )
+```
+
+```{r}
+results == "stay"
+```
+
+We would have to use the **names()** function to extract the attribute and store it as a new vector. 
+
+```{r}
+# names( results )
+strategy <- names( results )
+table( strategy, results )
+```
+
+Not horrible, but it makes our life a little harder. What if we organized them as a data frame instead of a vector? 
+
+```{r, echo=F}
+# demo function
+play_game <- function()
+{
+  outcome.stay <- sample( c("WIN","LOSE"), 1 ) 
+  outcome.switch <- sample( c("WIN","LOSE"), 1 ) 
+  game.results <- data.frame( stay=outcome.stay, 
+                              switch=outcome.switch, 
+                              stringsAsFactors=F )
+  return( game.results )
+}
+```
+
+
+```{r, eval=F}
+####
+
+  game.results <- data.frame( stay=outcome.stay, 
+                              switch=outcome.switch, 
+                              stringsAsFactors=F )
+
+####
+```
+
+We now have a one-row data frame:
+
+```{r}
+play_game()
+```
+
+
+And we can bind our results using the row bind function **rbind()**. 
+
+```{r}
+results.df <- data.frame()
+
+for( i in 1:5 )
+{
+    game.outcome <- play_game()
+    results.df <- rbind( results.df, game.outcome  )
+}
+
+results.df
+```
+
+
+We can now analyze each column fairly easily:
+
+```{r}
+mean( results.df$stay == "WIN" )
+mean( results.df$switch == "WIN" )
+```
+
+But we still can't reference the strategy directly as it's own variable. If we follow **tidy data** principles each attribute should be stored as it's own column so it is easy to incorporate into analysis. They tidy version would look like this: 
+
+
+```{r, echo=F}
+# demo function
+play_game <- function()
+{
+  outcome.stay <- sample( c("WIN","LOSE"), 1 ) 
+  outcome.switch <- sample( c("WIN","LOSE"), 1 ) 
+  
+  strategy <- c("stay","switch")
+  outcome <- c( outcome.stay, outcome.switch )
+  game.results <- data.frame( strategy, outcome, 
+                              stringsAsFactors=F )
+  return( game.results )
+}
+```
+
+
+```{r, eval=F}
+####
+
+  strategy <- c("stay","switch")
+  outcome <- c( outcome.stay, outcome.switch )
+  game.results <- data.frame( strategy, outcome, 
+                              stringsAsFactors=F )
+
+####
+```
+
+
+```{r}
+play_game()
+```
+
+```{r}
+results.df <- data.frame()
+
+for( i in 1:5 )
+{
+    game.outcome <- play_game()
+    results.df <- rbind( results.df, game.outcome  )
+}
+
+results.df
+```
+
+```{r}
+table( results.df$strategy, results.df$outcome )
+```
+
+
+
+This tidy format will make our analytical steps more efficient, so when possible default to that format. 
+
+```{r}
+play_game <- function( )
+{
+  new.game <- create_game()
+  first.pick <- select_door()
+  opened.door <- open_goat_door( new.game, first.pick )
+  final.pick.stay <- change_door( stay=T, opened.door, first.pick )
+  final.pick.switch <- change_door( stay=F, opened.door, first.pick )
+  outcome.stay <- determine_winner( final.pick.stay, new.game  )
+  outcome.switch <- determine_winner( final.pick.switch, new.game )
+  
+  strategy <- c("stay","switch")
+  outcome <- c( outcome.stay, outcome.switch )
+  game.results <- data.frame( strategy, outcome, 
+                              stringsAsFactors=F )
+  return( game.results )
+}
+
+play_game()
+```
+
+
+
+## Efficient Collectors 
+
+The examples above used append operators like **rbind()** to build the results data frame inside of a loop:
+
+```{r, eval=F}
+####
+  game.outcome <- play_game()
+  results.df <- rbind( results.df, game.outcome  )
+####
+```
+
+This is a quick and easy way to create a collector, but it turns out to also be a super inefficient implementation. The problem is that each time you add another element onto a vector or another row onto a data frame, you have changed the size of the object, which often forces the computer to create a new object in memory, then delete the old one. It can make the process slow, and also crash your RAM. 
+
+It is typically best practice to create an empty collector object that is the right size, then fill each slot with the appropriate data. 
+
+This works well when we are doing things like bootstrapping standard errors in statistics since each time through the loop we are creating a single parameter that can be stored in a vector. 
+
+If we repeat the operation 10,000 times, our collector vector will have length 10,000.
+
+```{r, eval=F}
+results.vec <- character( 10000 )
+
+for( i in 1:10000 )
+{
+  # sample something 
+  x <- sample( c("car","goat","car"), size=1 )
+  results.vec[ i ] <- x
+}
+```
+
+Unforunately we can't create an empty data frame simply by declaring its size. But we have a couple of options. 
+
+We can build it with empty values or NAs:
+
+```{r}
+x <- rep( NA, 10 )
+df <- data.frame( stay=x, switch=x, stringsAsFactors=F )
+df
+```
+
+And we can replace existing rows with new ones: 
+
+```{r}
+# row 3
+df[ 3 , ] <- c("WIN","LOSE")
+df
+```
+
+The other option is to use a list, which is a more flexible data type. We can store a bunch of rows inside a list, and then easily convert it to a data frame when we are ready. Note that assignment to lists occurs with double brackets:
+
+```{r}
+results.list <- list()
+
+for( i in 1:5 )
+{
+  game.outcomes <- sample( c("WIN","LOSE"), size=2 )
+  strategies <- c("stay","switch") 
+  results.list[[ i ]] <- data.frame( strategies, game.outcomes, stringsAsFactors=F )
+}
+
+results.list
+```
+
+Convert to a data frame with dplyr::bind_rows()
+
+```{r}
+dplyr::bind_rows( results.list )
+```
+
+
+Even if we do not pre-declare the size of the vector it will still scale well using this approach. 
+
+
+
+<br><br>
+
+---
+
+<br>
+
+
+
+# Notes on Knitting
+
+Note that when you knit a file, it starts from a blank slate. You might have packages loaded or datasets active on your local machine, so you can run code chunks fine. But when you knit you might get errors that functions cannot be located or datasets don't exist. Be sure that you have included chunks to load these in your RMD file.
+
+Your RMD file will not knit if you have errors in your code. If you get stuck on a question, just add `eval=F` to the code chunk and it will be ignored when you knit your file. That way I can give you credit for attempting the question and provide guidance on fixing the problem.
+
+
+## Markdown Trouble?
+
+If you are having problems with your RMD file, visit the [**RMD File Styles and Knitting Tips**](https://ds4ps.org/cpp-526-spr-2020/labs/r-markdown-files.html) manual.
+
+
+
+<br>
+<br>
+
+----
+
+<br>
+<br>
+
+
+
+
+<style>
+blockquote {
+    padding: 11px 22px;
+    margin: 0 0 22px;
+    font-size: 18px;
+    border-left: 5px solid lightgray;
+}
+</style>

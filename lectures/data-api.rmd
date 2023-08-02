@@ -1,0 +1,17 @@
+---
+title: "Data APIs"
+output:
+  html_document:
+    theme: readable
+    df_print: paged
+    highlight: tango
+    css: textbook.css
+---
+
+
+
+
+## Some Vocabulary
+
+
+

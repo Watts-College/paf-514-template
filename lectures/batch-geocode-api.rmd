@@ -1,0 +1,571 @@
+---
+title: "Batch Geocoding with Census API"
+output:
+  html_document:
+    theme: readable
+    df_print: paged
+    highlight: tango
+    css: textbook.css
+---
+
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning=F, message=F, fig.width=8)
+```
+
+
+### packages
+
+```{r}
+library( dplyr )
+library( tidyr )
+library( httr )
+
+```
+
+
+
+In this step we will geocode addresses of the founding teams (managers and board members) and the nonprofit addresses.
+
+***Structure***
+
+1. Intro and Demo
+PEOPLE
+2. Geocoding
+3. Compiling addresses
+NPOs
+4. Geocoding
+5. Compiling addresses
+
+
+
+
+# Intro to the Batch Geocoder and Demo
+
+
+**CENSUS GEOCODER** 
+
+DOCUMENTATION:
+https://www.census.gov/programs-surveys/geography.html
+
+WEB FORM:
+https://geocoding.geo.census.gov/geocoder/geographies/addressbatch?form
+
+Addresses should be formatted in a single line with comma delimiters. The address should consist of:
+
+* Unique ID,
+* House Number and Street Name,
+* City,
+* State,
+* ZIP Code
+
+
+```{r}
+dat.people <- readRDS( "Data/PEOPLE-2014-2018.rds" )
+head( dat.people, 20 )
+
+#selecting the addresses and placing them in a new df.
+addr <- select( dat.people, ID, Ofcrdirtruststreetaddr, Ofcrdirtrustcity, Ofcrdirtruststate, Ofcrdirtrustzip )
+names( addr ) <- c("ID", "STREET", "CITY", "STATE", "ZIP" )
+
+#test df
+addr.test <- addr[ 1:20, ]
+write.csv( addr.test, "TestAddresses.csv", row.names=F )
+
+
+
+### RETURN GEOGRAPHIES (lat/lon plus census tracts & blocks)
+### library( httr )
+
+apiurl <- "https://geocoding.geo.census.gov/geocoder/geographies/addressbatch"
+
+addressFile <- "TestAddresses.csv"
+
+resp <- POST( apiurl, 
+              body=list(addressFile=upload_file(addressFile), 
+                        benchmark="Public_AR_Census2010",
+                        vintage="Census2010_Census2010",
+                        returntype="csv" ), 
+              encode="multipart" )
+
+# content( resp, as="text" )
+# content( resp )
+
+results <- "results.csv"
+var_names <- c( "id", "input_address", 
+                "match", "match_type", 
+                "out_address", "lat_lon", 
+                "tiger_line_id", "tiger_line_side", 
+                "state_fips", "county_fips", 
+                "tract_fips", "block_fips" )
+v.names <- paste(var_names, collapse=',')
+writeLines( text=c(v.names, content(resp)), con="results.csv" )
+
+
+
+### ADD VARIABLE NAMES
+# from: https://www.census.gov/geo/maps-data/data/geocoder.html
+
+res <- read.csv( "results.csv", header=T, stringsAsFactors=F, colClasses="character" )
+
+
+### SPLIT LATITUDE AND LONGITUDE COORDINATES
+
+lat.lon <- strsplit( res$lat_lon, "," )
+
+for( i in 1:length(lat.lon) )
+{
+   # print( length( lat.lon[[i]] ) )
+   if( length( lat.lon[[i]] ) < 2 )
+   lat.lon[[ i ]] <- c(NA,NA) 
+}
+
+m <- matrix( unlist( lat.lon ), ncol=2, byrow=T )
+colnames(m) <- c("lon","lat")
+m <- as.data.frame( m )
+
+res <- cbind( res, m )
+head( res )
+
+# write.csv( res, "ResultsAugmented.csv", row.names=F )
+```
+
+
+
+# 2. BATCH GEOCODE NONPROFITS
+
+copying code for people, adapt for nonprofit addresses
+
+```{r, eval=F}
+setwd("/Users/icps86/Documents/R Projects/Open Data Project/open-1023-ez-dataset-master")
+getwd()
+dat.npos <- readRDS( "Data/NONPROFIT-ADDRESSES-2014-2018.rds" )
+```
+
+
+
+## 2.1: getting the nonprofit data in batches files.
+
+```{r}
+d2 <- dat.npos #this is a backup
+
+# To Geocode we need to format the DF into one that has the following input file variables: 
+# ID	STREET	CITY	STATE	ZIP
+
+#str(dat.npos)
+dat.npos <- select( dat.npos, ID, Address, City, State, Zip )
+
+#now we create a folder and set the working dir inside that folder.
+dir.create( "addresses_npos" )
+setwd( "addresses_npos" )
+#getwd()
+#dir()
+
+names( dat.npos ) <- NULL  # we remove colnames because input file should not have names
+
+# split address files into files with 500 addresses each
+loops <- ceiling( nrow( dat.npos ) / 500 ) # ceiling function rounds up an integer. so loops has the amount of 500s that fit rounded up.
+
+# SPLIT DATA INTO PARTS
+for( i in 1:loops ) #now we use a loop to extract by 500 addresses.
+{
+filename <- paste0( "AddressNpos",i,".csv" )
+start.row <- ((i-1)*500+1) # i starts in 1 and this outputs: 1, 501, 1001, etc.
+end.row <- (500*i) #this outputs 500, 1000, etc.
+if( nrow(dat.npos) < end.row ){ end.row <- nrow(dat.npos) } #this is the "fusible" that makes the end.row variable be set to the actual end row in the last iteration of the loop.
+
+#now we write the piece of the address file.
+write.csv( dat.npos[ start.row:end.row, ], filename, row.names=F )
+
+#what follows is just an output to help keep track of the loop.
+print( i )
+print( paste( "Start Row:", start.row ) )
+print( paste( "End Row:", end.row ) )
+} #end loop.
+
+```
+
+
+## 2.2 START GEOCODING
+
+The following code will produce 2 batches of files in addition to the AddressPeopleXX.csv that already exists in the folder.
+One is ResultsXX, and the other is ResultspeopleXX, plus, a text and csv for the log.
+
+Before running the code, make sure the working dir is correct and the loop variable is in the environment. In this iteration the value is 1511.
+
+```{r}
+### RETURN GEOGRAPHIES (lat/lon plus census tracts & blocks)
+
+# setwd('..')
+# getwd()
+#producing LOG file
+log <- c("Query_Number", "Start_time", "Time_taken")
+log <- paste(log, collapse=',')
+write(log, file="Geocode_Log.txt", append = F)
+
+
+#make sure the loop starts where you want it to.
+dir()
+for( i in 1:loops )
+{ # LOOP STARTS
+
+#creating the objects needed to run the loop.
+  
+filename <- paste0( "AddressNpos",i,".csv" ) # constructing name of file to load
+
+addressFile <- filename
+
+apiurl <- "https://geocoding.geo.census.gov/geocoder/geographies/addressbatch"
+
+#starting first goecoding, first we output the time, also at the end of this step.
+print( i )
+print(Sys.time() )
+start_time <- Sys.time()
+
+try( #try is a wrapper to run an expression that might fail and allow the users code to handle error-recovery.
+  
+resp <- POST( apiurl, 
+              body=list(addressFile=upload_file(addressFile), 
+                        benchmark="Public_AR_Census2010",
+                        vintage="Census2010_Census2010",
+                        returntype="csv" ), 
+              encode="multipart" )
+  )
+
+#printing ending times for monitoring loop
+end_time <- Sys.time()
+print( end_time - start_time ) #ouputting in R console
+
+#writing in log.
+query <- as.character(i)
+len <- as.character(end_time - start_time)
+start_time <- as.character(start_time)
+log <- c(query, start_time, len)
+log <- paste(log, collapse=',')
+write(log, file="Geocode_Log.txt", append = T)
+
+### ADD VARIABLE NAMES
+# from: https://www.census.gov/geo/maps-data/data/geocoder.html
+
+filename2 <- paste0( "results",i,".csv" ) #constructing name of file to write.
+
+results <- filename2
+
+var_names <- c( "id", "input_address", 
+                "match", "match_type", 
+                "out_address", "lat_lon", 
+                "tiger_line_id", "tiger_line_side", 
+                "state_fips", "county_fips", 
+                "tract_fips", "block_fips" )
+v.names <- paste(var_names, collapse=',')
+writeLines( text=c(v.names, content(resp)) , con=filename2 )# writting the first output file as filename2 which is named as resultsXX.csv
+
+# writeLines( text=content( resp ) , con=filename2 )  
+
+res <- read.csv( filename2, header=T, 
+                 stringsAsFactors=F, 
+                 colClasses="character" )
+
+
+### SPLIT LATITUDE AND LONGITUDE COORDINATES
+
+lat.lon <- strsplit( res$lat_lon, "," )
+
+for( j in 1:length(lat.lon) )
+{
+   # print( length( lat.lon[[j]] ) )
+   if( length( lat.lon[[j]] ) < 2 )
+   lat.lon[[ j ]] <- c(NA,NA) 
+}
+
+m <- matrix( unlist( lat.lon ), ncol=2, byrow=T )
+colnames(m) <- c("lon","lat")
+m <- as.data.frame( m )
+
+res <- cbind( res, m )
+
+write.csv( res, paste0("ResultsNpos",i,".csv"), row.names=F )
+
+}  # end of loop
+
+getwd()
+```
+
+1st NON PROFIT ADDRESS GEOCODE.
+might have stopped at 9. because of computer locking itself.
+might have stopped at 303
+
+2nd GEOCODE
+start 7.55pm.
+
+12.14pm 366 en el loop.
+419 ended at 1:51
+
+
+## 2.3 Combining all the Files
+
+```{r}
+setwd("/Users/icps86/Documents/R Projects/Open Data Project/open-1023-ez-dataset-master")
+setwd("addresses_npos")
+setwd("Results4")
+getwd()
+dir()
+these <- (dir())[ grepl( "ResultsPeople", dir() ) ] #this gets the names of all the files that have the string ResultsPeople
+#I think the expression (dir()) makes the output a list
+
+dat <- read.csv( these[1], stringsAsFactors=F ) #this generates an object with the first observation.
+
+
+for( i in 2:length(these) )
+{
+
+  d <- read.csv( these[i], stringsAsFactors=F )
+  dat <- bind_rows( dat, d ) 
+
+}
+
+saveRDS( dat, "../../GeocodeResults/NPOs-GEOCODESv4.rds" )
+
+plot( dat$lon, dat$lat, pch=19, cex=0.5, col=gray(0.5,0.01) )
+
+```
+
+* PEOPLE-2014-2018.rds
+* NONPROFIT-ADDRESSES-2014-2018.rds
+
+Through the Census Service
+
+* PEOPLE-GEOCODESv1.rds
+* PEOPLE-GEOCODESv2.rds
+
+* NPOs-GEOCODESv1.rds
+* NPOs-GEOCODESv2.rds
+* NPOs-GEOCODESv3.rds
+* NPOs-GEOCODESv4.rds
+
+Compiled (rmd script compiling geocodes) the results into two files:
+
+* NPOS-GEOCODES-COMPILED.rds
+
+* PEOPLE-GEOCODES-COMPILED.rds
+
+
+
+# 3. BATCH GEOCODE PEOPLE
+
+```{r, eval=F}
+#we are loading the DF with non profit People data
+dat.people <- readRDS( "Data/PEOPLE-2014-2018.rds" )
+```
+
+
+"Batch files may not exceed 10,000 records."
+
+## 3.1: getting the people data in batches files.
+
+```{r}
+d2 <- dat.people
+
+# To Geocode we need to format the DF into one that has the following input file variables: 
+# ID	STREET	CITY	STATE	ZIP
+
+dat.people <- select( dat.people, ID, Ofcrdirtruststreetaddr, 
+              Ofcrdirtrustcity, Ofcrdirtruststate, Ofcrdirtrustzip )
+
+#now we create a folder and set the working dir inside that folder.
+dir.create( "addresses_people" )
+setwd( "addresses_people" )
+#getwd()
+#dir()
+
+names( dat.people ) <- NULL  # we remove colnames because input file should not have names
+
+# split address files into files with 500 addresses each
+loops <- ceiling( nrow( dat.people ) / 500 ) # ceiling function rounds up an integer. so loops has the amount of 500s that fit rounded up.
+
+# SPLIT DATA INTO PARTS
+for( i in 1:loops ) #now we use a loop to extract by 500 addresses.
+{
+filename <- paste0( "AddressesPeople",i,".csv" )
+start.row <- ((i-1)*500+1) # i starts in 1 and this outputs: 1, 501, 1001, etc.
+end.row <- (500*i) #this outputs 500, 1000, etc.
+if( nrow(dat.people) < end.row ){ end.row <- nrow(dat.people) } #this is the "fusible" that makes the end.row variable be set to the actual end row in the last iteration of the loop.
+
+#now we write the piece of the address file.
+write.csv( dat.people[ start.row:end.row, ], filename, row.names=F )
+
+#what follows is just an output to help keep track of the loop.
+print( i )
+print( paste( "Start Row:", start.row ) )
+print( paste( "End Row:", end.row ) )
+} #end loop.
+
+```
+
+
+## 3.2 START GEOCODING
+
+The following code will produce 2 batches of files in addition to the AddressPeopleXX.csv that already exists in the folder.
+One is ResultsXX, and the other is ResultspeopleXX, plus, a text and csv for the log.
+
+Before running the code, make sure the working dir is correct and the loop variable is in the environment. In this iteration the value is 1511.
+
+```{r}
+### RETURN GEOGRAPHIES (lat/lon plus census tracts & blocks)
+
+
+#setwd("/Users/icps86/Documents/R Projects/Open Data Project/open-1023-ez-dataset-master")
+#dat.people <- readRDS( "Data/PEOPLE-2014-2018.rds" )
+#dat.people <- select( dat.people, ID, Ofcrdirtruststreetaddr, Ofcrdirtrustcity, Ofcrdirtruststate, Ofcrdirtrustzip )
+#loops <- ceiling( nrow( dat.people ) / 500 )
+#for test: loops <- 2
+
+# NOTE: for this to work it needs to have 
+# setwd( "addresses_people" ) 
+# setwd('..')
+# getwd()
+
+#producing LOG file
+log <- c("Query_Number", "Start_time", "Time_taken")
+log <- paste(log, collapse=',')
+write(log, file="Geocode_Log.txt", append = F)
+
+
+#make sure the loop starts where you want it to.
+
+for( i in 1:loops )
+{ # LOOP STARTS
+
+#creating the objects needed to run the loop.
+  
+filename <- paste0( "AddressesPeople",i,".csv" ) # constructing name of file to load
+
+addressFile <- filename
+
+apiurl <- "https://geocoding.geo.census.gov/geocoder/geographies/addressbatch"
+
+#starting first goecoding, first we output the time, also at the end of this step.
+print( i )
+print(Sys.time() )
+start_time <- Sys.time()
+
+try( #try is a wrapper to run an expression that might fail and allow the users code to handle error-recovery.
+  
+resp <- POST( apiurl, 
+              body=list(addressFile=upload_file(addressFile), 
+                        benchmark="Public_AR_Census2010",
+                        vintage="Census2010_Census2010",
+                        returntype="csv" ), 
+              encode="multipart" )
+)
+
+#printing ending times for monitoring loop
+end_time <- Sys.time()
+print( end_time - start_time ) #ouputting in R console
+
+#writing in log.
+query <- as.character(i)
+len <- as.character(end_time - start_time)
+start_time <- as.character(start_time)
+log <- c(query, start_time, len)
+log <- paste(log, collapse=',')
+write(log, file="Geocode_Log.txt", append = T)
+
+################
+
+### ADD VARIABLE NAMES
+# from: https://www.census.gov/geo/maps-data/data/geocoder.html
+
+filename2 <- paste0( "results",i,".csv" ) #constructing name of file to write.
+
+results <- filename2
+
+var_names <- c( "id", "input_address", 
+                "match", "match_type", 
+                "out_address", "lat_lon", 
+                "tiger_line_id", "tiger_line_side", 
+                "state_fips", "county_fips", 
+                "tract_fips", "block_fips" )
+v.names <- paste(var_names, collapse=',')
+writeLines( text=c(v.names, content(resp)) , con=filename2 )# writting the first output file as filename2 which is named as resultsXX.csv
+
+# writeLines( text=content( resp ) , con=filename2 )  
+
+res <- read.csv( filename2, header=T, 
+                 stringsAsFactors=F, 
+                 colClasses="character" )
+
+
+### SPLIT LATITUDE AND LONGITUDE COORDINATES
+
+lat.lon <- strsplit( res$lat_lon, "," )
+
+for( j in 1:length(lat.lon) )
+{
+   # print( length( lat.lon[[j]] ) )
+   if( length( lat.lon[[j]] ) < 2 )
+   lat.lon[[ j ]] <- c(NA,NA) 
+}
+
+m <- matrix( unlist( lat.lon ), ncol=2, byrow=T )
+colnames(m) <- c("lon","lat")
+m <- as.data.frame( m )
+
+res <- cbind( res, m )
+
+write.csv( res, paste0("ResultsPeople",i,".csv"), row.names=F )
+
+}  # end of loop
+
+getwd()
+```
+
+Two days of geocoding:
+
+#Tuesday
+Run at TUE 11.43pm
+Stopped at WED 8.26am
+finished 539 of the loop
+
+#Wednesday
+Start at 539 (repiting this one for later check in consistency)
+in the morning and had finished by the next day.
+
+
+## 3.3 Combining all the Files
+
+```{r}
+setwd("../addresses_people/Results")
+setwd("..")
+setwd("../addresses_npos")
+
+getwd()
+dir()
+
+these <- (dir())[ grepl( "ResultsPeople", dir() ) ] #this gets the names of all the files that have the string ResultsPeople
+#I think the expression (dir()) makes the output a list
+
+dat <- read.csv( these[1], stringsAsFactors=F ) #this generates an object with the first observation.
+
+
+for( i in 2:length(these) )
+{
+
+  d <- read.csv( these[i], stringsAsFactors=F )
+  dat <- bind_rows( dat, d ) 
+
+}
+
+plot( dat$lon, dat$lat, pch=19, cex=0.5 )
+
+plot( dat$lon, dat$lat, pch=19, cex=0.5, col=gray(0.5,0.01) )
+
+getwd()
+
+# write.csv( dat, "PEOPLE-GEOCODES.csv", row.names=F )
+
+saveRDS( dat, "../Data/PEOPLE-GEOCODESv2.rds" )
+
+setwd( ".." )  # return to main directory
+```

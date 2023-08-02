@@ -1,0 +1,176 @@
+---
+title: "Font Awesome Icons Package Test"
+output:
+  html_document:
+    theme: readable
+    df_print: paged
+    highlight: tango
+    css: lab-instructions.css
+    include:
+      after_body: footer.html
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+
+
+## fontawesome package
+
+### Usage: 
+
+```{r, eval=F}
+install.packages("fontawesome")
+fontawesome::fa( name="github" )
+fontawesome::fa( name="twitter" )
+fontawesome::fa( name="home" )
+```
+
+### Output Type: 
+
+```{r}
+fa <- fontawesome::fa( name="github" )
+class( fa )
+str( fa )
+```
+
+```{r}
+fa
+```
+
+
+```{r}
+as.character(fa)
+```
+
+### results=asis
+
+NO **results="asis"**. 
+
+Prints as plain text after using paste(): 
+
+```{r}
+cat( paste0( '<a href="google.com">', fontawesome::fa( name="github" ), '</a>' ) )
+```
+
+
+<br>
+
+
+ADD **results="asis"** 
+
+Now it adds it to the RMD as HTML: 
+
+```{r, results="asis"}
+cat( paste0( '<a href="google.com">', fontawesome::fa( name="github" ), '</a>' ) )
+```
+
+
+## Stable Usage in Templates 
+
+```{r, results="asis"}
+# - get icon svg object from font awesome 
+# - implicitly recast as text when added to HTML tags 
+# - cat() to export, need to include {r, results="asis"}
+
+fa <- fontawesome::fa( name="github" )
+x <-  paste0( '<a href="www.google.com">  \n\n', fa, '\n\n</a>' )
+cat( x )
+```
+
+
+<br>
+<hr>
+<br>
+
+
+
+
+# icons package 
+
+### Usage: 
+
+```{r, eval=F}
+remotes::install_github("mitchelloharawild/icons")
+icons::download_fontawesome(version = "dev")
+icons::fontawesome("twitter")
+icons::fontawesome("github")
+icons::fontawesome("home")
+```
+
+### Output Type
+
+```{r}
+ic <- icons::fontawesome("twitter")
+class( ic )
+str( ic )
+```
+
+NO **results="asis"**. 
+
+```{r}
+x <- paste0( "<a href='www.google.com'>  \n\n", as.character(ic), "\n\n</a>" )
+x
+```
+
+NO **results="asis"**. 
+
+```{r}
+cat(x)
+```
+
+
+### results=asis 
+
+ADD **results="asis"** 
+
+```{r, results="asis"}
+x   # results="asis"
+```
+
+ADD **results="asis"** 
+
+```{r, results="asis"}
+cat( x )  # results="asis"
+```
+
+
+### Add Muliple
+
+```{r, results="asis"}
+add_icons <- function()
+{
+  cat( as.character( icons::fontawesome("twitter") ) )
+  cat( as.character( icons::fontawesome("github")  ) )
+  cat( as.character( icons::fontawesome("home")    ) )
+}
+
+add_icons()
+```
+
+
+
+## Stable Usage in Templates 
+
+The HTML links are still not functioning properly with this integration - use the fontawesome package above. 
+
+```{r, results="asis"}
+# - convert icon svg to text 
+# - then add to HTML tags 
+# - cat() to export, need to include {r, results="asis"}
+
+fa <- as.character( icons::fontawesome("twitter") )
+x <-  paste0( '<a href="www.google.com">  \n\n', fa, '\n\n</a>' )
+cat( x )
+```
+
+
+<br>
+<br>
+<hr>
+<br>
+<br>
+<br>

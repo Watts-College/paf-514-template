@@ -1,0 +1,482 @@
+---
+title: 'Lab 03 - Regular Expressions'
+output:
+  html_document:
+    theme: readable
+    df_print: paged
+    highlight: tango
+    toc: true
+    self_contained: false
+    number_sections: false
+    css: labs.css
+    include:
+      after_body: footer.html    
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set( echo = TRUE, message=F, warning=F, fig.width=10 )
+library( dplyr )
+library( pander )
+```
+
+
+
+# Data
+
+This lab utilizes a [free Kaggle dataset](https://www.kaggle.com/dorianlazar/medium-articles-dataset/notebooks) describing the popularity of articles on the blogging platform Medium. We will use the following fields: 
+
+* **title** - the blog title 
+* **subtitle** - blog subtitle (optional)
+* **claps** - the number of "likes" each article received 
+* **reading_time** - time (in minutes) it takes to reach each article 
+* **publication** - Medium community in which the blog was published 
+* **date** - date of publication in style YYYY-MM-DD 
+
+
+```{r}
+# URL <- "https://www.dropbox.com/s/tizgdsat2mziod6/medium-data-utf8.csv?dl=1"
+URL <- "https://raw.githubusercontent.com/DS4PS/cpp-527-fall-2020/master/labs/data/medium-data-utf8-v2.csv"
+d <- read.csv( URL )
+
+preview.these <- c("title", "subtitle", "claps", "reading_time", "publication", "date")
+head( d[preview.these] ) %>% pander()
+```
+
+
+
+
+## Text Pre-Processing Steps
+
+The article title text is fairly clean and needs little pre-processing, but there are a couple of important issues that need to be addressed. 
+
+1. Remove strange spaces 
+2. Remove HTML tags 
+3. Remove "hair space" dash marks
+
+There are special spaces that appear randomly in some titles. They will appear identical to the invisible eye but will cause problems when you are trying to split titles into words. Replace them with regular spaces: 
+
+```{r}
+# replace all versions of space 
+# including special styles like
+# the 'hair space'  with regular spaces
+d$title <- gsub( "\\s", " ", d$title )
+```
+
+
+Some titles include HTML tags for emphasis. They will always occur at the start and end of the titles: 
+
+```{r, eval=F}
+"<strong class=\"markup--strong markup--h3-strong\">Why 70% of Entrepreneurs Are Ending Their Pitches the Wrong Way</strong>"
+"<strong class=\"markup--strong markup--h3-strong\">Tackle Negative Core Beliefs</strong>"
+```
+
+There are some stylized dashes in the text that are book-ended with "hair space" characters, which are thinner-than-usual spaces. 
+
+In the UTF-8 text encoding they come out as:
+
+```
+<U+200A>—<U+200A>
+```
+
+Since they are not actual words, remove all of these hairspace-dashes from the text. 
+
+
+
+## Create a Performance Measure 
+
+We can track article performance in many ways. This dataset contains "claps", which are the equivalent of a thumbs-up or like on other platforms. 
+
+It also contains a responses category, but that is a little more complicated to interpret because comment might be asking for clarification because the article was poorly-written or arguing a counter-point becaue the article was controversial. 
+
+We will use **claps** to measure article popularity, but note the skew in the raw measure:
+
+```{r, fig.width=10}
+hist( d$clap, main="Raw Clap Count",
+      xlim=c(1,950), breaks=5000, col="gray20", border="white" )
+hist( log10(d$clap+1), main="Logged Clap Score",
+      col="gray20", border="white", breaks=100 )
+```
+
+Create a new **clap score** to measure performance using the following log transformation:
+
+```{r}
+d$clap.score <- log10( d$clap + 1 )
+```
+
+
+
+
+# Lab Questions 
+
+
+
+
+
+## Q1 - Comparing Title Styles
+
+Which title style consistently gets the most claps (clap score)? 
+
+**Power Lists:**
+
+* "Six Recommendations for Aspiring Data Scientists"  
+* "13 Essential Newsletters for Data Scientists: Remastered"  
+* "7 Machine Learning lessons that stuck with me this year"  
+
+**How to guides:** 
+
+* "How to measure progress with outcomes" 
+* "How We Dumped A/B Testing For Machine Learning" 
+* "How To Be Productive Without Being Hard on Yourself" 
+
+**Something Colon Something:**
+
+* "Business Checkup: 10 Ways to Improve your 2020 Communications" 
+* "ReFocus: Making Out-of-Focus Microscopy Images In-Focus Again" 
+* "Review: SqueezeNet (Image Classification)"
+
+**Questions:**
+
+* "Why Do Financial Models Break?"
+* "What Is Econometrics?"
+* "Can AI Robots Rebel Against Us, as Shown in Films?"
+* "Can You Invest Like a Top Fund Manager?" 
+* "So you’re building a “Superhuman of X”?"
+
+**Other:**
+
+All other styles not included in these. 
+
+Use regular expressions in order to identify all of the titles that belong in each category. 
+
+```{r, eval=F}
+
+# grepl returns TRUE for all cases that 
+# match the expression and FALSE otherwise 
+
+category.members <- grepl( "expression", titles )
+```
+
+
+**Q1-A:**What is the average performance (clap score) of each type of title? 
+
+**Q1-B:**Which style of title performs the best overall? 
+
+
+
+## Q2 - Content Analysis 
+
+
+Split each title into a group of distinct words. 
+
+**Q2-A:** What are the 25 most common words used in the titles? 
+
+**Q2-B:** What is the most common word used at the beginning of a title? 
+
+**Q2-C:** What is the most common word used at the end of a title? 
+
+*Hint: be sure to convert all words to the same case so that variants like "How" and "how" are treated the same.* 
+
+```{r,eval=F}
+x <- tolower( x )
+```
+
+When splitting a title into words note that the string split function returns a list. 
+
+This is a sensible data structure since you want to keep the atomized words grouped by their original titles, but it makes it hard to do content analysis:
+
+```{r}
+first.six.titles <- 
+  c("A Beginner’s Guide to Word Embedding with Gensim Word2Vec Model", 
+    "Hands-on Graph Neural Networks with PyTorch & PyTorch Geometric", 
+    "How to Use ggplot2 in Python", "Databricks: How to Save Files in CSV on Your Local Computer", 
+    "A Step-by-Step Implementation of Gradient Descent and Backpropagation", 
+    "An Easy Introduction to SQL for Data Scientists")
+
+word.list <- strsplit( first.six.titles, " " )
+word.list
+```
+
+
+Similar to re-casting data types, you can convert the list to a character vector using **unlist()**:
+
+```{r}
+word.vector <- unlist( word.list )
+word.vector
+```
+
+
+**Counting the first or last words:**
+
+These questions require you to break into the list version of the results and extract either the first or last word from each. 
+
+```{r, eval=F}
+# x is a single title
+get_first_word <- function( x )
+{
+  # split title x into words
+  # unlist results
+  # select the first word
+  # return first word
+}
+
+# test your function
+x <- d$title[1]
+get_first_word( x )
+```
+
+
+```{r, echo=F}
+get_first_word <- function( x )
+{
+  words <- strsplit( x, " " )
+  first.word <- unlist( words )[1]
+  return( first.word )
+}
+```
+
+When results are stored as lists there is an extra step to the analysis.
+
+You need to **apply** your function to each element in the list. There are several versions of apply() functions in R. 
+
+* **lapply()** applies the function to a list and returns a list 
+* **sapply()** applies the function to a list and returns a vector
+
+**lapply version:**
+
+```{r}
+# lapply applies the length function to each list element and returns a list
+
+word.list <- strsplit( first.six.titles, " " )
+word.count <- lapply( word.list, length )
+word.count <- unlist( word.count ) # convert to a vector
+word.count
+```
+
+
+```{r}
+# sapply applies the function to all titles in the vector
+# the default prints the original title with the return values
+
+word.list <- strsplit( first.six.titles, " " )
+sapply( word.list, length )
+```
+
+To create a vector of the first title words only would then be something like: 
+
+```{r, eval=F}
+# add USE.NAMES=F to only print return values
+sapply( first.six.titles, get_first_word, USE.NAMES=FALSE )
+```
+
+
+The apply functions are a more efficient version of loops - the repetition of a single operation over and over on different data elements. So the logic would be equivalent to this loop version: 
+
+```{r, eval=F}
+results <- NULL
+for( i in 1:length(d$title) )
+{
+  results[i] <- get_first_word( d$title[i] )
+}
+```
+
+Loops are effective for these types of analysis, but are extremely inefficient as the size of your dataset grows and should be avoided when possible. 
+
+And as you become more comfortable with lists they become easier to manage: 
+
+```{r, eval=T}
+# efficiently core R version:  
+first.six.titles %>% strsplit( " " ) %>% sapply( length )  
+```
+
+
+
+**CHALLENGE QUESTION:**
+
+Is it better to use common words or unique words in your title? 
+
+Create a count of the number of times each word appears in the collection of titles. 
+
+Create a variable for the group of words that appear in the bottom quartile (0-25%) of frequencies.
+
+Create a variable for the group of words that appear in the top quartile (75-100%) of frequencies.
+
+**Q-A: Are simple titles better?** 
+
+Is performance a function of common words used? 
+
+Create a box and whisker plot showing clap scores as a function of the number of common words used. 
+
+Regress the clap score onto the numer or proportion of common words.
+
+**Q-B: Are niche titles better?** 
+
+Is performance a function of uncommon words used? 
+
+Create a box and whisker plot showing clap scores as a function of the number of uncommon words used. 
+
+Regress the clap score onto the numer or proportion of uncommon words.
+
+**Creating top and bottom percentile categories:**
+
+```{r}
+# x <- sample( 1:100, 25, replace=T )
+# dput( sort( x ) )
+
+x <- c(1L, 2L, 19L, 19L, 20L, 21L, 23L, 24L, 31L, 34L, 36L, 40L, 48L, 
+50L, 51L, 56L, 63L, 67L, 73L, 74L, 83L, 84L, 91L, 92L, 96L)
+
+summary( x )
+# get cut points
+quantile( x, probs=c(0,0.25,0.5,0.75,1) )
+
+
+# rank x by order and percentile 
+rank.x <- rank(x)
+centile.x <- 100 * ( rank(x) / length(x) )
+
+# create variable by values break points
+x.25 <- quantile( x, probs=0.25 )
+x.75 <- quantile( x, probs=0.75 )
+top.25.x <- as.numeric( x >= x.75 )  # x >= 73
+bot.25.x <- as.numeric( x <= x.25 )  # x <= 23 
+
+# create variable by percentile break points 
+top.25.x <- as.numeric( centile.x >= 75 )  # x >= 73
+bot.25.x <- as.numeric( centile.x <= 25 )  # x <= 23 
+
+data.frame( x, rank.x, centile.x, top.25.x, bot.25.x ) %>% pander()
+```
+
+
+**CHALLENGE QUESTION:** 
+
+Find a package in R that will tabulate sentiment scores for a set of text. 
+
+These packages will return counts or percentages of words with positive salience (e.g. *happiness, joy, laughed*) and counts or percentages with negative salience (e.g. *hate, disdain, smirk*). 
+
+**Which titles perform better? Those with high positive salience? Or those with high negative salience?** 
+
+
+
+
+
+## Q3 - Length of Title 
+
+Does the length of the title matter? 
+
+
+
+**Q3-A: Do titles with more words get better clap scores?** 
+
+Count the number of words in each title. 
+
+Then examine the clap score as a function of word count by regressing the clap score onto word count. 
+
+Visualize the relationship using a box and whisker plot: 
+
+```{r}
+# creating random non-meaningful data for demo
+x <- sample( 1:10, size=1000, replace=TRUE )
+y <- 3*x - 0.5*x*x + rnorm(1000,0,5)
+f <- factor(x)
+
+# plot( factor, numeric.vector )
+plot( f, y )
+```
+
+
+**Q3-B: Do longer titles get better clap scores?** 
+
+Repeat the analysis from Q3-A but this time measuring title length by the number of characters in the title. 
+
+
+
+
+
+## Challenge Question 
+
+Put all of the steps above together into a single regression model:
+
+* Title style 
+* Title length 
+* Large proportion of 100 most common words 
+
+Add some additional controls: 
+
+* Presence or absence of a subtitle 
+* Length of the article (time it takes to read) 
+* Months since it was published 
+* The Medium community in which the blog appears: 
+
+```{r}
+table( d$publication ) %>% pander()
+```
+
+You are also free to add additional features of the titles that you create with regular expressions. 
+
+
+**Q: Which factors best predict article performance overall?**
+
+
+
+
+<br>
+<br>
+<br>
+
+# Submission Instructions
+
+When you have completed your assignment, knit your RMD file to generate your rendered HTML file. Platforms like BlackBoard and Canvas often disallow you from submitting HTML files when there is embedded computer code, so create a zipped folder with both the RMD and HTML files.
+
+Login to Canvas at <http://canvas.asu.edu> and navigate to the assignments tab in the course repository. Upload your zipped folder to the appropriate lab submission link.
+
+Remember to:
+
+* name your files according to the convention: **Lab-##-LastName.Rmd**
+* show your solution, include your code.
+* do not print excessive output (like a full data set).
+* follow appropriate style guidelines (spaces between arguments, etc.).
+
+
+<br>
+<br>
+
+----
+
+<br>
+<br>
+
+
+
+**Notes on Knitting**
+
+Note that when you knit a file, it starts from a blank slate. You might have packages loaded or datasets active on your local machine, so you can run code chunks fine. But when you knit you might get errors that functions cannot be located or datasets don't exist. Be sure that you have included chunks to load these in your RMD file.
+
+Your RMD file will not knit if you have errors in your code. If you get stuck on a question, just add `eval=F` to the code chunk and it will be ignored when you knit your file. That way I can give you credit for attempting the question and provide guidance on fixing the problem.
+
+
+**Markdown Trouble?**
+
+If you are having problems with your RMD file, visit the [**RMD File Styles and Knitting Tips**](https://ds4ps.org/cpp-526-spr-2020/labs/r-markdown-files.html) manual.
+
+
+
+<br>
+<br>
+
+----
+
+<br>
+<br>
+
+
+
+
+<style>
+blockquote {
+    padding: 11px 22px;
+    margin: 0 0 22px;
+    font-size: 18px;
+    border-left: 5px solid lightgray;
+}
+</style>
