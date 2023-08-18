@@ -2,47 +2,47 @@
 layout: review
 
 
-root-url: 'https://raw.githubusercontent.com/DS4PS/cpp-527-fall-2020/master/review-sessions/'
+root-url: 'https://raw.githubusercontent.com/DS4PS/paf-514-template/main/review/'
 
 
 session: 
 - week1:
-  date:  'Tues Aug 24'  
-  video: 'https://asu.zoom.us/rec/share/zjvNICtnu8dZFdeg60wxhMu2kBIuEgLzKpFL0ENFCxAutjNRoh7Qv4Y-FS_x1To4.jA5BkU07monHPkKj'
-  password: 'mG?H092#'
+  date:  'Monday Aug 21st'  
+  video: ''
+  password: ''
   sample-code: 'week-01-control-structures.R' 
-  session-code: 'week-01-control-structures.Rhistory' 
+  session-code: '' 
 - week2:
-  date:  'Mon Aug 30'  
-  video: 'https://asu.zoom.us/rec/share/uoUjtcDPccmKaE7qI8eFAp3cR321-OzufhrVEVM0ZnGkc2Mp3iex9zycBFNz8nek.IwIASZVzZLGMIULj'
-  password: 't%@2r.nU'
+  date:  'Mon Aug 28th'  
+  video: ''
+  password: ''
   sample-code: 'week-02-loops.R' 
-  session-code: 'week-02-loops.Rhistory' 
+  session-code: '' 
 - week3:
-  date:  'Tue Sept 7'  
-  video: 'https://asu.zoom.us/rec/share/lQcia9gNFCRnw8l9M1OybAWFox2Vd4fu85VAU-lDYYyLJj48sZmBQOUMcqU6nB1e.vJSzKLN19a9pZpxe'
-  password: '*uEUeMa3'
+  date:  'Mon Sept 4th'  
+  video: ''
+  password: ''
   sample-code: 'week-03-regular-expressions.R' 
-  session-code: 'week-03-regular-expressions.Rhistory' 
+  session-code: '' 
 - week4:
-  date:  'Mon Sept 13'  
-  video: 'https://asu.zoom.us/rec/share/hfjqWi4xGzslm0c0Puig8viw2AOA_RK4L-ci9aTPwZmdeujFbBKKgcPK9NZ6m7MA.952pSGmuLyFKqJIg'
-  password: '0%yvn!50'
-  sample-code: 'week-03-regular-expressions.R'
-  session-code: 'week-03-regular-expressions.Rhistory'
+  date:  'Mon Sept 11th'  
+  video: ''
+  password: ''
+  sample-code: ''
+  session-code: ''
 - week5:
-  date:  'Mon Sept 20'  
-  video: 'https://asu.zoom.us/rec/share/eE4GA71tq9XxFLnvf_vnmI10MVjuJ_W05OKQSNSdI4yeNyl2LkedM_cItc3GF_QI.toZ8G5685e4Hh17u'
-  password: 'V.c1iWaj'
+  date:  'Mon Sept 18th'  
+  video: ''
+  password: ''
   sample-code: 'week-06-data-apis.R'
 - week6:
-  date:  'Wed Sept 29'  
-  video: 'https://asu.zoom.us/rec/share/vwbX3L9CxFhkpGFxWZR8QD2nlf2sI2ldbR7C0WueqosYY6YoYvQIIxsB0NvUG6bd.0tNbZCtc4zIgQAIh'
-  password: "8K!ViP#+"
+  date:  'Wed Sept 25th'  
+  video: ''
+  password: ''
 - week7:
-  date:  'Mon Oct 4'  
-  video: 'https://asu.zoom.us/rec/share/op8G3P2DujEmSyZqlO6TVuKvMSrSt7_EjZKQzAnmxNrcUDaoEKVe7oG7QyZ33Ag2.44G6KxPd14JaG6-l'
-  password: "cuj..JG3"
+  date:  'Mon Oct 2nd'  
+  video: ''
+  password: ''
 
 ---
 
@@ -68,7 +68,7 @@ Live review sessions will be held each week in order to:
 > **MONDAYS**    
 > **12pm AZ time** 
 
-<a href='https://asu.zoom.us/j/87540573400' target=""> <button class="zoom">JOIN ZOOM MEETING</button></a>
+<a href='https://asu.zoom.us/j/89752412079' target=""> <button class="zoom">JOIN ZOOM MEETING</button></a>
 
 <br>
 
@@ -90,7 +90,7 @@ For those that cannot attend recordings of each session will be posted below.
 
 Feel free to schedule virtual office hours as well.   
 
-* Jesse Lecy: [AVAILABILITY](https://calendly.com/lecy/)
+* Jesse Lecy: [AVAILABILITY](https://www.calendar.com/lecy/meet30/)
 
 
 <br> 
