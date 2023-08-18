@@ -13,7 +13,7 @@ author:
     github:     lecy   # Github username for avatar
 
 # calendly app for virtual office hours
-calendly:  'https://calendly.com/lecy'
+calendly:  'https://www.calendar.com/lecy/meet30/'
 
 
 
@@ -56,14 +56,14 @@ header:
 
 url :               "https://watts-college.github.io"
 baseurl:            "cpp-527-template"
-course_url:         "https://watts-college.github.io/cpp-527-template/"
-title:              DS4PS # don't change this
+course_url:         "https://watts-college.github.io/paf-514-template/"
+title:               DS4PS # don't change this
 
 github_info:
     username:          watts-college # Github location of the course
     branch:            main
-    website-repo:      cpp-527-template
-    course-repo:       cpp-527-template
+    website-repo:      paf-514-template
+    course-repo:       paf-514-template
 
 
 
