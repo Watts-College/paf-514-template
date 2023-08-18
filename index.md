@@ -11,22 +11,22 @@ info:
  program_title: Program Evaluation and Data Analytics
  program_website: https://asuonline.asu.edu/online-degree-programs/graduate/program-evaluation-and-data-analytics-ms/
  course_title: Foundations of Data Science Part II
- course_number: CPP 527 
+ course_number: PAF 514 
  course_level: Graduate 
- course_website: 'https://canvas.asu.edu/courses/99223'
- course_start_end_dates: August 19th to October 8th, 2021
+ course_website: 'https://asu.instructure.com/courses/166594'
+ course_start_end_dates: August 17th to October 6th, 2021
  course_prerequisites:  
  class_meets_when:  Asynchronous  
- class_meets_where:  'https://asu.zoom.us/j/87540573400'
- review_sessions_when: Monday, 12pm AZ 
+ class_meets_where:  'https://asu.zoom.us/j/89752412079'
+ review_sessions_when: Monday, 4pm AZ 
  review_sessions_where: Zoom
- discussion_board_url: 'https://ds4ps.org/cpp-527-fall-2021/help/'
+ discussion_board_url: 'https://watts-college.github.io/paf-514-template/help/'
 
 instructor:
 -  name: Jesse Lecy
    title: Professor
-   email: jdlecy@asu.edu   
-   office_location: 'https://asu.zoom.us/j/87540573400'
+   email: jlecy@asu.edu   
+   office_location: 'https://asu.zoom.us/j/89752412079'
    website_url: http://www.lecy.info/
    github_url: 'https://github.com/lecy' 
    twitter_url: 
@@ -34,7 +34,7 @@ instructor:
    linked_in_url:
    office_hours_time: Flexible
    office_hours_location:  Zoom
-   office_hours_app_url: 'https://calendly.com/lecy/'
+   office_hours_app_url: 'https://www.calendar.com/lecy/meet30/'
    
 
 textbooks:
@@ -157,7 +157,7 @@ The assigned work for the term comes in the form of four elements, described bel
 
 - **RMD to Jekyll Project (15%):**  The final project in the course will require you to create a template for automating a report in R. You will publish the report as a GitHub (Jekyll) website. 
 
-- **Explainer Assignment (10%):**  You are invited to pick one topic from the class that you want to learn more about, or that you think might provide value to your classmates. Create a short tutorial to make your topic accessible to your peers. It can be a blog post, a video, a GIF, or a tutorial that explains an important concept from data programming, presents a helpful framework, illustrates a useful R tool or approach to data programming, or introduces classmates to a new package or function. 
+- **Data Wrangling Assignment (10%):**  The biggest task on almost every project is building the dataset (not doing the analysis). The data wrangling assignment is designed to give you more practice with data steps and data workflows. 
 
 - **Yellowdig Practice Problems (15%):**  Each week I will post a list of review questions or brain teasers about the R language. You will be invited to submit solutions or explanations to the problems on Yellowdig and discuss with classmates. You need to earn 100 points over the 7 weeks to earn full credit for participation in practice problems. The points will be allocated as follows:
 
