@@ -14,7 +14,7 @@ info:
  course_number: PAF 514 
  course_level: Graduate 
  course_website: 'https://asu.instructure.com/courses/166594'
- course_start_end_dates: August 17th to October 6th, 2021
+ course_start_end_dates: August 17th to October 6th, 203
  course_prerequisites:  
  class_meets_when:  Asynchronous  
  class_meets_where:  'https://asu.zoom.us/j/89752412079'
