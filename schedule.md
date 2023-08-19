@@ -3,33 +3,33 @@ layout: default
 title: Schedule
 
 canvas: 
-  assignment_url: 'https://canvas.asu.edu/courses/99223/assignments'
+  assignment_url: 'https://asu.instructure.com/courses/166594/assignments'
   
-yellowdig_url: 'https://canvas.asu.edu/courses/99223/assignments/2552420'
+yellowdig_url: 'https://asu.instructure.com/courses/166594/assignments/4504348'
 
 yellowdig: 
-  post-01: 'Friday, August 20th'
-  post-02: 'Friday, August 27th' 
-  post-03: 'Friday, September 3rd' 
-  post-04: 'Friday, September 10th' 
-  post-05: 'Friday, September 17th' 
-  post-06: 'Friday, September 24th' 
-  post-07: 'Friday, October 4th' 
+  post-01: 'Friday, August 18th'
+  post-02: 'Friday, August 25th' 
+  post-03: 'Friday, September 1st' 
+  post-04: 'Friday, September 8th' 
+  post-05: 'Friday, September 15th' 
+  post-06: 'Friday, September 22nd' 
+  post-07: 'Friday, September 29th' 
   
 
 labs:
-  lab-01:  'Thursday, Aug 26th' 
-  lab-02:  'Tuesday, August 31st'
-  lab-03:  'Thursday, September 9th'
-  lab-04:  'Tuesday, September 14th'
-  lab-05:  'Tuesday, September 21st'
-  lab-06:  'Monday, October 1st'
+  lab-01:  'Friday, August 25th' 
+  lab-02:  'Wednesday, August 30th'
+  lab-03:  'Wednesday, September 6th'
+  lab-04:  'Wednesday, September 13th'
+  lab-05:  'Wednesday, September 20th'
+  lab-06:  'Wednesday, September 27th'
   
   
 projects: 
-  r-package:  'Friday, September 10th'
+  r-package:  'Friday, September 8th'
   report-template:  'Friday, October 8th'
-  code-through:  'Optional'
+  data-wrangling:  'Friday, October 1st'
   
   
 ---
@@ -732,6 +732,22 @@ Also share your page link on YellowDig:
 <hr>
 <br>
 
+## Data Wrangling Exercise
+
+**Due {{page.projects.data-wrangling}}**
+
+Coming soon....
+
+<a class="uk-button uk-button-default" href="">Instructions</a>
+
+---
+
+**Submit to Canvas:**
+
+<a class="uk-button uk-button-primary" href="{{page.canvas.assignment_url}}">SUBMIT CODE-THROUGH</a>
+
+<br>
+<br>
 
 
 
@@ -782,56 +798,6 @@ A key learning outcome is understanding how the basic building blocks of data pr
 <br>
 <br> 
 
-## Code-Through 
-
-**Due {{page.projects.code-through}}**
-
-
-Since you are sharing your code-through with your classmates on Yellowdig, it will serve as your discussion topic this week.
-
-Add your codethrough files (the HTML specifically) to your new website on GitHub repository and generate an active URL for your tutorial so that you can share with classmates. Note that you cannot host Shiny apps or other dynamic apps on GitHub - they must be static HTML pages. 
-
-<a class="uk-button uk-button-default" href="https://ds4ps.org/cpp-527-spr-2020/labs/code-through-assignment.html">Code-Through Instructions</a>
-
----
-
-**Submit to Canvas:**
-
-<a class="uk-button uk-button-primary" href="{{page.canvas.assignment_url}}">SUBMIT CODE-THROUGH</a>
-
-**Post on Yellowdig:**
-
-<a class="uk-button uk-button-primary" href="{{page.yellowdig_url}}">YELLOWDIG</a>
-
----
-
-Optional code-through assignment: if you are looking for topics we invite you to select one of the placeholder chapters from the open-source course lecture notes. 
-
-For example, Converting Data Types: 
-
-https://ds4ps.org/dp4ss/#one-dimensional-datasets
-
-These notes are used as background reading for course units, but the main intent is to create a catalog of useful topics that can be referenced quickly to remind yourself about a topic. Syntax and arguments are difficult to memorize, so even experienced programmers need working examples as reference. 
-
-Cheat sheets and reference chapters do not need to include a lot of explanation, but rather a list of important considerations under a topic and useful examples that differentiate cases. 
-
-For example, in a chapter on factors you could include things like: 
-
-* creating factors (the factor function) 
-* printing unique factor levels 
-* counting factor levels 
-* creating new factor level labels  
-* changing factor level labels 
-* conversion to factors 
-* conversion from factors to characters
-* conversion from factors to numeric 
-* regular versus ordered factors 
-* default versus custom factor orders 
-
-Note that these are rules related to one single vector type! It can be helpful to choose what appears to be a narrow topic and test yourself on how much you know about that topic, as well as whether you can find some parsimonious examples to show the right and wrong ways to implement your code. Often times examples that show what NOT to do can be more instructive than correct code. 
-
-<br>
-<br>
 
 
 
