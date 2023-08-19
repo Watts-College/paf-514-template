@@ -1,2 +1,5 @@
-# cpp-527-fall-2021
-A course shell for CPP 527 Foundations of Data Science II
+# paf-514-template
+
+A course shell for Foundations of Data Science II (PAF 514 )
+
+
