@@ -100,7 +100,7 @@ For easy reference, you have the following due dates this term:
 **Projects:**
 
 * **R Package**: {{page.projects.r-package}}
-* **Code Through**: {{page.projects.code-through}}  
+* **Data Wrangling Exercise**: {{page.projects.data-wrangling}}  
 * **Customized Report Template**: {{page.projects.report-template}} 
 
 
@@ -493,8 +493,6 @@ These examples all demonstrate interesting uses of text as data. They are also e
 
 
 
-
-
 <!--- 
 #########################################
 #########################################
@@ -588,6 +586,55 @@ Focus on:
 <br>
 
 
+## PROJECT: Start Data Wrangling Exercise
+
+Get started on your data wrangling assignment. 
+
+This assignment is designed to revisit some concepts from Data Science I and practice your data wrangling skills so that you can become facile with common dataset construction functions and descriptive statistics. 
+
+* filtering by rows
+  - select by position
+  - select by condition
+  - recycling rules 
+* selecting by columns
+  - select by name (base vs dplyr conventions)
+  - select_all() functions
+  - select by position
+* joining datasets by shared IDs
+  - left, right, middle, outer joins
+  - compound IDs
+  - cartesian product rules 
+* dataset reshape
+  - convert from wide to long format
+  - convert from long to wide format
+* data tidying
+* renaming variables 
+* variable transformations (one variable to one variable)
+  - numeric to factor (e.g. age to age group)
+  - factor to numeric (sample from category)
+  - factor to factor (relevel)
+  - character to factor (regex)
+  - numeric to numeric (new feature)
+  - new boolean (1/0 or T/F) variable (logical statements)
+  - cumulative sum or proportion 
+* feature engineering (multiple variables to one variable)
+  - combine 5 scores (variables) into an index
+  - conduct PCA to reduce data complexity
+  - calculate distance of each house to nearest grocery store
+  - complex logical statements with multiple conditions
+  - conditional proportions (group_by)
+* data standardization
+* data validation
+* data documentation
+* data profiling
+* summary tables
+  - F1xF2: factor by factor (table or count functions, mosaic plots)
+  - F1xN: factor by numeric (group_by + summarize, box and whisker plots)
+  - F1xF2xF3: factor by factor by factor (table, mosaic plots)
+  - F1xF2xN: factor by factor by numeric (group_by + summarize, ggplot+grid)
+
+<hr>
+<br>
 
 
 
