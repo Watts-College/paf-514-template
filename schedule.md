@@ -28,8 +28,8 @@ labs:
   
 projects: 
   r-package:  'Friday, September 8th'
-  report-template:  'Friday, October 8th'
-  data-wrangling:  'Friday, October 1st'
+  report-template:  'Friday, October 6th'
+  data-wrangling:  'Friday, Sept 29th'
   
   
 ---
