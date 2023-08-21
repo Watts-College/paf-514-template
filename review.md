@@ -2,7 +2,7 @@
 layout: review
 
 
-root-url: 'https://raw.githubusercontent.com/DS4PS/paf-514-template/main/review/'
+root-url: 'https://github.com/Watts-College/paf-514-template/blob/main/review-sessions/'
 
 
 session: 
