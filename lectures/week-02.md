@@ -208,6 +208,8 @@ These readings are a slightly more advanced treatment of loops and control struc
 
 [Simulation](https://bookdown.org/rdpeng/rprogdatascience/simulation.html) 
 
+[More regression simulation examples](https://github.com/lecy/regression-simulations)
+
 
 <br>
 <br>
