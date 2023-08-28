@@ -23,7 +23,25 @@ In this case we are taking repeated random draws of size N from a population, th
 
 For a single sample we calculate the slope and confidence interval as follows: 
   
-```r 
+```r
+## GENERATE DATA SO WE KNOW THE "TRUTH"
+## regression slope = 2
+
+x <- 1:100
+y <- 2*x + rnorm(100,0,75)
+d <- data.frame( x, y )
+
+plot( x, y, pch=19, main="Population Data" )
+summary( lm( y ~ x ) )
+abline( lm(y~x), col="darkorange", lwd=2 )
+```
+
+![image](https://github.com/Watts-College/paf-514-template/assets/1209099/acbf918d-6d39-477c-bc64-dd94c4c2d2dd)
+
+
+```r
+## NOW TAKE A SAMPLE
+
 # regression model: Y = b0 + b1(X)
 d.sample <- dplyr::sample_n( d, size=N )
 m <- lm( y ~ x, data=d.sample )
