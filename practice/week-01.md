@@ -453,12 +453,28 @@ Based upon these examples, what are the rules R applies for numeric casting when
  [61]  6 10  6  6  8  6  6  3  3  7  1  1  9  9  5
  [76]  8 10  3 10  5  1  8  5  4 10  4  3  4  1  5
  [91]  2  4  7  4  2  4  6  9  4 10  1
-> typeof(z)
+> typeof(z)      # THIS IS UNEXPECTED
 [1] "double"
 > object.size(z)
 856 bytes
-> 
-> z <- c( x, 1.00 )
+>
+> z <- c( x, 1L )    # ADD AN "L" TO FORCE THE INTEGER DATA TYPE
+> z
+  [1]  8  6  5  9  7  1  6  1  6 10  1  6  1  5 10  9  9  9
+ [19]  6  2  7  5 10  8  2  4  2  9  5  2  6  8  8  8  2  2
+ [37]  8  6  2  7  6  2  6  8  8  2  4  8  7  7 10  3  8  8
+ [55] 10  1  1  2  1  8  9  9  6  6  8  4  6  5  6  1  5  5
+ [73]  6  1  9  6  7  8  7  4  9  3  9  4  4  5  1  4  5  3
+ [91]  1  6  7  5  4  2 10  7  1  6  1
+> typeof(z)
+[1] "integer"
+> object.size(z)
+456 bytes
+
+# STORES EXTRA ZEROS BUT DOESN'T PRINT THEM:
+# MEMORY USE ISN'T CAPTURED WELL BY PRINT
+
+> z <- c( x, 1.00 )  
 > z
   [1] 10  8  5  5  6  7  5  1  5  7  3 10  2  9  5
  [16]  4  5  7  9  1  6  7 10  7 10  5  1  8  3  5
@@ -471,9 +487,12 @@ Based upon these examples, what are the rules R applies for numeric casting when
 [1] "double"
 > object.size(z)
 856 bytes
-> 
-> 
-> z <- c( x, 1.01 )
+>
+
+# NOW IT PRINTS SIGNIFICANT DIGITS OF ALL
+# FOR CONSISTENCY WHEN ONE DECIMAL IS INTRODUCED 
+ 
+> z <- c( x, 1.01 )  
 > z
   [1] 10.00  8.00  5.00  5.00  6.00  7.00  5.00
   [8]  1.00  5.00  7.00  3.00 10.00  2.00  9.00
@@ -494,6 +513,22 @@ Based upon these examples, what are the rules R applies for numeric casting when
 [1] "double"
 > object.size(z)
 856 bytes
+>
+> z <- c( x, 1.001 )
+> z
+  [1]  8.000  6.000  5.000  9.000  7.000  1.000  6.000  1.000
+  [9]  6.000 10.000  1.000  6.000  1.000  5.000 10.000  9.000
+ [17]  9.000  9.000  6.000  2.000  7.000  5.000 10.000  8.000
+ [25]  2.000  4.000  2.000  9.000  5.000  2.000  6.000  8.000
+ [33]  8.000  8.000  2.000  2.000  8.000  6.000  2.000  7.000
+ [41]  6.000  2.000  6.000  8.000  8.000  2.000  4.000  8.000
+ [49]  7.000  7.000 10.000  3.000  8.000  8.000 10.000  1.000
+ [57]  1.000  2.000  1.000  8.000  9.000  9.000  6.000  6.000
+ [65]  8.000  4.000  6.000  5.000  6.000  1.000  5.000  5.000
+ [73]  6.000  1.000  9.000  6.000  7.000  8.000  7.000  4.000
+ [81]  9.000  3.000  9.000  4.000  4.000  5.000  1.000  4.000
+ [89]  5.000  3.000  1.000  6.000  7.000  5.000  4.000  2.000
+ [97] 10.000  7.000  1.000  6.000  1.001
 ```
 
 *Note that the print function (which is called implicitly by typing the object name) will truncate zeros at the end of numbers up to the last meaningful digit. As a result, you cannot determine whether a numeric vector is an integer by printing it out because integers and doubles will often appear the same when printed. You need the **typeof()** function to check the data type for numeric vectors.*
