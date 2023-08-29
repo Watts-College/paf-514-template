@@ -14,10 +14,10 @@ session:
   session-code: 'week-01-control-structures-v3.Rhistory' 
 - week2:
   date:  'Mon Aug 28th'  
-  video: ''
-  password: ''
+  video: 'https://asu.zoom.us/rec/share/Lmn2-l_T3N57d8W_FbAlvua26pmqMvWHHKbNjpucMn3Q0E8HnSxMTQCmxJbIM3N5.RcsR6UseFDyauG5T' 
+  password: '16r^9aG6'
   sample-code: 'week-02-loops.R' 
-  session-code: '' 
+  session-code: 'week-02-loops.Rhistory' 
 - week3:
   date:  'Mon Sept 4th'  
   video: ''
