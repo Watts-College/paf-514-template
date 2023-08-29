@@ -9,7 +9,9 @@ yellowdig:
   post-04: 'Friday, September 15th' 
   post-05: 'Friday, September 22nd' 
   post-06: 'Friday, September 29th' 
-  
+
+yellowdig_url: 'https://asu.instructure.com/courses/166594/assignments/4504348'
+
 ---
 
 <div class = "uk-container uk-container-small">
@@ -49,7 +51,7 @@ You can start working on the practice problems at any time but please don't post
   
 Each question should have it's own pin. Please group responses to one question on one pin and avoid creating new pins when the question already exists.   
   
-<a class="uk-button uk-button-primary" href="https://asu-online.yellowdig.app/community/17592351249266">YELLOWDIG</a> 
+<a class="uk-button uk-button-primary" href="{{ page.yellowdig_url }}">YELLOWDIG</a> 
   
 <hr>
 <br>
