@@ -386,7 +386,9 @@ More likely, if you are working with a team of analysts within an organization y
 
 Even if not sharing the package widely it is often a more efficient method for the team to maintain project code so that it can be easily updated and functions enhanced. Project updates are then easily shared simply by re-installing the package. 
 
-This tutorial will teach you how to build and share a package in R. You will "package" your R code from Labs 01 and 02 into a new **montyhall package** to make it easier to run simulations to evaluate game strategies. 
+This tutorial will teach you how to build and share a package in R. You will "package" your R code from Labs 01 and 02 into a new **montyhall package** to make it easier to run simulations to evaluate game strategies.
+
+It's also helpful to learn about [FUNCTION CONFLICTS](lectures/function-conflicts/) when deciding to add dependencies to **Imports** or **Depends** in your DESCRIPTION file. 
 
 **Grading:**
 
