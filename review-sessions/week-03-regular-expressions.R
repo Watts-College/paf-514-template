@@ -10,11 +10,14 @@
 ###   GREP = Global Regular Expression search and Print
 
 
-strings <- c("abcd", "cdab", "cabd", "c abd")
+strings <- c(  "abcd",  "cdab",  "cabd",  "c abd" )
 
 grep(  "dab", strings )              # returns the position of the match
 grep(  "dab", strings, value=TRUE )  # returns the matching text 
 grepl( "dab", strings )              # returns a logical vector
+
+# matches can be anywhere in the string
+grep( "ab", strings, value=TRUE )
 
 
 
@@ -23,13 +26,16 @@ grepl( "dab", strings )              # returns a logical vector
 
 library( stringr )
 
-str_subset( strings, "abd" )  # equivalent to grep( value=T )
+#  stringr function equivalent 
+#  to grep( "abd", strings, value=T )
+
+str_subset( strings, "abd" )  
  
-x <- c("finland", "iceland", "michael landon")
+x <- c( "grey wolf", "feeling grey", "david grey" )
 
 x %>%
-  str_replace_all( "land", "LAND" ) %>%
-  str_to_title()
+  str_replace_all( "grey", "gray" ) %>%
+  str_to_upper()
 
 
 
@@ -97,7 +103,7 @@ gsub( "land$", "LAND", c("finland", "iceland", "michael landon") )
 ##########    REGEX OPERATORS
 ##########
 
-# \\	escape character - turns a regex operator into plain text
+# \\ 	escape character - turns a regex operator into plain text
 # \\’  : single quote.
 # \\"  : double quote.
 # \\n  : newline.
@@ -113,9 +119,11 @@ gsub( "land$", "LAND", c("finland", "iceland", "michael landon") )
 # x*		match any time a preceding character x appears 0 or more times
 # x+		match any time a preceding character x appears 1 or more times
 
+
 # .?		match a word with or without: b.?an matches bean and ban
 # .*		matches everything
 # a+		every string that contains an a
+
 
 
 # |		OR statement - match either statement given: le|oan matches lean or loan
@@ -150,7 +158,7 @@ grep("ho?t", strings, value = TRUE)
 
 # match exactly n times
 
-grep("ho{2}t", strings, value = TRUE)
+grep("ho{1,2}t", strings, value = TRUE)
 
 # match at least n times
 
@@ -209,9 +217,9 @@ grep( "^de|ad$", strings, value=TRUE )
 
 my.text <- c( "FormA", "FormC", "FormE" )
 
-grep( pattern="Form[ABC]", my.text )
+grep( pattern="Form[ABC]", my.text, value=T )
 
-grep( pattern="h[oi]t" , c("hot","hat","hit","hop") )
+grep( pattern="h[oi]t" , c("hot","hat","hoit","hop"), value=T )
 
 
 # note different OR options
@@ -271,11 +279,13 @@ grep("ab[^c]", strings, value = TRUE)
 # match any string where ab occurs at the beginning
 
 grep("^ab", strings, value = TRUE)
+grep("\\^ab", strings, value = TRUE)
 
 
 # match any string where ab occurs at the end
 
 grep("ab$", strings, value = TRUE)
+grep("ab\\$", strings, value = TRUE)
 
 
 # search for matches that contain the character ^
@@ -293,6 +303,7 @@ grep("\\^", strings, value = TRUE)
 grep("$", strings, value = TRUE)
 
 grep("\\$", strings, value = TRUE)
+
 
 
 
@@ -315,7 +326,7 @@ gsub( "(.*), ([a-z])", "\\1 & \\2", x )
 ###   \\1 references (\\d), keep digits and replace quotes with IN 
 
 x <- 'BELT, "V" 5L610, LONG 4.5" WIDE 7.5", TYPE "K"'
-gsub('(\\d)"', "\\1IN", x)  
+gsub( '(\\d)"', "\\1 INCHES", x)  
 
 
 
