@@ -1,31 +1,78 @@
 
+##########  
+##########    REGEX: regular expressions
+##########
+
+
+
+###   MATCH A STRING
+###
+###   GREP = Global Regular Expression search and Print
+
+
+strings <- c("abcd", "cdab", "cabd", "c abd")
+
+grep(  "dab", strings )              # returns the position of the match
+grep(  "dab", strings, value=TRUE )  # returns the matching text 
+grepl( "dab", strings )              # returns a logical vector
+
+
+
+
+###   stringr package
+
+library( stringr )
+
+str_subset( strings, "abd" )  # equivalent to grep( value=T )
+ 
+x <- c("finland", "iceland", "michael landon")
+
+x %>%
+  str_replace_all( "land", "LAND" ) %>%
+  str_to_title()
+
+
 
 
 ### LOCATION OF STRING
 
+# ^		start of a string
+# $		end of a string
+# \\b	word boundary
+# \\B	middle of the word 
+
+
+
+
 strings <- c("abcd", "cdab", "cabd", "c abd")
 
 # anywhere in the text
-
-grep("ab", strings, value = TRUE)
-
+grep( "ab", strings, value=TRUE )
 
 # at the beginning of a STRING
-
-grep("^ab", strings, value = TRUE)
+grep( "^ab", strings, value=TRUE )
 
 # at the end of a STRING
-
-grep("ab$", strings, value = TRUE)
+grep( "ab$", strings, value=TRUE )
 
 # at the beginning of a WORD
-
-grep("\\bab", strings, value = TRUE)
-## [1] "abcd"  "c abd"
+grep( "\\bab", strings, value=TRUE )
 
 # in the middle of a WORD
+grep( "\\Bab", strings, value=TRUE )
 
-grep("\\Bab", strings, value = TRUE)
+
+
+##  start of a new word, 
+##   but NOT at the start of the string
+
+condition.01 <- grepl( "^ab", strings )
+condition.02 <- grepl( "\\bab", strings )
+
+condition.02 & ! condition.01
+
+strings[ condition.02 & ! condition.01 ]
+
 
 
 
@@ -40,7 +87,48 @@ gsub( "land$", "LAND", c("finland", "iceland", "michael landon") )
 
 
 
+
+
+
+
+
+
+##########  
+##########    REGEX OPERATORS
+##########
+
+# \\	escape character - turns a regex operator into plain text
+# \\’  : single quote.
+# \\"  : double quote.
+# \\n  : newline.
+# \\r  : carriage return.
+# \\t  : tab character.
+
+# \\x	also turns some letters into operators
+# \\b  : matches the empty string at the edge of a word.
+# \\B  : matches the string provided it is NOT at an edge of a word.
+
+# .		wild card for single character
+# x?		match any time a preceding character x appears 0 or 1 times
+# x*		match any time a preceding character x appears 0 or more times
+# x+		match any time a preceding character x appears 1 or more times
+
+# .?		match a word with or without: b.?an matches bean and ban
+# .*		matches everything
+# a+		every string that contains an a
+
+
+# |		OR statement - match either statement given: le|oan matches lean or loan
+# [ ]	OR statement - match any of the characters given: l[eo]an matches lean or loan
+# [^ ]	match any characters EXCEPT those given in the list
+
 ### QUANTIFIERS
+
+# x{n}		match when x occurs exactly n times 
+# x{n,m}	match when x occurs between n and m times
+# x{n,}		match when x occurs a minimum of n times  
+
+
 
 strings <- c("ht","hot","hoot","hooot")
 
@@ -208,6 +296,31 @@ grep("\\$", strings, value = TRUE)
 
 
 
+###   REPLACE SUBSET OF STRING: 
+###
+###    set inside parentheses referenced by \\1:
+###    > search for:    (word) string (word) 
+###    > replace with:  \\1 new string \\2 
+###
+###    Convert: "exec direct, trustee" --> "exec director & trustee"
+###    gsub( "(.*), ([A-Z])", "\\1 & \\2", x )
+###    retains sets \\1 and \\2, replaces comma with &
+
+x <- "exec direct, trustee"
+gsub( "(.*), ([A-Z])", "\\1 & \\2", x )
+
+###   convert 'WIDE 7.5"' to 'WIDE 7.5IN'
+###
+###   search for digit followed by double quote: (\\d)"
+###   \\1 references (\\d), keep digits and replace quotes with IN 
+
+x <- 'BELT, "V" 5L610, LONG 4.5" WIDE 7.5", TYPE "K"'
+gsub('(\\d)"', "\\1IN", x)  
+
+
+
+
+
 
 
 ### PRACTICE - what will these return?
@@ -267,7 +380,6 @@ x <- c( "The Hangover Part 3",
 grep( "^[a-z0-9-]+$", x, value=TRUE )
 grep( "^[a-z0-9-]+$", x, value=TRUE, ignore.case=TRUE )
 grep( "^[a-zA-Z0-9-]+$", x, value=TRUE, ignore.case=TRUE )
-
 
 
 
