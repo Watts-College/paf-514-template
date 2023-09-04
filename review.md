@@ -19,7 +19,7 @@ session:
   sample-code: 'week-02-loops.R' 
   session-code: 'week-02-loops.Rhistory' 
 - week3:
-  date:  'Mon Sept 4th: \nNO LIVE SESSION\n RECORDED VIDEO POSTED'  
+  date:  'Mon Sept 4th: NO LIVE SESSION, RECORDED VIDEO POSTED'  
   video: 'https://asu.zoom.us/rec/share/9cATTEIQ79c02RgVpBHhi6svNOVfWuMT8JFaAeUv94El_dkvtZjPqMnTvRJ5-Csn.neWR2qE3ZMOIKc4S?startTime=1693800691000'
   password: 'r9@4&!pt'
   sample-code: 'week-03-regular-expressions.R' 
