@@ -292,6 +292,63 @@ calcMortgage( prin=100000 )
 
 
 
+### PASSING ARGUMENTS
+
+# Arg A gets passed 
+# through f_1() to f_x():
+#   a -> A -> X
+#
+# Note that f_1() needs A and x
+# to function properly.
+# A is passed and x is generated
+# internally through f_x(), so 
+# this is robust programming. 
+
+f_1 <- function( A=a ){  
+   x <- f_x( X=A )  
+   b <- f_y( x )
+   b
+}
+
+# Note that f_z() needs 
+# the agument B, but it is
+# NOT being passed to the function. 
+# It is being assigned outside 
+# of the function, not passed. 
+# It will work, but is problematic. 
+# This is poor programming. 
+
+B <- b
+f_2 <- function( ){  
+   c <- f_z( Z=B ) 
+   c
+}
+
+# Take the inventory: 
+# both A and C needed
+# for f_3() to work. 
+# Are they defined 
+# as arguments? Will 
+# this function run? 
+
+f_3 <- function( A ){
+   a2 <- f_u( A )
+   c2 <- f_v( C )
+   d  <- f_w( a2, c2 )
+   d
+}
+
+# Capital letters are argument names here.
+# Lower case letters are values passed to args. 
+
+a  <- # value a
+b  <- f_1( A=a )
+c  <- f_2( B=b )
+d  <- f_3( A=a, C=c )
+
+
+
+
 
 
 
