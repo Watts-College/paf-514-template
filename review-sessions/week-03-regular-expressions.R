@@ -307,7 +307,7 @@ grep("\\$", strings, value = TRUE)
 ###    retains sets \\1 and \\2, replaces comma with &
 
 x <- "exec direct, trustee"
-gsub( "(.*), ([A-Z])", "\\1 & \\2", x )
+gsub( "(.*), ([a-z])", "\\1 & \\2", x )
 
 ###   convert 'WIDE 7.5"' to 'WIDE 7.5IN'
 ###
