@@ -55,7 +55,7 @@ header:
 # GITHUB CONFIGURATIONS 
 
 url :               "https://watts-college.github.io"
-baseurl:            "cpp-527-template"
+baseurl:            "paf514-template"
 course_url:         "https://watts-college.github.io/paf-514-template/"
 title:               DS4PS # don't change this
 
