@@ -27,8 +27,8 @@ session:
   date:  'Mon Sept 11th'  
   video: ''
   password: ''
-  sample-code: ''
-  session-code: ''
+  sample-code: 'week-04-quanteda.R'
+  session-code: 'week-04-quanteda.Rhistory'
 - week5:
   date:  'Mon Sept 18th'  
   video: ''
