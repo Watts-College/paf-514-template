@@ -165,7 +165,7 @@ Which would look like this once rendered:
 ```r
 create_div3 <- function( x )
 {
-  cat( "<div class="div3"> \n\n" )    # adds HTML div tag to QMD document: <div class="div3">
+  cat( "<div class='div3'> \n\n" )    # adds HTML div tag to QMD document: <div class="div3">
   table( x ) %>%
     kable( format="html")             # conver R object to HTML 
   cat( "</div> \n\n" )                # closes div tag: </div>
