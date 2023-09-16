@@ -59,6 +59,10 @@ The set-up of a simple GitHub page is fairly straight-forward and can be complet
 
 ![](https://github.com/DS4PS/cpp-527-spr-2020/blob/master/lectures/images/github-pages-setup.gif?raw=true)
 
+Note, the GitHub pages settings have been moved to the sidebar:
+
+![](images/github-pages.png)
+
 This will give you a barebones website with a landing page you can write using Markdown, and a few templates that you can select from. 
 
 You have access to myriad advanced features on the platform. GitHub pages leverage several powerful web frameworks like Jekyll, Bootstrap, Liquid, and Javascript to make customization of static pages both easy and powerful. We will spend some time talking about how the pieces of a website fit together so that you have a rudimentary knowledge of the platform:
