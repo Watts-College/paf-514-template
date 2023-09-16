@@ -110,7 +110,7 @@ You can also [add custom YAML fields to your website configuration file](https:/
 
 ```
 # Site Settings
-quote: "When life gives you melons, you could be dyslexic."
+quote: "If life gives you lemons and you are dyslexic, just make melonaid."
 email: email@example.com
 ```
 
