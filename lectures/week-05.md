@@ -69,7 +69,7 @@ This will give you a barebones website with a landing page you can write using M
 
 GitHub pages leverage several powerful web frameworks like Jekyll, Bootstrap, Liquid, and Javascript to make customization of static pages both easy and powerful. 
 
-The most powerful feature, in my opinion, is that you can start very simple with basic **.md** markdown pages (you are by now familiar with markdown syntax after using R Markdown documents). Similar to how RMD is knit to HTML documents in R Studio, markdown files are converted to HTML pages on GitHub servers each time a new file is commited (saved to) your GitHub repository once the pages option has been activated. This makes creating static websites quick and easy. It also enables you to host pre-rendered HTML files (your knitted R Markdown files) for free so you can share your projects by sending a link instead of sending HTML files, or you can make a report public without having to purchase a new domain and pay to host it. 
+The most powerful feature, in my opinion, is that you can start very simple with basic markdown pages (you are by now familiar with markdown syntax after using R Markdown documents). Similar to how RMD is knit to HTML documents in R Studio, markdown files are converted to HTML pages on GitHub servers each time a new file is commited (saved to) your GitHub repository once the pages option has been activated. This makes creating static websites quick and easy. It also enables you to host pre-rendered HTML files (your knitted R Markdown files) for free so you can share your projects by sending a link instead of sending HTML files, or you can make a report public without having to purchase a new domain and pay to host it. 
 
 As you get comfortable with GitHub pages and design conventions you can incrementally make your projects more sophisticated. Learning a few basic principles of Jekyll + liquid (the HTML framework behind GitHub pages) will allow you to develop highly-customized and professional websites. 
 
@@ -90,7 +90,14 @@ author: Jon Swift
 ---
 ```
 
-That can be referenced anywhere on the page using the liquid tag **{% raw %}{{ page.varname }}{% endraw %}**:
+The equivalent variables in R would be: 
+
+```r
+title <- "My Page Title"
+author <- "Jon Swift"
+```
+
+YAML variables can be referenced anywhere on the page using the liquid tag **{% raw %}{{ page.varname }}{% endraw %}**:
 
 {% raw %}
 ```
@@ -106,7 +113,7 @@ Written by {{ page.author }}.
 
 Note that you reference a variable defined in the header as **{% raw %}{{ page.varname }}{% endraw %}** instead of **{% raw %}{{ varname }}{% endraw %}**. This is because a variable defined in the header can only be referenced on that page (many separate pages will have YAML fields with the same name). 
 
-You can also [add custom YAML fields to your website configuration file](https://www.ayush.nz/2021/08/using-variables-in-jekyll-to-define-custom-content) (_config.yml):
+You can also [add custom YAML fields to your website configuration file](https://www.ayush.nz/2021/08/using-variables-in-jekyll-to-define-custom-content) (the _config.yml):
 
 ```
 # Site Settings
@@ -149,9 +156,13 @@ The **pagedown** package in R allows you to develop a variety of templates using
 
 Similar to other work we have done in R, we will start by using some working examples then reverse engineer them so you can see how the pieces fit together. 
 
-**You are not expected to master any of these topics in the short time-frame of the semester.** The proper benchmark for your HTML skill set at this point is whether you can take an existing open source project and adapt it as necessary - start from a working website template and make incremental changes. 
+**You are not expected to master any of these topics in the short time-frame of the semester.** 
 
-The other goal is to gain familiarity and comfort with HTML and CSS principles that will allow you to design your own templates. You will learn how to add HTML and CSS elements to RMD (or their offspring, QMD - quarto markdown) documents to build customized layouts for information. 
+The proper benchmark for your HTML skill set at this point is whether you can take an existing open source project and adapt it as necessary - start from a working website template and make incremental changes.
+
+The other goal is to gain familiarity and comfort with HTML and CSS principles that will allow you to design your own templates. 
+
+You will learn how to add HTML and CSS elements to RMD docs (or their quarto offspring, QMD docs) to build customized layouts for information. 
 
 <br>
   
