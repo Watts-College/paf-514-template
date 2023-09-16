@@ -90,8 +90,9 @@ author: Jon Swift
 ---
 ```
 
-That can be referenced anywhere on the page using the liquid tag `{{page.varname}}`: 
+That can be referenced anywhere on the page using the liquid tag **{% raw %}{{ "{{ page.varname "  }} }}{% endraw %}**:
 
+{% raw %}
 ```
 # format the title using Header 1 tags:
 
@@ -99,8 +100,11 @@ That can be referenced anywhere on the page using the liquid tag `{{page.varname
 
 Written by {{ page.author }}. 
 ```
+{% endraw %}
 
-Note that you reference a variable defined in the header as **`{{page.varname}}`** instead of **`{{varname}}`**. This is because a variable defined in the header can only be referenced on that page (many separate pages will have YAML fields with the same name). 
+
+
+Note that you reference a variable defined in the header as **{% raw %}{{ "{{ page.varname "  }} }}{% endraw %}** instead of **{% raw %}{{ "{{ varname "  }} }}{% endraw %}**. This is because a variable defined in the header can only be referenced on that page (many separate pages will have YAML fields with the same name). 
 
 You can also [add custom YAML fields to your website configuration file](https://www.ayush.nz/2021/08/using-variables-in-jekyll-to-define-custom-content) (_config.yml):
 
@@ -110,17 +114,26 @@ quote: "When life gives you melons, you could be dyslexic."
 email: email@example.com
 ```
 
-These can be referenced from any page using the liquid tag **`{{site.varname}}`**: 
+These can be referenced from any page using the liquid tag **{% raw %}{{ "{{ site.varname "  }} }}{% endraw %}**: 
 
+
+{% raw %}
 ```
 Contact us: {{ site.email }}
 ```
+{% endraw %}
 
-There are also a [set of pre-defined liquid variables](https://github.com/jekyll/github-metadata/blob/main/docs/site.github.md) that can be refereced on any Jekyll site without creating corresponding YAML fields using the prefix **`{{site.github.varname}}`** instead of **`{{site.varname}}`** and other [generic variables](https://devhints.io/jekyll) like the current date:
 
+There are also a [set of pre-defined liquid variables](https://github.com/jekyll/github-metadata/blob/main/docs/site.github.md) that can be refereced on any Jekyll site without creating corresponding YAML fields using the prefix **{% raw %}{{ "{{ site.github.varname "  }} }}{% endraw %}** instead of **{% raw %}{{ "{{ site.varname "  }} }}{% endraw %}** and other [generic variables](https://devhints.io/jekyll) like the current date:
+
+
+{% raw %}
 ```
 {{ page.date | date: "%b %d, %Y" }}
 ```
+{% endraw %}
+
+
 
 You can see a more extensive example of using liquid tags to design a table template here: 
 
