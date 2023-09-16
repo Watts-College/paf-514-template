@@ -143,7 +143,7 @@ You can see a more extensive example of using liquid tags to design a table temp
 
 ## Pagedown is Jekyll for R
 
-And the **pagedown** package in R allows you to develop a variety of templates using similar principles as those used in GitHub pages:
+The **pagedown** package in R allows you to develop a variety of templates using similar principles as those used in creating GitHub pages:
 
 [Pagedown Overview](https://slides.yihui.org/2019-rstudio-conf-pagedown.html#1)
 
