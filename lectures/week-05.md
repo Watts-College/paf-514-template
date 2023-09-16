@@ -22,14 +22,14 @@ Skim the following chapters, reading to get a general sense of **concepts, vocab
   
 I am more concerned that you understand how these basic pieces fit together, and when you hear terms like "responsive" you conceptually know what people are talking about. At a minimum you should understand the bulleted vocabulary under each section:
 
-[Basic Webpage Architecture](https://www.internetingishard.com/html-and-css/basic-web-pages/)
+[Basic Webpage Architecture](https://github.com/Watts-College/paf-514-template/raw/main/articles/html-css-basic-web-pages.pdf)
 
 * tags (headings, formatting, lists)
 * page elements (head, body) 
 * structure versus presentation 
 * line breaks 
   
-[Style Sheets: CSS](https://www.internetingishard.com/html-and-css/hello-css/)
+[Style Sheets: CSS](https://github.com/Watts-College/paf-514-template/raw/main/articles/html-css-intro-to-style-sheets.pdf)
 
 * style tags 
 * properties 
@@ -37,7 +37,7 @@ I am more concerned that you understand how these basic pieces fit together, and
 * units of measure (pixels **px** versus relative scaling **EM**) 
 * principle of cascading style and style hierarchy 
   
-[Responsive Design](https://www.internetingishard.com/html-and-css/responsive-design/)
+[Responsive Design](https://github.com/Watts-College/paf-514-template/raw/main/articles/html-css-responsive-design.pdf)
 
 * screen size (desktop vs mobile vs tablet) 
 * containers 
@@ -48,7 +48,7 @@ I am more concerned that you understand how these basic pieces fit together, and
   
 Helpful overview of how website architectures. Focus on the big picture of what each component does, specifically the concept of **separation of content and style**. Websites leverage **templates** and **style sheets** to create page layouts, containers for data, and consistent look and feel of material. In subsequent weeks we will show you how you can integrate these principles into RMD docs to create report templates and automate reporting. Don't worry about the specifics of HTML code. 
   
-[Introduction to Web Programming](https://www.internetingishard.com/html-and-css/)
+[Introduction to Web Programming](https://internetingishard.netlify.app/)
   
   
 ## GitHub Pages Set-Up
