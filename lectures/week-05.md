@@ -151,7 +151,7 @@ Similar to other work we have done in R, we will start by using some working exa
 
 **You are not expected to master any of these topics in the short time-frame of the semester.** The proper benchmark for your HTML skill set at this point is whether you can take an existing open source project and adapt it as necessary - start from a working website template and make incremental changes. 
 
-The other goal is to gain familiarity and comfort with HTML and CSS principles that will allow you to design your own templates. You will learn how to add HTML and CSS elements to RMD (or their offsprint, QMD - quarto markdown) documents to build customized layouts for information. 
+The other goal is to gain familiarity and comfort with HTML and CSS principles that will allow you to design your own templates. You will learn how to add HTML and CSS elements to RMD (or their offspring, QMD - quarto markdown) documents to build customized layouts for information. 
 
 <br>
   
