@@ -90,7 +90,7 @@ author: Jon Swift
 ---
 ```
 
-That can be referenced anywhere on the page using the liquid tag **{% raw %} {{ page.varname }} {% endraw %}**:
+That can be referenced anywhere on the page using the liquid tag **{% raw %}{{ page.varname }}{% endraw %}**:
 
 {% raw %}
 ```
@@ -104,7 +104,7 @@ Written by {{ page.author }}.
 
 
 
-Note that you reference a variable defined in the header as **{% raw %} {{ page.varname }}{% endraw %}** instead of **{% raw %} {{ varname }}{% endraw %}**. This is because a variable defined in the header can only be referenced on that page (many separate pages will have YAML fields with the same name). 
+Note that you reference a variable defined in the header as **{% raw %}{{ page.varname }}{% endraw %}** instead of **{% raw %}{{ varname }}{% endraw %}**. This is because a variable defined in the header can only be referenced on that page (many separate pages will have YAML fields with the same name). 
 
 You can also [add custom YAML fields to your website configuration file](https://www.ayush.nz/2021/08/using-variables-in-jekyll-to-define-custom-content) (_config.yml):
 
@@ -114,7 +114,7 @@ quote: "If life gives you dyslexic lemons, make melonaid."
 email: email@example.com
 ```
 
-These can be referenced from any page using the liquid tag **{% raw %} {{ site.varname }}{% endraw %}**: 
+These can be referenced from any page using the liquid tag **{% raw %}{{ site.varname }}{% endraw %}**: 
 
 
 {% raw %}
@@ -124,7 +124,7 @@ Contact us: {{ site.email }}
 {% endraw %}
 
 
-There are also a [set of pre-defined liquid variables](https://github.com/jekyll/github-metadata/blob/main/docs/site.github.md) that can be refereced on any Jekyll site without creating corresponding YAML fields using the prefix **{% raw %} {{ site.github.varname }}{% endraw %}** instead of **{% raw %} {{ site.varname }}{% endraw %}** and other [generic variables](https://devhints.io/jekyll) like the current date:
+There are also a [set of pre-defined liquid variables](https://github.com/jekyll/github-metadata/blob/main/docs/site.github.md) that can be refereced on any Jekyll site without creating corresponding YAML fields using the prefix **{% raw %}{{ site.github.varname }}{% endraw %}** instead of **{% raw %}{{ site.varname }}{% endraw %}** and other [generic variables](https://devhints.io/jekyll) like the current date:
 
 
 {% raw %}
