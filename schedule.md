@@ -436,7 +436,7 @@ Let's get started by motivating the topic with a couple of cool examples.
 
 [Which Hip-Hop Artist Has the Largest Vocabulary?](https://pudding.cool/projects/vocabulary/index.html) 
 
-[Counting Happiness](https://flowingdata.com/2021/07/29/counting-happiness/) 
+[Counting Happiness](https://flowingdata.com/2021/07/29/counting-happiness/)  [[methods](https://megagon.ai/happydb-a-happiness-database-of-100000-happy-moments/)] [[data](https://github.com/megagonlabs/HappyDB)]
 
 [Sentiment Analysis](https://www.kaggle.com/rtatman/tutorial-sentiment-analysis-in-r) 
 
