@@ -434,11 +434,13 @@ This week comes with an up-front warning. You can get a PhD in Natural Language 
   
 Let's get started by motivating the topic with a couple of cool examples. 
 
-[Which Hip-Hop Artist Has the Largest Vocabulary?](https://pudding.cool/projects/vocabulary/index.html)
+[Which Hip-Hop Artist Has the Largest Vocabulary?](https://pudding.cool/projects/vocabulary/index.html) 
+
+[Counting Happiness](https://flowingdata.com/2021/07/29/counting-happiness/) 
+
+[Sentiment Analysis](https://www.kaggle.com/rtatman/tutorial-sentiment-analysis-in-r) 
 
 [Who is the Anonymous Op-Ed Writer inside the Trump Administration?](http://varianceexplained.org/r/op-ed-text-analysis/)
-
-[Sentiment Analysis](https://www.kaggle.com/rtatman/tutorial-sentiment-analysis-in-r)
 
 These examples all demonstrate interesting uses of text as data. They are also examples of the types of insight that can come from analysis with big data - the patterns are hiding in plain sight but our brains cannot hold enough information at one time to see it.  Once we can find a system to extract hidden patterns from language we can go beyond seeking large public databases to generate insights, and we can start using all of Twitter, all published news stories, or all of the internet to identify trends and detect outliers. 
 
