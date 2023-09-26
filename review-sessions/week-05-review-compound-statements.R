@@ -124,7 +124,146 @@ case3 <- grepl( "^three ", dat$mission )
 matches <- case1 | case2 | case3 
 
  
+###### 
+######    FUNCTIONS AND WORKFLOWS
+###### 
 
+
+titles <- 
+  c( "Want a Happier, More Fulfilling Life? 75-Year Harvard Study Says Focus on This 1 Thing",
+     "How I Make Money on Airbnb Without Owning or Renting an Apartment",
+     "To Be Well-Informed, Cut the News and Read These 7 Blogs Instead" )
+
+###  Instructions: 
+###   create a script that retrieves 
+###   the first word of each title
+
+### SIMPLIFY: 
+### solve for one
+### title first: 
+
+x <- "To Be Well-Informed, Cut the News and Read These 7 Blogs Instead"
+
+
+### PSEUDOCODE
+
+# 1. split titles into words
+#    1.5 convert list back to vector 
+# 2. convert everything to lower case 
+# 3. remove extra spaces 
+# 4. extract the first word 
+
+### RECIPE (script) VERSION
+
+words.as.list <- strsplit( x, " " )   # 1.
+words <- unlist( words.as.list )      # 2.
+words <- tolower( words )             # 3. 
+words <- trimws( words )              # 4. 
+first.word <- words[1]                # 5.
+
+
+### WRAPPING THE RECIPE IN A FUNCTION
+
+get_first <- function( x )
+{
+  words.as.list <- strsplit( x, " " )
+  words <- unlist( words.as.list )
+  words <- tolower( words )
+  words <- trimws( words )
+  first.word <- words[1]
+  return( first.word )    # add return value
+}
+
+get_first( x )  # test
+
+
+### BREAKING OPEN A FUNCTION
+###  (if you have to debug your code)
+
+x <- "To Be Well-Informed, Cut the News and Read These 7 Blogs Instead"
+
+# get_first <- function( x )
+# {
+    words.as.list <- strsplit( x, " " )
+    words <- unlist( words.as.list )
+    words <- tolower( words )
+    words <- trimws( words )
+    first.word <- words[1]
+# return( first.word )
+# }
+
+
+### USE APPLY FUNCTIONS TO
+### SCALE FROM SINGLE CASE 
+### TO THE FULL VECTOR/LIST
+
+lapply( titles, get_first ) %>% unlist()
+
+
+
+
+### START WITH THE 
+### END IN MIND
+
+### If the goal is to summarize
+### outputs by group then 
+### you need a group variable
+### and an outcome variable
+### with matching dimensions
+
+
+### MECHANICAL VERSION
+
+claps <- c( 2, 17, 7, 14, 24, 23, 6, 22 )
+f     <- c( "A","A","A","A","A","B","B","B" )
+
+mean( claps )
+mean( claps[ f == "A" ] )
+mean( claps[ f == "B" ] )
+
+
+### APPLY VERSION
+###  tapply = apply group 
+###  vector to numeric vector
+
+tapply( claps, f, mean )
+
+
+### DPLYR VERSION
+
+df <- data.frame( claps, f )
+
+df %>%
+  group_by( f ) %>%
+  summarise( ave=mean( claps ) )
+
+
+
+### Note thtat grep() 
+### returns a subset of
+### titles that match,
+### which changes the 
+### vector dimensions 
+### and makes it hard to 
+### use in a workflow.
+
+grep( reg.exp, missions, value=TRUE  )
+
+
+### grepl() returns a
+### logical vector that 
+### will always be the 
+### same size, is often
+### easier to use in a
+### workflow.
+
+grepl( reg.exp, missions  )
+
+matches <- grepl(...)
+claps[ matches ]
+
+df$matches <- matches
+df %>% group_by(matches) %>% summarize(...)
 
 
 
