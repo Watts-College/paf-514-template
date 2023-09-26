@@ -31,13 +31,14 @@ session:
   session-code: 'week-04-quanteda.Rhistory'
 - week5:
   date:  'Mon Sept 18th'  
-  video: ''
-  password: ''
-  sample-code: 'week-06-data-apis.R'
+  video: 'https://asu.zoom.us/rec/share/fr1cZvXWmyW5zT-hqL1mqC4PBIm7_2NZ2U2lIKrD41n6NBUTgX3PQbjg3q4iF-vX.1rQSK6mZ4jew_3a5?startTime=1695683783000'
+  password: '^O72D@22'  
+  sample-code: 'week-05-review-compound-statements.R'  
 - week6:
   date:  'Wed Sept 25th'  
-  video: ''
-  password: ''
+  video: 'https://asu.zoom.us/rec/share/fr1cZvXWmyW5zT-hqL1mqC4PBIm7_2NZ2U2lIKrD41n6NBUTgX3PQbjg3q4iF-vX.1rQSK6mZ4jew_3a5?startTime=1695686642000'
+  password: '^O72D@22'
+  sample-code: 'week-06-data-apis.R'
 - week7:
   date:  'Mon Oct 2nd'  
   video: ''
