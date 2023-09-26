@@ -553,9 +553,17 @@ For this assignment you will need to clone a version Nick Strayer's CV project t
 
 [CV Project on GitHub](https://github.com/DS4PS/cv)
 
-You can do this in the GitHub desktop application under **File >> Clone >> URL** then type in the project URL: 
+Start by copying files to a copy on your own GitHub account by selecting **Use this template >> Create a new respository**. 
 
-https://github.com/DS4PS/cv
+![image](https://github.com/Watts-College/paf-514-template/assets/1209099/6bf28753-b34f-4da0-bb9d-d2405598e6cd)
+
+You now have a copy of the files online. To get them on your computer for editing clone YOUR VERSION of the cv site (the one you just added to your GitHub account). 
+
+In the GitHub desktop application under **File >> Clone >> URL** then type in the new project URL: 
+
+https://github.com/YOUR_GITHUB_ID_HERE/cv
+
+That will copy the files to your computer and also give you permission to send files back to your repo with a "commit >> push" command. 
 
 Note, since the project is actively being developed this version on DS4PS is frozen in time for pedagogical purposes. You can follow the link to his repo to see what he has added. 
 
