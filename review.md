@@ -43,6 +43,7 @@ session:
   date:  'Mon Oct 2nd'  
   video: 'https://asu.zoom.us/rec/share/AvqS8NeTkyZosH-jK7siVCD6u2BALeLcHOA2UfOvO_HUfCKAV7naEkWOBe0dkNuT.bqP6B38qgCEExhW4?startTime=1696287831000'
   password: 'BA8+=ic9'
+  link: 'https://github.com/Watts-College/paf-514-template/tree/main/labs/batch-demo'
 ---
 
 
