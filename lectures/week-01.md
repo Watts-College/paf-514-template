@@ -238,9 +238,173 @@ Here are some helpful examples:
 * [Khan Academy video](https://www.khanacademy.org/computing/computer-programming/programming/good-practices/pt/planning-with-pseudo-code) 
 
 
-  
+## Input-Output Machines: Arguments and Return 
+
+Functions are input, output machines. 
+
+* Arguments are the inputs.
+* The object sent back to the user via the return() call is the output. 
+
+One of the important considerations is what type of object you want to return. 
+
+Your function operates on a single value:
+
+```r
+add_these <- function ( x, y, z )
+{
+  sum.xy <- x + y +
+  return( sum.xyx )
+}
+```
+
+It can return a vector: 
+
+```r
+scale_it <- function( x, a )
+{
+  y <- x + a
+}
+
+scale_it( x=c(1,2,3), a=5 )
+> 6, 7, 8
+```
+
+Or it can return a data frame (see example below). 
+
+It will depend entirely on how it fits into the work flow. 
+
+```r
+# vectorized version -
+#   input is a vector 
+#   return object is a vector
+
+get_first_name <- function( x )
+{
+  first.n <- # parse(x) code here
+  return( first.n )
+}
+
+get_first_name( x=c("mary thompson","john denver") )
+> "mary" "john"
+
+# how it fits into a workflow:
+#  input is the full names
+#  output is first names only
+
+d$first.name <- get_first_name( d$full.name )
+```
+
+Geocoding example with a data frame as an input and a data frame as an output: 
+
+**address data frame: df.address**:
+- id
+- street
+- city
+- state
+
+
+**fields produced by geocoding address:**
+- id
+- latitude
+- longitude
+- fips geoid
+
+The important thng
+
+```r
+# data frame example: 
+#   geocoding requires multiple vectors (address fields)
+#   return object is a new data frame
+
+geocode_addresses <- function( df.address ) 
+{
+  str <- df.address[["street"]]
+  cty <- df.address[["city"]]
+  st  <- df.address[["state"]]
+  df.geo <- # geocode( str, cty, st ) code here 
+  return( df.geo )
+}
+
+# how it might fit into a workflow
+# create a subset data frame with address fields: 
+
+df.address <- select( df, id, street, city, state )   
+df.geo     <- geocode_addresses( df.address )
+
+# add geo coordinates back to the original data frame:
+
+df <- merge( df, df.geo, by="id", all.x=T )
+```
+
+The important details is you can only return **one** object from a function in R, so if your function produces several things that you need (three distinct useful columns of data in this example - latitude and longitude coordinates, along with geographic fips ID codes), then they need to be bundled together to send them all back to the user.  In this case it is done by combining the vectors into a single data frame. You can also return lists and other object types - you will learn more about those data types later in the semester. 
+
+In general vectorized functions are easier to write and maintain. Use data frames when you are returning a full dataset instead of a single value or vector.
+
+There is a lot of flexibility. You can mix the types: 
+
+```r
+# send vectors as inputs, return data frame
+
+geocode_addresses <- function( str, cty, st ) 
+{
+  df.geo <- # geocode( str, cty, st ) code here 
+  return( df.geo )
+}
+```
+
+You can also decide on which parts of the workflow is handled by the function and which parts are managed by data steps outside of the functions. For example, this choice might improve the workflow by eliminating the need to merge after returning the geo data frame: 
+
+```r
+# pass full data frame, no subset by address
+geocode_addresses <- function( df ) 
+{
+  str <- df[["street"]]  # use only columns you need
+  cty <- df[["city"]]
+  st  <- df[["state"]]
+  df.geo <- # geocode( str, cty, st ) code here 
+  df <- merge( df, df.geo, by="id", all.x=T )
+  return( df )  # return full data frame
+}
+
+# how it might fit into a workflow:
+#   returns same data frame, but with lat, lon, and fips appended;
+#   more streamlined
+
+df <- geocode_addresses( df )
+```
+
 ## Function Scope
 
+The other rule you need to remember when converting a data 'recipe' (a working linear script) to a function, you need to figure out ALL arguments needed for the function to compute everything properly. It should ONLY rely on information you give to the function directly as arguments and NOT rely on information that is in the global environment: 
+
+```r
+#  BAD !!!
+y <- 10                      # y is in the global environment
+add_these <- function ( x )  # x is explicitly passed to the function
+{
+  sum.xy <- x + y
+  return( sum.xy )
+}
+
+add_these( x=5 )  # will compute be cause when it can't find an 
+> 15              # argument y it looks in the global environment
+```
+
+```r
+#  GOOD
+add_these <- function ( x, y=10 )
+{
+  sum.xy <- x + y
+  return( sum.xy )
+}
+
+add_these( x=5 )   # computes because y has a default argument value,
+> 15               # but does not rely on info outside of the function
+```
+
+They look similar, but the first version assumes that Y will always be defined somewhere in the script. It breaks the rule of functions being self-contained. All variables referenced inside a function should be passed to the function as argument. 
+
+There are good reasons to break the rule sometimes, but in general your workflow will produce less errors if you follow that principle. 
 Many people are familiar with the expression "What happens in Las Vegas stays in Vegas."
 
 Scope is the rule that "what happens inside of functions stays inside of functions". 
