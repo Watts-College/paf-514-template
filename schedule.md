@@ -12,23 +12,23 @@ yellowdig:
   post-02: 'Wednesday, January 17th' 
   post-03: 'Wednesday, January 24th' 
   post-04: 'Wednesday, January 31st' 
-  post-05: 'Wednesday, February 6th' 
-  post-06: 'Wednesday, February 13th' 
-  post-07: 'Wednesday, February 20th' 
+  post-05: 'Wednesday, February 7th' 
+  post-06: 'Wednesday, February 14th' 
+  post-07: 'Wednesday, February 21st' 
   
 
 labs:
   lab-01:  'Wednesday, January 17th' 
   lab-02:  'Wednesday, January 24th'
   lab-03:  'Wednesday, January 31st'
-  lab-04:  'Wednesday, February 6th'
-  lab-05:  'Wednesday, February 13th'
-  lab-06:  'Wednesday, February 20th'
+  lab-04:  'Wednesday, February 7th'
+  lab-05:  'Wednesday, February 14th'
+  lab-06:  'Wednesday, February 21st'
   
   
 projects: 
-  r-package:  'Monday, February 4th'
-  report-template:  'Wednesday, February 27th'
+  r-package:  'Monday, February 5th'
+  report-template:  'Tuesday, February 27th'
   data-wrangling:  'Ongoing'
   
   
