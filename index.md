@@ -13,12 +13,12 @@ info:
  course_title: Foundations of Data Science Part II
  course_number: PAF 514 
  course_level: Graduate 
- course_website: 'https://asu.instructure.com/courses/166594'
- course_start_end_dates: August 17th to October 6th, 203
+ course_website: 'https://asu.instructure.com/courses/178112'
+ course_start_end_dates: January 08 to February 27, 2024
  course_prerequisites:  
  class_meets_when:  Asynchronous  
  class_meets_where:  'https://asu.zoom.us/j/89752412079'
- review_sessions_when: Monday, 4pm AZ 
+ review_sessions_when: Monday, 3pm AZ 
  review_sessions_where: Zoom
  discussion_board_url: 'https://watts-college.github.io/paf-514-template/help/'
 
