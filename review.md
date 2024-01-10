@@ -7,42 +7,47 @@ root-url: 'https://raw.githubusercontent.com/Watts-College/paf-514-template/main
 
 session: 
 - week1:
-  date:  'Monday Aug 21st'  
-  video: 'https://asu.zoom.us/rec/share/hI1lm6EZNL_Ba8G7jlw8KHauwqUh1qsReyXiHT9bmJGwVsmCJRP4R_wBvnP_xn0k.euJ6KVA3Hg1biYsW'
-  password: 'CA.18s4a'
+  date:  'Friday, Jan 12th, 12:30pm'  
+  video: ''
+  password: ''
   sample-code: 'week-01-control-structures.R' 
-  session-code: 'week-01-control-structures-v3.Rhistory' 
+  session-code: '' 
 - week2:
-  date:  'Mon Aug 28th'  
-  video: 'https://asu.zoom.us/rec/share/Lmn2-l_T3N57d8W_FbAlvua26pmqMvWHHKbNjpucMn3Q0E8HnSxMTQCmxJbIM3N5.RcsR6UseFDyauG5T' 
-  password: '16r^9aG6'
+  date:  'Tues, Jan 16th, 3pm'  
+  video: '' 
+  password: ''
   sample-code: 'week-02-loops.R' 
-  session-code: 'week-02-loops.Rhistory' 
+  session-code: '' 
 - week3:
-  date:  'Mon Sept 4th: NO LIVE SESSION, RECORDED VIDEO POSTED'  
-  video: 'https://asu.zoom.us/rec/share/9cATTEIQ79c02RgVpBHhi6svNOVfWuMT8JFaAeUv94El_dkvtZjPqMnTvRJ5-Csn.neWR2qE3ZMOIKc4S?startTime=1693800691000'
-  password: 'r9@4&!pt'
+  date:  'Mon Jan 22nd'  
+  video: ''
+  password: ''
   sample-code: 'week-03-regular-expressions.R' 
 - week4:
-  date:  'Mon Sept 11th'  
-  video: 'https://asu.zoom.us/rec/share/YX_HGbnwgZCyiEVa7SZEhy7vz6GLL_Bk5rsyoQU7Tpzzm5mFNUpgJnz-vYfJe3_0.ToRJbJMH4tIxNs_n?startTime=1694473409000'
-  password: 'q!dJHr1r'
+  date:  'Mon Jan 29th'  
+  video: ''
+  password: ''
   sample-code: 'week-04-quanteda.R'
-  session-code: 'week-04-quanteda.Rhistory'
+  session-code: ''
 - week5:
-  date:  'Mon Sept 18th'  
-  video: 'https://asu.zoom.us/rec/share/fr1cZvXWmyW5zT-hqL1mqC4PBIm7_2NZ2U2lIKrD41n6NBUTgX3PQbjg3q4iF-vX.1rQSK6mZ4jew_3a5?startTime=1695683783000'
-  password: '^O72D@22'  
+  date:  'Mon Feb 5th'  
+  video: ''
+  password: ''  
   sample-code: 'week-05-review-compound-statements.R'  
 - week6:
-  date:  'Wed Sept 25th'  
-  video: 'https://asu.zoom.us/rec/share/fr1cZvXWmyW5zT-hqL1mqC4PBIm7_2NZ2U2lIKrD41n6NBUTgX3PQbjg3q4iF-vX.1rQSK6mZ4jew_3a5?startTime=1695686642000'
-  password: '^O72D@22'
+  date:  'Wed Feb 12th'  
+  video: ''
+  password: ''
   sample-code: 'week-06-data-apis.R'
 - week7:
-  date:  'Mon Oct 2nd'  
-  video: 'https://asu.zoom.us/rec/share/AvqS8NeTkyZosH-jK7siVCD6u2BALeLcHOA2UfOvO_HUfCKAV7naEkWOBe0dkNuT.bqP6B38qgCEExhW4?startTime=1696287831000'
-  password: 'BA8+=ic9'
+  date:  'Mon Feb 19th'  
+  video: ''
+  password: ''
+  link: 'https://github.com/Watts-College/paf-514-template/tree/main/labs/batch-demo'
+- week8:
+  date:  'Mon Feb 26th'  
+  video: ''
+  password: ''
   link: 'https://github.com/Watts-College/paf-514-template/tree/main/labs/batch-demo'
 ---
 
@@ -66,7 +71,7 @@ Live review sessions will be held each week in order to:
 
 
 > **MONDAYS**    
-> **4pm AZ time** 
+> **3pm AZ time** 
 
 <a href='https://asu.zoom.us/j/89752412079' target=""> <button class="zoom">JOIN ZOOM MEETING</button></a>
 
