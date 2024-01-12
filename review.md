@@ -6,8 +6,14 @@ root-url: 'https://raw.githubusercontent.com/Watts-College/paf-514-template/main
 
 
 session: 
-- week1:
+- week0:
   date:  'Friday, Jan 12th, 12:30pm'  
+  video: 'https://asu.zoom.us/rec/share/g8ooQ5HZ9fguPeQdwUxaqpqRpSyGghdFCMv6_1PdER0MYnPZ7zj41g8laD8RJJCw.Vh76k7MOdifOYVeU?startTime=1705088034000'
+  password: '0@SXL@HL'
+  sample-code: '' 
+  session-code: '' 
+- week1:
+  date:  'Friday, Jan 12th, 3:00pm'  
   video: ''
   password: ''
   sample-code: 'week-01-control-structures.R' 
