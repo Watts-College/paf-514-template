@@ -7,17 +7,15 @@ root-url: 'https://raw.githubusercontent.com/Watts-College/paf-514-template/main
 
 session: 
 - week0:
-  date:  'Friday, Jan 12th, 12:30pm'  
+  date:  'Friday, Jan 12th, 12:30pm: COURSE OVERVIEW'  
   video: 'https://asu.zoom.us/rec/share/g8ooQ5HZ9fguPeQdwUxaqpqRpSyGghdFCMv6_1PdER0MYnPZ7zj41g8laD8RJJCw.Vh76k7MOdifOYVeU?startTime=1705088034000'
   password: '0@SXL@HL'
-  sample-code: '' 
-  session-code: '' 
 - week1:
-  date:  'Friday, Jan 12th, 3:00pm'  
-  video: ''
-  password: ''
+  date:  'Friday, Jan 12th, 3:00pm: LAB 01 GETTING STARTED'  
+  video: 'https://asu.zoom.us/rec/share/o3ePQO50NTXEUJWjBdr3rA5D3DDdehQl3GqvDvt8EOPmGYlxMOde_xG-xaM3CIRX.UMTLTZjuEOlsagR7'
+  password: 'WMC&NLs1'
   sample-code: 'week-01-control-structures.R' 
-  session-code: '' 
+  session-code: 'week-01-control-structures-v4.Rhistory' 
 - week2:
   date:  'Tues, Jan 16th, 3pm'  
   video: '' 
