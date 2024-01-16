@@ -1,3 +1,46 @@
+https://watts-college.github.io/paf-514-template/lectures/p-02-loops.html#10
+
+
+### REPETATIVE TASKS AS LOOPS
+
+2^1
+2^2
+2^3
+2^4
+2^5
+
+
+
+
+for( i in 1:5 )
+{
+  print( 2^i )   
+}
+
+
+
+### STORING RESULTS
+
+
+results <- NULL
+
+for( i in 1:5 )
+{
+  results[i] <- 2^i   
+}
+
+
+results <- NULL  
+
+for( i in 7:8 )     # what happens here? 
+{
+  results[i] <- 2^i   
+}
+
+
+
+
+
 # BOOTSTRAPPING TYPE II ERRORS
 # Examine Type II Errors
 # as a function of sample size
