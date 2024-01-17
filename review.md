@@ -4,6 +4,7 @@ layout: review
 
 root-url: 'https://raw.githubusercontent.com/Watts-College/paf-514-template/main/review-sessions/'
 
+ 
 
 session: 
 - week0:
@@ -18,8 +19,8 @@ session:
   session-code: 'week-01-control-structures-v4.Rhistory' 
 - week2:
   date:  'Tues, Jan 16th, 3pm'  
-  video: '' 
-  password: ''
+  video: 'https://asu.zoom.us/rec/share/Yydn_WRVkbVAxN1bvpaf6HWQuMpj7y4eg7wW2-b7Smtda10MlqvsYEn7A-zQHJTe.vlVF-U9dCs5mA-jN?startTime=1705442637000' 
+  password: '!WK0mnY4'
   sample-code: 'week-02-loops.R' 
   session-code: '' 
 - week3:
