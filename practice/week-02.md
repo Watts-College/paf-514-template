@@ -70,6 +70,19 @@ correct.result.if.stay   <- "LOSE"
 correct.result.if.switch <- "WIN"
 ```
 
+Use the problematic version of the open_goat_door() function to demonstrate the efficacy of your unit tests. 
+
+```r
+# PROBLEMATIC FUNCTION 
+open_goat_door <- function( game, a.pick )
+{
+   doors <- c(1,2,3)
+   available.doors <- doors[ game != "car" & doors != a.pick ] 
+   opened.door <- sample( available.doors, size=1 )
+   return( opened.door ) 
+}
+```
+
 **OPTION B:**
 
 Simplify the process by turning your testing code into a function. 
