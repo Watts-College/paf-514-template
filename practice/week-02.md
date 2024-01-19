@@ -67,7 +67,7 @@ first.pick <-2
 # CORRECT OUTCOMES
 correct.opened.door      <- 3
 correct.result.if.stay   <- "LOSE"
-correct.result.if.switch <- c("WIN","LOSE") # depends upon which door is randomly selected
+correct.result.if.switch <- "WIN"
 ```
 
 **OPTION B:**
@@ -96,10 +96,9 @@ car.position <- 1   # game <- c("car","goat","goat")
 first.pick   <- 2
 correct.opened.door <- 3
 correct.result.if.stay <- "LOSE"
-correct.result.if.switch <- c("WIN","LOSE")
+correct.result.if.switch <- "WIN"
 test_scenario( car.position, first.pick, correct.opened.door, correct.result.if.stay, correct.result.if.switch )
 ```
-
 
 **OPTION C:** 
 
