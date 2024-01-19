@@ -20,6 +20,89 @@ image-width: 150px
   
 ## Q1 UNIT TESTING
 
+
+**OPTION A:**
+
+Write a complete unit testing script for the LAB-01 version of the Monty Hall game. There are three potential game set-ups (car in position 1, 2, or 3) and three potential initial door selections, so 9 conditions to test. 
+
+Include a step that compares results against the correct solutions (or the range of correct solutions in some scenarios). 
+
+*Note that we are controlling the game setup environment here and only testing the performance of the last three functions. So this approach to testing assumes create_game() and select_door() are working properly since we are not evaluating those two functions. Unit testing typically requires you to make assumptions to simplify the problem.* 
+
+```
+########
+########  CONDITION 1
+########
+
+# GAME SETUP 
+game <- c("car","goat","goat")
+first.pick <- 1
+
+# CORRECT OUTCOMES
+correct.opened.door      <- c(2,3)
+correct.result.if.stay   <- "WIN"
+correct.result.if.switch <- "LOSE"
+
+# ACTUAL OUTCOMES 
+opened.goat.door  <- open_goat_door( game, first.pick )
+final.pick.stay   <- change_door( stay=T, opened.door=opened.goat.door, a.pick=first.pick )
+final.pick.switch <- change_door( stay=F, opened.door=opened.goat.door, a.pick=first.pick )
+outcome.stay      <- determine_winner( final.pick=final.pick.stay, game )
+outcome.switch    <- determine_winner( final.pick=final.pick.switch, game )
+
+# EVALUATION: ALL MUST BE TRUE
+opened.goat.door %in% correct.opened.door
+outcome.stay      ==  correct.result.if.stay
+outcome.switch    ==  correct.result.if.switch
+
+
+########
+########  CONDITION 2
+########
+
+# GAME SETUP 
+game <- c("car","goat","goat")
+first.pick <-2
+
+# CORRECT OUTCOMES
+correct.opened.door      <- 3
+correct.result.if.stay   <- "LOSE"
+correct.result.if.switch <- c("WIN","LOSE") # depends upon which door is randomly selected
+```
+
+**OPTION B:**
+
+Simplify the process by turning your testing code into a function. 
+
+* The arguments will be values specified in GAME SETUP and CORRECT OUTCOMES
+* Use **car.position** instead of **game** to simplify the argument
+* The function will use the game setup specified in the arguments to determine outcomes
+* Check if each criteria is met independently
+* Return "PASS" if all conditions in EVALUATION are met, return "FAIL" if at least one condition fails
+
+```r
+test_scenario <- function( car.position, first.pick, correct.opened.door, correct.result.if.stay, correct.result.if.switch )
+{
+  game <- c("goat","goat","goat")
+  game[ car.position ] <- "car"
+  # Code from ACTUAL OUTCOMES
+  # Code from EVALUATION
+  # Return a single "PASS" (all conditions met) or "FAIL" (at least one condition fails) 
+}
+```
+
+```r
+car.position <- 1   # game <- c("car","goat","goat")
+first.pick   <- 2
+correct.opened.door <- 3
+correct.result.if.stay <- "LOSE"
+correct.result.if.switch <- c("WIN","LOSE")
+test_scenario( car.position, first.pick, correct.opened.door, correct.result.if.stay, correct.result.if.switch )
+```
+
+
+**OPTION C:** 
+
 We encountered a strange bug in the Monty Hall problem that arises from the behavior of the sample function in these scenarios: 
   
 ```r
