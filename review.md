@@ -22,12 +22,13 @@ session:
   video: 'https://asu.zoom.us/rec/share/Yydn_WRVkbVAxN1bvpaf6HWQuMpj7y4eg7wW2-b7Smtda10MlqvsYEn7A-zQHJTe.vlVF-U9dCs5mA-jN?startTime=1705442637000' 
   password: '!WK0mnY4'
   sample-code: 'week-02-loops.R' 
-  session-code: '' 
+  session-code: 'week-02-loops-v2.Rhistory' 
 - week3:
   date:  'Mon Jan 22nd'  
   video: ''
   password: ''
   sample-code: 'week-03-regular-expressions.R' 
+  session-code: 'week-03-regex.Rhistory' 
 - week4:
   date:  'Mon Jan 29th'  
   video: ''

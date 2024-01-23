@@ -213,6 +213,11 @@ sum <- function(..., na.rm = TRUE) {}
 ```
 
 Note that good documentation describes all of the arguments needed by the function, including the required data types of each object. And clearly describe what will be returned when the function runs (type of object, what it contains). 
+
+The information you provide becomes the documentation that appears when you type `help("function_name")`: 
+
+![](images/r-package-docs.png)
+
 *Roxygen, unlike R, is sensitive to the number of spaces your use. So don't alter the formatting of the default comments in your script.*
 
 Place your documented R scripts into the "R" folder in your package directory, then try:
