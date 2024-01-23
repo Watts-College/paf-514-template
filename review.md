@@ -4,7 +4,7 @@ layout: review
 
 root-url: 'https://raw.githubusercontent.com/Watts-College/paf-514-template/main/review-sessions/'
 
- 
+
 
 session: 
 - week0:
@@ -25,8 +25,8 @@ session:
   session-code: 'week-02-loops-v2.Rhistory' 
 - week3:
   date:  'Mon Jan 22nd'  
-  video: ''
-  password: ''
+  video: 'https://asu.zoom.us/rec/share/PpHj7F6Eaz93l4d47h_gBk3wy9HNmsInn8WXAb-WAmc_4d5y2rz1xuyqiTtbnnvV.At825diC81PoJDuL?startTime=1705962245000'
+  password: '?Sh4$S0h'
   sample-code: 'week-03-regular-expressions.R' 
   session-code: 'week-03-regex.Rhistory' 
 - week4:
