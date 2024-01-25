@@ -22,17 +22,178 @@ image-width: 150px
 
 <br>
   
+## Diagramming a Workflow
 
-ADD: 
-  
-* create regular expression to search for email address
-* create regular expression to search for social media handles (@xxx)  
-* search for dates XX-XX-XXXX; XXXX-XX-XX; jan-xx; Dec xx, xxxx;
-* CHALLENGE: read dates in combination of M-D-Y format then determine which is which (only 12 months, only 31 days)
-* search for proper nouns (capitalization, not at start of the sentence) 
-* name parsing to guess first, middle, last names 
-  
-  
+We often want to break a very long script into a more manageable workflow by grouping chunks of your code into functions that represent discrete steps in the process. This also makes the program more flexible because you only have to change a couple of inputs in order to run an new "recipe". 
+
+```r
+make_cookies <- function( butter=0.33, sugar=0.5, eggs=1, flour=2, temp=375 )
+{
+   dry.goods <- combine( flour, sugar )
+   batter <- mix( dry.goods, butter, eggs )
+   cookies <- bake( batter, temp, time=10 )
+   return( cookies )
+}
+```
+
+For a workflow to function properly, though, you need to pay close attention to the inputs and outputs. One way to visualize this clearly is to diagram your arguments. Start by breaking open the function then diagram all of the steps. Note I am writing functions in UPPERCASE and objects (arguments) in lowercase for clarity. 
+
+```r
+# make_cookies <- function( butter=0.33, sugar=0.5, eggs=1, flour=2, temp=375 )
+# {
+
+butter <- 0.33
+sugar <- 0.5
+eggs <- 1
+flour <- 2
+temp <- 375
+
+dry.goods <- combine( flour, sugar )
+batter    <- mix( dry.goods, butter, eggs )
+cookies   <- bake( batter, temp, time=10 )
+
+#    return( cookies )
+# }
+```
+
+```mermaid
+graph TD;
+    flour --> COMBINE;
+    sugar --> COMBINE;
+    COMBINE --> dry.goods;
+    dry.goods --> MIX;
+    butter --> MIX;
+    eggs --> MIX;
+    MIX --> batter;
+    batter --> BAKE;
+    temp --> BAKE;
+    time --> BAKE;
+    BAKE --> cookies;
+```
+
+Then add the wrapper function by listing it as the source node for all of the arguments passed to the wrapper. This way you can ensure that all arguments are flowing through the workflow properly by checking two things: 
+
+1. There are no loops in the diagram.
+2. Any argument that does not come from MAKE_COOKIES (your wrapper) have default values provided.
+
+```mermaid
+graph TD;
+    MAKE_COOKIES --> butter;
+    MAKE_COOKIES --> eggs;
+    MAKE_COOKIES --> flour;
+    MAKE_COOKIES --> sugar;
+    MAKE_COOKIES --> temp;
+    flour --> COMBINE;
+    sugar --> COMBINE;
+    COMBINE --> dry.goods;
+    dry.goods --> MIX;
+    butter --> MIX;
+    eggs --> MIX;
+    MIX --> batter;
+    batter --> BAKE;
+    temp --> BAKE;
+    time --> BAKE;
+    BAKE --> cookies;
+```
+
+We can see that the **time** variable used in **BAKE()** is not an argument passed to **MAKE_COOKIES()**, so the value needs to be provided as a default or defined inside the function somewhere. We can see that we have hard-coded the **time** value into the **BAKE()** function here: 
+
+```r
+bake( batter, temp, time=10 )
+```
+
+Which is fine if every recipe can use the same bake time. Otherwise we would want to pass that argument to the wrapper function as well. 
+
+These diagrams can be made on GitHub using a **mermaid** code chunk: 
+
+````
+```mermaid
+graph TD;
+    flour     --> COMBINE;
+    sugar     --> COMBINE;
+    COMBINE   --> dry.goods;
+    dry.goods --> MIX;
+    butter    --> MIX;
+    eggs      --> MIX;
+    MIX       --> batter;
+    batter    --> BAKE;
+    temp      --> BAKE;
+    time      --> BAKE;
+    BAKE      --> cookies;
+```
+````
+
+It is identical in the R Markdown context, except you need to call the **mermaid()** function from the **DiagrammeR** package. 
+
+````
+```{r}
+library(DiagrammeR)
+
+mermaid("
+graph LR
+    A --> B;
+")
+
+```
+````
+
+### Q1: Diagram Part-01 of Lab-02
+
+Diagram the workflow of the play_game() function in Part-01 of Lab-02. Use UPPERCASE for function names and lowercase for argument names. Then answer the following: 
+
+**PART A:** How many objects are passed to play_game(), and how many originate from functions? 
+
+**PART B:** Add game.size, i.e. the number of doors, as an explicit argument in the diagram.
+
+**PART C:** Make sure you represent **PLAY_GAME()** on your diagram. If it does not receive arguments nor pass them, where would it go? 
+
+Share a screen shot of your diagram of the workflow on YellowDig with an explanation of parts A-C. 
+
+### Q2: Diagram Part-02 of Lab-02
+
+Diagram the workflow of the play_game() function in **Part-02** of Lab-02, then answer the following: 
+
+**PART A:** How many objects are passed to play_game(), and how many originate from functions? 
+
+**PART B:** How is game.size present in your diagram now? 
+
+**Part C:** Compare the Q1 and Q2 diagrams. How did the workflow change?  
+
+Share a screen shot of your diagrams of the workflows on YellowDig with an explanation of parts A-C. 
+
+
+### Q3: Diagram Function Dependencies 
+
+You initial workflow diagrams represent the relationship between functions and the objects needed for the functions to run. Create a simplified version of the graph that represents dependencies between functions. Two functions are connected if the output of one function is an input of another function. For example, a simple function **wrapper( A, B )** that passes arguments to two steps might look like: 
+
+```mermaid
+graph TD;
+    WRAPPER  --> A;
+    WRAPPER  --> B;
+    B          --> STEP_ONE;
+    STEP_ONE --> C;
+    A --> STEP_TWO;
+    C --> STEP_TWO;
+    STEP_TWO --> D;
+```
+
+And after removing the arguments the function dependency would look like: 
+
+```mermaid
+graph TD;
+    WRAPPER  --> STEP_ONE;
+    WRAPPER  --> STEP_TWO;
+    STEP_ONE --> STEP_TWO;
+    STEP_TWO --> D;
+```
+
+**PART-A:** Diagram the function dependencies in **Part-01** and **Part-02** on LAB-02. How do they change as a result of generalizing the game setup? 
+
+<br>
+<hr>
+<br>
+
+
 ## Regular Expressions
 
 The function **grep( pattern, string )** works as follows:
@@ -110,7 +271,7 @@ grep( pattern="t*o", strings, value = TRUE)
 <br>
 
 
-## Q1 - Constructing Factors
+### Q1 - Constructing Factors
 
 Building on the lab from this week, we constructed groups of titles using the following code logic:  
 
@@ -139,7 +300,7 @@ group.03 <- grepl( ..., titles )  # power lists
 
 
 
-## Q2: RegEx Substring Application
+### Q2: RegEx Substring Application
 
 We have an large database where all of the addresses and geographic coordinates are stored as follows:
 
@@ -162,6 +323,19 @@ Note that the length of addresses can change, so you will need to use regular ex
 <br>
 <hr>
 <br>
+
+
+
+ADD: 
+  
+* create regular expression to search for email address
+* create regular expression to search for social media handles (@xxx)  
+* search for dates XX-XX-XXXX; XXXX-XX-XX; jan-xx; Dec xx, xxxx;
+* CHALLENGE: read dates in combination of M-D-Y format then determine which is which (only 12 months, only 31 days)
+* search for proper nouns (capitalization, not at start of the sentence) 
+* name parsing to guess first, middle, last names
+
+
 
 </div>
  
