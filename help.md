@@ -58,7 +58,7 @@ alt="Issues" width="800" />
 
 #### (3) Include Data
 
-You can include data in your questions in a few ways. 
+You can include data in your questions in a few ways that are [summarized here](https://stackoverflow.com/questions/5963269/how-to-make-a-great-r-reproducible-example). 
 
 There are some functions that allow you generate random data that can be used to demonstrate the problem.
 
