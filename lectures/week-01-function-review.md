@@ -231,20 +231,21 @@ wrapper_function( A=a, B=b )
 a <- 5
 b <- TRUE 
 wrapper_function( A=a, B=b )
-```
-
+```  
+  
 ```mermaid
-flowchart TB
-    subgraph scenario two
-    a=7 --> id1[WRAPPER]
-    b=F --> id1[WRAPPER]
-    end
-    subgraph scenario one
-    a=5 --> id2[WRAPPER]
-    b=T --> id2[WRAPPER]
-    end
-```
+flowchart TB 
+    subgraph 'scenario two' 
+    id3[a=7] --> id1[WRAPPER] 
+    id4[b=F] --> id1[WRAPPER] 
+    end 
+    subgraph 'scenario one' 
+   id5[ a=5] --> id2[WRAPPER] 
+    id6[b=T] --> id2[WRAPPER] 
+    end 
+```  
 
+  
 **TIP:** Pay attention to the difference between object names and argument names in the first lab. 
 
 You will create a game setup (a car behind one door and goats behind two others), and randomly select a door. 
