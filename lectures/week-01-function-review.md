@@ -260,7 +260,6 @@ wrapper_function <- function( A, B ) {
 }
 ```
 
-.
 
 ```mermaid 
 graph TD;
@@ -302,7 +301,7 @@ opened.door <- open_goat_door( game=my.game, pick=first.pick )
 ```  
   
 ```mermaid 
-flowchart TB
+graph TD;
   id1([CREATE_GAME]) --> my.game
   id2([SELECT_DOOR]) --> first.pick
   my.game --> id4[GAME=my.game]
