@@ -1,6 +1,6 @@
 ---
 layout: lab
-title: Problem-Solving with Code 
+title: Function Review 
 image: model.svg
 image-width: 150px
 ---
