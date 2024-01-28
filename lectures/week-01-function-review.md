@@ -302,15 +302,15 @@ opened.door <- open_goat_door( game=my.game, pick=first.pick )
   
 ```mermaid 
 graph TD;
-  id1([CREATE_GAME]) --> my.game;
-  id2([SELECT_DOOR]) --> first.pick;
-  my.game --> id4[GAME=my.game];
+  id1[CREATE_GAME] --> my.game;
+  id2[SELECT_DOOR] --> first.pick;
+  my.game    --> id4[GAME=my.game];
   first.pick --> id5[PICK=my.pick];
   subgraph fx
-    id4[GAME=my.game] --> id3([ OPEN_GOAT_DOOR ]);
-    id5[PICK=my.pick] --> id3([ OPEN_GOAT_DOOR ]); 
+    id4[GAME=my.game] --> id3[ OPEN_GOAT_DOOR ];
+    id5[PICK=my.pick] --> id3[ OPEN_GOAT_DOOR ]; 
   end
-  id3([ OPEN_GOAT_DOOR ]) --> opened.goat.door; 
+  id3[ OPEN_GOAT_DOOR ] --> opened.goat.door; 
 ```
 
 
