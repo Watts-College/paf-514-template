@@ -21,7 +21,7 @@ image-width: 150px
 
 Revisit the following chapter from last semester:
 
-[Functions](http://ds4ps.org/dp4ss-textbook/ch-040-functions.html)
+[Intro to Functions](http://ds4ps.org/dp4ss-textbook/ch-040-functions.html)
 
 Make sure you are clear about: 
 
