@@ -139,7 +139,7 @@ Since functions are general purpose machines we can pass any numeric value to ar
 
 Think of it as the hole carved in the box and the values are the actual pieces that we put into the holes: 
 
-<img src="images/argument-slots.png" width="300" />
+<img src="/images/argument-slots.png" width="300" >
 
 The function itself should only use information passed through arguments.  
 
