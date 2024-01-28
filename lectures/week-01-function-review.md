@@ -126,22 +126,46 @@ sum( A=a, B=b )
 Conceptually we are passing the value **2** to **argument A** through **object a**. 
 
 ```
-A <- a <- 2
+sum( A=a )
+# equivalent to:  A <- a
+
+a <- 2
+sum( A=a )
+# equivalent to: A <- a <- 2
 ```
 
-Note that argument assignment uses the equal sign while object assignment uses the arrow, but the value being passed is always on the right, and the variable receiving the value is on the left. 
-
-```r
-sum( A=a )  # equivalent to:  A <- a
-```
-
-Since functions are general purpose machines we can pass any numeric value to argument A and it will sum it with B to get the result. As a result, **an argument is a placeholder for whichever value you pass**. 
-
-Think of it as the hole carved in the box and the values are the actual pieces that we put into the holes: 
+Note that argument assignment uses the equal sign while object assignment uses the arrow, but the value being passed is always on the right, and the variable receiving the value is on the left. As a result, **an argument is a placeholder for whichever value you pass**. Think of it as the hole carved in the box and the values are the actual pieces that we put into the holes: 
 
 <img src='https://raw.githubusercontent.com/Watts-College/paf-514-template/main/lectures/images/argument-slots.png' width='300'> 
 
-The function itself should only use information passed through arguments.  
+We can pass red, blue, or green square pieces through the square hole. Thus arguments are what make functions general-purpose input-output machines. We can pass any value to an argument (as long as it's the correct data type). This allows us to re-use our data recipes easily by changing input values. 
+
+```r
+a <- 7
+b <- FALSE 
+wrapper_function( A=a, B=b )
+
+a <- 5
+b <- TRUE 
+wrapper_function( A=a, B=b )
+```  
+. 
+
+```mermaid 
+flowchart TB; 
+  subgraph case_two 
+    id3[a=7] --> id1[WRAPPER]; 
+    id4[b=F] --> id1[WRAPPER]; 
+  end 
+  subgraph case_one 
+    id5[a=5] --> id2[WRAPPER];
+    id6[b=T] --> id2[WRAPPER]; 
+  end 
+```    
+
+### Recipes Consist of Arguments
+
+The function contains a data recipe. The recipe should only use information passed through arguments.  
 
 ```r
 function( ??? ) {
@@ -160,6 +184,21 @@ function( X, Z ) {  # correct
   X + Z 
 }
 ```
+
+Be careful to avoid this scenario: 
+
+```r
+X <- 5
+sum <- function( Z ) {  # argument for X is missing
+  X + Z 
+}
+
+sum( Z=3 )
+> 8
+```
+
+In order to do the calculation X + Z the function will use one variable passed through an argument and one variable from the global environment. This makes the function unpredictable because we can never make assumptions about what X might be in the global environment. Specifically, if X changes earlier in the program it can leader to unexpected behaviors that would be hard to trace. See the section on **function scope** below for more details. 
+
 
 <br> 
 
@@ -223,29 +262,7 @@ graph TD;
     STEP_TWO --> D;
 ```
  
-This allows us to re-use our data recipes easily by changing the input values. 
 
-```r
-a <- 7
-b <- FALSE 
-wrapper_function( A=a, B=b )
-
-a <- 5
-b <- TRUE 
-wrapper_function( A=a, B=b )
-```  
-  
-```mermaid 
-flowchart TB 
-    subgraph 'scenario two' 
-    id3[a=7] --> id1[WRAPPER] 
-    id4[b=F] --> id1[WRAPPER] 
-    end 
-    subgraph 'scenario one' 
-   id5[ a=5] --> id2[WRAPPER] 
-    id6[b=T] --> id2[WRAPPER] 
-    end 
-```  
 
   
 **TIP:** Pay attention to the difference between object names and argument names in the first lab. 
