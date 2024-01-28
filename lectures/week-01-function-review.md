@@ -139,7 +139,7 @@ Since functions are general purpose machines we can pass any numeric value to ar
 
 Think of it as the hole carved in the box and the values are the actual pieces that we put into the holes: 
 
-![](argument-slots.png) 
+![](images/argument-slots.png) 
 
 The function itself should only use information passed through arguments.  
 
@@ -208,12 +208,16 @@ wrapper_function <- function( A, B ) {
 
 ```mermaid
 graph TD;
+    id1[A=a] --> WRAPPER;
+    id2[B=b] --> WRAPPER;
+    subgraph fx
     WRAPPER  --> A;
     WRAPPER  --> B;
     A --> STEP_ONE;
     STEP_ONE --> C;
     B --> STEP_TWO;
     C --> STEP_TWO;
+    end
     STEP_TWO --> D;
 ```
 
