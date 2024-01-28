@@ -191,7 +191,7 @@ More importantly, pseudo-code captures the problem logic, and thus it is indepen
 
 Here are some helpful examples: 
 
-* [Pseudocode guide](https://www.vikingcodeschool.com/software-engineering-basics/what-is-pseudo-coding)
+* [Pseudocode guide](https://github.com/Watts-College/paf-514-template/blob/main/articles/pseudo-code-example.pdf)
 * [Khan Academy video](https://www.khanacademy.org/computing/computer-programming/programming/good-practices/pt/planning-with-pseudo-code) 
 
 
