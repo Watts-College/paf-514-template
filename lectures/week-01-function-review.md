@@ -265,20 +265,22 @@ opened.door <- open_goat_door( game=my.game, pick=first.pick )
 # THE WORKFLOW IS CONCEPTUALLY:
 #   game <- my.game <- create_game()
 #   pick <- first.pick <- select_door()
-```
+```  
 
-```mermaid
+  
+```mermaid 
 graph TD;
-    id1([CREATE_GAME])  --> my.game;
-    id2([SELECT_DOOR])  --> first.pick;
-    my.game --> GAME=my.game;
-    first.pick --> PICK=my.pick;
-   subgraph arguments
-    GAME=my.game --> id3([ OPEN_GOAT_DOOR GAME ]);
-    PICK=my.pick --> id3([ OPEN_GOAT_DOOR GAME ]);
-    end
-    id3([ OPEN_GOAT_DOOR  ]) --> opened.goat.door;
-```
+    id1([CREATE_GAME])  --> my.game; 
+    id2([SELECT_DOOR])  --> first.pick; 
+    my.game --> GAME=my.game; 
+    first.pick --> PICK=my.pick; 
+   subgraph arguments  
+    GAME=my.game --> id3([ OPEN_GOAT_DOOR GAME ]); 
+    PICK=my.pick --> id3([ OPEN_GOAT_DOOR GAME ]); 
+    end   
+    id3([ OPEN_GOAT_DOOR  ]) --> opened.goat.door; 
+``` 
+
 
 <br> 
 
