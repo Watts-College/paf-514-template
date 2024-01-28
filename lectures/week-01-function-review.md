@@ -139,7 +139,7 @@ Since functions are general purpose machines we can pass any numeric value to ar
 
 Think of it as the hole carved in the box and the values are the actual pieces that we put into the holes: 
 
-![](images/argument-slots.png) 
+<img src="images/argument-slots.png" width="300" />
 
 The function itself should only use information passed through arguments.  
 
@@ -274,12 +274,12 @@ graph TD;
     id2([SELECT_DOOR])  --> first.pick; 
     my.game --> GAME=my.game; 
     first.pick --> PICK=my.pick; 
-   subgraph arguments  
-    GAME=my.game --> id3([ OPEN_GOAT_DOOR GAME ]); 
-    PICK=my.pick --> id3([ OPEN_GOAT_DOOR GAME ]); 
+   subgraph fx  
+    GAME=my.game --> id3([ OPEN_GOAT_DOOR ]); 
+    PICK=my.pick --> id3([ OPEN_GOAT_DOOR ]); 
     end   
-    id3([ OPEN_GOAT_DOOR  ]) --> opened.goat.door; 
-``` 
+    id3([ OPEN_GOAT_DOOR ]) --> opened.goat.door; 
+```
 
 
 <br> 
