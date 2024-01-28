@@ -21,7 +21,7 @@ image-width: 150px
 
 Review core concepts on FUNCTIONS:
 
-[Functions](../week-01-function-review/)
+[FUNCTION REVIEW](../week-01-function-review/)
 
 Make sure you are clear about: 
 
