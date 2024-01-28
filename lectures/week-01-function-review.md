@@ -139,7 +139,7 @@ Since functions are general purpose machines we can pass any numeric value to ar
 
 Think of it as the hole carved in the box and the values are the actual pieces that we put into the holes: 
 
-<img src="/images/argument-slots.png" width="300" >
+<img src='https://raw.githubusercontent.com/Watts-College/paf-514-template/main/lectures/images/argument-slots.png' width='300'> 
 
 The function itself should only use information passed through arguments.  
 
@@ -206,7 +206,9 @@ wrapper_function <- function( A, B ) {
 }
 ```
 
-```mermaid
+.
+
+```mermaid 
 graph TD;
     id1[A=a] --> WRAPPER;
     id2[B=b] --> WRAPPER;
@@ -220,7 +222,7 @@ graph TD;
     end
     STEP_TWO --> D;
 ```
-
+ 
 This allows us to re-use our data recipes easily by changing the input values. 
 
 ```r
@@ -233,7 +235,7 @@ b <- TRUE
 wrapper_function( A=a, B=b )
 ```  
   
-```mermaid
+```mermaid 
 flowchart TB 
     subgraph 'scenario two' 
     id3[a=7] --> id1[WRAPPER] 
@@ -266,19 +268,18 @@ opened.door <- open_goat_door( game=my.game, pick=first.pick )
 #   game <- my.game <- create_game()
 #   pick <- first.pick <- select_door()
 ```  
-
   
 ```mermaid 
 graph TD;
-    id1([CREATE_GAME])  --> my.game; 
-    id2([SELECT_DOOR])  --> first.pick; 
-    my.game --> GAME=my.game; 
-    first.pick --> PICK=my.pick; 
-   subgraph fx  
-    GAME=my.game --> id3([ OPEN_GOAT_DOOR ]); 
-    PICK=my.pick --> id3([ OPEN_GOAT_DOOR ]); 
-    end   
-    id3([ OPEN_GOAT_DOOR ]) --> opened.goat.door; 
+  id1([CREATE_GAME])  --> my.game;
+  id2([SELECT_DOOR])  --> first.pick;
+  my.game --> GAME=my.game;
+  first.pick --> PICK=my.pick;
+  subgraph fx
+  GAME=my.game --> id3([ OPEN_GOAT_DOOR ]);
+  PICK=my.pick --> id3([ OPEN_GOAT_DOOR ]); 
+  end
+  id3([ OPEN_GOAT_DOOR ]) --> opened.goat.door; 
 ```
 
 
