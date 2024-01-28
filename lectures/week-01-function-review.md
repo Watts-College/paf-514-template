@@ -149,10 +149,10 @@ a <- 5
 b <- TRUE 
 wrapper_function( A=a, B=b )
 ```  
-. 
+ 
 
 ```mermaid 
-flowchart TB; 
+graph TD; 
   subgraph case_two 
     id3[a=7] --> id1[WRAPPER]; 
     id4[b=F] --> id1[WRAPPER]; 
