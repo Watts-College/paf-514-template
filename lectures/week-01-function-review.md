@@ -199,6 +199,21 @@ sum( Z=3 )
 
 In order to do the calculation X + Z the function will use one variable passed through an argument and one variable from the global environment. This makes the function unpredictable because we can never make assumptions about what X might be in the global environment. Specifically, if X changes earlier in the program it can leader to unexpected behaviors that would be hard to trace. See the section on **function scope** below for more details. 
 
+Additionally, we might want to assert some control over data types in many cases for the function to work properly: 
+
+```r
+# box and whisker plot 
+function( f, x ) { 
+  # f must be a factor
+  # x must be a number
+  # otherwise stop, return error message
+  plot(f,x) 
+}
+```
+
+Arguments give us control. Without them, data recipes become unpredictable. 
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/rZ3ETK7-ZM8?si=-RIBhLdGLXtw8yo_" title="YouTube video player" frameborder="0" allow="gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 <br> 
 
