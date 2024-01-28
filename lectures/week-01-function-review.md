@@ -229,6 +229,18 @@ b <- TRUE
 wrapper_function( A=a, B=b )
 ```
 
+```mermaid
+flowchart TB
+    subgraph scenario two
+    a=7 --> id1[WRAPPER]
+    b=F --> id1[WRAPPER]
+    end
+    subgraph scenario one
+    a=5 --> id2[WRAPPER]
+    b=T --> id2[WRAPPER]
+    end
+```
+
 **TIP:** Pay attention to the difference between object names and argument names in the first lab. 
 
 You will create a game setup (a car behind one door and goats behind two others), and randomly select a door. 
@@ -248,6 +260,19 @@ opened.door <- open_goat_door( game=my.game, pick=first.pick )
 # THE WORKFLOW IS CONCEPTUALLY:
 #   game <- my.game <- create_game()
 #   pick <- first.pick <- select_door()
+```
+
+```mermaid
+graph TD;
+    id1([CREATE_GAME])  --> my.game;
+    id2([SELECT_DOOR])  --> first.pick;
+    my.game --> GAME=my.game;
+    first.pick --> PICK=my.pick;
+   subgraph arguments
+    GAME=my.game --> id3([ OPEN_GOAT_DOOR GAME ]);
+    PICK=my.pick --> id3([ OPEN_GOAT_DOOR GAME ]);
+    end
+    id3([ OPEN_GOAT_DOOR  ]) --> opened.goat.door;
 ```
 
 <br> 
