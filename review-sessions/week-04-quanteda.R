@@ -108,6 +108,8 @@ tokens %>% head
 ##########  N-GRAMS 
 ##########
 
+library( quanteda.textstats )
+
 # find frequently co-occuring words 
 # (typically compound words)
 
@@ -116,13 +118,13 @@ ngram2 <-
   tokens_ngrams( n=2 ) %>% 
   dfm()
 
-ngram2 %>% textstat_frequency( n=10 )
+ngram2 %>% textstat_frequency( n=10 )  # requires quanteda.textstats library
 
 # 3-GRAMS
 
 ngram3 <-
   tokens %>%
-  tokens_ngrams( n=5 ) %>% 
+  tokens_ngrams( n=3 ) %>% 
   dfm()
 
 ngram3 %>% textstat_frequency( n=10 )
@@ -130,6 +132,31 @@ ngram3 %>% textstat_frequency( n=10 )
 tokens %>% 
   dfm() %>% 
   topfeatures( )
+
+
+
+#####   MEANINGFUL 2-GRAMS: ADD TO DICTIONARY
+                      feature frequency rank docfreq group
+8                jesus_christ        15    7      15   all
+23             youth_football         9   23       6   all
+26            school_district         8   26       8   all
+28                 low_income         8   26       8   all
+29           higher_education         8   26       8   all
+30              special_needs         8   26       7   all
+31      community_development         8   26       8   all
+39                foster_care         7   36       6   all
+42              mental_health         7   36       6   all
+
+#####   NOISY 2-GRAMS: IGNORE
+                      feature frequency rank docfreq group
+1             mission_provide        26    1      26   all
+3       organized_exclusively        19    3      19   all   # organized exclusively for charitable purposes: 4-gram
+4      exclusively_charitable        19    3      19   all   # organized exclusively for charitable purposes: 4-gram
+5                quality_life        18    5      18   all
+32            mission_educate         8   26       8   all
+40         organization_shall         7   36       7   all
+9       corporation_organized        14    9      14   all
+
 
 
 
