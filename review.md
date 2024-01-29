@@ -30,8 +30,8 @@ session:
   session-code: 'week-03-regex.Rhistory' 
 - week4:
   date:  'Mon Jan 29th'  
-  video: 'https://asu.zoom.us/rec/share/GXPpKZactcOJNPq9DpsjSVKoxXelp2fYvmFKNgYvdD12g9Ws4NqCaOnjvKlR2gT1.xkroVEoUrUKThiUF?startTime=1705962245000'
-  password: '?Sh4$S0h'
+  video: 'https://asu.zoom.us/rec/share/z8rdbXDoVc4twdRutbkHE__GSHbyWr5DY7VXYwHXdBPqEOtKl-Fgojl2Ez5NxuHQ.tYepI3W6AvugotaR'
+  password: '8mJf=Y+2'
   sample-code: 'week-04-quanteda.R'
 - week5:
   date:  'Mon Feb 5th'  
