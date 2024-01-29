@@ -534,20 +534,22 @@ Text analysis packages contain functions that assist in the manipulation of text
 
 Read the [Quanteda Quick-start Guide](https://quanteda.io/articles/quickstart.html) to familiarize your self with some basic components of text analysis. 
 
-Focus on: 
+Focus on a few [KEY CONCEPTS](https://github.com/Watts-College/paf-514-template/blob/main/lectures/text-analysis.pdf): 
 
 * Vocabulary: 
   - Document: a file consisting primarily of text 
   - Corpus: a collection of documents in a study 
   - Tokens: single words or phrases 
 * Cleaning text: 
-  - Removing punctuation and often numbers and symbols 
+  - Removing punctuation and often numbers and symbols
+  - Removing filler text called "stop words": the, and, where, etc 
 * Pre-Processing Steps: 
   - Stemming words to remove variant components:  running, runner, runs -> run
   - Identify proper nouns 
-  - Combine compound words into single words:  George Bush -> george_bush 
+  - Combine compound words into single words:  George Bush -> george_bush
+  - Standardization of text using "dictionaries" 
 * Analysis 
-  - Tokenization of pre-processed documents 
+  - Tokenization of pre-processed documents  
   - Identification of patterns in use of words 
 
 
