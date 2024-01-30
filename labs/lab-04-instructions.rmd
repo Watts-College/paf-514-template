@@ -285,7 +285,7 @@ For the last part of this lab, you will use text to classify nonprofits.
 
 A large foundation is interested in knowing how many new nonprofits created in 2018 have an explicit mission of serving minority communities. We will start by trying to identify nonprofits that are membership organizations for Black communities or provide services to Black communities. 
 
-To do this, you will create a set of words or phrases that you believe indicates that the nonprofit works with or for the target population. 
+To do this, you will create a set of words or phrases that you believe indicates that the nonprofit works with or for Black communities. 
 
 You will need to think about different ways that language might be used distinctively within the mission statements of nonprofit that serve Black communities. There is a lot of trial and error involved, as you can test several words and phrases, preview the mission statements that are identified, then refine your methods.
 
@@ -340,6 +340,35 @@ row.names( d.immigrant ) <- NULL
 d.immigrant %>% head(25) %>% pander()
 ```
 
+### Data Ethics
+
+Before you get started, take a few moments to reflect on the ethics of using archival data for research on diverse communities that have been historically disadvantaged. 
+
+> Data visualization often reduces people to points on a map or bars on a chart, so framing and context that uplift the people and communities behind the data are necessary for data communicators to empathetically present their work. These steps should be taken in tandem with existing standards of rigorous research, and researchers should seek to work with communities rather than simply on behalf of them. 
+> 
+> Applying empathy to data analysis and data visualization requires that researchers consider how the communities whose data are being used and the target audiences will perceive the work. Kim Bui, a journalist with the Arizona Republic, summarized this idea: “If I were one of the data points on this visualization, would I feel offended?” [[cite]](https://www.urban.org/research/publication/do-no-harm-guide-applying-equity-awareness-data-visualization) 
+
+Try to develop an awareness of how people are represented in data analytics through labels and descriptions: 
+
+* [Applying Racial Equity Awareness in Data Visualization](https://urban-institute.medium.com/applying-racial-equity-awareness-in-data-visualization-bd359bf7a7ff)
+
+Language has power. Stories have power. Narratives have power. Any time you are working with data that describes people, take time to reflect on your own experiences with the topic and your own internal narratives about the subjects. Which narratives are supported by your choices of language and visual representation? 
+
+* [Five guiding principles for integrating racial and ethnic equity in research](five-guiding-principles-for-integrating-racial-and-ethnic-equity-in-research.pdf)
+
+Should the data be described in a passive voice that gives the author an assumed objective distance from the subject, or does that approach implicitly support a specific narrative? 
+
+* [How We Should Talk about Racial Disparities](https://www.urban.org/urban-wire/how-we-should-talk-about-racial-disparities) 
+
+Here are some thoughtful resources for individuals that will be working with data that includes diverse communities: 
+
+* [Urban Institute Guide for Racial Equity in the Research Process](https://www.urban.org/sites/default/files/publication/103102/urban_institute_guide_for_racial_equity_in_research_process_0.pdf)
+* [How to Embed a Racial and Ethnic Equity Perspective in Research: A Child Trends Working Paper](https://cms.childtrends.org/wp-content/uploads/2019/09/RacialEthnicEquityPerspective_ChildTrends_October2019.pdf)
+* [Do No Ham Guide to Applying Equity Awareness in Data Visualization (2021)](https://www.urban.org/research/publication/do-no-harm-guide-applying-equity-awareness-data-visualization) 
+* [Do No Ham Guide - Additional Perspectives (2022)](https://www.urban.org/sites/default/files/2022-09/Do%20No%20Harm%20Guide%20-%20Additional%20Perspectives%20on%20Data%20Equity.pdf)
+
+<br>
+<br>
 
 ### For your deliverables for Part III: 
 
@@ -349,6 +378,7 @@ d.immigrant %>% head(25) %>% pander()
 **P3-Q2.** Take a random sample of 20 of the organizations in your sample and verify that your search criteria are identifying nonprofits that serve Black communities.  
 
 ```{r}
+set.seed( 1234 )
 sample <- dplyr::sample_n( d.immigrant, 20 )
 ```
 
@@ -364,6 +394,22 @@ The more inclusive your criteria are, the larger your false positive rate will b
 
 <br>
 <br>
+
+**A Reflection on Appropriate Use of Methods:** This exercise is useful pedagogically as it demonstrates the challenges of overcoming limitations inherent in real-world data. In this example, we lack demographic information about the communities served by nonprofits. We can use tools like natural language processing to infer, predict, or impute information that doesn't already exist within the data. The lab shows **HOW** one might go about assigning nonprofits to groups based upon their mission statements. The other important question is **SHOULD** we assign nonprofits to the groups? Is it responsible to use the approach given the conceptualization of the group, limitations within the data, and research context? The technical question of feasibility is often the easier one to answer. 
+
+The basic approach introduced in this lab is reflected in a growing body of research highlighting the use of natural language processing tools to classify nonprofits based upon missions. The version possible in a homework assignment is necessarily an over-simplification of the work needed to develop a robust and ethical classifier, especially the important steps of engaging diverse perspectives in the operationalization of group identities and validation steps beyond visual inspection of missions. The assignment is meant as a jumping off point for understanding potential uses of natural language tools in data analytics and an invitation to learn more about contemporary research applications:   
+
+- **2023:** Jones, M., McCabe, E., & Olson, R. (2023). Identifying essential nonprofits with a novel NLP Method. Nonprofit Management and Leadership, 33(3), 661-674.
+- **2023:** Han, B., Ho, B., & Xia, Z. (2023). Political ideology of nonprofit organizations. Social Science Quarterly, 104(6), 1207-1221.
+- **2023:** Chen, H., & Zhang, R. (2023). Identifying nonprofits by scaling mission and activity with word embedding. VOLUNTAS: International Journal of Voluntary and Nonprofit Organizations, 34(1), 39-51. 
+- **2022:** Ren, C., & Bloemraad, I. (2022). New Methods and the Study of Vulnerable Groups: Using Machine Learning to Identify Immigrant-Oriented Nonprofit Organizations. Socius, 8, 23780231221076992. [ [PDF](https://journals.sagepub.com/doi/pdf/10.1177/23780231221076992) ]
+- **2021:** LePere-Schloop, M. (2021). Nonprofit role classification using mission descriptions and supervised machine learning. Nonprofit and Voluntary Sector Quarterly, 08997640211057393.
+- **2021:** Ma, J. (2021). Automated Coding Using Machine Learning and Remapping the US Nonprofit Sector: A Guide and Benchmark. Nonprofit and Voluntary Sector Quarterly, 50(3), 662-687.
+- **2021:** Messamore, A., & Paxton, P. (2021). Surviving Victimization: How Service and Advocacy Organizations Describe Traumatic Experiences, 1998–2016. Social Currents, 8(1), 3-24.
+
+<br>
+<br>
+
 
 
 
