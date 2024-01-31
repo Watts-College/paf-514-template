@@ -473,6 +473,7 @@ A simpler option is to host your package on GitHub. Complete the following steps
 11. You should see the files appear in the GitHub Desktop app. In the "summary" field type something like "initial commit" and at the bottom left select "Commit to master". 
 12. Now up at the top select "Push origin". 
 
+
 ```
 documents      
 ├─ montyhall  # current package files 
@@ -483,6 +484,27 @@ projects
 │  ├─ .git
 │  ├─         # copy files from original folder to this one
 ```
+
+_**Do NOT** copy the full folder. **ONLY** copy the package files inside the folder._
+
+```
+projects          
+├─ montyhall  
+│  ├─ .git
+│  ├─ montyhall   # INCORRECT 
+│  │  ├─ R
+│  │  ├─ man 
+```
+ 
+```
+projects       
+├─ montyhall      # CORRECT
+│  ├─ .git
+│  ├─ R
+│  ├─ man   (plus DESCRIPTION, NAMESPACE, etc)     
+```
+
+
 
 The last step sends all of the files to GitHub. They should appear on your repo page shortly. 
 
