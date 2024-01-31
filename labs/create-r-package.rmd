@@ -473,7 +473,18 @@ A simpler option is to host your package on GitHub. Complete the following steps
 11. You should see the files appear in the GitHub Desktop app. In the "summary" field type something like "initial commit" and at the bottom left select "Commit to master". 
 12. Now up at the top select "Push origin". 
 
-This last step sends all of the files to GitHub. They should appear on your repo page shortly. 
+```
+documents      
+├─ montyhall  # current package files 
+│  ├─ R
+│  ├─ man     
+projects       
+├─ montyhall  # cloned github repo
+│  ├─ .git
+│  ├─         # copy files from original folder to this one
+```
+
+The last step sends all of the files to GitHub. They should appear on your repo page shortly. 
 
 Now others should be able to install your package by typing: 
 

@@ -47,19 +47,22 @@ Part III asks you to use text functions and regular expressions to search missio
 # REMEMBER TO RUN ONCE AND NEVER INCLUDE
 # INSTALL STEPS IN RMD FILES!
 
-quanteda.bundle <- c( "quanteda", "quanteda.textmodels",
-                      "quanteda.textstats", "quanteda.textplots" )
+quanteda.bundle <- 
+  c( "quanteda", "quanteda.textmodels",
+     "quanteda.textstats", "quanteda.textplots" )
+
 install.packages( quanteda.bundle )
 ```
 
 
 ```{r}
-library( dplyr )
-library( pander )
-library( quanteda )
-library( quanteda.textmodels )
-library( quanteda.textstats )
-library( quanteda.textplots )
+library( dplyr )                 # data wrangling
+library( pander )                # formatting tables 
+library( quanteda )              # text analysis library
+library( quanteda.textstats )    # summary stats with quanteda objects 
+
+# library( quanteda.textmodels )  # not needed for lab
+# library( quanteda.textplots  )  # not needed for lab
 ```
 
 
@@ -241,6 +244,9 @@ ngram2 %>% textstat_frequency( n=10 )
 
 ngram3 <- tokens_ngrams( tokens, n=3 ) %>% dfm()
 ngram3 %>% textstat_frequency( n=10 )
+
+# note that textstat_frequency() has been moved 
+# to the *quanteda.textstats* package
 ```
 
 

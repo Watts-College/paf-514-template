@@ -3218,10 +3218,18 @@ your machine.</li>
 left select “Commit to master”.</li>
 <li>Now up at the top select “Push origin”.</li>
 </ol>
-<p>This last step sends all of the files to GitHub. They should appear
-on your repo page shortly.</p>
+<pre><code>documents      
+├─ montyhall  # current package files 
+│  ├─ R
+│  ├─ man     
+projects       
+├─ montyhall  # cloned github repo
+│  ├─ .git
+│  ├─         # copy files from original folder to this one</code></pre>
+<p>The last step sends all of the files to GitHub. They should appear on
+your repo page shortly.</p>
 <p>Now others should be able to install your package by typing:</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>( <span class="st">&quot;yourGitHubName/montyhall&quot;</span> )</span></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>( <span class="st">&quot;yourGitHubName/montyhall&quot;</span> )</span></code></pre></div>
 </div>
 <div id="test-from-github" class="section level3" number="1.4.2">
 <h3><span class="header-section-number">1.4.2</span> Test from
@@ -3230,9 +3238,9 @@ GitHub</h3>
 delete the version you installed earlier from your local machine. It
 will prevent conflicts when trying to install an identical version of
 the package, just from a different location.</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" tabindex="-1"></a><span class="fu">remove.packages</span>( <span class="st">&quot;montyhall&quot;</span> ) <span class="co"># deletes from your computer </span></span>
-<span id="cb25-2"><a href="#cb25-2" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>( <span class="st">&quot;yourGitHubName/montyhall&quot;</span> )</span>
-<span id="cb25-3"><a href="#cb25-3" tabindex="-1"></a>montyhall<span class="sc">::</span><span class="fu">create_game</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" tabindex="-1"></a><span class="fu">remove.packages</span>( <span class="st">&quot;montyhall&quot;</span> ) <span class="co"># deletes from your computer </span></span>
+<span id="cb26-2"><a href="#cb26-2" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>( <span class="st">&quot;yourGitHubName/montyhall&quot;</span> )</span>
+<span id="cb26-3"><a href="#cb26-3" tabindex="-1"></a>montyhall<span class="sc">::</span><span class="fu">create_game</span>()</span></code></pre></div>
 <p>See notes above on removing packages for more details.</p>
 <br>
 <hr>
