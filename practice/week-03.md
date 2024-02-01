@@ -407,14 +407,14 @@ For more control over matches using greedy versus reluctant search see:
 
 **QUESTION Q3:**
 
-Given what you learned above, what would the following return and why? 
+Consider this new string: 
 
 ```
 eeeAiiZuuuuAoooZeeee    # original string
 eeeAiAiZuuuuAoZooZeeee  # new string
 ```
 
-Explain the reason this happens by describing the "recipe" of the search algorithm in plain English or with pseudocode. 
+**Given what you learned above, what would the following return and why? Explain the reason this happens by describing the "recipe" of the search algorithm in plain English or with pseudocode.**
 
 ```r
 # str_match_all() returns substring
