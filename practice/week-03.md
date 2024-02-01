@@ -312,11 +312,147 @@ MADISON, WI
 (43.072951239000076, -89.38668964199996)")
 ```
 
-Write a function that accepts the address vector **x** as the input, and returns a vector of numeric coordinates.
+Using Base R functions (not the stringr package), write a function that accepts the address vector **x** as the input, and returns a vector of numeric coordinates.
 
 Note that the length of addresses can change, so you will need to use regular expressions (instead of just a substr() function) to generate proper results. 
 
-  
+
+## Q3: Greedy vs Reluctant Search 
+
+When applying quantifiers to search strings, especially those using wildcards, pay attention to the difference between "greedy" and "reluctant" matches. 
+
+**Greedy search** tries to find the biggest string possible that matches the expression. 
+
+**Reluctant search** tries to find the smallest string possible that matches the expression. 
+
+
+[**Example: From A to Z (quoted directly from StackOverflow)**](https://stackoverflow.com/questions/3075130/what-is-the-difference-between-and-regular-expressions)
+
+Let's compare these two patterns: `A.*Z` and `A.*?Z`.
+
+Given the following input:
+
+```
+eeeAiiZuuuuAoooZeeee
+```
+
+The patterns yield the following matches:
+
+
+`A.*Z` yields 1 match: `AiiZuuuuAoooZ`  
+
+`A.*?Z` yields 2 matches: `AiiZ and AoooZ` 
+
+Let's first focus on what `A.*Z` does. When it matched the first `A`, the `.*`, being greedy, first tries to match as many `.` as possible. In order to do this, once encountering an `A.*` (A followed by any other characters 0 or more times) the algorithm jumps to the end of the string and scans backwards, looking for anything that matches `Z`:
+
+```
+eeeAiiZuuuuAoooZeeee
+   \_______________/
+    A.* matched, Z can't match
+```
+
+Since the `Z` doesn't match, the engine backtracks, and `.*` must then match one fewer `.`:
+
+```
+eeeAiiZuuuuAoooZeeee
+   \______________/
+    A.* matched, Z still can't match
+```
+
+This happens a few more times, until finally we come to this:
+
+```
+eeeAiiZuuuuAoooZeeee
+   \__________/
+    A.* matched, Z can now match
+```
+
+Now `Z` can match, so the overall pattern matches:
+
+```
+eeeAiiZuuuuAoooZeeee
+   \___________/
+    A.*Z matched
+```
+
+By contrast, the reluctant repetition in `A.*?Z` first matches as few `.` as possible, and then taking more `.` as necessary. It would iteratively look for the following: 
+
+* `AZ` 
+* `A.Z` 
+* `A..Z` 
+* `A...Z` 
+
+Until `A. ... .Z` it reaches the full string length. This explains why it finds two matches in the input.
+
+
+```
+eeeAiiZuuuuAoooZeeee
+   \__/    \___/ 
+   A..Z    A...Z
+```
+
+Here's a visual representation of what the two patterns matched:
+
+```
+eeeAiiZuuuuAoooZeeee
+   \__/r   \___/r      r = reluctant
+    \____g____/        g = greedy
+```
+
+
+For more control over matches using greedy versus reluctant search see: 
+
+[**Quantifier Cheat Sheet**](https://www.rexegg.com/regex-quantifiers.html#cheat_sheet)
+
+
+**QUESTION Q3:**
+
+Given what you learned above, what would the following return and why? 
+
+```
+eeeAiiZuuuuAoooZeeee    # original string
+eeeAiAiZuuuuAoZooZeeee  # new string
+```
+
+Explain the reason this happens by describing the "recipe" of the search algorithm in plain English or with pseudocode. 
+
+```r
+# str_match_all() returns substring
+
+x <- "eeeAiAiZuuuuAoZooZeeee"
+stringr::str_match_all( x, "A.*?Z" )
+```
+
+Here are all of the possible matches: 
+
+
+```
+eeeAiAiZuuuuAoZooZeeee
+   \___/
+   
+eeeAiAiZuuuuAoZooZeeee
+     \_/
+     
+eeeAiAiZuuuuAoZooZeeee
+            \_/
+            
+eeeAiAiZuuuuAoZooZeeee
+            \____/
+   
+eeeAiAiZuuuuAoZooZeeee
+     \________/
+
+eeeAiAiZuuuuAoZooZeeee
+     \___________/
+     
+eeeAiAiZuuuuAoZooZeeee
+   \__________/
+   
+eeeAiAiZuuuuAoZooZeeee
+   \_____________/
+```
+
+
 
 
   
@@ -326,7 +462,7 @@ Note that the length of addresses can change, so you will need to use regular ex
 
 
 
-ADD: 
+**MORE PRACTICE:** 
   
 * create regular expression to search for email address
 * create regular expression to search for social media handles (@xxx)  
