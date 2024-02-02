@@ -171,6 +171,43 @@ You will now have a directory in your current folder called **montyhall**. This 
 
 *Note, some of these files like gitignore are from GitHub - they will appear after completing Step 05. Files may vary by operating system, but you should at the very least have the R folder, a DESCRIPTION file, and a NAMESPACE file.*
 
+
+#### Where you will likely go wrong
+
+Note that **usethis::create_package( "montyhall" )** creates a new folder called "montyhall" inside your current directory. 
+
+
+```
+documents     # base project folder 
+├─ montyhall  # new folder that will appear after create_package()
+│  ├─ R
+```
+
+Do NOT create your own folder called "montyhall", navigate to that folder, and then call create_package() or you will end up with this scenario:  
+
+```
+documents     
+├─ montyhall     # base project folder
+│  ├─ montyhall  # new folder that will appear after create_package()
+│     ├─ R
+```
+
+If you try you should get the following warning message:  
+
+```
+usethis::create_package( "montyhall" )
+New project 'montyhall' is nested inside an existing project './', which is rarely a good idea.
+If this is unexpected, the here package has a function, `here::dr_here()` that reveals why './' is regarded as a project.
+Do you want to create anyway?
+
+1: No
+2: Absolutely not
+3: I agree
+```
+
+<br>
+
+
 ### Document Your Functions
 
 Add your roxygen comments to your R scripts:
