@@ -2882,6 +2882,8 @@ need will look something like this:</p>
 <span id="cb1-26"><a href="#cb1-26" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>( <span class="st">&quot;yourGitHubName/montyhall&quot;</span> )</span></code></pre></div>
 <p><em>Note, if you make a mistake or encounter an error delete the new
 <strong>montyhall</strong> folder before starting over.</em></p>
+<br> <br>
+<hr>
 <div id="download-the-template" class="section level2" number="1.1">
 <h2><span class="header-section-number">1.1</span> Download the
 Template</h2>
@@ -2900,6 +2902,8 @@ these from the unit testing examples in the labs).</p>
 <p>After completing documentation will place the template file
 <strong>monty-hall-problem.R</strong> directly in the R folder. You
 should not be using RMD files in this assignment.</p>
+<br> <br>
+<hr>
 </div>
 <div id="package-creation-steps" class="section level2" number="1.2">
 <h2><span class="header-section-number">1.2</span> PACKAGE CREATION
@@ -2915,6 +2919,8 @@ running the following code:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">library</span>(devtools)</span>
 <span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="fu">has_devel</span>()</span></code></pre></div>
 <pre><code>## Your system is ready to build packages!</code></pre>
+<br> <br>
+<hr>
 </div>
 <div id="build-a-package-skeleton" class="section level3" number="1.2.2">
 <h3><span class="header-section-number">1.2.2</span> Build a Package
@@ -2931,7 +2937,9 @@ usethis::create_package( &quot;montyhall&quot; )
 
 documents     # package created inside documents 
 ├─ montyhall  # new folder that will appear after create_package()
-│  ├─ R</code></pre>
+│  ├─ \R 
+│  ├─ DESCRIPTION
+│  ├─ NAMESPACE</code></pre>
 <p>What you should see:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="co"># &gt; usethis::create_package( &quot;montyhall&quot; )</span></span>
 <span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a><span class="co"># ✔ Creating &#39;montyhall/&#39;</span></span>
@@ -2961,6 +2969,9 @@ your package.</p>
 will appear after completing Step 05. Files may vary by operating
 system, but you should at the very least have the R folder, a
 DESCRIPTION file, and a NAMESPACE file.</em></p>
+<br>
+<hr>
+<p><br></p>
 <div id="where-you-will-likely-go-wrong" class="section level4" number="1.2.2.1">
 <h4><span class="header-section-number">1.2.2.1</span> Where you will
 likely go wrong</h4>
@@ -2969,14 +2980,18 @@ creates a new folder called “montyhall” inside your current
 directory.</p>
 <pre><code>documents     # base project folder 
 ├─ montyhall  # new folder that will appear after create_package()
-│  ├─ R</code></pre>
+│  ├─ \R
+│  ├─ DESCRIPTION
+│  ├─ NAMESPACE</code></pre>
 <p>Do NOT create your own folder called “montyhall”, navigate to that
 folder, and then call create_package() or you will end up with this
 scenario:</p>
 <pre><code>documents     
 ├─ montyhall     # base project folder
 │  ├─ montyhall  # new folder that will appear after create_package()
-│     ├─ R</code></pre>
+│     ├─ \R
+│     ├─ DESCRIPTION
+│     ├─ NAMESPACE</code></pre>
 <p>If you try you should get the following warning message:</p>
 <pre><code>usethis::create_package( &quot;montyhall&quot; )
 New project &#39;montyhall&#39; is nested inside an existing project &#39;./&#39;, which is rarely a good idea.
@@ -2986,7 +3001,8 @@ Do you want to create anyway?
 1: No
 2: Absolutely not
 3: I agree</code></pre>
-<p><br></p>
+<br> <br>
+<hr>
 </div>
 </div>
 <div id="document-your-functions" class="section level3" number="1.2.3">
@@ -3044,7 +3060,9 @@ directory, then try:</p>
 <span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">document</span>()</span></code></pre></div>
 <pre><code>documents  
 ├─ montyhall    # should be inside here now
-│  ├─ R         # your R scripts should be in here  </code></pre>
+│  ├─ \R         # your R scripts should be in here
+│  ├─ DESCRIPTION
+│  ├─ NAMESPACE</code></pre>
 <p>You should see:</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a><span class="co"># Updating montyhall documentation</span></span>
 <span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a><span class="co"># Updating roxygen version in C:\Users\jdlecy\Documents\montyhall/DESCRIPTION</span></span>
@@ -3053,8 +3071,10 @@ directory, then try:</p>
 <span id="cb15-5"><a href="#cb15-5" tabindex="-1"></a><span class="co"># Writing create_game.Rd</span></span></code></pre></div>
 <pre><code>documents     
 ├─ montyhall  
-│  ├─ R
-│  ├─ man     # new *.rd files will be here </code></pre>
+│  ├─ \R
+│  ├─ \man     # new *.rd files will be here 
+│  ├─ DESCRIPTION
+│  ├─ NAMESPACE</code></pre>
 <p>You will see some errors as well if you have not yet finished
 documenting your functions. Ignore them for now.</p>
 <p><em><strong>Depending upon your OS and your R devtools version you
@@ -3068,6 +3088,8 @@ called “man”, short for “manuals”. The documentation files have an .Rd
 (<em>change_door.Rd</em>, <em>create_game.Rd</em>, etc.).</p>
 <p><em>Skip to the testing step below if you want to see if the package
 is now functional.</em></p>
+<br> <br>
+<hr>
 </div>
 <div id="update-your-package-description" class="section level3" number="1.2.4">
 <h3><span class="header-section-number">1.2.4</span> Update Your Package
@@ -3111,6 +3133,8 @@ import and attach it. Add:</p>
 <span id="cb19-14"><a href="#cb19-14" tabindex="-1"></a>Encoding<span class="sc">:</span> UTF<span class="dv">-8</span></span>
 <span id="cb19-15"><a href="#cb19-15" tabindex="-1"></a>LazyData<span class="sc">:</span> true</span>
 <span id="cb19-16"><a href="#cb19-16" tabindex="-1"></a>RoxygenNote<span class="sc">:</span> <span class="dv">6</span>.<span class="fl">1.1</span></span></code></pre></div>
+<br> <br>
+<hr>
 </div>
 </div>
 <div id="test-it" class="section level2" number="1.3">
@@ -3123,7 +3147,7 @@ folder, but in the same folder where the package folder lives.</p>
 <pre><code>documents     # should be back here 
 ├─ montyhall  
 │  ├─ R
-│  ├─ man     # new *.rd files will be here </code></pre>
+│  ├─ man     </code></pre>
 <p>Then run the command to install your new package.</p>
 <p>The install() command is looking for a folder called “montyhall”. It
 can’t find the folder if we are currently inside the folder. Thus we
@@ -3169,6 +3193,8 @@ move up one level in the directory first:</p>
 <span id="cb22-35"><a href="#cb22-35" tabindex="-1"></a><span class="co"># *** arch - x64</span></span>
 <span id="cb22-36"><a href="#cb22-36" tabindex="-1"></a><span class="co"># ** testing if installed package keeps a record of temporary installation path</span></span>
 <span id="cb22-37"><a href="#cb22-37" tabindex="-1"></a><span class="co"># * DONE (montyhall)</span></span></code></pre></div>
+<br> <br>
+<hr>
 </div>
 <div id="try-loading" class="section level3" number="1.3.2">
 <h3><span class="header-section-number">1.3.2</span> Try Loading</h3>
@@ -3176,6 +3202,8 @@ move up one level in the directory first:</p>
 <div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" tabindex="-1"></a><span class="fu">library</span>( montyhall )</span>
 <span id="cb23-2"><a href="#cb23-2" tabindex="-1"></a><span class="fu">create_game</span>()</span></code></pre></div>
 <pre><code>## [1] &quot;goat&quot; &quot;goat&quot; &quot;car&quot;</code></pre>
+<br> <br>
+<hr>
 </div>
 <div id="check-help-files" class="section level3" number="1.3.3">
 <h3><span class="header-section-number">1.3.3</span> Check Help
@@ -3183,6 +3211,8 @@ Files</h3>
 <p>You should be able to preview the help files that you created with
 your roxygen comments.</p>
 <div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" tabindex="-1"></a><span class="fu">help</span>( <span class="st">&quot;create_game&quot;</span> )</span></code></pre></div>
+<br> <br>
+<hr>
 </div>
 <div id="removing-packages" class="section level3" number="1.3.4">
 <h3><span class="header-section-number">1.3.4</span> Removing
@@ -3204,6 +3234,8 @@ program.</p>
 <p>If all else fails, you can delete the package manually from your
 personal R packages library, which usually lives in your Documents
 folder.</p>
+<br> <br>
+<hr>
 </div>
 </div>
 <div id="share-your-package" class="section level2" number="1.4">
@@ -3239,7 +3271,7 @@ appropriate dialogue.</li>
 <li>Open the new “montyhall” folder that was just created by GitHub on
 your machine.</li>
 <li>Transfer all of the files <strong>inside</strong> of your old
-“montyhall” folder into the GitHub version.</li>
+“montyhall” folder into the new GitHub version.</li>
 <li>You should see the files appear in the GitHub Desktop app. In the
 “summary” field type something like “initial commit” and at the bottom
 left select “Commit to master”.</li>
@@ -3270,6 +3302,9 @@ projects
 your repo page shortly.</p>
 <p>Now others should be able to install your package by typing:</p>
 <div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>( <span class="st">&quot;yourGitHubName/montyhall&quot;</span> )</span></code></pre></div>
+<br>
+<hr>
+<p><br></p>
 </div>
 <div id="test-from-github" class="section level3" number="1.4.2">
 <h3><span class="header-section-number">1.4.2</span> Test from

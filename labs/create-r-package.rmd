@@ -74,6 +74,9 @@ devtools::install_github( "yourGitHubName/montyhall" )
 
 _Note, if you make a mistake or encounter an error delete the new **montyhall** folder before starting over._
 
+<br>
+<br>
+<hr>
 
 ## Download the Template
 
@@ -88,6 +91,9 @@ The package code is provided - you just need to complete the documentation and d
 After completing documentation will place the template file **monty-hall-problem.R** directly in the R folder. You should not be using RMD files in this assignment. 
 
 
+<br>
+<br>
+<hr>
 
 ## PACKAGE CREATION STEPS:
 
@@ -110,7 +116,9 @@ has_devel()
 devtools::has_devel()
 ```
 
-
+<br>
+<br>
+<hr>
 
 
 ### Build a Package Skeleton
@@ -135,7 +143,9 @@ usethis::create_package( "montyhall" )
 
 documents     # package created inside documents 
 ├─ montyhall  # new folder that will appear after create_package()
-│  ├─ R
+│  ├─ \R 
+│  ├─ DESCRIPTION
+│  ├─ NAMESPACE
 ```
 
 What you should see:
@@ -171,6 +181,9 @@ You will now have a directory in your current folder called **montyhall**. This 
 
 *Note, some of these files like gitignore are from GitHub - they will appear after completing Step 05. Files may vary by operating system, but you should at the very least have the R folder, a DESCRIPTION file, and a NAMESPACE file.*
 
+<br>
+<hr>
+<br>
 
 #### Where you will likely go wrong
 
@@ -180,7 +193,9 @@ Note that **usethis::create_package( "montyhall" )** creates a new folder called
 ```
 documents     # base project folder 
 ├─ montyhall  # new folder that will appear after create_package()
-│  ├─ R
+│  ├─ \R
+│  ├─ DESCRIPTION
+│  ├─ NAMESPACE
 ```
 
 Do NOT create your own folder called "montyhall", navigate to that folder, and then call create_package() or you will end up with this scenario:  
@@ -189,7 +204,9 @@ Do NOT create your own folder called "montyhall", navigate to that folder, and t
 documents     
 ├─ montyhall     # base project folder
 │  ├─ montyhall  # new folder that will appear after create_package()
-│     ├─ R
+│     ├─ \R
+│     ├─ DESCRIPTION
+│     ├─ NAMESPACE
 ```
 
 If you try you should get the following warning message:  
@@ -206,7 +223,8 @@ Do you want to create anyway?
 ```
 
 <br>
-
+<br>
+<hr>
 
 ### Document Your Functions
 
@@ -270,7 +288,9 @@ devtools::document()
 ```
 documents  
 ├─ montyhall    # should be inside here now
-│  ├─ R         # your R scripts should be in here  
+│  ├─ \R         # your R scripts should be in here
+│  ├─ DESCRIPTION
+│  ├─ NAMESPACE
 ```
 
 You should see: 
@@ -287,8 +307,10 @@ You should see:
 ```
 documents     
 ├─ montyhall  
-│  ├─ R
-│  ├─ man     # new *.rd files will be here 
+│  ├─ \R
+│  ├─ \man     # new *.rd files will be here 
+│  ├─ DESCRIPTION
+│  ├─ NAMESPACE
 ```
 
 You will see some errors as well if you have not yet finished documenting your functions. Ignore them for now. 
@@ -299,6 +321,10 @@ You will now have a new folder in your *montyhall* directory called "man", short
 
 
 *Skip to the testing step below if you want to see if the package is now functional.* 
+
+<br>
+<br>
+<hr>
 
 
 ### Update Your Package Description 
@@ -352,7 +378,9 @@ RoxygenNote: 6.1.1
 ```
 
 
-
+<br>
+<br>
+<hr>
 
 ## TEST IT: 
 
@@ -364,7 +392,7 @@ Go up one level in your directory so you are outside of the package folder, but 
 documents     # should be back here 
 ├─ montyhall  
 │  ├─ R
-│  ├─ man     # new *.rd files will be here 
+│  ├─ man     
 ```
 
 Then run the command to install your new package. 
@@ -422,8 +450,9 @@ If successful you will see messages like this:
 ```
 
 
-
-
+<br>
+<br>
+<hr>
 
 ### Try Loading  
 
@@ -447,6 +476,10 @@ create_game()
 create_game()
 ```
 
+<br>
+<br>
+<hr>
+
 
 ### Check Help Files
 
@@ -456,7 +489,9 @@ You should be able to preview the help files that you created with your roxygen 
 help( "create_game" )
 ```
 
-
+<br>
+<br>
+<hr>
 
 
 ### Removing Packages
@@ -480,7 +515,9 @@ If all else fails, you can delete the package manually from your personal R pack
 
 
 
-
+<br>
+<br>
+<hr>
 
 
 
@@ -506,7 +543,7 @@ A simpler option is to host your package on GitHub. Complete the following steps
 7. Select the desired location of the folder and paste the URL into the appropriate dialogue. 
 8. Clone your GitHub repo. 
 9. Open the new "montyhall" folder that was just created by GitHub on your machine.
-10. Transfer all of the files **inside** of your old "montyhall" folder into the GitHub version. 
+10. Transfer all of the files **inside** of your old "montyhall" folder into the new GitHub version. 
 11. You should see the files appear in the GitHub Desktop app. In the "summary" field type something like "initial commit" and at the bottom left select "Commit to master". 
 12. Now up at the top select "Push origin". 
 
@@ -550,6 +587,10 @@ Now others should be able to install your package by typing:
 ```{r, eval=F}
 devtools::install_github( "yourGitHubName/montyhall" )
 ```
+
+<br>
+<hr>
+<br>
 
 
 ### Test from GitHub
