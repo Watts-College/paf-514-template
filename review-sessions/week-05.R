@@ -12,6 +12,8 @@
 - BODY <also called main>
 - FOOTER
 
+# https://dotnettutorials.net/wp-content/uploads/2021/12/word-image-167-768x435.png
+
 
 ~~~~~~~~~ HTML PAGE ELEMENTS:
 
@@ -25,6 +27,7 @@
  </head>
  
  <body>
+ <navbar> ... </navbar>                                                  
  
    <h1>Interneting Is Easy!</h1>
    <p>First, we need to learn some basic HTML.</p>
@@ -65,8 +68,12 @@ First, we need to learn some basic HTML.
 Headings define the outline of your site. There are six levels of headings.
 
 ```{r}
-table(dat) %>% pander()
+table(dat) %>% pander()  # creates html table
 ```
+
+<< footer.html >>
+
+
 
 
 
