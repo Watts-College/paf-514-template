@@ -37,7 +37,7 @@ session:
   date:  'Mon Feb 5th'  
   video: ''
   password: ''  
-  sample-code: 'week-05-review-compound-statements.R'  
+  sample-code: 'week-05.R'  
 - week6:
   date:  'Wed Feb 12th'  
   video: ''
