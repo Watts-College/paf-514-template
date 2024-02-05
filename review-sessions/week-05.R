@@ -9,7 +9,7 @@
 - HTML
 - HEAD
 - NAVBAR <also called header>
-- BODY <most of content>
+- BODY <also called main>
 - FOOTER
 
 
