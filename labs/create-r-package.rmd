@@ -37,11 +37,9 @@ There are five primary tasks:
 4. Install your new package on your computer and test it out. 
 5. Upload the package to GitHub. 
 
+<hr> 
 
-**It is recommended to complete this lab in a regular R console, NOT in R Studio.** You can do it using RMD docs as well, but some of the steps will be different and it complicates things. 
-
-The five steps are explained below, but the entire script you will need will look something like this: 
-
+The entire script you need to build a package will look something like this.  
 
 ```{r, eval=F}
 # set your working directory
@@ -72,7 +70,37 @@ create_game()
 devtools::install_github( "yourGitHubName/montyhall" )
 ```
 
-_Note, if you make a mistake or encounter an error delete the new **montyhall** folder before starting over._
+These five steps are explained in detail below. One take-away should be, once you understand the process then creating packages is not complicated. 
+
+<hr> 
+
+### ANNOTATED PACKAGE CREATION SCRIPT
+
+When installing packages there are a few file management and path navigation details that you need to understand. This annotated version of the steps above is more explicit than you will eventually need, but it will be helpful your first time through:  
+
+[ANNOTATED PACKAGE CREATION SCRIPT (right-click and save)](https://raw.githubusercontent.com/Watts-College/paf-514-template/main/labs/annotated-pkg-creation.R)
+
+<hr> 
+
+### Basic R Console 
+
+**It is recommended to complete this lab in a regular R console, NOT in R Studio.** 
+
+R Studio asserts more control over file paths and working directories and it is dependent upon your operating system and R Studio settings, so you may get different behavior from the instructions. 
+
+The basic R console is 'dumb' - it does not try to guess what you want. That makes it more predictable for tutorials like this. 
+
+You can eventually create packages using RMD docs and other R Studio tools that help manage the process. But the steps will be different from this tutorial. 
+
+*Note, if you need to Google any steps for additional help try to avoid instructions that use R Studio options. Their template for packages is helpful, but it will follow a different process than the one described here.*
+
+
+### Making Mistakes 
+
+Note, if you make a mistake or encounter an error, you can always delete the new **montyhall** folder and start over at Step 1 (just keep a copy of your R script if you have already completed the roxygen comments). 
+
+Packages in R are just folders with R files and some extra documentation. They are designed to be minimalist.
+
 
 <br>
 <br>
@@ -82,13 +110,19 @@ _Note, if you make a mistake or encounter an error delete the new **montyhall** 
 
 You will need to download the Monty Hall Problem functions that we completed during Labs 01 and 02 from the link below. This script contains some roxygen text to get you started with the process of documentation. 
 
-[DOWNLOAD THE TEMPLATE: monty-hall-problem.R](https://www.dropbox.com/s/u8k1co2bb7eldzj/monty-hall-problem.R?dl=1)
+[DOWNLOAD THE TEMPLATE: monty-hall-pkg.R](https://www.dropbox.com/s/u8k1co2bb7eldzj/monty-hall-pkg.R?dl=1)
 
 Note that you will update this script and place it in the montyhall/R folder after you complete Step 01 and the package skeleton has been created (the working directories for your package are built). 
 
 The package code is provided - you just need to complete the documentation and develop the test code for each function (you can adapt these from the unit testing examples in the labs). 
 
-After completing documentation will place the template file **monty-hall-problem.R** directly in the R folder. You should not be using RMD files in this assignment. 
+Once completed you can move **monty-hall-pkg.R** to the montyhall/R folder that is created in Step 1. 
+
+_Note, you should NOT be using RMD files in this assignment. The only files in the R folder should be R scripts with the functions needed for the package and complete roxygen fields. This script becomes the library of functions inside of your new package and the roxygen fields are converted into formal documentation for the package._ 
+
+<hr> 
+
+
 
 
 <br>
@@ -100,15 +134,20 @@ After completing documentation will place the template file **monty-hall-problem
 ### Install Development Packages
 
 ```{r, eval=F}
-install.packages(c("devtools", "roxygen2","usethis","testthat","knitr"))
-# if devtools is not working try
-# devtools::build_github_devtools() 
+#   Windows users must also install Rtools from:
+#   https://cran.r-project.org/bin/windows/Rtools/ 
+
+install.packages(
+  c( "devtools", "roxygen2",
+     "usethis", "testthat",
+     "knitr" ) )
 ```
 
 You can check that you have everything installed and working by running the following code:
 
 ```{r, eval=F}
 library(devtools)
+options( buildtools.check = function(action) TRUE )
 has_devel()
 ```
 
@@ -273,15 +312,20 @@ The information you provide becomes the documentation that appears when you type
 
 ![](images/r-package-docs.png)
 
+<br> 
+
 *Roxygen, unlike R, is sensitive to the number of spaces your use. So don't alter the formatting of the default comments in your script.*
 
 Place your documented R scripts into the "R" folder in your package directory, then try:
 
 
-
 ```{r, eval=F}
-setwd( "montyhall" )
-getwd()   # 'C:/Users/username/Documents/montyhall'
+getwd()   # should be '.../Documents/montyhall'
+
+# OTHERWISE NAVIGATE THERE:
+#   move one level up:  setwd( ".." )
+#   go into a folder:   setwd( "montyhall" )
+
 devtools::document()
 ```
 

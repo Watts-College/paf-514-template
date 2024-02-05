@@ -54,6 +54,12 @@ getwd()
 dir()  
 
 
+  #   documents 
+  #   ├─ pkg                         <<< you are here      
+  #   │  ├─ monty-hall-pkg.R  
+  #   │  ├─ annotated-pkg-creation.R
+  
+  
 
   #   save root project directory
   #   for easy navigation later: 
@@ -62,10 +68,7 @@ dir()
 root.dir <- getwd() 
 
 
-  #   documents 
-  #   ├─ pkg                   <<< you are here      
-  #   │  ├─ montyhall-pkg.R  
-  #   │  ├─ annotated-pkg-creation.R
+
 
   
 
@@ -100,8 +103,8 @@ dir()     # /R, DESCRIPTION, +
   #   you can move it manually,
   #   this step for demo purposes 
 
-mhp.path <- paste0( root.dir, "/montyhall-pkg.R" )
-r.folder <- paste0( root.dir, "/montyhall/R/montyhall-pkg.R" )
+mhp.path <- paste0( root.dir, "/monty-hall-pkg.R" )
+r.folder <- paste0( root.dir, "/montyhall/R/monty-hall-pkg.R" )
 file.copy( from=mhp.path, to=r.folder )
 
 
@@ -116,7 +119,7 @@ file.show( "montyhall.R" )
   #   ├─ pkg        
   #   │  ├─ montyhall  
   #   │     ├─ R                    <<<
-  #   │        ├─ montyhall-pkg.R   
+  #   │        ├─ monty-hall-pkg.R   
 
 
 
@@ -175,6 +178,11 @@ getwd()  # should be .../pkg
 
 
 devtools::install( "montyhall" )
+
+
+#   see how you did:
+#   these should work now
+
 montyhall::create_game()
 
 library( montyhall )
