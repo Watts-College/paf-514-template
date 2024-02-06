@@ -245,18 +245,22 @@ change_door <- function( stay=T, opened.door, a.pick )
 ```{r}
 # test it
 
-opened.door <- open_goat_door( this.game, my.initial.pick )
+opened.door <- 
+  open_goat_door( game=this.game, 
+                  a.pick=my.initial.pick )
 
 change_door( stay=T, 
              opened.door=opened.door, 
              a.pick=my.initial.pick )
+
 change_door( stay=F, 
              opened.door=opened.door, 
              a.pick=my.initial.pick )
 
-my.final.pick <- change_door( stay=F, 
-                              opened.door=opened.door, 
-                              a.pick=my.initial.pick )
+my.final.pick <- 
+  change_door( stay=F, 
+               opened.door=opened.door, 
+               a.pick=my.initial.pick )
 
 this.game
 my.initial.pick
@@ -269,7 +273,7 @@ my.final.pick
 
 ## STEP 5 - DETERMINE IF CONTENSTANT HAS WON
 
-**Psuedocode** 
+**Psudocode** 
 
 ```
 # describe your logic here
@@ -299,16 +303,18 @@ determine_winner <- function( final.pick, game )
 this.game
 my.initial.pick
 
-my.final.pick <- change_door( stay=T, 
-                              opened.door=opened.door, 
-                              a.pick=my.initial.pick )
+my.final.pick <- 
+  change_door( stay=T, 
+               opened.door=opened.door, 
+               a.pick=my.initial.pick )
 
 determine_winner( final.pick=my.final.pick, 
                   game=this.game )
 
-my.final.pick <- change_door( stay=F, 
-                              opened.door=opened.door, 
-                              a.pick=my.initial.pick )
+my.final.pick <- 
+  change_door( stay=F, 
+               opened.door=opened.door, 
+               a.pick=my.initial.pick )
 
 determine_winner( final.pick=my.final.pick, 
                   game=this.game )
@@ -317,53 +323,131 @@ determine_winner( final.pick=my.final.pick,
 
 <br>
 
-## TESTING YOUR CODE
+## TEST YOUR CODE
 
-Use the following code to test your game and print results. 
+You can use the function below to inspect your code performance:  
 
-Add the argument echo=F to your R chunk for a more readable print-out.  
+```{r, eval=F}
+show_game()
+```
+
+
+```
+STRATEGY  =  STAY
+--------------------------------------
+  |      |     |      |     |      |  
+  | GOAT |     | CAR  |     | GOAT |  
+  |      |     |      |     |      |  
+--------------------------------------
+               1st Pick               
+   Opened                             
+                 Final                
+--------------------------------------
+
+                ! WIN !               
+
+
+
+STRATEGY  =  SWITCH
+--------------------------------------
+  |      |     |      |     |      |  
+  | GOAT |     | CAR  |     | GOAT |  
+  |      |     |      |     |      |  
+--------------------------------------
+               1st Pick               
+   Opened                             
+                              Final   
+--------------------------------------
+
+                            ! LOSE !  
+```
+
+
+> **Include the code chunk below in your lab submission.** It will add three game printouts to your file. 
+
+The argument **echo=F** omits the code and just shows the results for readability.  
 
 
 ````markdown
 `r ''````{r, echo=F}
 
-# your game "recipe" 
-this.game <- create_game()
-my.initial.pick <- select_door()
-opened.goat.door <- open_goat_door( this.game, my.initial.pick )
+show_game <- function() {
 
-# save results for both strategies for the game
-my.final.pick.stay <- change_door( stay=T, 
-                                   opened.door=opened.goat.door, 
-                                   a.pick=my.initial.pick )
-my.final.pick.switch <- change_door( stay=F, 
-                                     opened.door=opened.goat.door, 
-                                     a.pick=my.initial.pick )
+	this.game <- create_game()
+	my.initial.pick <- select_door()
+	opened.door <- open_goat_door( this.game, my.initial.pick )
 
-# print game details and if you won
+	my.final.pick.stay <- change_door( stay=T, opened.door, my.initial.pick )
+	my.final.pick.switch <- change_door( stay=F, opened.door, my.initial.pick )
 
-# if you stayed:
-paste0( "GAME SETUP" )
-this.game
-paste0( "My initial selection: ", my.initial.pick )
-paste0( "The opened goat door: ", opened.goat.door )
-paste0( "My final selection: ", my.final.pick.stay )
-paste0( "GAME OUTCOME:" )
-determine_winner( final.pick=my.final.pick.stay, 
-                  game=this.game )
+	game.outcome.stay <- determine_winner( my.final.pick.stay, this.game  )
+	game.outcome.switch <- determine_winner( my.final.pick.switch, this.game )
 
-# if you switched:
-paste0( "GAME SETUP" )
-this.game
-paste0( "My initial selection: ", my.initial.pick )
-paste0( "The opened goat door: ", opened.goat.door )
-paste0( "My final selection: ", my.final.pick.switch )
-paste0( "GAME OUTCOME:" )
-determine_winner( final.pick=my.final.pick.switch, 
-                  game=this.game )
+
+	this.game[ this.game == "car" ] <- "car "
+	this.game <- toupper( this.game )
+
+	first.pick <- c("        ","        ","        ")
+	first.pick[ my.initial.pick ] <- "1st Pick"
+	open.door <- c("        ","        ","        ")
+	open.door[ opened.door ] <- " Opened "
+
+
+	final <- c("        ","        ","        ")
+	final[ my.final.pick.stay ] <- "  Final " 
+	win.lose <- final
+	win.lose[ my.final.pick.stay ] <- 
+	  ifelse( game.outcome.stay=="WIN", 
+		  paste0( " ! WIN !" ),
+		  paste0( "! LOSE !" ) )
+
+	r <- NULL
+	r[1] <- "\n\nSTRATEGY  =  STAY"
+	r[2] <-         "--------------------------------------"
+	r[3] <- paste0( "  |      |     |      |     |      |  " )
+	r[4] <- paste0( "  | ", this.game[1], " |     | ", this.game[2], " |     | ", this.game[3], " |  " )
+	r[5] <- paste0( "  |      |     |      |     |      |  " )
+	r[6] <-         "--------------------------------------"
+	r[7] <- paste0( "  ", first.pick[1], "     ", first.pick[2], "     ", first.pick[3], "  " )
+	r[8] <- paste0( "  ", open.door[1], "     ", open.door[2], "     ", open.door[3], "  " )
+	r[9] <- paste0( "  ", final[1], "     ", final[2], "     ", final[3], "  " )
+	r[10] <-         "--------------------------------------\n"
+	r[11] <- paste0( "  ", win.lose[1], "     ", win.lose[2], "     ", win.lose[3], "  \n\n" )
+	
+
+	final <- c("        ","        ","        ")
+	final[ my.final.pick.switch ] <- "  Final " 
+	win.lose <- final
+	win.lose[ my.final.pick.switch ] <- 
+	  ifelse( game.outcome.switch=="WIN", 
+		  paste0( " ! WIN !" ),
+		  paste0( "! LOSE !" ) )
+
+
+	r[12] <- "\nSTRATEGY  =  SWITCH"
+	r[13] <-         "--------------------------------------"
+	r[14] <- paste0( "  |      |     |      |     |      |  " )
+	r[15] <- paste0( "  | ", this.game[1], " |     | ", this.game[2], " |     | ", this.game[3], " |  " )
+	r[16] <- paste0( "  |      |     |      |     |      |  " )
+	r[17] <-         "--------------------------------------"
+	r[18] <- paste0( "  ", first.pick[1], "     ", first.pick[2], "     ", first.pick[3], "  " )
+	r[19] <- paste0( "  ", open.door[1], "     ", open.door[2], "     ", open.door[3], "  " )
+	r[20] <- paste0( "  ", final[1], "     ", final[2], "     ", final[3], "  " )
+	r[21] <-         "--------------------------------------\n"
+	r[22] <- paste0( "  ", win.lose[1], "     ", win.lose[2], "     ", win.lose[3], "  \n\n" )
+	
+	cat( paste0( r, collapse="\n" ), sep = "" )
+
+}
+
+show_game()
+show_game()
+show_game()
 
 `r ''````
 ````
+
+
 
 
 
@@ -372,7 +456,6 @@ determine_winner( final.pick=my.final.pick.switch,
 <hr>
 <br>
 <br>
-
 
 
 
@@ -430,21 +513,25 @@ my.initial.pick <- 2
 A.STAY <- "WIN"
 A.SWITCH <- "LOSE"
 
-my.final.pick <- change_door( stay=T, 
-                              opened.door=opened.door, 
-                              a.pick=my.initial.pick )
+my.final.pick <- 
+  change_door( stay=T, 
+               opened.door=opened.door, 
+               a.pick=my.initial.pick )
 
-outcome.stay <- determine_winner( final.pick=my.final.pick, 
-                  game=this.game )
+outcome.stay <- 
+  determine_winner( final.pick=my.final.pick, 
+                    game=this.game )
 
-my.final.pick <- change_door( stay=F, 
-                              opened.door=opened.door, 
-                              a.pick=my.initial.pick )
+my.final.pick <- 
+  change_door( stay=F, 
+               opened.door=opened.door, 
+               a.pick=my.initial.pick )
 
-outcome.switch <- determine_winner( final.pick=my.final.pick, 
-                  game=this.game )
+outcome.switch <- 
+  determine_winner( final.pick=my.final.pick, 
+                    game=this.game )
 
-case.stay <- outcome.stay == A.STAY
+case.stay   <- outcome.stay   == A.STAY
 case.switch <- outcome.switch == A.SWITCH 
 
 passes <- all( case.stay & case.switch )
@@ -467,109 +554,6 @@ Passes unit test:  **`r passes`**
 <br>
 <br>
 
-
-## Formatting Results for Inspection
-
-Try using the following code to present your results in a more visual manner. 
-
-*NOTE, the code itself might not make much sense yet but you will see why it's easier to inspect game results to see if your code is working when you are using a visual layout of game results.*  
-
-
-Copy and paste the first part (IF CONTESTANT STAYS chunk) directly into your RMD document - it is regular markdown text with inline code. 
-
-````{md, eval=F}
-### IF CONTESTANT STAYS
-
-Game Setup: **`r paste0( toupper(this.game), collapse=" " )`**  
-Initial selection: **`r my.initial.pick`**  
-The opened goat door: **`r opened.goat.door`**  
-Final door selection: **`r my.final.pick.stay`**
-Game outcome: **`r game.outcome.stay`**
-
-````
-
-Copy and paste the following R chunk below that.
-
-
-````markdown
-`r ''````{r, echo=F}
-this.game[ this.game == "car" ] <- "car "
-this.game <- toupper( this.game )
-
-first.pick <- c("        ","        ","        ")
-first.pick[ my.initial.pick ] <- "1st Pick"
-open.door <- c("        ","        ","        ")
-open.door[ opened.goat.door ] <- " Opened "
-final <- c("        ","        ","        ")
-final[ my.final.pick.stay ] <- " Final  " 
-
-win.lose <- final
-win.lose[ my.final.pick.stay ] <- paste0( "! ", game.outcome.stay, " !" )
-
-outcome <- paste0( rep( paste0( "! ", game.outcome.stay, " !" ), 5 ), collapse="" )
-  
-paste0( "  | ", this.game[1], " |     | ", this.game[2], " |     | ", this.game[3], " |  " )
-paste0( "  ", first.pick[1], "     ", first.pick[2], "     ", first.pick[3], "  " )
-paste0( "  ", open.door[1], "     ", open.door[2], "     ", open.door[3], "  " )
-paste0( "  ", final[1], "     ", final[2], "     ", final[3], "  " )
-paste0( "  ", win.lose[1], "     ", win.lose[2], "     ", win.lose[3], "  " )
-
-`r ''````
-````
-
-
-Repeat these steps with the second part (IF CONTESTANT SWITCHES): 
-
-
-```{md, eval=F}
-### IF CONTESTANT SWITCHES
-
-Game Setup: **`r paste0( toupper(this.game), collapse=" " )`**  
-Initial selection: **`r my.initial.pick`**  
-The opened goat door: **`r opened.goat.door`**  
-Final door selection: **`r my.final.pick.switch`**  
-Game outcome: **`r game.outcome.switch`**   
-
-```
-
-
-
-````markdown
-`r ''````{r, echo=F}
-
-this.game[ this.game == "car" ] <- "car "
-this.game <- toupper( this.game )
-first.pick <- c("        ","        ","        ")
-first.pick[ my.initial.pick ] <- "1st Pick"
-open.door <- c("        ","        ","        ")
-open.door[ opened.goat.door ] <- " Opened "
-final <- c("        ","        ","        ")
-final[ my.final.pick.switch ] <- " Final  " 
-outcome <- paste0( rep( paste0( " ", game.outcome.switch, "! " ), 5 ), collapse="" )
-
-win.lose <- final
-win.lose[ my.final.pick.switch ] <- paste0( "! ", game.outcome.switch, " !" )
-
-paste0( "  | ", this.game[1], " |     | ", this.game[2], " |     | ", this.game[3], " |  " )
-paste0( "  ", first.pick[1], "     ", first.pick[2], "     ", first.pick[3], "  " )
-paste0( "  ", open.door[1], "     ", open.door[2], "     ", open.door[3], "  " )
-paste0( "  ", final[1], "     ", final[2], "     ", final[3], "  " )
-paste0( "  ", win.lose[1], "     ", win.lose[2], "     ", win.lose[3], "  " )
-
-
-`r ''````
-````
-
-
-
-<br>
-<br>
-
-
-
-
-
-
 -----
 
 
@@ -577,9 +561,9 @@ paste0( "  ", win.lose[1], "     ", win.lose[2], "     ", win.lose[3], "  " )
 
 # Submission Instructions
 
-When you have completed your assignment, knit your RMD file to generate your rendered HTML file. Platforms like BlackBoard and Canvas often disallow you from submitting HTML files when there is embedded computer code, so create a zipped folder with both the RMD and HTML files.
+When you have completed your assignment, knit your RMD file to generate your rendered HTML file.
 
-Login to Canvas at <http://canvas.asu.edu> and navigate to the assignments tab in the course repository. Upload your zipped folder to the appropriate lab submission link.
+Login to Canvas at <http://canvas.asu.edu> and navigate to the assignments tab in the course repository. Upload your RMD and HTML files.
 
 Remember to:
 
