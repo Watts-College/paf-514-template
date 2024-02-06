@@ -5,6 +5,7 @@ layout: review
 root-url: 'https://raw.githubusercontent.com/Watts-College/paf-514-template/main/review-sessions/'
 
 
+
 session: 
 - week0:
   date:  'Friday, Jan 12th, 12:30pm: COURSE OVERVIEW'  
@@ -35,9 +36,9 @@ session:
   sample-code: 'week-04-quanteda.R'
 - week5:
   date:  'Mon Feb 5th'  
-  video: ''
-  password: ''  
-  sample-code: 'week-05-review-compound-statements.R'  
+  video: 'https://asu.zoom.us/rec/share/CbGM5iKZs0hBaThglZFTfzn1wXeHwAGbVf19mWpt6geH2LxDZPN-Dh-v_tqszpjK.w-9vTqxtiHg2upsT'
+  password: 'o4=iqJLA'  
+  sample-code: 'week-05.R'  
 - week6:
   date:  'Wed Feb 12th'  
   video: ''
