@@ -115,25 +115,22 @@ Using the functions you created last week or those provided in the solutions, pa
 ```{r, eval=T}
 play_game <- function( )
 {
-  new.game <- create_game()
-  first.pick <- select_door()
-  opened.door <- open_goat_door( new.game, first.pick )
-  final.pick.stay <- change_door( stay=T, opened.door, first.pick )
+  new.game          <- create_game()
+  first.pick        <- select_door()
+  opened.door       <- open_goat_door( new.game, first.pick )
+  final.pick.stay   <- change_door( stay=T, opened.door, first.pick )
   final.pick.switch <- change_door( stay=F, opened.door, first.pick )
-  outcome.stay <- determine_winner( final.pick.stay, new.game  )
-  outcome.switch <- determine_winner( final.pick.switch, new.game )
+  outcome.stay      <- determine_winner( final.pick.stay, new.game  )
+  outcome.switch    <- determine_winner( final.pick.switch, new.game )
   
-  # game.results <- bundle the results
-  # return( <<< game.results >>> )
+  strategy     <- c( "stay", "switch" )
+  outcome      <- c( outcome.stay, outcome.switch )
+  game.results <- data.frame( strategy, outcome ) 
   
-  strategy <- c("stay","switch")
-  outcome <- c(outcome.stay,outcome.switch)
-  game.results <- data.frame( strategy, outcome,
-                              stringsAsFactors=F )
   return( game.results )
 }
 
-play_game()
+play_game() %>% pander()  # pander is for pretty printing
 ```
 
 
@@ -151,8 +148,7 @@ results.df <- NULL   # collector
 for( i in 1:10000 )  # iterator
 {
   game.outcome <- play_game()
-  # binding step
-  results.df <- rbind( results.df, game.outcome )
+  results.df <- rbind( results.df, game.outcome )  # binding results
 }
 
 table( results.df ) 
@@ -176,7 +172,7 @@ table( results.df ) %>%
 Note that each game played produces a data frame with two rows and two columns: 
 
 ```{r}
-play_game()
+play_game() %>% pander()
 ```
 
 We use the collector data frame **results.df** to gather all of the results together. We do this by appending each new data frame on the end of the old data frame inside the loop: 
@@ -248,22 +244,21 @@ So far we have shown how to create a wrapper function that makes it easier to co
 ```{r, eval=T}
 play_game <- function( )
 {
-  new.game <- create_game()
-  first.pick <- select_door()
-  opened.door <- open_goat_door( new.game, first.pick )
-  final.pick.stay <- change_door( stay=T, opened.door, first.pick )
+  new.game          <- create_game()
+  first.pick        <- select_door()
+  opened.door       <- open_goat_door( new.game, first.pick )
+  final.pick.stay   <- change_door( stay=T, opened.door, first.pick )
   final.pick.switch <- change_door( stay=F, opened.door, first.pick )
-  outcome.stay <- determine_winner( final.pick.stay, new.game  )
-  outcome.switch <- determine_winner( final.pick.switch, new.game )
+  outcome.stay      <- determine_winner( final.pick.stay, new.game  )
+  outcome.switch    <- determine_winner( final.pick.switch, new.game )
   
-  strategy <- c("stay","switch")
-  outcome <- c(outcome.stay,outcome.switch)
-  game.results <- data.frame( strategy, outcome,
-                              stringsAsFactors=F )
+  strategy     <- c( "stay", "switch" )
+  outcome      <- c( outcome.stay, outcome.switch )
+  game.results <- data.frame( strategy, outcome )
   return( game.results )
 }
 
-play_game()
+play_game() %>% pander()
 ```
 
 
@@ -412,10 +407,10 @@ Since we are comparing strategies we want to examine outcomes for each strategy 
 ```{r, eval=F}
   #####
 
-  final.pick.stay <- change_door( stay=T, opened.door, first.pick )
+  final.pick.stay   <- change_door( stay=T, opened.door, first.pick )
   final.pick.switch <- change_door( stay=F, opened.door, first.pick )
-  outcome.stay <- determine_winner( final.pick.stay, new.game  )
-  outcome.switch <- determine_winner( final.pick.switch, new.game )
+  outcome.stay      <- determine_winner( final.pick.stay, new.game  )
+  outcome.switch    <- determine_winner( final.pick.switch, new.game )
   
   #####
 ```
@@ -432,13 +427,13 @@ We could simply bind the results together with the combine **c()** function and 
 # demo function
 play_game <- function()
 {
-  outcome.stay <- sample( c("WIN","LOSE"), 1 ) 
+  outcome.stay   <- sample( c("WIN","LOSE"), 1 ) 
   outcome.switch <- sample( c("WIN","LOSE"), 1 ) 
-  game.results <- c( outcome.stay, outcome.switch )
+  game.results   <- c( outcome.stay, outcome.switch )
   return( game.results )
 }
 
-play_game()
+play_game() %>% pander()
 ```
 
 
@@ -450,10 +445,10 @@ results <- NULL
 for( i in 1:10 )
 {
     game.outcome <- play_game()
-    results <- c( results, game.outcome  )
+    results      <- c( results, game.outcome  )
 }
 
-results
+results 
 ```
 
 We can utilize vector attributes to assign each game outcome a label:
@@ -463,9 +458,9 @@ We can utilize vector attributes to assign each game outcome a label:
 # demo function
 play_game <- function()
 {
-  outcome.stay <- sample( c("WIN","LOSE"), 1 ) 
+  outcome.stay   <- sample( c("WIN","LOSE"), 1 ) 
   outcome.switch <- sample( c("WIN","LOSE"), 1 ) 
-  game.results <- c( stay=outcome.stay, switch=outcome.switch )
+  game.results   <- c( stay=outcome.stay, switch=outcome.switch )
   return( game.results )
 }
 ```
@@ -486,7 +481,7 @@ results <- NULL
 for( i in 1:5 )
 {
     game.outcome <- play_game()
-    results <- c( results, game.outcome  )
+    results      <- c( results, game.outcome  )
 }
 
 results
@@ -518,11 +513,10 @@ Not horrible, but it makes our life a little harder. What if we organized them a
 # demo function
 play_game <- function()
 {
-  outcome.stay <- sample( c("WIN","LOSE"), 1 ) 
+  outcome.stay   <- sample( c("WIN","LOSE"), 1 ) 
   outcome.switch <- sample( c("WIN","LOSE"), 1 ) 
-  game.results <- data.frame( stay=outcome.stay, 
-                              switch=outcome.switch, 
-                              stringsAsFactors=F )
+  game.results   <- data.frame( stay=outcome.stay, 
+                              switch=outcome.switch )
   return( game.results )
 }
 ```
@@ -531,9 +525,9 @@ play_game <- function()
 ```{r, eval=F}
 ####
 
-  game.results <- data.frame( stay=outcome.stay, 
-                              switch=outcome.switch, 
-                              stringsAsFactors=F )
+  game.results <- 
+    data.frame( stay=outcome.stay, 
+                switch=outcome.switch )
 
 ####
 ```
@@ -553,7 +547,7 @@ results.df <- data.frame()
 for( i in 1:5 )
 {
     game.outcome <- play_game()
-    results.df <- rbind( results.df, game.outcome  )
+    results.df   <- rbind( results.df, game.outcome  )
 }
 
 results.df
@@ -574,13 +568,12 @@ But we still can't reference the strategy directly as it's own variable. If we f
 # demo function
 play_game <- function()
 {
-  outcome.stay <- sample( c("WIN","LOSE"), 1 ) 
+  outcome.stay   <- sample( c("WIN","LOSE"), 1 ) 
   outcome.switch <- sample( c("WIN","LOSE"), 1 ) 
   
-  strategy <- c("stay","switch")
-  outcome <- c( outcome.stay, outcome.switch )
-  game.results <- data.frame( strategy, outcome, 
-                              stringsAsFactors=F )
+  strategy     <- c("stay","switch")
+  outcome      <- c( outcome.stay, outcome.switch )
+  game.results <- data.frame( strategy, outcome )
   return( game.results )
 }
 ```
@@ -589,10 +582,9 @@ play_game <- function()
 ```{r, eval=F}
 ####
 
-  strategy <- c("stay","switch")
-  outcome <- c( outcome.stay, outcome.switch )
-  game.results <- data.frame( strategy, outcome, 
-                              stringsAsFactors=F )
+  strategy     <- c("stay","switch")
+  outcome      <- c( outcome.stay, outcome.switch )
+  game.results <- data.frame( strategy, outcome )
 
 ####
 ```
@@ -608,7 +600,7 @@ results.df <- data.frame()
 for( i in 1:5 )
 {
     game.outcome <- play_game()
-    results.df <- rbind( results.df, game.outcome  )
+    results.df   <- rbind( results.df, game.outcome  )
 }
 
 results.df
@@ -625,22 +617,21 @@ This tidy format will make our analytical steps more efficient, so when possible
 ```{r}
 play_game <- function( )
 {
-  new.game <- create_game()
-  first.pick <- select_door()
-  opened.door <- open_goat_door( new.game, first.pick )
-  final.pick.stay <- change_door( stay=T, opened.door, first.pick )
+  new.game          <- create_game()
+  first.pick        <- select_door()
+  opened.door       <- open_goat_door( new.game, first.pick )
+  final.pick.stay   <- change_door( stay=T, opened.door, first.pick )
   final.pick.switch <- change_door( stay=F, opened.door, first.pick )
-  outcome.stay <- determine_winner( final.pick.stay, new.game  )
-  outcome.switch <- determine_winner( final.pick.switch, new.game )
+  outcome.stay      <- determine_winner( final.pick.stay, new.game  )
+  outcome.switch    <- determine_winner( final.pick.switch, new.game )
   
-  strategy <- c("stay","switch")
-  outcome <- c( outcome.stay, outcome.switch )
-  game.results <- data.frame( strategy, outcome, 
-                              stringsAsFactors=F )
+  strategy     <- c("stay","switch")
+  outcome      <- c( outcome.stay, outcome.switch )
+  game.results <- data.frame( strategy, outcome )
   return( game.results )
 }
 
-play_game()
+play_game() %>% pander()
 ```
 
 
@@ -652,7 +643,7 @@ The examples above used append operators like **rbind()** to build the results d
 ```{r, eval=F}
 ####
   game.outcome <- play_game()
-  results.df <- rbind( results.df, game.outcome  )
+  results.df   <- rbind( results.df, game.outcome  )
 ####
 ```
 
@@ -681,7 +672,7 @@ We can build it with empty values or NAs:
 
 ```{r}
 x <- rep( NA, 10 )
-df <- data.frame( stay=x, switch=x, stringsAsFactors=F )
+df <- data.frame( stay=x, switch=x )
 df
 ```
 
@@ -702,7 +693,7 @@ for( i in 1:5 )
 {
   game.outcomes <- sample( c("WIN","LOSE"), size=2 )
   strategies <- c("stay","switch") 
-  results.list[[ i ]] <- data.frame( strategies, game.outcomes, stringsAsFactors=F )
+  results.list[[ i ]] <- data.frame( strategies, game.outcomes )
 }
 
 results.list

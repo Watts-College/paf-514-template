@@ -325,7 +325,7 @@ determine_winner( final.pick=my.final.pick,
 
 ## TEST YOUR CODE
 
-You can use the function below to inspect your code performance:  
+Once all of your steps are implemented (your functions are all working), you can use the function below to inspect your code performance:  
 
 ```{r, eval=F}
 show_game()

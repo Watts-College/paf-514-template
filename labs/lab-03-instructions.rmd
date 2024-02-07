@@ -23,7 +23,11 @@ library( pander )
 
 # Data
 
-This lab utilizes a [free Kaggle dataset](https://www.kaggle.com/dorianlazar/medium-articles-dataset/notebooks) describing the popularity of articles on the blogging platform Medium. We will use the following fields: 
+This lab utilizes a [free Kaggle dataset](https://www.kaggle.com/dorianlazar/medium-articles-dataset/notebooks) describing the popularity of articles on the blogging platform Medium. 
+
+This data allows us to study user behavior related to the *stickiness* of different styles of blog titles. Does the style impact whether a reader is likely to click on the blog or rate it favorably (the clap score)?  
+
+We will use the following fields: 
 
 * **title** - the blog title 
 * **subtitle** - blog subtitle (optional)
@@ -43,9 +47,78 @@ head( d[preview.these] ) %>% pander()
 ```
 
 
+<br>
+<hr>
+<br>
+
+# Lab Questions 
+
+## **Q1 - Comparing Title Styles**
+
+The list below contains examples of blogs belonging to groups of title styles. Which title style consistently gets the most claps (clap score)? 
+
+**Power Lists:**
+
+* "Six Recommendations for Aspiring Data Scientists"  
+* "13 Essential Newsletters for Data Scientists: Remastered"  
+* "7 Machine Learning lessons that stuck with me this year"  
+
+**How to guides:** 
+
+* "How to measure progress with outcomes" 
+* "How We Dumped A/B Testing For Machine Learning" 
+* "How To Be Productive Without Being Hard on Yourself" 
+
+**Something Colon Something:**
+
+* "Business Checkup: 10 Ways to Improve your 2020 Communications" 
+* "ReFocus: Making Out-of-Focus Microscopy Images In-Focus Again" 
+* "Review: SqueezeNet (Image Classification)"
+
+**Questions:**
+
+* "Why Do Financial Models Break?"
+* "What Is Econometrics?"
+* "Can AI Robots Rebel Against Us, as Shown in Films?"
+* "Can You Invest Like a Top Fund Manager?" 
+* "So you’re building a “Superhuman of X”?"
+
+**Other:**
+
+All other titles not included in the categories above.  
+
+<hr> 
+
+**Create regular expressions that allow you to identify ALL of the titles that belong in each category above** (approximately one expression per style category). The regular expressions will match patterns that correspond to the stylistic genres of titles rather than trying to match any exact title. 
+
+```{r, eval=F}
+
+# grepl returns TRUE for all cases that 
+# match the expression and FALSE otherwise 
+
+category.members <- grepl( "expression", titles )
+```
 
 
-## Text Pre-Processing Steps
+> **For each of the styles above report the following while showing your work:** 
+
+### **Q1-A:** How many titles did you identify within each category? 
+
+### **Q1-B:** What is the average performance (clap score) of each type of title? 
+
+### **Q1-C:** Which style of title performs the best overall? 
+
+### **Q1-D:** Does the choice of average matter? 
+
+The **average** generically means the central tendency of a distribution. Note that the raw clap score (the unlogged version) is very skewed, which can impact performance statistics. Does your answer to Q1-C change if you examine the **median** instead of the **mean**? 
+
+<br>
+<hr>
+<br>
+
+
+
+### Text Pre-Processing Steps
 
 The article title text is fairly clean and needs little pre-processing, but there are a couple of important issues that need to be addressed. 
 
@@ -80,9 +153,11 @@ In the UTF-8 text encoding they come out as:
 
 Since they are not actual words, remove all of these hairspace-dashes from the text. 
 
+<br>
+<hr>
+<br>
 
-
-## Create a Performance Measure 
+### Create a Performance Measure 
 
 We can track article performance in many ways. This dataset contains "claps", which are the equivalent of a thumbs-up or like on other platforms. 
 
@@ -104,81 +179,46 @@ d$clap.score <- log10( d$clap + 1 )
 ```
 
 
+<br>
+<hr> 
+<br>
 
 
-# Lab Questions 
+**First apply the text pre-processing steps to the titles and create your clap score, then answer Q1A-Q1D using the clean title strings.**
 
 
-
-
-
-## Q1 - Comparing Title Styles
-
-Which title style consistently gets the most claps (clap score)? 
-
-**Power Lists:**
-
-* "Six Recommendations for Aspiring Data Scientists"  
-* "13 Essential Newsletters for Data Scientists: Remastered"  
-* "7 Machine Learning lessons that stuck with me this year"  
-
-**How to guides:** 
-
-* "How to measure progress with outcomes" 
-* "How We Dumped A/B Testing For Machine Learning" 
-* "How To Be Productive Without Being Hard on Yourself" 
-
-**Something Colon Something:**
-
-* "Business Checkup: 10 Ways to Improve your 2020 Communications" 
-* "ReFocus: Making Out-of-Focus Microscopy Images In-Focus Again" 
-* "Review: SqueezeNet (Image Classification)"
-
-**Questions:**
-
-* "Why Do Financial Models Break?"
-* "What Is Econometrics?"
-* "Can AI Robots Rebel Against Us, as Shown in Films?"
-* "Can You Invest Like a Top Fund Manager?" 
-* "So you’re building a “Superhuman of X”?"
-
-**Other:**
-
-All other styles not included in these. 
-
-Use regular expressions in order to identify all of the titles that belong in each category. 
-
-```{r, eval=F}
-
-# grepl returns TRUE for all cases that 
-# match the expression and FALSE otherwise 
-
-category.members <- grepl( "expression", titles )
-```
-
-
-**Q1-A:**What is the average performance (clap score) of each type of title? 
-
-**Q1-B:**Which style of title performs the best overall? 
+<br>
+<hr>
+<br>
 
 
 
-## Q2 - Content Analysis 
+
+
+
+## **Q2 - Content Analysis** 
 
 
 Split each title into a group of distinct words. 
 
-**Q2-A:** What are the 25 most common words used in the titles? 
+### **Q2-A:** What are the 25 most common words used across all titles? 
 
-**Q2-B:** What is the most common word used at the beginning of a title? 
+### **Q2-B:** What are the 25 most common words used within each style category above? 
 
-**Q2-C:** What is the most common word used at the end of a title? 
+### **Q2-C:** What is the most common word used at the beginning of a title? 
+
+### **Q2-D:** What is the most common word used at the end of a title? 
 
 *Hint: be sure to convert all words to the same case so that variants like "How" and "how" are treated the same.* 
 
 ```{r,eval=F}
 x <- tolower( x )
 ```
+
+
+<br>
+<hr>
+<br>
 
 When splitting a title into words note that the string split function returns a list. 
 
@@ -204,6 +244,9 @@ word.vector <- unlist( word.list )
 word.vector
 ```
 
+<br>
+<hr>
+<br>
 
 **Counting the first or last words:**
 
@@ -288,9 +331,55 @@ And as you become more comfortable with lists they become easier to manage:
 first.six.titles %>% strsplit( " " ) %>% sapply( length )  
 ```
 
+<br>
+<hr>
+<br>
 
 
-**CHALLENGE QUESTION:**
+
+
+
+
+
+## **Q3 - Length of Title** 
+
+Does the length of the title matter? 
+
+
+
+### **Q3-A:** Do titles with more words get better clap scores?** 
+
+Count the number of words in each title. 
+
+Then examine the clap score as a function of word count by regressing the clap score onto word count. 
+
+Visualize the relationship using a box and whisker plot: 
+
+```{r}
+# creating random non-meaningful data for demo
+x <- sample( 1:10, size=1000, replace=TRUE )
+y <- 3*x - 0.5*x*x + rnorm(1000,0,5)
+f <- factor(x)
+
+# plot( factor, numeric.vector )
+plot( f, y )
+```
+
+
+### **Q3-B:** Do longer titles get better clap scores?** 
+
+Repeat the analysis from Q3-A but this time measuring title length by the number of characters in the title. 
+
+
+<br>
+<hr>
+<br>
+
+
+# CHALLENGE QUESTIONS
+
+
+## CHALLENGE Q1
 
 Is it better to use common words or unique words in your title? 
 
@@ -348,7 +437,7 @@ data.frame( x, rank.x, centile.x, top.25.x, bot.25.x ) %>% pander()
 ```
 
 
-**CHALLENGE QUESTION:** 
+## CHALLENGE Q2
 
 Find a package in R that will tabulate sentiment scores for a set of text. 
 
@@ -360,40 +449,7 @@ These packages will return counts or percentages of words with positive salience
 
 
 
-## Q3 - Length of Title 
-
-Does the length of the title matter? 
-
-
-
-**Q3-A: Do titles with more words get better clap scores?** 
-
-Count the number of words in each title. 
-
-Then examine the clap score as a function of word count by regressing the clap score onto word count. 
-
-Visualize the relationship using a box and whisker plot: 
-
-```{r}
-# creating random non-meaningful data for demo
-x <- sample( 1:10, size=1000, replace=TRUE )
-y <- 3*x - 0.5*x*x + rnorm(1000,0,5)
-f <- factor(x)
-
-# plot( factor, numeric.vector )
-plot( f, y )
-```
-
-
-**Q3-B: Do longer titles get better clap scores?** 
-
-Repeat the analysis from Q3-A but this time measuring title length by the number of characters in the title. 
-
-
-
-
-
-## Challenge Question 
+## CHALLENGE Q3 
 
 Put all of the steps above together into a single regression model:
 
@@ -426,7 +482,9 @@ You are also free to add additional features of the titles that you create with 
 
 # Submission Instructions
 
-When you have completed your assignment, knit your RMD file to generate your rendered HTML file. Platforms like BlackBoard and Canvas often disallow you from submitting HTML files when there is embedded computer code, so create a zipped folder with both the RMD and HTML files.
+When you have completed your assignment, knit your RMD file to generate your rendered HTML file. Submit both your RMD and HTML files.
+
+**Be sure to use proper markdown formatting and whenever possible highlight your answers so they are easy to read.**
 
 Login to Canvas at <http://canvas.asu.edu> and navigate to the assignments tab in the course repository. Upload your zipped folder to the appropriate lab submission link.
 
