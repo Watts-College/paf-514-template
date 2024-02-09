@@ -2,6 +2,14 @@
 # library( dplyr )
 # library( pander )
 
+# goonies <- "https://www.imdb.com/title/tt0089218/?ref_=fn_al_tt_1"
+# 
+# df <- 
+#   get_actors( goonies ) %>% 
+#   add_bios()
+
+
+
 get_actors <- function( imdb.url ) {
 
   htm <- read_html( imdb.url )
