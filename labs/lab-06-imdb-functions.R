@@ -51,9 +51,9 @@ get_actors <- function( imdb.url ) {
   return( df3 )
 }
 
-# film: Poor Things 
-poor.things <- "https://www.imdb.com/title/tt14230458/?ref_=hm_fanfav_tt_t_1_pd_fp1_r"
-df <- get_actors( poor.things )
+###  Poor Things (IMDB film page) 
+# poor.things <- "https://www.imdb.com/title/tt14230458/?ref_=hm_fanfav_tt_t_1_pd_fp1_r"
+# df <- get_actors( poor.things )
 
 
 
@@ -85,9 +85,9 @@ get_bio <- function( bio.url ) {
   return( bio )
 }
 
-# Mark Ruffalo
-bio.url <- "https://www.imdb.com/name/nm0749263/bio/"
-get_bio( bio.url )
+### Mark Ruffalo
+# bio.url <- "https://www.imdb.com/name/nm0749263/bio/"
+# get_bio( bio.url )
 
 
 make_short <- function( bio ) {
@@ -102,7 +102,7 @@ make_short <- function( bio ) {
   return( bio.short )
 }
 
-get_bio( bio.url ) %>% make_short()
+# get_bio( bio.url ) %>% make_short()
 
 
 
@@ -112,8 +112,13 @@ add_bios <- function( df ) {
   return( df )
 }
 
-df2 <- add_bios( df )
+# df2 <- add_bios( df )
 
+
+### TEST
+
+#    poor.things <- "https://www.imdb.com/title/tt14230458/?ref_=hm_fanfav_tt_t_1_pd_fp1_r"
+#   df <- get_actors( poor.things ) %>% add_bios( )
 
 
 ##############################
