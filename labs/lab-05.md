@@ -207,8 +207,44 @@ Follow the [Barebones Jekyll example](http://ds4ps.org/barebones-jekyll/page1) f
 </style>
 ```
 
-Similarly, add new **div** sections around Step 02 and Step 03 on the page so that each step has different header styles and text. It doesn't have to look nice - just show you are able to selectively change the style on a page. 
+Similarly, add new **div** sections around Step 2 and Step 3 on the page so that each step has different header styles and text. It doesn't have to look nice - just show you are able to selectively change the style on a page. 
 
+**First Section: `class="gs-section-01"`**
+
+```
+<div class="gs-section-01" markdown="1">
+### 1. Fork the Beautiful Jekyll repository
+...
+</div>
+```
+
+**Second Section: `class="gs-section-02"`**
+
+```
+<div class="gs-section-02" markdown="1">
+### 2. Build your website in 3 steps
+...
+</div>
+```
+
+**Section Rules in CSS Using Tag Classes:**
+
+```
+# only <h3> headers between <div class=gs-section-01> tags
+
+.gs-section-01 h3 { 
+   color: red
+}
+
+# only <h3> headers between <div class=gs-section-02> tags
+
+.gs-section-02 h3 { 
+   color: blue
+}
+```
+
+<br>
+<br>
   
   
 ## Step 05
