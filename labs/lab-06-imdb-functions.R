@@ -4,43 +4,43 @@
 
 get_actors <- function( imdb.url ) {
 
-	htm <- read_html( imdb.url )
+  htm <- read_html( imdb.url )
 
-	names <-  
-		htm %>% 
-		html_elements( "a.ipc-lockup-overlay" )  %>% 
-		html_attr("aria-label")
+  names <-  
+    htm %>% 
+    html_elements( "a.ipc-lockup-overlay" )  %>% 
+    html_attr("aria-label")
 
-	links <- 
-		htm %>% 
-		html_elements( "a.ipc-lockup-overlay" )  %>% 
-		html_attr("href")
+  links <- 
+    htm %>% 
+    html_elements( "a.ipc-lockup-overlay" )  %>% 
+    html_attr("href")
 
-	is.name <- 
-		grepl( "^/name/", links )
+  is.name <- 
+    grepl( "^/name/", links )
 
-	links <- gsub( "\\?ref.*", "", links )
-	links <- paste0( "https://www.imdb.com", links, "/bio" )
+  links <- gsub( "\\?ref.*", "", links )
+  links <- paste0( "https://www.imdb.com", links, "/bio" )
 
-	df <- 
-		data.frame( names, links ) %>% 
-		dplyr::filter( is.name )
+  df <- 
+    data.frame( names, links ) %>% 
+    dplyr::filter( is.name )
 
-	img <- 
-		htm %>% 
-		html_elements( "img" )  %>% 
-		html_attr("src")  
+  img <- 
+    htm %>% 
+    html_elements( "img" )  %>% 
+    html_attr("src")  
 
-	alt <- 
-		htm %>% 
-		html_elements( "img" )  %>% 
-		html_attr("alt") 
+  alt <- 
+    htm %>% 
+    html_elements( "img" )  %>% 
+    html_attr("alt") 
 
-	df2 <- data.frame( alt, img )
+  df2 <- data.frame( alt, img )
 
-	df3 <- merge( df, df2, by.x="names", by.y="alt" )
+  df3 <- merge( df, df2, by.x="names", by.y="alt" )
 
-	return( df3 )
+  return( df3 )
 }
 
 # film: Poor Things 
@@ -51,30 +51,30 @@ df <- get_actors( poor.things )
 
 get_bio <- function( bio.url ) {
 
-	htm <- try( read_html( bio.url ) )
+  htm <- try( read_html( bio.url ) )
 
     if( inherits( htm, "try-error" ) )
     { return(NULL) }
 
-	divs <- 
-		htm %>%
-		html_elements( "div" )  
+  divs <- 
+    htm %>%
+    html_elements( "div" )  
 
-	tag.id <- 
-		htm %>%
-		html_elements( "div" )  %>%
-		html_attr("data-testid") 
+  tag.id <- 
+    htm %>%
+    html_elements( "div" )  %>%
+    html_attr("data-testid") 
 
-	bio.full <- 
-		divs[ which( tag.id == "sub-section-mini_bio" ) ] %>% 
-		html_text2()
+  bio.full <- 
+    divs[ which( tag.id == "sub-section-mini_bio" ) ] %>% 
+    html_text2()
 
     # limit to 5 sentences 
 
     bio.list <- strsplit( bio, ". " )
     bio <- 
 
-	return( bio )
+  return( bio )
 }
 
 # Mark Ruffalo
