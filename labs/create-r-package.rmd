@@ -70,7 +70,36 @@ create_game()
 devtools::install_github( "yourGitHubName/montyhall" )
 ```
 
-These five steps are explained in detail below. One take-away should be, once you understand the process then creating packages is not complicated. 
+These five steps are explained in detail below. The annotated script explains some of the i's that need dotting and t's that need to be crossed while you create a package. For example, different steps are executed while you are inside different folders, so you need to mind your working directories. Roxygen comments are sensitive to formatting, etc. Similar to errors you have encountered when learning how to use RMD documents, these are the types of details that will trip you up the first time you create a package. 
+
+Once you have completed the process, a key takeaway from the exercise is that **packages are NOT hard to create**. R has become a successful language because packages are easy to build, which means that barriers to sharing cool ideas is low, which means more people create packages, which means that the R ecosystem becomes dynamic and robust. 
+
+R has been much more successful as a social network than as a computer language`[*]`. Packages are not only useful for thought leaders that want to share innovative solutions with a global community by uploading packages to the CRAN. They are also great for amplifying expertise within organizations (senior analysts sharing existing code with junior analysts), for documentation (institutionalization of knowledge that prevents disruption as a result of turnover), and quality control. In this instance packages might be used internally and not shared broadly. They can be a powerful management tool, not just a tool for elite R users.
+
+> *ASIDE ON R AS A LANGUAGE*
+
+`[*]` There is an important caveat to the statement that R is not successful because of its prowess as a computer language. Specifically, R is a powerful language designed for **data programming**, **statistical analysis**, and **scientific computing**. For a high-level language that is easy to learn it does A LOT OF THINGS well, which makes it a great general toolkit for data scientists. 
+
+For example, it can utilize object-oriented frameworks, it has packages that optimize speed on specific tasks, it you can run database queries directly in R. However, if object-oriented features are the most important requirements for your project then Java is better suited, if speed is the most important requirement then you might write some of the code in C++, and if database queries are the most important requirement then SQL will be useful. R can do all of the things these other languages can do, but it can't do them as well as a language designed for a specific purpose. 
+
+You will often see the argument made that Python is a better 
+
+
+https://github.com/matloff/R-vs.-Python-for-Data-Science
+
+https://qz.com/1661487/hadley-wickham-on-the-future-of-r-python-and-the-tidyverse
+
+https://towardsdatascience.com/python-vs-r-for-data-science-cf2699dfff4b
+
+
+
+
+
+
+
+
+
+
 
 <hr> 
 
