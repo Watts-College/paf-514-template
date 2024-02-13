@@ -13,9 +13,11 @@ VARIABLE     <- "B01001_001E"      # TOTAL POPULATION (E for Estimate)
 STATE        <- "04"               # AZ STATE FIPS CODE
 KEY          <- "your.unique.census.key.goes.here"
 
+source( "https://raw.githubusercontent.com/Watts-College/paf-514-template/main/review-sessions/api.R" )
+
 ##################################################################
 
-BASE.URL <- paste( API.NAME, API.VINTAGE, API.NAME, sep="/" )
+BASE.URL <- paste( API.BASE, API.VINTAGE, API.NAME, sep="/" )
 BASE.URL
 
 # [1] "https://api.census.gov/data/2015/acs/acs5"
