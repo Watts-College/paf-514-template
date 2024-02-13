@@ -4,8 +4,6 @@ layout: review
 
 root-url: 'https://raw.githubusercontent.com/Watts-College/paf-514-template/main/review-sessions/'
 
-
-
 session: 
 - week0:
   date:  'Friday, Jan 12th, 12:30pm: COURSE OVERVIEW'  
@@ -41,8 +39,8 @@ session:
   sample-code: 'week-05.R'  
 - week6:
   date:  'Wed Feb 12th'  
-  video: ''
-  password: ''
+  video: 'https://asu.zoom.us/rec/share/qxBaskgl68zkMlLZdkMMIuIXsD5sIwygWyN5rDbQ1W_LYwGuyeC6LNjt0kUAy_4.2GecGbSNTv1sUNng'
+  password: '0QygPZf*'
   sample-code: 'week-06-data-apis.R'
 - week7:
   date:  'Mon Feb 19th'  
