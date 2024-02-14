@@ -48,7 +48,7 @@ URL <- params$url
 d <- read.csv( URL )
 
 # FOR MANUAL TESTING ONLY
-# URL <- "https://docs.google.com/spreadsheets/d/1RoiO9bfpbXowprWdZrgtYXG9_WuK3NFemwlvDGdym7E/export?gid=1335284952&format=csv"
+# URL <- "https://raw.githubusercontent.com/Watts-College/paf-514-template/main/labs/batch-demo/asu-salaries-2020.csv"
 # d <- read.csv( URL )
 
 # DATA STEPS 
