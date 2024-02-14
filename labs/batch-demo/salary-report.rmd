@@ -25,7 +25,7 @@ knitr::opts_chunk$set( echo = TRUE, message=F, warning=F )
 ```
 
 
-```{r}
+```{r libraries}
 # Hide all of the extra messages and code in the final report:
 #
 #   knitr::opts_chunk$set( echo=F, message=F, warning=F )
@@ -40,12 +40,16 @@ library( gender )
 
 # SOURCE CUSTOM FUNCTIONS
 source( "utils.R" )
+```
 
-
+```{r data}
 # LOAD DATA
 URL <- params$url
 d <- read.csv( URL )
 
+# FOR MANUAL TESTING ONLY
+# URL <- "https://docs.google.com/spreadsheets/d/1RoiO9bfpbXowprWdZrgtYXG9_WuK3NFemwlvDGdym7E/export?gid=1335284952&format=csv"
+# d <- read.csv( URL )
 
 # DATA STEPS 
 
