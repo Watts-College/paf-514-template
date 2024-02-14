@@ -25,22 +25,26 @@ knitr::opts_chunk$set( echo = TRUE, message=F, warning=F )
 ```
 
 
-```{r libraries}
-# Hide all of the extra messages and code in the final report:
-#
-#   knitr::opts_chunk$set( echo=F, message=F, warning=F )
-#
+```
+# Be sure to hide all of the extra messages and code in the final report:
+# ```{r setup, include=FALSE}
+# knitr::opts_chunk$set( echo = F, message=F, warning=F )
+# ```
+```
 
+
+```{r libraries}
+# LOAD PACKAGES
 library( dplyr )
 library( pander )
 library( knitr )
 library( gender )
 
-
-
 # SOURCE CUSTOM FUNCTIONS
 source( "utils.R" )
 ```
+
+
 
 ```{r data}
 # LOAD DATA
