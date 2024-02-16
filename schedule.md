@@ -795,10 +795,6 @@ Coming soon....
 
 ---
 
-**Submit to Canvas:**
-
-<a class="uk-button uk-button-primary" href="{{page.canvas.assignment_url}}">SUBMIT CODE-THROUGH</a>
-
 <br>
 <br>
 
