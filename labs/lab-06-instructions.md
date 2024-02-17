@@ -129,10 +129,20 @@ Select three team members from the R Epidemics Consortium page and create a data
 
 Create the data frame manually: 
 	
-* Create vectors for each information type (WEBSITE, NAME, etc) and add items from three people on the team. 
+* Create vectors for each information type (WEBSITE, NAME, etc) and add items from three people on the team.
 * If a person does not list information for an item use an empty string ("") as a placeholder in the vector. 
 * Bind the vectors together into a data frame using the data.frame() function and call it **dat**.
-	
+
+The image links are a little unstable, so use these avatar images instead:
+
+![image](https://raw.githubusercontent.com/Watts-College/paf-514-template/main/labs/images/avatar-gallery.png)
+
+They can be referenced using the following URL with file names **avatar-01.png** through **avatar-13.png**: 
+
+```
+https://raw.githubusercontent.com/Watts-College/paf-514-template/main/labs/images/avatar-01.png
+```
+
 <br>
 <hr>
 <br>
@@ -251,14 +261,14 @@ build_circles <- function( WEBSITE, IMG )
 }
 
 build_circles( WEBSITE="https://sites.google.com/site/thibautjombart/", 
-               IMG="https://www.repidemicsconsortium.org/img/people/thibaut-jombart.jpg" )
+               IMG="https://raw.githubusercontent.com/Watts-College/paf-514-template/main/labs/images/avatar-04.png" )
 	       
 ```
 
 ````
 <div class="list-circles-item">
   <a href="https://sites.google.com/site/thibautjombart/">
-  <img src="https://www.repidemicsconsortium.org/img/people/thibaut-jombart.jpg" class="item-img"></a>
+  <img src="https://raw.githubusercontent.com/Watts-College/paf-514-template/main/labs/images/avatar-04.png" class="item-img"></a>
 ````
 
 	
@@ -477,8 +487,41 @@ You will submit your RMD file and rendered HTML file for this step.
 
 
 
+## Challenge Part 1
 
-## Challenge
+Instead of using biographical information from members of the RECON group, use the following web scraping function to select a film from IMDB and collect biographical information on actors from the film. Combine the actor information that you gather from the movie of your choice and the gallery template from RECON to create a gallery page of actors from the movie.
+
+[SCRAPE ACTORS FROM IMDB](https://raw.githubusercontent.com/Watts-College/paf-514-template/main/labs/imdb-functions.R)
+
+```r
+library( rvest )
+library( dplyr )
+library( pander )
+
+# look up movie on IMDB and get URL: 
+goonies <- "https://www.imdb.com/title/tt0089218/?ref_=fn_al_tt_1"
+df <- get_actors( goonies ) %>% add_bios()
+
+df$img2 <- paste0( "![](", df$img, ")" ) # turn image URL into markdown
+df[c("img2","names","links","bio.short")] %>% 
+ head(4) %>%
+ knitr::kable()
+```
+
+
+|img2                                                                                                                                                         |names         |links                                   |bio.short                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+|:------------------------------------------------------------------------------------------------------------------------------------------------------------|:-------------|:---------------------------------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|![](https://m.media-amazon.com/images/M/MV5BMjAzNTUwMTcyNl5BMl5BanBnXkFtZTcwMjI1MTQ3NA@@._V1_QL75_UX140_CR0,11,140,140_.jpg)                                 |Anne Ramsey   |https://www.imdb.com/name/nm0001649/bio |American character actress Anne Ramsey was born Anne Mobley in Omaha, Nebraska to Eleanor (Smith), a national treasurer of the Girl Scouts, and Nathan Mobley, an insurance executive. Her uncle was U.S. Ambassador David S. Smith. An ancestor was Mayflower Pilgrim William Brewster.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+|![](https://m.media-amazon.com/images/M/MV5BZTE0Y2YwMTktYjA2MS00ZWZlLWEzNTYtZTZkNDUyNTZmNGFjXkEyXkFqcGdeQXVyMjI5MjYwNDg@._V1_QL75_UX140_CR0,0,140,140_.jpg)  |Curt Hanson   |https://www.imdb.com/name/nm0361228/bio |Curt Hanson is known for The Goonies (1985), Harvest of Fear (2004) and The Path of Evil (2005).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+|![](https://m.media-amazon.com/images/M/MV5BNzE5MzQ2NWEtMGYyNy00MWU0LTkyNjgtNjM4OGU2ZGI0MTgxXkEyXkFqcGdeQXVyMjIyMzcxMg@@._V1_QL75_UX140_CR0,0,140,140_.jpg)  |Jeff Cohen    |https://www.imdb.com/name/nm0169480/bio |Jeff Cohen was born on June 25, 1974 in Los Angeles, California, USA.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+                                                                                                                                                                  |
+
+<br>
+<hr>
+<br>
+
+
+## Challenge Part 2
 
 Instead of creating your data frame manually from YAML table items, write a custom parser that reads the table as text and returns a well-structured data frame: 
 	
