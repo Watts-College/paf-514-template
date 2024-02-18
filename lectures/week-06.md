@@ -130,6 +130,8 @@ HTML output that is added to your RMD doc during knitting:
 
 [Parameterized Reports in R Markdown](https://rmarkdown.rstudio.com/developer_parameterized_reports.html%23parameter_types%2F)  
 
+[Parameterized Reports in R Quarto](https://www.jhelvy.com/posts/2023-02-28-parameterized-pdfs-with-quarto/)
+
 [GitHub Pages Jekyll Tools Library](https://github.com/cagrimmett/jekyll-tools)
 
 *If you want to take your skills to the next level consider how report templates can be used to implement experiments with the presentation of information such as [A/B Testing for your resume](https://davidlindelof.com/a-b-testing-my-resume/). These sorts of skills are in high-demand as they are useful for refining content for large-scale marketing campaigns, outreach material, or user experience on a website.* 
