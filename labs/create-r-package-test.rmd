@@ -31,10 +31,9 @@ folder <- "MONTY"
 
 Rd2txt_options( underline_titles=FALSE )
 
-rds <-
-c( "create_game.Rd", "select_door.Rd", "open_goat_door.Rd",
-   "change_door.Rd", "determine_winner.Rd", "play_game.Rd", 
-   "play_n_games.Rd" )
+rds <- c( "create_game.Rd", "select_door.Rd", "open_goat_door.Rd",
+          "change_door.Rd", "determine_winner.Rd", "play_game.Rd", 
+          "play_n_games.Rd" )
 
 fxs <- gsub( ".Rd", "", rds )
 
@@ -43,11 +42,10 @@ install_montyhall <- function( username ) {
   options( show.error.messages=FALSE )
   try( detach( package:montyhall ) )
   remove.packages( pkgs="montyhall" )
-  
+
   options( show.error.messages=TRUE )
   path <- paste0( username, "/montyhall" )
-  devtools::install_github( path, verbose=TRUE )
-  
+  devtools::install_github( path )
 }
 
 print_description <- function() {
@@ -148,7 +146,13 @@ Installing package from:     **`r paste0( github.name, "/montyhall" )`**
 <hr>
 <br>
 
-```{r, results="hold", collapse=TRUE}
+```{r, echo=FALSE}
+path <- paste0( github.name, "/montyhall" )
+cat( paste0( "devtools::install_github( '", path,  "' )" ))
+```
+
+
+```{r, results="hide", warning=F, message=F}
 install_montyhall( username=github.name )
 ```
 
@@ -179,9 +183,7 @@ purrr::walk( fxs, run_example )
 
 
 
-```{r}
-print( getwd() )
-```
+
 
 
 
@@ -191,7 +193,7 @@ print( getwd() )
 td{ padding: 6px 10px 6px 10px } 
 th{ text-align: left; } 
 
-h1{ color: #4682B4; }
+h1{ font-size:calc(4em + 0.25vw) }
 h2, h3, h4 { color: #995c00; }
 
 h1 { margin-top:40px; }
