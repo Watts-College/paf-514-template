@@ -685,6 +685,46 @@ See notes above on removing packages for more details.
 
 
 
+## Grading
+
+I will grade assignments by running the script below, which generates a report with printouts of all of the help file text that you added, and also executes all of the test code included in the **examples** sections. I will look to ensure you have added documentation for all functions and that the examples are able to execute without error. 
+
+You can check your own work ahead of time by generating the report using the following script after adding your GitHub username.
+
+```{r, eval=F}
+pkgs <- c("tools","devtools","purrr","rmarkdown")
+install.packages()
+
+wd <- getwd()
+dir.create("MONTY")
+
+################
+
+  git.hub.name  <-  # YOUR GITHUB USERNAME 
+
+###############
+  
+## GENERATE PACKAGE REPORT 
+
+filepath <- paste0( wd, "/MONTY/montyhall-test-", toupper(git.hub.name), ".HTML" )
+
+download.file( 
+  url="https://raw.githubusercontent.com/Watts-College/paf-514-template/main/labs/create-r-package-test.rmd",
+  destfile="./MONTY/create-r-package-test.rmd" )
+
+rmarkdown::render( 
+  input = "./MONTY/create-r-package-test.rmd", 
+  output_file = filepath,
+  params = list( name=git.hub.name ) )
+
+# file location
+filepath
+
+# preview file 
+shell( filepath )
+```
+
+
 
 # Additional Resources
 

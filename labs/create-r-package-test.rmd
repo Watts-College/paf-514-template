@@ -26,8 +26,9 @@ if( github.name == "x" )
 ```{r}
 library( tools )
 
-wd     <- getwd()
-folder <- "PKG-FILES"
+wd       <- getwd()
+folder   <- "PKG-FILES"
+pkg.path <- paste0( wd, "/", folder )
 
 Rd2txt_options( underline_titles=FALSE )
 
@@ -104,6 +105,10 @@ print_help <- function( fx="create_game.Rd" ) {
 
 # purrr::walk( rds, print_help )
 
+remove_pkg_files <- function() {
+  setwd( pkg.path )
+  unlink( "montyhall-main", recursive=TRUE, force=TRUE )
+}
 
 run_example <- function( fx="create_game" ) {
   
@@ -173,7 +178,21 @@ print_description()
 ```{r}
 download_package( username=github.name )
 purrr::walk( rds, print_help )
+remove_pkg_files()
 ```
+
+```{r, eval=F, echo=F}
+# make sure package files deleted
+print( wd )
+print( pkg.path )
+setwd( pkg.path )
+dir()
+fpath <- paste0( paste0( pkg.path, "/", "montyhall-main") )
+unlink( fpath, recursive=TRUE, force=TRUE )
+setwd( pkg.path )
+dir()
+```
+
 
 ## Run Examples
 
