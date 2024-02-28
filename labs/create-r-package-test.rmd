@@ -27,7 +27,7 @@ if( github.name == "x" )
 library( tools )
 
 wd     <- getwd()
-folder <- "MONTY"
+folder <- "PKG-FILES"
 
 Rd2txt_options( underline_titles=FALSE )
 
@@ -61,7 +61,7 @@ print_description <- function() {
 }
 
 
-download_package <- function( username, folder="MONTY" ) {
+download_package <- function( username, folder="PKG-FILES" ) {
 
   if (! file.exists( folder ) )
   { dir.create( folder ) }
