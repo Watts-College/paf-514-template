@@ -1,0 +1,211 @@
+---
+title: "Montyhall Package Inspection"
+output:
+  html_document:
+    theme: readable
+    df_print: paged
+    highlight: tango
+    toc: true
+params:
+  name:
+    value: x 
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set( echo=FALSE, comment="" )
+```
+
+
+```{r}
+# github.name <- "jacobtnyoung"
+github.name <- params$name
+```
+
+
+```{r}
+library( tools )
+
+wd     <- getwd()
+folder <- "MONTY"
+
+Rd2txt_options( underline_titles=FALSE )
+
+rds <-
+c( "create_game.Rd", "select_door.Rd", "open_goat_door.Rd",
+   "change_door.Rd", "determine_winner.Rd", "play_game.Rd", 
+   "play_n_games.Rd" )
+
+fxs <- gsub( ".Rd", "", rds )
+
+install_montyhall <- function( username ) {
+  
+  options( show.error.messages=FALSE )
+  try( detach( package:montyhall ) )
+  remove.packages( pkgs="montyhall" )
+  
+  options( show.error.messages=TRUE )
+  path <- paste0( username, "/montyhall" )
+  devtools::install_github( path )
+  
+}
+
+print_description <- function() {
+  use.these <- 
+    c( "Author",  "Title",
+       "Package", "Version",
+       "Imports", "Depends",
+       "Description", "Built" )  
+  x <- read.dcf(
+    file   = system.file( "DESCRIPTION", package = "montyhall" ),
+    fields = use.these )
+  write.dcf( x )
+}
+
+
+download_package <- function( username, folder="MONTY" ) {
+
+  if (! file.exists( folder ) )
+  { dir.create( folder ) }
+  setwd( folder )
+  
+  url.1 <- "https://github.com/"
+  username <- username # "kphart2"  # "emhall3"
+  url.2 <- "/montyhall/archive/refs/heads/main.zip"
+  
+  URL <- paste0( url.1, username, url.2 )
+  fn  <- paste0( "montyhall-", username, ".zip" )
+  download.file( url=URL, destfile=fn )
+    
+  unzip( zipfile=fn )
+}
+
+# download_package( username="kphart2" )
+
+print_help <- function( fx="create_game.Rd" ) {
+  
+  tools::Rd2txt_options( underline_titles=FALSE )
+  
+  help.dir <- paste0( wd, "/", folder, "/montyhall-main/man" )
+  setwd( help.dir )
+  
+  fx.name <- gsub( "_|\\.Rd", " ", fx ) |> toupper()
+  
+  cat( "#####   \n" )
+  cat( paste0( "#####     ", fx.name, "\n" ) )
+  cat( "#####   \n\n\n" )
+  
+  
+  tools::Rd2txt( 
+    Rd  = fx, 
+    out = stdout(),
+    package = "montyhall" )
+  cat( "\n\n\n\n" )
+  cat( "#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#\n\n\n\n")
+}
+
+# purrr::walk( rds, print_help )
+
+
+run_example <- function( fx="create_game" ) {
+  
+  cat( "#####  \n" )
+  cat( paste0("#####   ", fx, "\n" ) )
+  cat( "#####  \n" )
+  
+  options( show.error.messages = FALSE )
+  
+  res <- try(
+    
+    utils::example( 
+      topic          = fx, 
+      package        = "montyhall", 
+      lib.loc        = NULL, 
+      character.only = TRUE,
+      prompt.prefix  = "" ) )
+  
+  msg <- paste0( "\n>>>\n>>>  ", geterrmessage(), ">>>\n" )
+
+  if( inherits( res, "try-error") )
+  { cat( msg ) } 
+  
+  # else
+  # { print( res$value ) }
+
+  cat( "\n\n\n" )
+  cat( "#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#\n\n\n\n\n")
+}
+
+# run_example()
+```
+
+## Install Package
+
+<hr>
+
+Installing package from:     **`r paste0( github.name, "/montyhall" )`** 
+
+<hr>
+<br>
+
+```{r}
+install_montyhall( username=github.name )
+```
+
+```{r, warning=F, message=F }
+library( montyhall )
+```
+
+
+## Description File 
+
+```{r}
+print_description()
+```
+
+
+## Inspect Documentation
+
+```{r}
+download_package( username=github.name )
+purrr::walk( rds, print_help )
+```
+
+## Run Examples
+
+```{r}
+purrr::walk( fxs, run_example )
+```
+
+
+
+
+
+
+<style>
+
+td{ padding: 6px 10px 6px 10px } 
+th{ text-align: left; } 
+
+h1{ color: #4682B4; }
+h2, h3, h4 { color: #995c00; }
+
+h1 { margin-top:40px; }
+h2 { margin-top:100px; }
+h1 { margin-bottom:60px; }
+h2 { margin-bottom:40px; }
+
+body{
+     font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+     font-size:calc(1.5em + 0.25vw);
+     font-weight:300;
+     line-height:1.65;
+ }
+ 
+pre{
+     padding: 10px 10px 10px 60px;
+}
+
+</style>
+
+
+
