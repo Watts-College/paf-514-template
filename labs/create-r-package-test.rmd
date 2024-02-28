@@ -8,7 +8,7 @@ output:
     toc: true
 params:
   name:
-    value: x 
+    value: x
 ---
 
 ```{r setup, include=FALSE}
@@ -17,8 +17,9 @@ knitr::opts_chunk$set( echo=FALSE, comment="" )
 
 
 ```{r}
-# github.name <- "jacobtnyoung"
 github.name <- params$name
+if( github.name == "x" )
+{ github.name <- "kphart2" }
 ```
 
 
@@ -45,7 +46,7 @@ install_montyhall <- function( username ) {
   
   options( show.error.messages=TRUE )
   path <- paste0( username, "/montyhall" )
-  devtools::install_github( path )
+  devtools::install_github( path, verbose=TRUE )
   
 }
 
@@ -147,7 +148,7 @@ Installing package from:     **`r paste0( github.name, "/montyhall" )`**
 <hr>
 <br>
 
-```{r}
+```{r, results="hold", collapse=TRUE}
 install_montyhall( username=github.name )
 ```
 
