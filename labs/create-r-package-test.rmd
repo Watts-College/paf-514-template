@@ -12,7 +12,7 @@ params:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set( echo=FALSE, comment="" )
+knitr::opts_chunk$set( echo=FALSE, eval=TRUE, comment="" )
 ```
 
 
@@ -178,6 +178,10 @@ purrr::walk( fxs, run_example )
 ```
 
 
+
+```{r}
+print( getwd() )
+```
 
 
 
