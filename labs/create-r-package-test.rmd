@@ -110,6 +110,13 @@ remove_pkg_files <- function() {
   unlink( "montyhall-main", recursive=TRUE, force=TRUE )
 }
 
+delete_pkg <- function() {
+  lib.path <- (.libPaths())[1]
+  pkg.path <- paste0( lib.path, "/montyhall" )
+  unlink( pkg.path, recursive=TRUE, force=TRUE )
+}
+
+
 run_example <- function( fx="create_game" ) {
   
   cat( "#####  \n" )
@@ -201,6 +208,11 @@ purrr::walk( fxs, run_example )
 ```
 
 
+
+
+```{r}
+delete_pkg()
+```
 
 
 
