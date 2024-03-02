@@ -19,7 +19,7 @@ knitr::opts_chunk$set( echo=FALSE, eval=TRUE, comment="" )
 ```{r}
 github.name <- params$name
 if( github.name == "x" )
-{ github.name <- "" }  # add valid name to knit rmd for testing purposes 
+{ github.name <- "jasminacosta" }  # add valid name to knit rmd for testing purposes 
 
 url.1 <- "https://github.com/"
 username <- github.name
@@ -50,11 +50,15 @@ fxs <- gsub( ".Rd", "", rds )
 # THEN INSTALL VIA GITHUB 
 
 install_montyhall <- function( username ) {
-  
-  options( show.error.messages=FALSE )
-  try( detach( package:montyhall ) )
-  remove.packages( pkgs="montyhall" )
 
+  .exist <- try( find.package("montyhall"), silent=TRUE )
+  if( ! .exist )
+  {
+    options( show.error.messages=FALSE )
+    try( detach( package:montyhall ) )
+    try( remove.packages( pkgs="montyhall" ) )    
+  }
+  
   options( show.error.messages=TRUE )
   path <- paste0( username, "/montyhall" )
   devtools::install_github( path )
