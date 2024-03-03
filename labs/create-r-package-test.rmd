@@ -19,7 +19,7 @@ knitr::opts_chunk$set( echo=FALSE, eval=TRUE, comment="" )
 ```{r}
 github.name <- params$name
 if( github.name == "x" )
-{ github.name <- "jasminacosta" }  # add valid name to knit rmd for testing purposes 
+{ github.name <- "bmwaite" }  # add valid name to knit rmd for testing purposes 
 
 url.1 <- "https://github.com/"
 username <- github.name
@@ -36,14 +36,6 @@ Rd2txt_options( underline_titles=FALSE )
 wd       <- getwd()
 folder   <- "PKG-FILES"
 pkg.path <- paste0( wd, "/", folder )
-
-
-# FUNCTIONS TO INSPECT 
-rds <- c( "create_game.Rd", "select_door.Rd", "open_goat_door.Rd",
-          "change_door.Rd", "determine_winner.Rd", "play_game.Rd", 
-          "play_n_games.Rd" )
-
-fxs <- gsub( ".Rd", "", rds )
 
 
 # REMOVE PRIOR INSTALLATIONS, IF ANY
@@ -144,9 +136,9 @@ remove_unzipped_files <- function() {
 #  PREVENT FILE CORRUPTION ERRORS
 #  THAT APPEAR WHILE RUNNING EXAMPLES 
 
-delete_pkg <- function() {
+delete_pkg <- function( pkgname ) {
   lib.path <- (.libPaths())[1]
-  pkg.path <- paste0( lib.path, "/montyhall" )
+  pkg.path <- paste0( lib.path, "/", pkgname )
   unlink( pkg.path, recursive=TRUE, force=TRUE )
 }
 
@@ -190,9 +182,10 @@ run_example <- function( fx="create_game" ) {
 
 
 
+
 ```{r}
 # MAKE SURE PACKAGE IS FRESH 
-delete_pkg()
+delete_pkg( "montyhall" )
 ```
 
 
@@ -231,21 +224,49 @@ print_description()
 ```
 
 
+## Run Examples
+
+
+```{r, eval=F, echo=F}
+# TEST CODE FROM EXAMPLE 
+
+utils::example( 
+  topic = "create_game", 
+  package = "montyhall", 
+  lib.loc = NULL, 
+  character.only = TRUE,
+  prompt.prefix = "" ) 
+```
+
+
+```{r}
+# TEST ALL 
+
+fxs <- 
+  c("create_game", "select_door", "open_goat_door", "change_door", 
+    "determine_winner", "play_game", "play_n_games")
+
+purrr::walk( fxs, run_example )
+```
+
+
+
+
+
 ## Inspect Documentation
 
 ```{r}
+rds <- 
+  c( "create_game.Rd", "select_door.Rd", "open_goat_door.Rd",
+     "change_door.Rd", "determine_winner.Rd", "play_game.Rd", 
+     "play_n_games.Rd" )
+
 download_package( username=github.name, pkg.url=URL )
 purrr::walk( rds, print_help )
-remove_unzipped_files
+remove_unzipped_files()
 ```
 
 
-
-## Run Examples
-
-```{r}
-purrr::walk( fxs, run_example )
-```
 
 
 
@@ -253,7 +274,7 @@ purrr::walk( fxs, run_example )
 ```{r}
 # DELETE PACKAGE INSTALLATION
 # FROM LOCAL R PKG LIBRARY 
-delete_pkg()
+delete_pkg( "montyhall" )
 ```
 
 
