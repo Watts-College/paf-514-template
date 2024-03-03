@@ -251,6 +251,8 @@ purrr::walk( fxs, run_example )
 
 
 ```{r}
+# DELETE PACKAGE INSTALLATION
+# FROM LOCAL R PKG LIBRARY 
 delete_pkg()
 ```
 
