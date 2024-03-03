@@ -220,33 +220,6 @@ library( montyhall )
 
 
 
-## Description File 
-
-```{r}
-print_description()
-```
-
-
-
-
-
-## Inspect Documentation
-
-```{r}
-
-rds <- 
-  c( "create_game.Rd", "select_door.Rd", "open_goat_door.Rd",
-     "change_door.Rd", "determine_winner.Rd", "play_game.Rd", 
-     "play_n_games.Rd" )
-
-
-purrr::walk( rds, print_help )
-```
-
-
-
-
-
 ## Run Examples
 
 
@@ -271,6 +244,33 @@ fxs <-
 
 purrr::walk( fxs, run_example )
 ```
+
+
+
+
+## Description File 
+
+```{r}
+print_description()
+```
+
+
+
+
+
+## Inspect Documentation
+
+```{r}
+
+rds <- 
+  c( "create_game.Rd", "select_door.Rd", "open_goat_door.Rd",
+     "change_door.Rd", "determine_winner.Rd", "play_game.Rd", 
+     "play_n_games.Rd" )
+
+
+purrr::walk( rds, print_help )
+```
+
 
 
 
