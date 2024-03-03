@@ -196,25 +196,28 @@ delete_pkg( "montyhall" )
 
 Installing package from:     **`r paste0( github.name, "/montyhall" )`** 
 
-> [`r URL`](`r URL')
-
-<hr>
-<br>
-
-
 ```{r, echo=FALSE}
 path <- paste0( github.name, "/montyhall" )
 cat( paste0( "devtools::install_github( '", path,  "' )" ))
 ```
 
+Zipped files downloaded from: 
+
+> [`r URL`](`r URL`)
+
+<hr>
+<br>
+
+
+
 ```{r, results="hide", warning=F, message=F}
+download_package( username=github.name, pkg.url=URL )
 install_montyhall( username=github.name )
-```
-
-
-```{r, warning=F, message=F }
 library( montyhall )
 ```
+
+
+
 
 
 ## Description File 
@@ -222,6 +225,26 @@ library( montyhall )
 ```{r}
 print_description()
 ```
+
+
+
+
+
+## Inspect Documentation
+
+```{r}
+
+rds <- 
+  c( "create_game.Rd", "select_door.Rd", "open_goat_door.Rd",
+     "change_door.Rd", "determine_winner.Rd", "play_game.Rd", 
+     "play_n_games.Rd" )
+
+
+purrr::walk( rds, print_help )
+```
+
+
+
 
 
 ## Run Examples
@@ -253,25 +276,9 @@ purrr::walk( fxs, run_example )
 
 
 
-## Inspect Documentation
-
-```{r}
-rds <- 
-  c( "create_game.Rd", "select_door.Rd", "open_goat_door.Rd",
-     "change_door.Rd", "determine_winner.Rd", "play_game.Rd", 
-     "play_n_games.Rd" )
-
-download_package( username=github.name, pkg.url=URL )
-purrr::walk( rds, print_help )
-remove_unzipped_files()
-```
 
 
-
-
-
-
-```{r}
+```{r, warning=F, message=F}
 # DELETE PACKAGE INSTALLATION
 # FROM LOCAL R PKG LIBRARY 
 
@@ -279,7 +286,7 @@ detach( "package:montyhall", unload=TRUE )
 remove.packages( "montyhall" )
 unloadNamespace("montyhall")
 delete_pkg( "montyhall" )
-gc()
+remove_unzipped_files()
 ```
 
 
