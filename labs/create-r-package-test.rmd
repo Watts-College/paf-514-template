@@ -278,6 +278,9 @@ delete_pkg( "montyhall" )
 ```
 
 
+```{r}
+Sys.sleep( time=10 ) # sleep for 10 seconds 
+```
 
 
 
