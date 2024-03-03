@@ -274,13 +274,14 @@ remove_unzipped_files()
 ```{r}
 # DELETE PACKAGE INSTALLATION
 # FROM LOCAL R PKG LIBRARY 
+
+detach( "package:montyhall", unload=TRUE )
+remove.packages( "montyhall" )
+unloadNamespace("montyhall")
 delete_pkg( "montyhall" )
+gc()
 ```
 
-
-```{r}
-Sys.sleep( time=10 ) # sleep for 10 seconds 
-```
 
 
 
