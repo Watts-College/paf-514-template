@@ -239,17 +239,6 @@ purrr::walk( rds, print_help )
 remove_unzipped_files
 ```
 
-```{r, eval=F, echo=F}
-# make sure package files deleted
-print( wd )
-print( pkg.path )
-setwd( pkg.path )
-dir()
-fpath <- paste0( paste0( pkg.path, "/", "montyhall-main") )
-unlink( fpath, recursive=TRUE, force=TRUE )
-setwd( pkg.path )
-dir()
-```
 
 
 ## Run Examples
