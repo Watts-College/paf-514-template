@@ -51,7 +51,7 @@ fxs <- gsub( ".Rd", "", rds )
 
 install_montyhall <- function( username ) {
 
-  pkg.location <- system.file (package="montyhall" )
+  pkg.location <- system.file( package="montyhall" )
   if( pkg.location == "" )
   {
     options( show.error.messages=FALSE )
@@ -86,14 +86,14 @@ print_description <- function() {
 # DOWNLOAD ZIPPED PACKAGE FILES 
 # FROM GITHUB AND SAVE LOCAL COPY 
 
-download_package <- function( username, folder="PKG-FILES", URL=URL ) {
+download_package <- function( username, folder="PKG-FILES", pkg.url ) {
 
   if (! file.exists( folder ) )
   { dir.create( folder ) }
   setwd( folder )
   
   fn  <- paste0( "montyhall-", username, ".zip" )
-  download.file( url=URL, destfile=fn )
+  download.file( pkg.url, destfile=fn )
     
   unzip( zipfile=fn )
 }
@@ -228,7 +228,7 @@ print_description()
 ## Inspect Documentation
 
 ```{r}
-download_package( username=github.name )
+download_package( username=github.name, pkg.url=URL )
 purrr::walk( rds, print_help )
 remove_pkg_files()
 ```
