@@ -132,7 +132,7 @@ print_help <- function( fx="create_game.Rd" ) {
 # DELETE LOCAL UNZIPPED FILES
 # IN THE MONTY DIRECTORY 
 
-remove_pkg_files <- function() {
+remove_unzipped_files <- function() {
   setwd( pkg.path )
   unlink( "montyhall-main", recursive=TRUE, force=TRUE )
 }
@@ -190,6 +190,12 @@ run_example <- function( fx="create_game" ) {
 
 
 
+```{r}
+# MAKE SURE PACKAGE IS FRESH 
+delete_pkg()
+```
+
+
 
 ## Install Package
 
@@ -230,7 +236,7 @@ print_description()
 ```{r}
 download_package( username=github.name, pkg.url=URL )
 purrr::walk( rds, print_help )
-remove_pkg_files()
+remove_unzipped_files
 ```
 
 ```{r, eval=F, echo=F}
