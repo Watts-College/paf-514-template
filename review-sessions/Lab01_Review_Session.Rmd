@@ -1,0 +1,362 @@
+---
+title: "Lab 01 - Control Structures"
+author: "Courtney Stowers"
+#date: "2024-08-09"
+output: 
+    rmdformats::downcute:
+    toc_depth: 3
+    self_contained: true
+    thumbnails: false
+    lightbox: true
+    gallery: false
+    highlight: "pygments"
+    code_folding: show
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{css, echo=FALSE}
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Mono:wght@100..900&display=swap');
+
+.Content a, .page-content a, a { 
+color: #8C1D40; 
+font-weight:bold;
+}
+
+h1.title {
+color: #8C1D40;
+}
+
+body .container-fluid .well p {
+    font-weight: 400;
+}
+
+body p {
+  font-family: "Noto Sans Mono", monospace;
+}
+
+.page-content.has-page-title li {
+  font-family: "Noto Sans Mono", monospace;
+}
+
+.page-content .code-mask, .page-content pre  {   
+  background-color: #EFDECD;
+}
+
+.r .language-r {
+  /*color: black;*/
+  /*color: #8A3324;*/
+  color: #003262;
+}
+
+
+.page-content .code-mask, .page-content pre {
+    color: black;
+}
+
+.token.keyword, .token.operator, .token.tag {
+    /*color: #0047AB;*/
+    color: #0000FF;
+}
+
+.token.punctuation {
+    /*color: #893F45; */
+    color: #BA160C;
+}
+
+.token.number {
+    /*color: #0D98BA; */
+    color: #0000FF;
+}
+
+.language-css .token.string, .style .token.string, .token.entity, .token.string, .token.url {
+    color: #AB274F;
+}
+
+.token.cdata, .token.comment, .token.prolog {
+    color: #0EAD69;
+    font-style: italic;
+}
+```
+
+
+# The Monty Hall Problem
+
+<img src="https://cdn-images-1.medium.com/v2/resize:fit:640/1*mYYmVckhXafpdxvs48l-Hw.png" alt="The Monty Hall Problem Outcomes">
+
+[Source: https://www.enjoymathematics.com/blog/monty-hall-problem](https://www.enjoymathematics.com/blog/monty-hall-problem)
+
+# Alternative 100-Fold Monty Hall Problem
+
+1. You start with 100 envelopes. One contains $1000, the others contain cut-up newsprint that feels like \$1000.
+2. The contestant picks an envelope.
+3. The host then opens 98 envelopes containing newsprint.
+4. The contestant may then keep the envelope chosen in the first place or switch to the other unopened envelope.
+
+[Source: https://occupymath.wordpress.com/2016/07/21/three-probability-puzzles-that-will-fool-you-for-sure/](https://occupymath.wordpress.com/2016/07/21/three-probability-puzzles-that-will-fool-you-for-sure/)
+
+
+## Create function to start game, randomly order options
+
+```{r}
+start_game <- function() {
+  
+  # Create list of envelope stuffers
+  envelope_stuffers <- c("newsprint", "$1000")
+  for (i in 1:98) {
+    #print(i)
+    envelope_stuffers <- append(envelope_stuffers, "newsprint")
+  }
+  
+  # Place them randomly in game envelopes
+  game_envelopes <- sample(envelope_stuffers, size=100, replace = F)
+  
+  return(game_envelopes)
+}
+```
+
+
+
+
+
+```{r}
+print("Game One:")
+start_game()
+
+print("Game Two:")
+start_game()
+
+print("Game Three:")
+start_game()
+```
+
+## Contestant selects envelope
+
+
+```{r}
+
+# Remember there are 100 envelopes, we need the contestant to select one
+
+select_contestant_choice <- function() {
+  choice <- sample(1:100, size=1, replace = F)
+  return(choice)
+}
+
+```
+
+```{r}
+select_contestant_choice()
+select_contestant_choice()
+select_contestant_choice()
+```
+
+## Start game and store contestant choice
+
+```{r}
+envelopes <- start_game()
+contestant_choice <- select_contestant_choice()
+
+envelopes
+contestant_choice
+```
+```{r}
+typeof(contestant_choice)
+```
+
+
+
+## Host selects 98 envelopes
+
+```{r}
+select_host_choice <- function(envelopes, contestant_choice) {
+  
+  # Update envelope options by eliminating contestant's choice
+  host_envelopes <- envelopes[-contestant_choice]
+  
+  host_choice <- sample(which(host_envelopes == "newsprint"), size=98, replace = F)
+  
+  host_choice <- c(host_choice)
+  
+  return(host_choice)
+  
+}
+```
+
+
+## Store host's choice
+
+```{r}
+host_choice <- select_host_choice(envelopes, contestant_choice)
+
+host_choice
+```
+
+
+
+## Decide to keep or switch:
+
+```{r}
+final_contestant_choice <- function(envelopes, contestant_choice, host_choice, switch_choice) {
+  
+  final_envelope <- envelopes[-contestant_choice]
+  final_envelope <- final_envelope[-host_choice]
+  
+  #print(switch_choice)
+  
+  if (toupper(switch_choice) == "SWITCH") {
+    out <- final_envelope
+  } else {
+    out <- envelopes[contestant_choice]
+  }
+  
+  return(out)
+}
+```
+
+```{r}
+final_contestant_choice(envelopes, contestant_choice, host_choice, switch_choice="KEEP")
+
+final_contestant_choice(envelopes, contestant_choice, host_choice, switch_choice="SWITCH")
+```
+
+# See outcome of game
+
+```{r}
+game_outcome <- function(final_choice) {
+  if (final_choice == "$1000") {
+    return("WIN")
+  } else {
+    return("LOSE")
+  }
+}
+```
+
+
+```{r}
+game_outcome(final_contestant_choice(envelopes, contestant_choice, host_choice, switch_choice="KEEP"))
+
+game_outcome(final_contestant_choice(envelopes, contestant_choice, host_choice, switch_choice="SWITCH"))
+```
+
+# Put it all together: Create Game Function
+
+```{r}
+monty_hall_100doors <- function(switch_choice) {
+  
+  envelopes <- start_game()
+  contestant_choice <- select_contestant_choice()
+  host_choice <- select_host_choice(envelopes, contestant_choice)
+  final_choice <- final_contestant_choice(envelopes, contestant_choice, host_choice, switch_choice)
+  outcome <- game_outcome(final_choice)
+  
+  return(list(envelopes = envelopes, 
+              contestant_choice = contestant_choice, 
+              host_choice = host_choice, 
+              switch_choice = switch_choice, 
+              final_choice = final_choice, 
+              outcome = outcome))
+}
+```
+
+[Multi-variable function returns in R: https://cnuge.github.io/post/multi_variable/](https://cnuge.github.io/post/multi_variable/)
+
+### IF CONTESTANT KEEPS ORIGINAL ENVELOPE:
+
+```{r}
+results <- monty_hall_100doors("KEEP")
+
+results
+
+# List of envelopes
+envelopes <- results$envelopes
+
+# Use index of envelopes to find choice
+contestant_choice <- envelopes[results$contestant_choice]
+
+# List of envelopes selected by host
+host_choice <- results$host_choice
+
+# Final envelope
+final_envelope <- envelopes[-c(results$contestant_choice)]
+final_envelope <- final_envelope[-c(host_choice)]
+print(paste0("Final envelope: ", final_envelope))
+
+# Logical operator selection
+switch_choice <- results$switch_choice
+
+# Use index of envelopes to find choice
+contestant_final_choice <- results$final_choice
+
+# Find string of outcome
+outcome <- results$outcome
+```
+
+
+Game Setup: **`r paste0( envelopes, collapse=" " )`**  
+
+Initial selection: **`r contestant_choice`**  
+
+Number of doors opened by host: **`r length(host_choice)`**  
+
+Final option: **`r final_envelope`**  
+
+Switch decision: **`r switch_choice`**  
+
+Final door selection: **`r contestant_final_choice`**
+
+Game outcome: **`r outcome `**
+
+
+### IF CONTESTANT SWITCHES ENVELOPE:
+
+```{r}
+results <- monty_hall_100doors("SWITCH")
+
+results
+
+# List of envelopes
+envelopes <- results$envelopes
+
+# Use index of envelopes to find choice
+contestant_choice <- envelopes[results$contestant_choice]
+
+# List of envelopes selected by host
+host_choice <- results$host_choice
+
+# Final envelope
+final_envelope <- envelopes[-c(results$contestant_choice)]
+final_envelope <- final_envelope[-c(host_choice)]
+print(paste0("Final envelope: ", final_envelope))
+
+# Logical operator selection
+switch_choice <- results$switch_choice
+
+#Use index of envelopes to find choice
+contestant_final_choice <- results$final_choice
+
+# Find string of outcome
+outcome <- results$outcome
+```
+
+
+Game Setup: **`r paste0( envelopes, collapse=" " )`**  
+
+Initial selection: **`r contestant_choice`**  
+
+Number of doors opened by host: **`r length(host_choice)`**  
+
+Final option: **`r final_envelope`**  
+
+Switch decision: **`r switch_choice`**  
+
+Final door selection: **`r contestant_final_choice`**
+
+Game outcome: **`r outcome `**
+
+
+
+
+
