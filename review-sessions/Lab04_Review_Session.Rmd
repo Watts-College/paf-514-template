@@ -1,0 +1,503 @@
+---
+title: "Lab 04 - Text Analysis"
+author: "Courtney Stowers"
+#date: "2024-08-17"
+output:
+    rmdformats::downcute:
+    toc_depth: 3
+    self_contained: true
+    thumbnails: false
+    lightbox: true
+    gallery: false
+    highlight: "pygments"
+    code_folding: show
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+```{css, echo=FALSE}
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Mono:wght@100..900&display=swap');
+
+.Content a, .page-content a, a { 
+color: #8C1D40; 
+font-weight:bold;
+}
+
+h1.title {
+color: #8C1D40;
+}
+
+body .container-fluid .well p {
+    font-weight: 400;
+}
+
+body p {
+  font-family: "Noto Sans Mono", monospace;
+}
+
+.page-content.has-page-title li {
+  font-family: "Noto Sans Mono", monospace;
+}
+
+.page-content .code-mask, .page-content pre  {   
+  background-color: #EFDECD;
+}
+
+.r .language-r {
+  /*color: black;*/
+  /*color: #8A3324;*/
+  color: #003262;
+}
+
+
+.page-content .code-mask, .page-content pre {
+    color: black;
+}
+
+.token.keyword, .token.operator, .token.tag {
+    /*color: #0047AB;*/
+    color: #0000FF;
+}
+
+.token.punctuation {
+    /*color: #893F45; */
+    color: #BA160C;
+}
+
+.token.number {
+    /*color: #0D98BA; */
+    color: #0000FF;
+}
+
+.language-css .token.string, .style .token.string, .token.entity, .token.string, .token.url {
+    color: #AB274F;
+}
+
+.token.cdata, .token.comment, .token.prolog {
+    color: #0EAD69;
+    font-style: italic;
+}
+```
+
+
+
+# Library
+
+```{r, warning=FALSE, message=FALSE}
+library(tidyverse)            # data wrangling
+library(gutenbergr)           # Gutenberg project public domain text 
+library(quanteda)             # quantitative analysis of textual data
+library("quanteda.textstats") # text stats extension
+library(readtext)             # load textual data to corpus
+library(stopwords)            # alternative package to source stopwords
+library(TeXCheckR)            # alternative package to source stopwords & process text data
+library(cleanNLP)             # alternative package to source stopwords & process text data
+
+# Relative file paths
+here::i_am("labs/Lab04_Review_Session.Rmd")
+library(here)
+```
+
+
+# Anne of Green Gables
+
+```{r}
+# View authors on Gutenberg Project (https://www.gutenberg.org/)
+# https://docs.ropensci.org/gutenbergr/index.html
+gutenberg_authors %>% filter(str_detect(author, "Montgomery")) %>% select(gutenberg_author_id, author) %>% head(10) 
+```
+
+```{r}
+# View works
+gutenberg_works(gutenberg_author_id == 36) %>% select(gutenberg_id, title, author )
+```
+
+```{r}
+# Filter to see books with Anne in title
+gutenberg_works(gutenberg_author_id == 36) %>% select(gutenberg_id, title, author ) %>% filter(str_detect(title, "Anne")) 
+```
+
+```{r, results='hide', message=FALSE, warning=FALSE}
+anne_books <- gutenberg_works(gutenberg_author_id == 36) %>% filter(str_detect(title, "Anne")) %>%
+  gutenberg_download(meta_fields = c("title"))
+```
+
+
+```{r}
+anne_books 
+```
+
+
+```{r}
+
+# Create concatenated dataset
+anne_books_text <- anne_books %>%
+  dplyr::group_by(title) %>%
+  dplyr::summarise(text_whole = paste(text, collapse = " "))
+
+# Replace special quotation mark
+anne_books_text$text_whole <- gsub("’", "'", anne_books_text$text_whole)
+
+# View data
+anne_books_text 
+```
+
+
+
+```{r}
+anne_corpus <- corpus(anne_books_text, docid_field="title", text_field="text_whole" )
+
+anne_corpus 
+```
+
+```{r}
+anne_corpus[1]
+```
+
+
+```{r}
+# summarize corpus
+summary(anne_corpus)
+```
+
+```{r}
+# remove punctuation 
+anne_corpus_tokens_orig <- tokens( anne_corpus, what="word", remove_punct=TRUE )
+head( anne_corpus_tokens_orig )
+
+# convert to lower case
+anne_corpus_tokens_orig <- tokens_tolower( anne_corpus_tokens_orig, keep_acronyms=TRUE )
+head( anne_corpus_tokens_orig )
+```
+
+
+
+```{r}
+anne_corpus_tokens <- tokens_remove( anne_corpus_tokens_orig, c( stopwords("english"), "nbsp" ), padding=F )
+
+head(anne_corpus_tokens)
+```
+
+```{r}
+anne_corpus_tokens <- tokens_wordstem( anne_corpus_tokens )
+anne_corpus_tokens
+```
+
+```{r}
+# find frequently co-occuring words (typically compound words)
+anne_corpus_ngram <- tokens_ngrams( anne_corpus_tokens, n=2 ) %>% dfm()
+anne_corpus_ngram  %>% textstat_frequency( n=50 )
+```
+
+```{r}
+# find frequently co-occuring words (typically compound words)
+anne_corpus_ngram3 <- tokens_ngrams( anne_corpus_tokens, n=3 ) %>% dfm()
+anne_corpus_ngram3  %>% textstat_frequency( n=50 )
+```
+
+```{r}
+anne_corpus_tokens %>% dfm() %>% dfm_wordstem() %>% topfeatures( 50 )
+```
+
+
+# Stopwords
+
+```{r}
+length(quanteda::stopwords("english"))
+length(stopwords::stopwords(source = "smart"))
+length(stopwords::stopwords(source = "snowball"))
+length(stopwords::stopwords(source = "stopwords-iso"))
+```
+
+
+```{r}
+quanteda::stopwords("english") %>% head(100)
+```
+
+
+```{r}
+stopwords::stopwords(source = "smart") %>% head(100)
+```
+
+
+```{r}
+stopwords::stopwords(source = "snowball") %>% head(100)
+```
+
+
+```{r}
+stopwords::stopwords(source = "stopwords-iso") %>% head(100)
+```
+
+```{r}
+contractions <- TeXCheckR::valid_English_contractions %>% tolower()
+
+contractions
+```
+
+```{r}
+freq_words <- cleanNLP::word_frequency
+```
+
+
+
+```{r}
+length(cleanNLP::word_frequency$word)
+cleanNLP::word_frequency$word %>% head(100)
+```
+
+
+# Anne of Green Gables Alternate Stopwords
+
+
+```{r}
+anne_corpus_tokens_alt <- tokens_remove( anne_corpus_tokens_orig, c(stopwords::stopwords(source = "stopwords-iso"), "nbsp"), padding=F )
+
+head(anne_corpus_tokens_alt)
+```
+
+
+
+```{r}
+anne_corpus_tokens_alt <- tokens_wordstem( anne_corpus_tokens_alt )
+anne_corpus_tokens_alt
+```
+
+```{r}
+# find frequently co-occuring words (typically compound words)
+anne_corpus_ngram_alt <- tokens_ngrams( anne_corpus_tokens_alt, n=2 ) %>% dfm()
+anne_corpus_ngram_alt  %>% textstat_frequency( n=50 )
+```
+
+```{r}
+# find frequently co-occuring words (typically compound words)
+anne_corpus_ngram3_alt <- tokens_ngrams( anne_corpus_tokens_alt, n=3 ) %>% dfm()
+anne_corpus_ngram3_alt  %>% textstat_frequency( n=50 )
+```
+
+```{r}
+anne_corpus_tokens_alt %>% dfm() %>% dfm_wordstem() %>% topfeatures(50)
+```
+
+
+```{r}
+# Compare with original
+anne_corpus_tokens %>% dfm() %>% dfm_wordstem() %>% topfeatures( 50 )
+```
+
+
+
+# Marvel
+
+[Data Source : https://www.kaggle.com/datasets/phiitm/marvel-cinematic-universe-dialogue-dataset](https://www.kaggle.com/datasets/phiitm/marvel-cinematic-universe-dialogue-dataset)
+
+```{r}
+marvel_script_text <- readtext(here::here("data/marvel/*"))
+```
+
+
+```{r}
+marvel_corpus <- corpus(marvel_script_text, docid_field="doc_id", text_field="text" )
+
+marvel_corpus 
+```
+
+```{r}
+marvel_corpus[1]
+```
+
+
+```{r}
+# summarize corpus
+summary(marvel_corpus)
+```
+
+```{r}
+# remove punctuation 
+marvel_corpus_tokens_orig <- tokens( marvel_corpus, what="word", remove_punct=TRUE )
+head( marvel_corpus_tokens_orig )
+
+# convert to lower case
+marvel_corpus_tokens_orig <- tokens_tolower( marvel_corpus_tokens_orig, keep_acronyms=TRUE )
+head( marvel_corpus_tokens_orig )
+```
+
+```{r}
+marvel_corpus_tokens <- tokens_remove( marvel_corpus_tokens_orig, c( stopwords("english"), "nbsp" ), padding=F )
+
+head(marvel_corpus_tokens)
+```
+
+```{r}
+marvel_corpus_tokens <- tokens_wordstem( marvel_corpus_tokens )
+marvel_corpus_tokens
+```
+
+```{r}
+# find frequently co-occuring words (typically compound words)
+marvel_corpus_ngram <- tokens_ngrams( marvel_corpus_tokens, n=2 ) %>% dfm()
+marvel_corpus_ngram  %>% textstat_frequency( n=50 )
+```
+
+```{r}
+# find frequently co-occuring words (typically compound words)
+marvel_corpus_ngram3 <- tokens_ngrams( marvel_corpus_tokens, n=3 ) %>% dfm()
+marvel_corpus_ngram3  %>% textstat_frequency( n=50 )
+```
+
+
+```{r}
+marvel_corpus_tokens %>% dfm() %>% dfm_wordstem() %>% topfeatures( 50 )
+```
+
+
+# Marvel Alternate Stopwords
+
+
+```{r}
+marvel_corpus_tokens_alt <- tokens_remove( marvel_corpus_tokens_orig, c(stopwords::stopwords(source = "stopwords-iso"), "nbsp" ), padding=F )
+
+marvel_corpus_tokens_alt
+```
+
+```{r}
+marvel_corpus_tokens_alt <- tokens_wordstem( marvel_corpus_tokens_alt )
+marvel_corpus_tokens_alt
+```
+
+```{r}
+# find frequently co-occuring words (typically compound words)
+marvel_corpus_ngram_alt <- tokens_ngrams( marvel_corpus_tokens_alt, n=2 ) %>% dfm()
+marvel_corpus_ngram_alt  %>% textstat_frequency( n=50 )
+```
+
+```{r}
+# find frequently co-occuring words (typically compound words)
+marvel_corpus_ngram3_alt <- tokens_ngrams( marvel_corpus_tokens_alt, n=3 ) %>% dfm()
+marvel_corpus_ngram3_alt  %>% textstat_frequency( n=50 )
+```
+
+```{r}
+marvel_corpus_tokens_alt %>% dfm() %>% dfm_wordstem() %>% topfeatures(50)
+```
+
+
+```{r}
+# Compare with original
+marvel_corpus_tokens %>% dfm() %>% dfm_wordstem() %>% topfeatures( 50 )
+```
+
+
+# Marvel Alternate Stopwords II
+
+
+```{r}
+marvel_corpus_tokens_alt <- tokens_remove( marvel_corpus_tokens_orig, c(cleanNLP::word_frequency$word[1:5000], contractions, "nbsp" ), padding=F )
+
+marvel_corpus_tokens_alt
+```
+
+```{r}
+marvel_corpus_tokens_alt <- tokens_wordstem( marvel_corpus_tokens_alt )
+marvel_corpus_tokens_alt
+```
+
+```{r}
+# find frequently co-occuring words (typically compound words)
+marvel_corpus_ngram_alt <- tokens_ngrams( marvel_corpus_tokens_alt, n=2 ) %>% dfm()
+marvel_corpus_ngram_alt  %>% textstat_frequency( n=50 )
+```
+
+```{r}
+# find frequently co-occuring words (typically compound words)
+marvel_corpus_ngram3_alt <- tokens_ngrams( marvel_corpus_tokens_alt, n=3 ) %>% dfm()
+marvel_corpus_ngram3_alt  %>% textstat_frequency( n=50 )
+```
+
+```{r}
+marvel_corpus_tokens_alt %>% dfm() %>% dfm_wordstem() %>% topfeatures(50)
+```
+
+```{r}
+# Compare with original
+marvel_corpus_tokens %>% dfm() %>% dfm_wordstem() %>% topfeatures( 50 )
+```
+
+# Marvel Alternate Stopwords III
+
+
+```{r}
+marvel_corpus_tokens_alt <- tokens_remove( marvel_corpus_tokens_orig, c(cleanNLP::word_frequency$word[1:10000], contractions, "nbsp" ), padding=F )
+
+marvel_corpus_tokens_alt
+```
+
+```{r}
+marvel_corpus_tokens_alt <- tokens_wordstem( marvel_corpus_tokens_alt )
+marvel_corpus_tokens_alt
+```
+
+```{r}
+# find frequently co-occuring words (typically compound words)
+marvel_corpus_ngram_alt <- tokens_ngrams( marvel_corpus_tokens_alt, n=2 ) %>% dfm()
+marvel_corpus_ngram_alt  %>% textstat_frequency( n=50 )
+```
+
+```{r}
+# find frequently co-occuring words (typically compound words)
+marvel_corpus_ngram3_alt <- tokens_ngrams( marvel_corpus_tokens_alt, n=3 ) %>% dfm()
+marvel_corpus_ngram3_alt  %>% textstat_frequency( n=50 )
+```
+
+```{r}
+marvel_corpus_tokens_alt %>% dfm() %>% dfm_wordstem() %>% topfeatures(50)
+```
+
+```{r}
+# Compare with original
+marvel_corpus_tokens %>% dfm() %>% dfm_wordstem() %>% topfeatures( 50 )
+```
+
+
+# Marvel Alternate Stopwords IV
+
+
+```{r}
+marvel_corpus_tokens_alt <- tokens_remove( marvel_corpus_tokens_orig, c(cleanNLP::word_frequency$word[1:50000], contractions, "nbsp" ), padding=F )
+
+marvel_corpus_tokens_alt
+```
+
+```{r}
+marvel_corpus_tokens_alt <- tokens_wordstem( marvel_corpus_tokens_alt )
+marvel_corpus_tokens_alt
+```
+
+```{r}
+# find frequently co-occuring words (typically compound words)
+marvel_corpus_ngram_alt <- tokens_ngrams( marvel_corpus_tokens_alt, n=2 ) %>% dfm()
+marvel_corpus_ngram_alt  %>% textstat_frequency( n=50 )
+```
+
+```{r}
+# find frequently co-occuring words (typically compound words)
+marvel_corpus_ngram3_alt <- tokens_ngrams( marvel_corpus_tokens_alt, n=3 ) %>% dfm()
+marvel_corpus_ngram3_alt  %>% textstat_frequency( n=50 )
+```
+
+```{r}
+marvel_corpus_tokens_alt %>% dfm() %>% dfm_wordstem() %>% topfeatures(50)
+```
+
+
+```{r}
+# Compare with original
+marvel_corpus_tokens %>% dfm() %>% dfm_wordstem() %>% topfeatures( 50 )
+```
+
+

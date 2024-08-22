@@ -1,0 +1,273 @@
+---
+title: "Lab 02 - Simulations and Packages"
+author: "Courtney Stowers"
+#date: "2024-08-09"
+output:
+    rmdformats::downcute:
+    toc_depth: 3
+    self_contained: true
+    thumbnails: false
+    lightbox: true
+    gallery: false
+    highlight: "pygments"
+    code_folding: show
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{css, echo=FALSE}
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Mono:wght@100..900&display=swap');
+
+.Content a, .page-content a, a { 
+color: #8C1D40; 
+font-weight:bold;
+}
+
+h1.title {
+color: #8C1D40;
+}
+
+body .container-fluid .well p {
+    font-weight: 400;
+}
+
+body p {
+  font-family: "Noto Sans Mono", monospace;
+}
+
+.page-content.has-page-title li {
+  font-family: "Noto Sans Mono", monospace;
+}
+
+.page-content .code-mask, .page-content pre  {   
+  background-color: #EFDECD;
+}
+
+.r .language-r {
+  /*color: black;*/
+  /*color: #8A3324;*/
+  color: #003262;
+}
+
+
+.page-content .code-mask, .page-content pre {
+    color: black;
+}
+
+.token.keyword, .token.operator, .token.tag {
+    /*color: #0047AB;*/
+    color: #0000FF;
+}
+
+.token.punctuation {
+    /*color: #893F45; */
+    color: #BA160C;
+}
+
+.token.number {
+    /*color: #0D98BA; */
+    color: #0000FF;
+}
+
+.language-css .token.string, .style .token.string, .token.entity, .token.string, .token.url {
+    color: #AB274F;
+}
+
+.token.cdata, .token.comment, .token.prolog {
+    color: #0EAD69;
+    font-style: italic;
+}
+```
+
+# Library
+
+```{r, warning=FALSE, message=FALSE, results='hide'}
+library(tidyverse)
+```
+
+
+# Load previous functions
+
+```{r}
+# Function to set-up game
+start_game <- function() {
+  
+  # Create list of envelope stuffers
+  envelope_stuffers <- c("newsprint", "$1000")
+  for (i in 1:98) {
+    #print(i)
+    envelope_stuffers <- append(envelope_stuffers, "newsprint")
+  }
+  
+  # Place them randomly in game envelopes
+  game_envelopes <- sample(envelope_stuffers, size=100, replace = F)
+  
+  return(game_envelopes)
+}
+
+# Function for contestant's first choice
+select_contestant_choice <- function() {
+  choice <- sample(1:100, size=1, replace = F)
+  return(choice)
+}
+
+# Function for host's choice
+select_host_choice <- function(envelopes, contestant_choice) {
+  
+  # Update envelope options by eliminating contestant's choice
+  host_envelopes <- envelopes[-contestant_choice]
+  
+  host_choice <- sample(which(host_envelopes == "newsprint"), size=98, replace = F)
+  
+  host_choice <- c(host_choice)
+  
+  return(host_choice)
+  
+}
+
+# Contestant's final choice to keep original envelope or switch
+final_contestant_choice <- function(envelopes, contestant_choice, host_choice, switch_choice) {
+  
+  final_envelope <- envelopes[-contestant_choice]
+  final_envelope <- final_envelope[-host_choice]
+  
+  #print(switch_choice)
+  
+  if (toupper(switch_choice) == "SWITCH") {
+    out <- final_envelope
+  } else {
+    out <- envelopes[contestant_choice]
+  }
+  
+  return(out)
+}
+
+# Function to determine game outcome
+game_outcome <- function(final_choice) {
+  if (final_choice == "$1000") {
+    return("WIN")
+  } else {
+    return("LOSE")
+  }
+}
+
+# Game play
+monty_hall_100doors <- function(switch_choice) {
+  
+  envelopes <- start_game()
+  contestant_choice <- select_contestant_choice()
+  host_choice <- select_host_choice(envelopes, contestant_choice)
+  final_choice <- final_contestant_choice(envelopes, contestant_choice, host_choice, switch_choice)
+  outcome <- game_outcome(final_choice)
+  
+  return(list(envelopes = envelopes, 
+              contestant_choice = contestant_choice, 
+              host_choice = host_choice, 
+              switch_choice = switch_choice, 
+              final_choice = final_choice, 
+              outcome = outcome))
+}
+```
+
+
+# Review output
+
+- Recall that we get the following output from our function:
+
+```{r}
+monty_hall_100doors("KEEP")
+```
+
+
+```{r}
+monty_hall_100doors("SWITCH")
+```
+
+
+# Create play game function
+
+With this new function, we want to play the entire game and save the outcome of keeping or switching.
+
+```{r}
+play_game <- function( )
+{
+  outcome.stay <- monty_hall_100doors("KEEP")$outcome
+  outcome.switch <- monty_hall_100doors("SWITCH")$outcome
+  
+  # game.results <- bundle the results
+  # return( <<< game.results >>> )
+  
+  strategy <- c("stay","switch")
+  outcome <- c(outcome.stay,outcome.switch)
+  game.results <- data.frame( strategy, outcome,
+                              stringsAsFactors=F )
+  return( game.results )
+}
+
+play_game()
+```
+
+# Simulate results of game
+
+```{r}
+results.df <- NULL   # collector
+
+for( i in 1:10000 )  # iterator
+{
+  game.outcome <- play_game()
+  # binding step
+  results.df <- rbind( results.df, game.outcome )
+}
+
+table( results.df ) 
+```
+
+```{r}
+( table( results.df ) / 10000 ) %>% 
+  round( 2 )
+```
+
+```{r}
+play_n_games <- function( n=100 )
+{
+  
+  library( dplyr )
+  results.list <- list()   # collector
+  loop.count <- 1
+
+  for( i in 1:n )  # iterator
+  {
+    game.outcome <- play_game()
+    results.list[[ loop.count ]] <- game.outcome 
+    loop.count <- loop.count + 1
+  }
+  
+  results.df <- dplyr::bind_rows( results.list )
+
+  table( results.df ) %>% 
+  prop.table( margin=1 ) %>%  # row proportions
+  round( 2 ) %>% 
+  print()
+  
+  return( results.df )
+
+}
+
+play_n_games()
+```
+
+
+
+
+
+
+
+
+
+
+
+

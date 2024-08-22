@@ -1,0 +1,387 @@
+---
+title: "Lab 03 - Regular Expressions"
+author: "Courtney Stowers"
+#date: "2024-08-16"
+output:
+    rmdformats::downcute:
+    toc_depth: 3
+    self_contained: true
+    thumbnails: false
+    lightbox: true
+    gallery: false
+    highlight: "pygments"
+    code_folding: show
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{css, echo=FALSE}
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Mono:wght@100..900&display=swap');
+
+.Content a, .page-content a, a { 
+color: #8C1D40; 
+font-weight:bold;
+}
+
+h1.title {
+color: #8C1D40;
+}
+
+body .container-fluid .well p {
+    font-weight: 400;
+}
+
+body p {
+  font-family: "Noto Sans Mono", monospace;
+}
+
+.page-content.has-page-title li {
+  font-family: "Noto Sans Mono", monospace;
+}
+
+.page-content .code-mask, .page-content pre  {   
+  background-color: #EFDECD;
+}
+
+.r .language-r {
+  /*color: black;*/
+  /*color: #8A3324;*/
+  color: #003262;
+}
+
+
+.page-content .code-mask, .page-content pre {
+    color: black;
+}
+
+.token.keyword, .token.operator, .token.tag {
+    /*color: #0047AB;*/
+    color: #0000FF;
+}
+
+.token.punctuation {
+    /*color: #893F45; */
+    color: #BA160C;
+}
+
+.token.number {
+    /*color: #0D98BA; */
+    color: #0000FF;
+}
+
+.language-css .token.string, .style .token.string, .token.entity, .token.string, .token.url {
+    color: #AB274F;
+}
+
+.token.cdata, .token.comment, .token.prolog {
+    color: #0EAD69;
+    font-style: italic;
+}
+```
+
+
+# Library
+
+
+```{r, warning=FALSE, message=FALSE, results='hide'}
+# Load library
+library(tidyverse)
+library(stringi)
+```
+
+
+# Data
+
+```{r}
+# IMDB Top 250 Lists and 5000 plus IMDB records
+# https://data.world/studentoflife/imdb-top-250-lists-and-5000-or-so-data-records
+df <- read.csv("https://query.data.world/s/rr46ndg7fyne54q7oonmvzxbaxg3zn", header=TRUE, stringsAsFactors=FALSE)
+
+# View column names
+colnames(df)
+```
+
+
+# GREP & GREPL
+
+
+```{r}
+# Find directors with Courtney in name
+grep("Courtney", df$Director, value = TRUE, ignore.case = TRUE)
+```
+
+
+```{r}
+# Find writers with Courtney in name
+grep("Courtney", df$Writer, value = TRUE, ignore.case = TRUE)
+```
+
+
+```{r}
+# Find lists of actors where there is an actor with Courtney in their name
+grep("Courtney", df$Actors, value = TRUE, ignore.case = TRUE)
+```
+
+
+
+```{r}
+# Create cast list
+courtney_cast <- paste(grep("Courtney", df$Actors, value = TRUE, ignore.case = TRUE), collapse=', ') %>% str_split(", ")
+
+courtney_cast
+```
+
+```{r}
+# Convert to character vector
+courtney_cast <- courtney_cast %>% unlist()
+courtney_cast
+```
+
+
+
+
+```{r}
+# Filter out cast list to only keep actors with Courtney in their name
+courtney_actors <- grep("Courtney", courtney_cast, value = TRUE, ignore.case = TRUE) %>% unique()
+
+courtney_actors
+```
+
+```{r}
+# Find actors with Courtney as first name
+grep("^Courtney", courtney_actors, value = TRUE, ignore.case = TRUE)
+```
+
+```{r}
+# Find actors with Courtney as last name
+grep("Courtney$", courtney_actors, value = TRUE, ignore.case = TRUE)
+```
+
+```{r}
+# Pull all actors
+actors <- df$Actors %>% str_split(", ") %>% unlist() %>% str_trim() %>% unique()
+
+actors %>% head(20)
+```
+
+
+
+
+
+```{r}
+# Try to find actors whose first name starts with C and end with Y, we can see there's a few instances where the first name doesn't actually end with Y (Caleb Landry Jones & Charles Henry Wyson )
+actors[(grepl("^C", actors, ignore.case = TRUE) & grepl("y\\s", actors, ignore.case = TRUE)) & !grepl("C\\.", actors, ignore.case = TRUE)] %>% sort()
+```
+
+```{r}
+# Find actors whose last name starts with C and end with Y, we can see for example Larry the Cable Guy & John C. McGinley don't actually start with C
+actors[(grepl("\\sC", actors, ignore.case = TRUE) & grepl("y$", actors, ignore.case = TRUE))]
+```
+
+
+```{r}
+# Find actors whose first OR last name starts with C and end with Y, issues above still exist
+actors[(grepl("^C", actors, ignore.case = TRUE) & grepl("y\\s", actors, ignore.case = TRUE) & !grepl("C\\.", actors, ignore.case = TRUE)) | (grepl("\\sC", actors, ignore.case = TRUE) & grepl("y$", actors, ignore.case = TRUE))] %>% sort()
+```
+
+
+
+```{r}
+# Split actors' names into list
+actors_list <- actors %>% str_split(" ")
+
+# Convert to matrix
+actors_matrix <- stri_list2matrix(actors_list, byrow=TRUE)
+
+# Convert to data frame, set name columns
+actors_df <- as.data.frame(actors_matrix)
+colnames(actors_df) <- c("name1", "name2", "name3", "name4")
+
+# Create column with name re-joined
+actors_df$name <- paste(coalesce(actors_df$name1, ""), coalesce(actors_df$name2, ""), coalesce(actors_df$name3, ""), coalesce(actors_df$name4, ""), sep = " ") %>% str_trim()
+
+# View data frame
+actors_df[order(actors_df$name1),] %>% head(20)
+
+```
+
+
+
+
+```{r}
+# Check each individual name for pattern
+actors_df$name1_match <- grepl("C*y$", actors_df$name1, ignore.case = TRUE) & grepl("^C", actors_df$name1, ignore.case = TRUE)
+actors_df$name2_match <- grepl("C*y$", actors_df$name2, ignore.case = TRUE) & grepl("^C", actors_df$name2, ignore.case = TRUE)
+actors_df$name3_match <- grepl("C*y$", actors_df$name3, ignore.case = TRUE) & grepl("^C", actors_df$name3, ignore.case = TRUE)
+actors_df$name4_match <- grepl("C*y$", actors_df$name4, ignore.case = TRUE) & grepl("^C", actors_df$name4, ignore.case = TRUE)
+
+# Filter to keep matching names
+actors_df <- actors_df %>% filter(name1_match == TRUE | name2_match == TRUE | name3_match == TRUE | name4_match == TRUE)
+
+# View names, we see those outliers are removed below
+actors_df$name %>% sort() %>% unique()
+```
+
+
+# GSUB & SUB
+
+
+```{r}
+# Find actors with quotation mark (') surrounding name
+# https://javascript.info/regexp-greedy-and-lazy
+# https://www.rexegg.com/regex-quantifiers.php
+# Greedy gives longest match, lazy gives shortest match, here we return all values that have a match
+grep("'.*?'", actors, value = TRUE, ignore.case = TRUE)
+```
+
+```{r}
+quotation_actors <- grep("'.*?'", actors, value = TRUE, ignore.case = TRUE)
+
+# Replaces all
+gsub("'", "(", quotation_actors)
+```
+
+
+```{r}
+# Replaces the first one
+sub("'", "(", quotation_actors)
+```
+
+
+```{r}
+# Replace first
+parenthesis_actors <- sub("'", "(", quotation_actors)
+
+# Replace second
+parenthesis_actors<- sub("'", ")", parenthesis_actors)
+
+parenthesis_actors
+```
+
+
+
+# Finding Numbers
+
+```{r}
+# Find numbers
+grep("[0-9]", df$Title, value = TRUE, ignore.case = TRUE) %>% head(20)
+```
+
+
+
+```{r}
+# Replace non-digits with empty string, format digits as numbers
+as.numeric(gsub("\\D", "", df$Title))[!is.na(as.numeric(gsub("\\D", "", df$Title)))] %>% unique()
+```
+
+
+```{r}
+grep("\\sone\\s|\\II|\\sthree\\s|\\sIV\\s", df$Title, value = TRUE, ignore.case = TRUE)
+```
+
+
+# Finding Punctuation
+
+```{r}
+grep("[[:punct:]]", df$Title, value = TRUE, ignore.case = TRUE) %>% head(30)
+```
+
+
+```{r}
+# Find questions
+grep("*\\?", df$Title, value = TRUE, ignore.case = TRUE)
+```
+
+
+```{r}
+# Find questions
+grep("\\?$", df$Title, value = TRUE, ignore.case = TRUE)
+```
+
+
+# Finding word frequency
+
+
+```{r}
+# Transform title
+title_list <- df$Title %>% str_replace_all("[[:punct:]]", "") %>% strsplit(" ") %>% unlist() %>% str_to_lower() 
+
+# Find frequencies
+title_list_freq <- table(title_list) %>% list()
+
+# Convert to data frame
+title_df <- data.frame(title_list_freq)
+colnames(title_df) <- c("word", "freq")
+
+# View df
+title_df %>% head(10)
+```
+
+
+```{r}
+# Find most frequent words
+title_df %>% filter(word != "") %>% arrange(desc(freq)) %>% head(10)
+```
+
+
+```{r}
+# Find first words
+titles <- df$Title %>% strsplit(" ")
+
+length(titles)
+
+for ( i in (1:length(titles)) ) {
+  if (i == 1) {
+    first_words <- c(titles[[i]][1])
+  } else {
+    first_words <- append(first_words, titles[[i]][1])
+  }
+}
+
+first_words %>% head(10)
+  
+```
+
+```{r}
+# Find first word frequency
+first_words_freq <- first_words %>% str_replace_all(pattern = "[:punct:]", replacement = "") %>% unlist() %>% str_to_lower() %>% table()
+
+# Convert to data frame
+first_words_df <- data.frame(first_words_freq)
+colnames(first_words_df) <- c("word", "freq")
+
+first_words_df %>% filter(word != "") %>% arrange(desc(freq)) %>% head(10)
+```
+
+
+
+```{r}
+# Find last words
+titles <- df$Title %>% strsplit(" ")
+
+length(titles)
+
+for (i in (1:length(titles))) {
+  if (i == 1) {
+    last_words <- c(titles[[i]][length(titles[[i]])])
+  } else {
+    last_words <- append(last_words, titles[[i]][length(titles[[i]])])
+  }
+}
+
+last_words %>% head(10)
+```
+
+```{r}
+# Find last word frequency
+last_words_freq <- last_words %>% str_replace_all(pattern = "[:punct:]", replacement = "") %>% unlist() %>% str_to_lower() %>% table()
+
+# Convert to data frame
+last_words_df <- data.frame(last_words_freq)
+colnames(last_words_df) <- c("word", "freq")
+
+last_words_df %>% filter(word != "") %>% arrange(desc(freq)) %>% head(20)
+```
