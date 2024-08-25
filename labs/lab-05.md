@@ -261,7 +261,7 @@ layout: default
 ---
 ```
 
-Create a new page in your main website folder called **table-demo.md** and copy the page content from the [Barebones Jekyll example](https://github.com/DS4PS/barebones-jekyll/edit/master/page2.md).
+Create a new page in your main website folder called **table-demo.md** and copy the page content from the [Barebones Jekyll example](https://raw.githubusercontent.com/DS4PS/barebones-jekyll/master/page2.md).
 
 You will need to add the ryan-v-ryan.jpg image to your **img** folder for it to be accessible on your new site (you can right-click and save it, then drag it into the image folder on your GitHub site). 
 
