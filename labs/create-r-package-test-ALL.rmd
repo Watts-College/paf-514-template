@@ -1,0 +1,327 @@
+---
+title: "Montyhall Package Inspection"
+output:
+  html_document:
+    theme: readable
+    df_print: paged
+    highlight: tango
+    toc: true
+params:
+  name:
+    value: x
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set( echo=FALSE, eval=TRUE, comment="" )
+```
+
+
+```{r}
+# add valid name to knit rmd for testing purposes
+
+github.name <- params$name
+if( github.name == "x" )
+{ github.name <- "bmwaite" }   
+
+url.1 <- "https://github.com/"
+username <- github.name
+url.2 <- "/montyhall/archive/refs/heads/main.zip"
+URL <- paste0( url.1, username, url.2 )
+```
+
+
+```{r}
+library( tools )
+# underlining titles breaks text version: 
+Rd2txt_options( underline_titles=FALSE )
+
+wd       <- getwd()
+folder   <- "PKG-FILES"
+pkg.path <- paste0( wd, "/", folder )
+
+
+# REMOVE PRIOR INSTALLATIONS, IF ANY
+# THEN INSTALL VIA GITHUB 
+
+install_montyhall <- function( username ) {
+
+  pkg.location <- system.file( package="montyhall" )
+  if( pkg.location == "" )
+  {
+    options( show.error.messages=FALSE )
+    try( detach( package:montyhall ) )
+    try( remove.packages( pkgs="montyhall" ) )    
+  }
+  
+  options( show.error.messages=TRUE )
+  path <- paste0( username, "/montyhall" )
+  devtools::install_github( path )
+}
+
+
+
+# PRINT CONTENTS OF THE DESCRIPTION FILE
+# IN THE STUDENT PACKAGE 
+
+print_description <- function() {
+  use.these <- 
+    c( "Author",  "Title",
+       "Package", "Version",
+       "Imports", "Depends",
+       "Description", "Built" )  
+  x <- read.dcf(
+    file   = system.file( "DESCRIPTION", package = "montyhall" ),
+    fields = use.these )
+  write.dcf( x )
+}
+
+
+
+# DOWNLOAD ZIPPED PACKAGE FILES 
+# FROM GITHUB AND SAVE LOCAL COPY 
+
+download_package <- function( username, folder="PKG-FILES", pkg.url ) {
+
+  if (! file.exists( folder ) )
+  { dir.create( folder ) }
+  setwd( folder )
+  
+  fn  <- paste0( "montyhall-", username, ".zip" )
+  download.file( pkg.url, destfile=fn )
+    
+  unzip( zipfile=fn )
+}
+
+# download_package( username="kphart2" )
+
+
+
+# PRINT CONTENTS OF THE HELP FILES 
+
+print_help <- function( fx="create_game.Rd" ) {
+  
+  tools::Rd2txt_options( underline_titles=FALSE )
+  
+  help.dir <- paste0( wd, "/", folder, "/montyhall-main/man" )
+  setwd( help.dir )
+  
+  fx.name <- gsub( "_|\\.Rd", " ", fx ) |> toupper()
+  
+  cat( "#####   \n" )
+  cat( paste0( "#####     ", fx.name, "\n" ) )
+  cat( "#####   \n\n\n" )
+  
+  
+  tools::Rd2txt( 
+    Rd  = fx, 
+    out = stdout(),
+    package = "montyhall" )
+  cat( "\n\n\n\n" )
+  cat( "#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#\n\n\n\n")
+}
+
+# purrr::walk( rds, print_help )
+
+
+# DELETE LOCAL UNZIPPED FILES
+# IN THE MONTY DIRECTORY 
+
+remove_unzipped_files <- function() {
+  setwd( pkg.path )
+  unlink( "montyhall-main", recursive=TRUE, force=TRUE )
+}
+
+
+#  DELETE THE montyhall PACKAGE FOLDER 
+#  IN THE LOCAL R INSTALLED PACKAGES DIRECTORY
+#  TO ALLOW FOR A FRESH INSTALL AND 
+#  PREVENT FILE CORRUPTION ERRORS
+#  THAT APPEAR WHILE RUNNING EXAMPLES 
+
+delete_pkg <- function( pkgname ) {
+  lib.path <- (.libPaths())[1]
+  pkg.path <- paste0( lib.path, "/", pkgname )
+  unlink( pkg.path, recursive=TRUE, force=TRUE )
+}
+
+
+#  EXECUTE ALL TEST CODE PROVIDED 
+#  IN THE @EXAMPLE SECTIONS OF THE
+#  PACKAGE DOCUMENTATION 
+
+run_example <- function( fx="create_game" ) {
+  
+  cat( "#####  \n" )
+  cat( paste0("#####   ", fx, "\n" ) )
+  cat( "#####  \n" )
+  
+  options( show.error.messages = FALSE )
+  
+  res <- try(
+    
+    utils::example( 
+      topic          = fx, 
+      package        = "montyhall", 
+      lib.loc        = NULL, 
+      character.only = TRUE,
+      prompt.prefix  = "" ) )
+  
+  msg <- paste0( "\n>>>\n>>>  ", geterrmessage(), ">>>\n" )
+
+  if( inherits( res, "try-error") )
+  { cat( msg ) } 
+  
+  # else
+  # { print( res$value ) }
+
+  cat( "\n\n\n" )
+  cat( "#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#\n\n\n\n\n")
+}
+
+# run_example( "create_game" )
+```
+
+
+
+
+
+```{r}
+# MAKE SURE PACKAGE IS FRESH 
+delete_pkg( "montyhall" )
+```
+
+
+
+## Install Package
+
+<hr>
+
+Installing package from:     **`r paste0( github.name, "/montyhall" )`** 
+
+```{r, echo=FALSE}
+path <- paste0( github.name, "/montyhall" )
+cat( paste0( "devtools::install_github( '", path,  "' )" ))
+```
+
+Zipped files downloaded from: 
+
+> [`r URL`](`r URL`)
+
+<hr>
+<br>
+
+
+
+```{r, results="hide", warning=F, message=F}
+download_package( username=github.name, pkg.url=URL )
+install_montyhall( username=github.name )
+library( montyhall )
+```
+
+
+
+
+
+## Run Examples
+
+
+```{r, eval=F, echo=F}
+# TEST CODE FROM EXAMPLE 
+
+utils::example( 
+  topic = "create_game", 
+  package = "montyhall", 
+  lib.loc = NULL, 
+  character.only = TRUE,
+  prompt.prefix = "" ) 
+```
+
+
+```{r}
+# TEST ALL 
+
+fxs <- 
+  c("create_game", "select_door", "open_goat_door", "change_door", 
+    "determine_winner", "play_game", "play_n_games")
+
+purrr::walk( fxs, run_example )
+```
+
+
+
+
+## Description File 
+
+```{r}
+print_description()
+```
+
+
+
+
+
+## Inspect Documentation
+
+```{r}
+
+rds <- 
+  c( "create_game.Rd", "select_door.Rd", "open_goat_door.Rd",
+     "change_door.Rd", "determine_winner.Rd", "play_game.Rd", 
+     "play_n_games.Rd" )
+
+
+purrr::walk( rds, print_help )
+```
+
+
+
+
+
+
+
+
+```{r, warning=F, message=F}
+# DELETE PACKAGE INSTALLATION
+# FROM LOCAL R PKG LIBRARY 
+
+detach( "package:montyhall", unload=TRUE )
+remove.packages( "montyhall" )
+unloadNamespace("montyhall")
+delete_pkg( "montyhall" )
+remove_unzipped_files()
+
+# .rs.restartR()
+```
+
+
+
+
+
+<style>
+
+td{ padding: 6px 10px 6px 10px } 
+th{ text-align: left; } 
+
+h1{ font-size:calc(4em + 0.25vw) }
+h2, h3, h4 { color: #995c00; }
+
+h1 { margin-top:40px; }
+h2 { margin-top:100px; }
+h1 { margin-bottom:60px; }
+h2 { margin-bottom:40px; }
+
+body{
+     font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+     font-size:calc(1.5em + 0.25vw);
+     font-weight:300;
+     line-height:1.65;
+ }
+ 
+pre{
+     padding: 10px 10px 10px 60px;
+}
+
+</style>
+
+
+
