@@ -47,6 +47,13 @@ setwd( "C:/users/username/" )  # this works
 
 ### Functions  
 
+- **getwd()**:  get working directory
+- **setwd()**:  change the working directory
+- **dir()**:  print all names of files located in the current directory
+- **dir.create( "foldername" )**:  create a new folder
+- **dir.exists( "foldername" )**:  check if a folder is located in the current directory 
+- **file.exists( "filename.csv" )**:  check if a file is located in the current directory
+
 ```r
 ######################################
 ######################################     CURRENT FOLDER
@@ -71,10 +78,9 @@ dir()   # LIST FILES IN DIRECTORY
 ######################################
 
 
-# NOTE DIFFERENCE BETWEEEN FOLDERS AND FILES
+# NOTE THAT FILES HAVE EXTENSIONS
 
-
-setwd( "AWS-NCCS-EFILE.csv" )     # FILES HAVE EXTENSIONS
+setwd( "AWS-NCCS-EFILE.csv" )     
 
 # > Error in setwd( "AWS-NCCS-EFILE.csv" ) : cannot change working directory
 
@@ -84,19 +90,14 @@ file.exists( "AWS-NCCS-EFILE.csv" )
 [1] TRUE
 
 
-dir.exists( "AWS-NCCS-EFILE.csv" )
-[1] FALSE
-file.exists( "AWS-NCCS-EFILE.csv" )
-[1] TRUE
+# FOLDERS DO NOT HAVE EXTENSIONS
 
-
-dir.exists( "AWS" )     # FOLDERS DO NOT HAVE EXTENSIONS
+dir.exists( "AWS" )     
 [1] TRUE
 file.exists( "AWS" )
 [1] FALSE
 
 setwd( "AWS" )      
-
 getwd()
 # [1] "C:/Users/lecy/Documents/AWS"
 
