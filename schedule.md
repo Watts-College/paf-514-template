@@ -388,7 +388,9 @@ Even if not sharing the package widely it is often a more efficient method for t
 
 This tutorial will teach you how to build and share a package in R. You will "package" your R code from Labs 01 and 02 into a new **montyhall package** to make it easier to run simulations to evaluate game strategies.
 
-It's also helpful to learn about [FUNCTION CONFLICTS](../lectures/function-conflicts/) when deciding to add dependencies to **Imports** or **Depends** in your DESCRIPTION file. 
+If you are not yet familiar with functions used to set and change working directories here are some notes on [FOLDER NAVIGATION](../lectures/navigation/).
+
+It's also helpful to learn about [FUNCTION CONFLICTS](../lectures/function-conflicts/) when deciding to add dependencies via either **Imports** or **Depends** in the DESCRIPTION file of your new R package. 
 
 **Grading:**
 
