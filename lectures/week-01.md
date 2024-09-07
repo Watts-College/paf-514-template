@@ -21,7 +21,7 @@ image-width: 150px
 
 Review core concepts on FUNCTIONS:
 
-[FUNCTION REVIEW](../week-01-function-review/)
+[FUNCTION REVIEW](https://ds4ps.org/dp4ss-textbook/ch-040-functions.html)
 
 Make sure you are clear about: 
 
