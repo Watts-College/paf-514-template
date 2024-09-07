@@ -244,77 +244,76 @@ Consider the cookie recipe example:
 
 ```mermaid
 flowchart TD;
-    subgraph fx1
-      BUTTER -.-> mix{"mix_sugar()"}
-      SUGAR -.-> mix{"mix_sugar()"}
-      BROWN_SUGAR -.-> mix{"mix_sugar()"}
-    end
-    v0(("1/2 stick")) -.-> butter
-    butter -.-> BUTTER
-    v1((1/3 stick))  -.-o  BUTTER
-    v2((1/2 cup))    -.-o  SUGAR
-    v3((1/4 cup))  -.-o  BROWN_SUGAR
-    mix{"mix_sugar()"} ==> butter_fluff
-    butter_fluff ==> BUTTER_FLUFF
-    subgraph fx2
-      BUTTER_FLUFF ==> m2{"mix()"}
-      EGGS                -.-> m2
-      VANILLA           -.-> m2
-    end
-    v4((2 eggs)) -.-o EGGS
-    v5((3 tsp)) -.-o VANILLA
-    m2 ==> batter
-    subgraph fx3
-      BATTER ==> bake{"bake()"}
-      OVEN --> bake
-      TIME --> bake
-    end
-    v10(("20 minutes")) -.-o TIME
-    batter ==> BATTER
-    subgraph fx4
-      preheat{"preheat_oven()"}
-    end
-    v9(("375 degrees")) -.-o preheat{"preheat_oven()"}
-    preheat --> oven
-    oven --> OVEN
-    bake ==> cookies
-    style v0 fill: #59709c,color:#fff
-    style butter fill: #59709c,color:#fff
-    style BUTTER fill: #59709c,color:#fff
-    style mix fill: #d87379,stroke:#ffbe5c,color:#fff 
-    style butter_fluff fill: #d87379,stroke:#ffbe5c,color:#fff
-    style BUTTER_FLUFF fill: #d87379,stroke:#ffbe5c,color:#fff
-    style batter fill: #009f88,color:#fff
-    style BATTER fill: #009f88,color:#fff
-    style m2 fill: #009f88,color:#fff
-    style bake fill: #2f027e,color:#fff
-    style cookies fill: #2f027e,color:#fff
-    style preheat fill:#ffbe5c
-    style oven fill:#ffbe5c
-    style OVEN fill:#ffbe5c
+  subgraph fx1
+    BUTTER      -.-> mix{"mix_sugar()"};
+    SUGAR       -.-> mix{"mix_sugar()"};
+    BROWN_SUGAR -.-> mix{"mix_sugar()"};
+  end
+    v0(("1/2 stick")) -.-> butter;
+    butter -.-> BUTTER;
+    v1((1/3 stick))  -.-o  BUTTER;
+    v2((1/2 cup))    -.-o  SUGAR;
+    v3((1/4 cup))    -.-o  BROWN_SUGAR;
+    mix{"mix_sugar()"} ==> butter_fluff;
+    butter_fluff ==> BUTTER_FLUFF;
+  subgraph fx2
+    BUTTER_FLUFF ==> m2{"mix()"};
+    EGGS                -.-> m2;
+    VANILLA           -.-> m2;
+  end
+    v4((2 eggs)) -.-o EGGS;
+    v5((3 tsp)) -.-o VANILLA;
+    m2 ==> batter;
+  subgraph fx3
+    BATTER ==> bake{"bake()"};
+    OVEN --> bake;
+    TIME --> bake;
+  end
+    v10(("20 minutes")) -.-o TIME;
+    batter ==> BATTER;
+  subgraph fx4
+    preheat{"preheat_oven()"};
+  end
+    v9(("375 degrees")) -.-o preheat{"preheat_oven()"};
+    preheat --> oven;
+    oven --> OVEN;
+    bake ==> cookies;
+  style v0 fill: #59709c,color:#fff
+  style butter fill: #59709c,color:#fff
+  style BUTTER fill: #59709c,color:#fff
+  style mix fill: #d87379,stroke:#ffbe5c,color:#fff
+  style butter_fluff fill: #d87379,stroke:#ffbe5c,color:#fff
+  style BUTTER_FLUFF fill: #d87379,stroke:#ffbe5c,color:#fff
+  style batter fill: #009f88,color:#fff
+  style BATTER fill: #009f88,color:#fff
+  style m2 fill: #009f88,color:#fff
+  style bake fill: #2f027e,color:#fff
+  style cookies fill: #2f027e,color:#fff
+  style preheat fill:#ffbe5c
+  style oven fill:#ffbe5c
+  style OVEN fill:#ffbe5c
 ```
 
 Let's translate this workflow into R code: 
 
 ```mermaid
 flowchart TD;
-    v0(("1/2 stick")) -.-> butter
-    butter            -.-> BUTTER
-    v1((1/3 stick))  -.-o  BUTTER
-    v2((1/2 cup))    -.-o  SUGAR
-    v3((1/4 cup))    -.-o  BROWN_SUGAR
+    v0(("1/2 stick")) -.-> butter;
+    butter            -.-> BUTTER;
+    v1((1/3 stick))  -.-o  BUTTER;
+    v2((1/2 cup))    -.-o  SUGAR;
+    v3((1/4 cup))    -.-o  BROWN_SUGAR;
     subgraph fx1
-      BUTTER       -.-> mix{"mix_sugar()"}
-      SUGAR        -.-> mix
-      BROWN_SUGAR  -.-> mix
+      BUTTER       -.-> mix{"mix_sugar()"};
+      SUGAR        -.-> mix;
+      BROWN_SUGAR  -.-> mix;
     end
-    mix ==> butter_fluff
-
-    style v0 fill: #59709c,color:#fff
-    style butter fill: #59709c,color:#fff
-    style BUTTER fill: #59709c,color:#fff
-    style mix fill: #d87379,stroke:#ffbe5c,color:#fff 
-    style butter_fluff fill: #d87379,stroke:#ffbe5c,color:#fff
+    mix ==> butter_fluff;
+    style v0 fill: #59709c, color: #fff
+    style butter fill: #59709c, color: #fff
+    style BUTTER fill: #59709c, color: #fff
+    style mix fill: #d87379, stroke: #ffbe5c, color: #fff 
+    style butter_fluff fill: #d87379, stroke: #ffbe5c, color: #fff
 ```
 
 A few things to note: 
@@ -342,20 +341,20 @@ Note the difference between the version above and this one:
 
 ```mermaid
 flowchart TD;
-    v0(("1/2 stick")) -.-> BUTTER
-    v1((1/3 stick))  -.-o  BUTTER
-    v2((1/2 cup))    -.-o  SUGAR
-    v3((1/4 cup))    -.-o  BROWN_SUGAR
+    v0(("1/2 stick")) -.-> BUTTER;
+    v1((1/3 stick))  -.-o  BUTTER;
+    v2((1/2 cup))    -.-o  SUGAR;
+    v3((1/4 cup))    -.-o  BROWN_SUGAR;
     subgraph fx1
-      BUTTER       -.-> mix{"mix_sugar()"}
-      SUGAR        -.-> mix
-      BROWN_SUGAR  -.-> mix
+      BUTTER       -.-> mix{"mix_sugar()"};
+      SUGAR        -.-> mix;
+      BROWN_SUGAR  -.-> mix;
     end
-    mix ==> butter_fluff
-    style v0 fill: #59709c,color:#fff
-    style BUTTER fill: #59709c,color:#fff
-    style mix fill: #d87379,stroke:#ffbe5c,color:#fff 
-    style butter_fluff fill: #d87379,stroke:#ffbe5c,color:#fff
+    mix ==> butter_fluff;
+    style v0 fill: #59709c, color: #fff
+    style BUTTER fill: #59709c, color: #fff
+    style mix fill: #d87379, stroke: #ffbe5c, color: #fff 
+    style butter_fluff fill: #d87379, stroke: #ffbe5c, color: #fff
 ```
 
 Here instead of assigning the value to **butter**, then passing the **butter** object to the **BUTTER** argument, we just assign the value directly to the argument: 
