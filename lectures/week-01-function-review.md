@@ -221,6 +221,162 @@ Arguments give us control. Without them, data recipes become unpredictable.
 
 A workflow is a framework that lets us execute a consistent data recipe but easily change inputs. Specifically, workflows use chaining where the output from one function serve as the input into a subsequent function. 
 
+Consider the cookie recipe example: 
+
+```
+# 1. Preheat the oven. 
+#    - preheat to 375 degrees 
+
+# 2. In a large bowl, mix butter with the sugars until creamy. 
+#    - 1/3 cup butter    
+#    - 1/2 cup sugar    
+#    - 1/4 cup brown sugar   
+#    - mix until a fluffy consistency 
+
+# 3. Stir in vanilla and egg until incorporated. 
+#    - add to sugar mixture 
+#    - mix until even 
+
+# 4. Bake at 375 degrees for 20 minutes. 
+#    - place on cooking sheet 
+#    - place in oven
+```
+
+```mermaid
+flowchart TB
+    subgraph fx1
+      BUTTER -.-> mix{"mix_sugar()"}
+      SUGAR -.-> mix{"mix_sugar()"}
+      BROWN_SUGAR -.-> mix{"mix_sugar()"}
+    end
+    v0(("1/2 stick")) -.-> butter
+    butter -.-> BUTTER
+    v1((1/3 stick))  -.-o  BUTTER
+    v2((1/2 cup))    -.-o  SUGAR
+    v3((1/4 cup))  -.-o  BROWN_SUGAR
+    mix{"mix_sugar()"} ==> butter_fluff
+    butter_fluff ==> BUTTER_FLUFF
+    subgraph fx2
+      BUTTER_FLUFF ==> m2{"mix()"}
+      EGGS                -.-> m2
+      VANILLA           -.-> m2
+    end
+    v4((2 eggs)) -.-o EGGS
+    v5((3 tsp)) -.-o VANILLA
+    m2 ==> batter
+    subgraph fx3
+      BATTER ==> bake{"bake()"}
+      OVEN --> bake
+      TIME --> bake
+    end
+    v10(("20 minutes") -.-o TIME
+    batter ==> BATTER
+    subgraph fx4
+      preheat{"preheat_oven()"}
+    end
+    v9(("375 degrees")) -.-o preheat{"preheat_oven()"}
+    preheat --> oven
+    oven --> OVEN
+    bake ==> cookies
+
+    style v0 fill: #59709c,color:#fff
+    style butter fill: #59709c,color:#fff
+    style BUTTER fill: #59709c,color:#fff
+    style mix fill: #d87379,stroke:#ffbe5c,color:#fff 
+    style butter_fluff fill: #d87379,stroke:#ffbe5c,color:#fff
+    style BUTTER_FLUFF fill: #d87379,stroke:#ffbe5c,color:#fff
+    style batter fill: #009f88,color:#fff
+    style BATTER fill: #009f88,color:#fff
+    style m2 fill: #009f88,color:#fff
+    style bake fill: #2f027e,color:#fff
+    style cookies fill: #2f027e,color:#fff
+
+    style preheat fill:#ffbe5c
+    style oven fill:#ffbe5c
+    style OVEN fill:#ffbe5c
+```
+
+Let's translate this workflow into R code: 
+
+```mermaid
+flowchart TB
+    v0(("1/2 stick")) -.-> butter
+    butter            -.-> BUTTER
+    v1((1/3 stick))  -.-o  BUTTER
+    v2((1/2 cup))    -.-o  SUGAR
+    v3((1/4 cup))    -.-o  BROWN_SUGAR
+    subgraph fx1
+      BUTTER       -.-> mix{"mix_sugar()"}
+      SUGAR        -.-> mix
+      BROWN_SUGAR  -.-> mix
+    end
+    mix ==> butter_fluff
+
+    style v0 fill: #59709c,color:#fff
+    style butter fill: #59709c,color:#fff
+    style BUTTER fill: #59709c,color:#fff
+    style mix fill: #d87379,stroke:#ffbe5c,color:#fff 
+    style butter_fluff fill: #d87379,stroke:#ffbe5c,color:#fff
+```
+
+A few things to note: 
+
+- all arguments have default values
+- we override the default value for BUTTER
+
+```r
+mix_sugar <- function( BUTTER=0.33, SUGAR=0.5, BROWN.SUGAR=0.25 ) {
+  butter.sugar.mix <- mix( BUTTER, SUGAR, BROWN.SUGAR )
+  return( butter.sugar.mix )
+}
+
+butter <- 0.5
+butter.fluff <- mix_sugar( BUTTER=butter )
+```
+
+Why don't we need values for the other ingredients? 
+
+```r
+mix_sugar( BUTTER=butter, sugar=0.33, brown.sugar=0.25 )
+```
+
+Note the difference between the version above and this one: 
+
+```mermaid
+flowchart TB
+    v0(("1/2 stick")) -.-> BUTTER
+    v1((1/3 stick))  -.-o  BUTTER
+    v2((1/2 cup))    -.-o  SUGAR
+    v3((1/4 cup))    -.-o  BROWN_SUGAR
+    subgraph fx1
+      BUTTER       -.-> mix{"mix_sugar()"}
+      SUGAR        -.-> mix
+      BROWN_SUGAR  -.-> mix
+    end
+    mix ==> butter_fluff
+
+    style v0 fill: #59709c,color:#fff
+    style butter fill: #59709c,color:#fff
+    style BUTTER fill: #59709c,color:#fff
+    style mix fill: #d87379,stroke:#ffbe5c,color:#fff 
+    style butter_fluff fill: #d87379,stroke:#ffbe5c,color:#fff
+```
+
+Here instead of assigning the value to **butter**, then passing the **butter** object to the **BUTTER** argument, we just assign the value directly to the argument: 
+
+```r
+# butter <- 0.5
+# butter.fluff <- mix_sugar( BUTTER=butter )
+
+butter.fluff <- mix_sugar( BUTTER=0.5 )
+```
+
+> Can you translate the rest of the diagram to R functions yourself? 
+
+The important thing to note is that this workflow requires the results of one step as an input into the next step. The functions must be chained for the recipe to work. Some functions require a combination of objects created from other functions as well as additional values provided by the user or set as default argument values.  
+
+
+#### Another Example 
 For example, A and B might be the raw inputs into the workflow. C is created from A at step_one(), so it is not an input into the workflow - it is a byproduct:
 
 ```r
