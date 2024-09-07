@@ -242,6 +242,8 @@ Consider the cookie recipe example:
 #    - place in oven
 ```
 
+If we graph the workflow it would look something like this:  
+
 ```mermaid
 graph TD;
   subgraph fx1
@@ -278,6 +280,20 @@ graph TD;
     preheat --> oven;
     oven --> OVEN;
     bake ==> cookies;
+  style v0 fill: #59709c,color:#fff
+  style butter fill: #59709c,color:#fff
+  style BUTTER fill: #59709c,color:#fff
+  style mix fill: #d87379,stroke:#ffbe5c,color:#fff
+  style butter_fluff fill: #d87379,stroke:#ffbe5c,color:#fff
+  style BUTTER_FLUFF fill: #d87379,stroke:#ffbe5c,color:#fff
+  style batter fill: #009f88,color:#fff
+  style BATTER fill: #009f88,color:#fff
+  style m2 fill: #009f88,color:#fff
+  style bake fill: #2f027e,color:#fff
+  style cookies fill: #2f027e,color:#fff
+  style preheat fill:#ffbe5c
+  style oven fill:#ffbe5c
+  style OVEN fill:#ffbe5c
 ```
 
 Let's translate this workflow into R code: 
@@ -320,13 +336,13 @@ butter.fluff <- mix_sugar( BUTTER=butter )
 Why don't we need values for the other ingredients? 
 
 ```r
-mix_sugar( BUTTER=butter, sugar=0.33, brown.sugar=0.25 )
+mix_sugar( BUTTER=butter, sugar?, brown.sugar? )
 ```
 
 Note the difference between the version above and this one: 
 
 ```mermaid
-flowchart TD;
+graph TD;
     v0(("1/2 stick")) -.-> BUTTER;
     v1((1/3 stick))  -.-o  BUTTER;
     v2((1/2 cup))    -.-o  SUGAR;
