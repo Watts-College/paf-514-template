@@ -243,7 +243,7 @@ Consider the cookie recipe example:
 ```
 
 ```mermaid
-flowchart TB
+flowchart TD;
     subgraph fx1
       BUTTER -.-> mix{"mix_sugar()"}
       SUGAR -.-> mix{"mix_sugar()"}
@@ -269,7 +269,7 @@ flowchart TB
       OVEN --> bake
       TIME --> bake
     end
-    v10(("20 minutes") -.-o TIME
+    v10(("20 minutes")) -.-o TIME
     batter ==> BATTER
     subgraph fx4
       preheat{"preheat_oven()"}
@@ -356,7 +356,6 @@ flowchart TB
     mix ==> butter_fluff
 
     style v0 fill: #59709c,color:#fff
-    style butter fill: #59709c,color:#fff
     style BUTTER fill: #59709c,color:#fff
     style mix fill: #d87379,stroke:#ffbe5c,color:#fff 
     style butter_fluff fill: #d87379,stroke:#ffbe5c,color:#fff
