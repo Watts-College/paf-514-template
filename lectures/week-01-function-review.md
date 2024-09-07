@@ -243,7 +243,7 @@ Consider the cookie recipe example:
 ```
 
 ```mermaid
-flowchart TD;
+graph TD;
   subgraph fx1
     BUTTER      -.-> mix{"mix_sugar()"};
     SUGAR       -.-> mix{"mix_sugar()"};
@@ -283,7 +283,7 @@ flowchart TD;
 Let's translate this workflow into R code: 
 
 ```mermaid
-flowchart TD;
+graph TD;
     v0(("1/2 stick")) -.-> butter;
     butter            -.-> BUTTER;
     v1((1/3 stick))  -.-o  BUTTER;
