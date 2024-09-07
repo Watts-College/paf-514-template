@@ -174,8 +174,11 @@ Once you have completed this unit you will be able to:
 * identify "edge cases" and their impact on code 
 
 **Lecture Notes**
-  
-<a class="uk-button uk-button-default" href="../lectures/week-01/">Lecture Notes</a>
+
+<a class="uk-button uk-button-default" href="../lectures/week-01-function-review/">Functions and Workflow</a>
+
+<a class="uk-button uk-button-default" href="../lectures/week-01/">Control Structures</a>
+
 
 
 
