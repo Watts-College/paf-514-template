@@ -280,20 +280,21 @@ graph TD;
     preheat --> oven;
     oven --> OVEN;
     bake ==> cookies;
-  style v0 fill: #59709c, color: #fff;
-  style butter fill: #59709c, color: #fff;
-  style BUTTER fill: #59709c, color: #fff;
-  style mix fill: #d87379, stroke: #ffbe5c, color: #fff;
-  style butter_fluff fill: #d87379, stroke: #ffbe5c, color: #fff;
-  style BUTTER_FLUFF fill: #d87379, stroke: #ffbe5c, color: #fff;
-  style batter fill: #009f88, color: #fff;
-  style BATTER fill: #009f88, color: #fff;
-  style m2 fill: #009f88, color: #fff;
-  style bake fill: #2f027e, color: #fffff;
-  style cookies fill: #2f027e, color: #fffff;
-  style preheat fill: #ffbe5c;
-  style oven fill: #ffbe5c;
-  style OVEN fill: #ffbe5c;
+  style v0 fill: #59709c, color: #fff
+  style butter fill: #59709c, color: #fff
+  style BUTTER fill: #59709c, color: #fff
+  style mix fill: #d87379, stroke: #ffbe5c, color: #fff
+  style butter_fluff fill: #d87379, stroke: #ffbe5c, color: #fff
+  style BUTTER_FLUFF fill: #d87379, stroke: #ffbe5c, color: #fff
+  style batter fill: #009f88, color: #fff
+  style BATTER fill: #009f88, color: #fff
+  style m2 fill: #009f88, color: #fff
+  style bake fill: #2f027e
+  style bake color: #fff
+  style cookies fill: #2f027e, color: #fff
+  style preheat fill: #ffbe5c
+  style oven fill: #ffbe5c
+  style OVEN fill: #ffbe5c
 ```
 
 Let's translate this workflow into R code: 
