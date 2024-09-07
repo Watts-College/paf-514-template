@@ -278,7 +278,6 @@ flowchart TD;
     preheat --> oven
     oven --> OVEN
     bake ==> cookies
-
     style v0 fill: #59709c,color:#fff
     style butter fill: #59709c,color:#fff
     style BUTTER fill: #59709c,color:#fff
@@ -290,7 +289,6 @@ flowchart TD;
     style m2 fill: #009f88,color:#fff
     style bake fill: #2f027e,color:#fff
     style cookies fill: #2f027e,color:#fff
-
     style preheat fill:#ffbe5c
     style oven fill:#ffbe5c
     style OVEN fill:#ffbe5c
@@ -299,7 +297,7 @@ flowchart TD;
 Let's translate this workflow into R code: 
 
 ```mermaid
-flowchart TB
+flowchart TD;
     v0(("1/2 stick")) -.-> butter
     butter            -.-> BUTTER
     v1((1/3 stick))  -.-o  BUTTER
@@ -343,7 +341,7 @@ mix_sugar( BUTTER=butter, sugar=0.33, brown.sugar=0.25 )
 Note the difference between the version above and this one: 
 
 ```mermaid
-flowchart TB
+flowchart TD;
     v0(("1/2 stick")) -.-> BUTTER
     v1((1/3 stick))  -.-o  BUTTER
     v2((1/2 cup))    -.-o  SUGAR
@@ -354,7 +352,6 @@ flowchart TB
       BROWN_SUGAR  -.-> mix
     end
     mix ==> butter_fluff
-
     style v0 fill: #59709c,color:#fff
     style BUTTER fill: #59709c,color:#fff
     style mix fill: #d87379,stroke:#ffbe5c,color:#fff 
