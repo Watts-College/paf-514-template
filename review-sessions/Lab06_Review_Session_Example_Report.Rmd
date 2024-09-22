@@ -90,8 +90,8 @@ build_circle <- function( WEBSITE="", IMG="", NAME="", DESC="", GITHUB="", TWITT
   cat( '\n' )  # line break 
   cat( '\n' )  # line break 
   
+  # Member name, image & description	
   if (WEBSITE != "") {
-    # Member name, image & description
     cat( paste0( '  <a href="', WEBSITE, '">' ) )
     cat( '\n' )  # line break 
     cat( paste0( '  <img src="', IMG, '" class="item-img"></a>' ) )
