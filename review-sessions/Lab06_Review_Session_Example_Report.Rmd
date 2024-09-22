@@ -1,0 +1,232 @@
+---
+title: 'Lab 06'
+author: Courtney Stowers
+output:
+  html_document:
+    theme: readable
+    df_print: paged
+    highlight: zenburn
+    toc: true
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, results = 'hide')
+library(tidyverse)
+library(fontawesome)
+```
+
+
+# Members data frame
+
+```{r}
+# Members
+
+# Here we're making name two columns so we can sort by last name
+# we'll then combine these into one column
+members_list <- list(
+    FIRST_NAME = c("Dean", 
+              "Cici", 
+              "Olivia", 
+              "Thibaut", 
+              "Aminata"),
+    LAST_NAME = c("Attali", 
+              "Bauer", 
+              "Boyd", 
+              "Jombart", 
+              "Ndiaye"),
+     WEBSITE = c("http://deanattali.com/", 
+                 "https://cicibauer.netlify.com/", 
+                 "", 
+                 "https://thibautjombart.netlify.com/", 
+                 ""),
+     IMG = c("https://raw.githubusercontent.com/Watts-College/paf-514-template/main/labs/images/avatar-05.png",
+             "https://raw.githubusercontent.com/Watts-College/paf-514-template/main/labs/images/avatar-03.png",
+             "https://raw.githubusercontent.com/Watts-College/paf-514-template/main/labs/images/avatar-12.png",
+             "https://raw.githubusercontent.com/Watts-College/paf-514-template/main/labs/images/avatar-04.png",
+             "https://raw.githubusercontent.com/Watts-College/paf-514-template/main/labs/images/avatar-11.png"),
+     DESC = c("Web and R developer, designer of the RECON website., AttaliTech, Canada., NA",
+              "Academic faculty (assistant professor) - Bayesian spatiotemporal modeling, Department of Biostatistics and Data Science, University of Texas Health Science Center in Houston, United States",
+              "Postgrad researcher - Epidemiology, Imperial College London, United Kingdom",
+              "Founder, President. Statistician and R programmer specialized in outbreak analysis. London School of Hygiene and Tropical Medicine / Imperial College London, UK.",
+              "Biostatistician, WHO, France"),
+     GITHUB = c("https://github.com/daattali/",
+                "https://github.com/cicibauer",
+                "",
+                "https://github.com/thibautjombart/",
+                ""),
+     TWITTER = c("https://twitter.com/daattali",
+                 "",
+                 "",
+                 "https://twitter.com/TeebzR",
+                 "https://twitter.com/aminata_fadl")
+     )
+
+# Create data frame
+members_df <- as.data.frame(members_list)
+
+# Create unified name column
+members_df$NAME <- paste(members_df$FIRST_NAME, members_df$LAST_NAME)
+
+# Move column to front of data set
+members_df <- members_df %>%
+  select(NAME, everything())
+
+# Sort by last name
+members_df <- members_df[order(members_df$LAST_NAME),]
+ 
+print(members_df)
+```
+
+
+# build_circle() Function
+
+```{r}
+# Function
+build_circle <- function( WEBSITE="", IMG="", NAME="", DESC="", GITHUB="", TWITTER="" )
+{
+
+  # Beginning of code
+  cat( '<div class="list-circles-item">' )
+  cat( '\n' )  # line break 
+  cat( '\n' )  # line break 
+  
+  if (WEBSITE != "") {
+    # Member name, image & description
+    cat( paste0( '  <a href="', WEBSITE, '">' ) )
+    cat( '\n' )  # line break 
+    cat( paste0( '  <img src="', IMG, '" class="item-img"></a>' ) )
+  } else {
+    cat( paste0( '  <img src="', IMG, '" class="item-img">' ) )
+  }
+  cat( '\n' )  # line break 
+  cat( '\n' )  # line break
+  if (NAME != "") {
+  cat( paste0('  <h4 class="item-name">', NAME, '</h4>' ) ) 
+  } else {
+    cat( paste0('  <h4 class="item-name">', "Jordan Doe" , '</h4>' ) )
+  }
+  cat( '\n' )  # line break 
+  # DESCRIPTION MISSING HERE
+  cat( '\n' )  # line break 
+  cat( '\n' )  # line break
+  
+  # Links/FontAwesome Icons
+  cat( '  <div class="item-links">' )
+  cat( '\n' )  # line break 
+  cat( '\n' )  # line break
+  if (WEBSITE != "") {
+    cat(paste0( '   <a class="item-link" href="', WEBSITE, '" title="Website">' ), fontawesome::fa( name="home" ), '</a>')
+    cat( '\n' )  # line break 
+    cat( '\n' )  # line break
+  }
+  # GITHUB & TWITTER MISSING HERE
+  cat( '  </div>' )
+  
+  # End of code
+  cat( '\n' )  # line break 
+  cat( '\n' )  # line break
+  cat('</div>')
+
+}
+
+```
+
+
+# R Epidemics Consortium Members
+
+```{r, results='asis', echo=FALSE}
+# Create report
+# For loops allow us to rotate through all our members
+
+cat( '<div class="list-circles">' )
+cat( '\n' )  # line break 
+cat( '\n' )  # line break
+
+for (i in 1:nrow(members_df)) {
+   df <- members_df[ i , ] # select one row (one team member) 
+   build_circle( WEBSITE=df$WEBSITE,
+     IMG=df$IMG,
+     NAME=df$NAME,
+     DESC=df$DESC,
+     GITHUB=df$GITHUB,
+     TWITTER=df$TWITTER  )
+  cat( '\n' )  # line break 
+  cat( '\n' )  # line break
+}
+cat( '</div>' )
+```
+
+
+```{css, echo=FALSE}
+<style>
+/* --- css elements here --- */
+/* --- Lists of circles --- */
+
+div { display: block } 
+  
+.list-circles {
+  text-align: center;
+}
+
+@media only screen and (min-width: 1200px) {
+  .list-circles {
+    width: 150%;
+    margin-left: -25%;
+  }
+}
+
+
+.list-circles-item {
+  display: inline-block;
+  width: 240px;
+  vertical-align: top;
+  margin: 0;
+  padding: 20px;
+}
+
+.list-circles-item:hover {
+  background: #fafafa;
+}
+
+.list-circles-item .item-img {
+  max-width: 200px;
+  height: 200px;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  border-radius: 50%;
+  border: 1px solid #777;
+}
+
+.list-circles-item .item-desc {
+  font-size: 16px;
+  font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.list-circles-item .item-links {
+  margin-top: 10px;
+  padding-right: 5px;
+  display: flex; 
+  justify-content: center; 
+  align-items: center;
+}
+
+.list-circles-item .item-link {
+  margin:0 3px;
+  color: #314f96;
+  text-decoration: none !important;
+}
+
+.list-circles-item .item-link:hover {
+  color: #042265;
+}
+
+.svg-icon {
+  display: inline-flex;
+  align-self: center;
+}
+</style>
+```
+
+
+
+
