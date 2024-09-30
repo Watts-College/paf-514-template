@@ -21,7 +21,7 @@ library( pander )
 
 
 
-# Data
+# DATA
 
 This lab utilizes a [free Kaggle dataset](https://www.kaggle.com/dorianlazar/medium-articles-dataset/notebooks) describing the popularity of articles on the blogging platform Medium. 
 
@@ -38,7 +38,6 @@ We will use the following fields:
 
 
 ```{r}
-# URL <- "https://www.dropbox.com/s/tizgdsat2mziod6/medium-data-utf8.csv?dl=1"
 URL <- "https://raw.githubusercontent.com/DS4PS/cpp-527-fall-2020/master/labs/data/medium-data-utf8-v2.csv"
 d <- read.csv( URL )
 
@@ -51,9 +50,265 @@ head( d[preview.these] ) %>% pander()
 <hr>
 <br>
 
-# Lab Questions 
+# LAB QUESTIONS
 
-## **Q1 - Comparing Title Styles**
+## Part 01: Data Cleaning
+
+### **Step 01:** Text Pre-Processing 
+
+The takeaway of PART 01 is that text is a nuanced type of data that requires attention to some of the details. You will find lots of simple text cleaning recipes that allow you to quickly convert regular text into a format amenable to content analysis and modeling. The default steps will work pretty well, but might not capture all of the edge cases. 
+
+You will rarely have enough time to identify all of the edge cases and *MOST* will not change the results of a study. Your level of fine-tuning will depend on whether you are in preliminary and exploratory phases of a study, or if you are fine-tuning something that needs to be 100 percent precise. 
+
+The "regular expressions" framework is powerful syntax useful for cleaning both text and numeric datasets, parsing data from strings, and formatting output in reports. Although regex takes practice to master, the important skill is understanding how to recognize common problems encountered when working with text as data and using regular expressions to fix them. 
+
+<hr> 
+
+Typesetting is the practice of laying out text on a page so that it looks nice and is easy to read. Typesetting programs utilize many tools that will improve readability or branding but might cause problems for text analysis. For example, stylized quotation marks are not recognized as quotes by R, letters with accents or foreign language symbols get mistranslated into text when data is encoded as UTF-8 (the default encoding when reading data files), and long dashes will look like the subtraction operator but act like text. 
+
+```{r, eval=F}
+### stylized quote marks
+#   " ’ " == " ' "    
+#   [1] FALSE
+
+### regular dash
+#   9 - 6
+#   [1] 3
+
+### long dash
+#   9 – 6
+#   > Error: unexpected invalid token in "9 –"
+```
+
+
+
+#### Strange Spaces
+
+Typesetting utilizes a variety of whitespace characters for aesthetic purposes. Check out a list here: https://en.wikipedia.org/wiki/Whitespace_character 
+
+Some of these special spaces appear randomly in some of the titles. They will appear identical to a regular space the invisible eye but will cause problems when you are trying to split titles into words. 
+
+```{r}
+v <- "normal types of whitespace"
+strsplit( v, " " ) %>% unlist()
+
+# THE PROBLEM:
+v <- "four different types of whitespace"
+strsplit( v, " " ) %>% unlist()
+
+cat( v, sep="\n" )
+gsub( "[ ]", " _x_ ", v )  # NORMAL SPACE 
+gsub( "[ ]", " _x_ ", v )  # HAIRSPACE
+gsub( "[ ]", " _x_ ", v )  # EM QUAD SPACE
+gsub( "[ ]", " _x_ ", v )  # FIGURE SPACE
+```
+**Replacing special whitespaces with regular spaces:**
+
+Regular expressions have an operator *"\\s"* that will match most types of spaces including tabs and newlines. R has some equivalent (but not identical) expressions that represent pre-defined sets of characters like numbers, letters, punctuation, and spaces. Both work fine in find-and-replace commands: 
+
+```{r}
+# TYPICAL FIND AND REPLACE STRATEGIES 
+gsub( "\\s", " _x_ ", v )
+gsub( "[[:space:]]", " _x_ ", v )
+```
+
+Note that the recommended regular expression "recipes" don't address all of the whitespace problems here. They fail to identify the FIGURE SPACE character (I have no idea why that one is special). As a result, your processed text would look something like this: 
+
+```{r}
+# replace all spaces with regular space
+v2 <- gsub( "[[:space:]]", " ", v )
+strsplit( v2, " " ) %>% unlist()
+```
+Your counts of "OF" and "WHITESPACE" would be off because these words are not being successfully split. Start with the generic strategy and if you are still finding cases where the string split operation is not working properly then add new gsub() steps for those specific whitespace characters. 
+
+**A note about the set operator:**
+
+```{r}
+# STRINGS VERSUS SETS 
+v <- c( "a","b","c", "abc" )
+
+# ORDER MATTERS IN STRINGS  
+gsub( "ab",   "X", v )     # string 'ab'
+gsub( "[ab]", "X", v )     # set a OR b
+
+# NOT IN SETS 
+gsub( "ba",   "X", v )     # b AND a in that order
+gsub( "[ba]", "X", v )     # b OR a
+
+# THESE ARE EQUIVALENT
+gsub( "b|a",   "X", v )   # b OR a
+gsub( "[ba]",  "X", v )   # b OR a
+
+# ALSO THESE 
+v <- "four different types of whitespace"
+gsub( "[    ]",  " _x_ ", v )   # set of four
+gsub( " | | | ", " _x_ ", v )   # same using OR operators
+```
+
+
+#### HTML Tags 
+
+Some titles include HTML tags for emphasis. They will always occur at the start and end of the titles: 
+
+```{r, eval=F}
+"<strong class=\"markup--strong markup--h3-strong\">Why 70% of Entrepreneurs Are Ending Their Pitches the Wrong Way</strong>"
+"<strong class=\"markup--strong markup--h3-strong\">Tackle Negative Core Beliefs</strong>"
+```
+
+Similarly, there are some stylized typesetting characters that might appear as their unicode numbers instead of the text itself. For example, hairspaces will load as the following in UTF-8: 
+
+```
+<U+200A>—<U+200A>
+```
+
+In both cases we want to remove these `<tags>` since their purpose is to format text, whereas we want to analyze the underlying text itself. 
+
+Consider the following text and recipes for removing tags: 
+
+```{r}
+x <- "TEXT_00 <tag1>TEXT_01</tag1> <tag2>-<tag2> TEXT_02 <tag3>TEXT_03</tag3>"
+
+# RECIPE: 
+# start of string: <
+# with any text in the middle: .
+# length can vary: *
+# end of string: >
+
+# SHOULD RETURN: 
+# "TEXT_00 TEXT_01 - TEXT_02 TEXT_03"
+
+gsub( "<.*>", "", x )
+```
+What is happening here? Instead of matching each tag individually the expression matches the first `<` and the last `>` and removes everything between those characters, which includes most of the text. 
+
+How can we be a bit more conservative? We might use a quantifier to limit the string length between tags: 
+
+```{r}
+gsub( "<.{1,15}>", "", x )
+```
+
+But note that some HTML tags are quite long so this approach does not generalize well. 
+
+```{r}
+x1 <- "<strong class=markup--strong markup--h3-strong>Why 70% of Entrepreneurs Are Ending Their Pitches the Wrong Way</strong>"
+x2 <- "TEXT_00 <U+200A>T2<U+200A> TEXT_02"
+gsub( "<.{1,20}>", "", x1 )   # misses one tag
+gsub( "<.{1,20}>", "", x2 )   # removes text 
+```
+Another strategy might be to create a list of all tag types since removing the end tag first solves the problem: 
+
+```{r}
+x <- "<strong class=markup--strong markup--h3-strong>Why 70% of Entrepreneurs Are Ending Their Pitches the Wrong Way</strong>"
+x1 <- gsub( "</strong>", "",  x )   
+x2 <- gsub( "<strong.*>", "", x1 )  
+x2
+```
+
+But there are LOTS of HTML tags, and we would still have issues if there are multiple HTML tags present in the same title. So this strategy also does not generalize well. 
+
+Instead, regular expressions have a way to modulate [GREEDY versus RELUCTANT searches](https://watts-college.github.io/paf-514-template/lectures/string-processing.html#greedy-vs-reluctant-search):
+
+Greedy search matches the start of the search string first (the < part of the tag) then goes to the end of the string and starts working backwards, looking for the end part of the search string (the > part of the tag). Once it finds the first match it stops and replaces EVERYTHING inbetween. 
+
+The reluctant search, on the other hand, will identify the first part of the search string then keep moving forward until it finds the first instance of the `>` tag, and only remove the text between. It thus can identify multiple matches within the same string and will be much more conservative about what is removed.
+
+```
+TEXT_00 <tag1>TEXT_01<tag1> TEXT_02
+        \__r_/       \__r_/          r = reluctant search
+        \________g________/          g = greedy search
+```
+
+The differences in expressions are: 
+
+```{r}
+x <- "TEXT_00 <tag1>TEXT_01<tag1> TEXT_02"
+gsub( "<.*>", "", x )    # greedy search
+gsub( "<.*?>", "", x )   # reluctant search
+```
+
+
+
+#### Non-Ascii Text 
+
+Many text sources will use encodings that not only include typeset characters, but also letters with special accents or symbols from foreign languages. 
+
+```{r}
+## Text with non-latin ascii characters 
+c("Ekstr\u00f8m", "J\u00f6reskog", "bi\u00dfchen Z\u00fcrcher")
+```
+
+It is problematic mostly when you are trying to count occurrences of things: 
+
+```{r}
+"San José" == "San Jose"
+```
+
+The fix would be to go through and figure out every single substitution necessary to convert the text to a basic Latin encoding, which would be quite onerous.  
+
+```{r, eval=F}
+x <- gsub( 'é', 'e', x )
+x <- gsub( 'ø', 'o', x )
+```
+
+Fortunately these libraries have already been built, making the substitutions quite simple: 
+
+```{r}
+x <- c("Ekstr\u00f8m", "J\u00f6reskog", "bi\u00dfchen Z\u00fcrcher")
+#> [1] "Ekstrøm"         "Jöreskog"        "bißchen Zürcher"
+
+stringi::stri_trans_general( x, "latin-ascii" )
+```
+
+
+#### Apply Pre-Processing Steps 
+
+The titles in the current dataset are fairly clean but they still need a little pre-processing to address some issues introduced by typesetting:  
+
+1. Convert strange spaces to regular spaces 
+2. Remove HTML tags 
+3. Convert all text to a Latin ASCII encoding
+
+<br>
+<hr>
+<br>
+
+
+### **Step 02:** Create a Performance Measure 
+
+We can track article performance in many ways. This dataset contains "claps", which are the equivalent of a thumbs-up or like on other platforms. 
+
+It also contains a responses category, but that is a little more complicated to interpret because comment might be asking for clarification because the article was poorly-written or arguing a counter-point becaue the article was controversial. 
+
+We will use **claps** to measure article popularity, but note the skew in the raw measure:
+
+```{r, fig.width=10}
+hist( d$clap, main="Raw Clap Count",
+      xlim=c(1,950), breaks=5000, col="gray20", border="white" )
+hist( log10(d$clap+1), main="Logged Clap Score",
+      col="gray20", border="white", breaks=100 )
+```
+
+Create a new **clap score** to measure performance using the following log transformation:
+
+```{r}
+d$clap.score <- log10( d$clap + 1 )
+```
+
+
+<br>
+<hr> 
+<br>
+
+
+**Create your clap score, then answer Q1A-Q1D using the clean title strings.**
+
+
+<br>
+<hr>
+<br>
+
+
+## Part 02: Measuring Title Performance   
 
 The list below contains examples of blogs belonging to groups of title styles. Which title style consistently gets the most claps (clap score)? 
 
@@ -92,12 +347,18 @@ All other titles not included in the categories above.
 **Create regular expressions that allow you to identify ALL of the titles that belong in each category above** (approximately one expression per style category). The regular expressions will match patterns that correspond to the stylistic genres of titles rather than trying to match any exact title. 
 
 ```{r, eval=F}
-
 # grepl returns TRUE for all cases that 
 # match the expression and FALSE otherwise 
 
 category.members <- grepl( "expression", titles )
 ```
+
+
+Note that some titles might belong to multiple styles. For this assignment treat each style as discrete (a title uses the style or does not) and ignore the fact that some titles might end up in a couple of categories.  
+
+![images/title-sets.png]
+
+Also note that the OTHER category will be defined as (NOT STYLE A) AND (NOT STYLE B) etc, so you may need to review your compound regular expressions. 
 
 
 > **For each of the styles above report the following while showing your work:** 
@@ -118,88 +379,17 @@ The **average** generically means the central tendency of a distribution. Note t
 
 
 
-### Text Pre-Processing Steps
-
-The article title text is fairly clean and needs little pre-processing, but there are a couple of important issues that need to be addressed. 
-
-1. Remove strange spaces 
-2. Remove HTML tags 
-3. Remove "hair space" dash marks
-
-There are special spaces that appear randomly in some titles. They will appear identical to the invisible eye but will cause problems when you are trying to split titles into words. Replace them with regular spaces: 
-
-```{r}
-# replace all versions of space 
-# including special styles like
-# the 'hair space'  with regular spaces
-d$title <- gsub( "\\s", " ", d$title )
-```
-
-
-Some titles include HTML tags for emphasis. They will always occur at the start and end of the titles: 
-
-```{r, eval=F}
-"<strong class=\"markup--strong markup--h3-strong\">Why 70% of Entrepreneurs Are Ending Their Pitches the Wrong Way</strong>"
-"<strong class=\"markup--strong markup--h3-strong\">Tackle Negative Core Beliefs</strong>"
-```
-
-There are some stylized dashes in the text that are book-ended with "hair space" characters, which are thinner-than-usual spaces. 
-
-In the UTF-8 text encoding they come out as:
-
-```
-<U+200A>—<U+200A>
-```
-
-Since they are not actual words, remove all of these hairspace-dashes from the text. 
-
-<br>
-<hr>
-<br>
-
-### Create a Performance Measure 
-
-We can track article performance in many ways. This dataset contains "claps", which are the equivalent of a thumbs-up or like on other platforms. 
-
-It also contains a responses category, but that is a little more complicated to interpret because comment might be asking for clarification because the article was poorly-written or arguing a counter-point becaue the article was controversial. 
-
-We will use **claps** to measure article popularity, but note the skew in the raw measure:
-
-```{r, fig.width=10}
-hist( d$clap, main="Raw Clap Count",
-      xlim=c(1,950), breaks=5000, col="gray20", border="white" )
-hist( log10(d$clap+1), main="Logged Clap Score",
-      col="gray20", border="white", breaks=100 )
-```
-
-Create a new **clap score** to measure performance using the following log transformation:
-
-```{r}
-d$clap.score <- log10( d$clap + 1 )
-```
-
-
-<br>
-<hr> 
-<br>
-
-
-**First apply the text pre-processing steps to the titles and create your clap score, then answer Q1A-Q1D using the clean title strings.**
-
-
-<br>
-<hr>
-<br>
 
 
 
 
 
 
-## **Q2 - Content Analysis** 
+
+## Part 03: Content Analysis 
 
 
-Split each title into a group of distinct words. 
+Conduct basic content analysis by splitting each title into a set of distinct words, then answer the following: 
 
 ### **Q2-A:** What are the 25 most common words used across all titles? 
 
@@ -209,12 +399,23 @@ Split each title into a group of distinct words.
 
 ### **Q2-D:** What is the most common word used at the end of a title? 
 
+
 *Hint: be sure to convert all words to the same case so that variants like "How" and "how" are treated the same.* 
 
 ```{r,eval=F}
 x <- tolower( x )
 ```
 
+
+*Hint: remove punctuation so that it does not impact your word count.*
+
+```{r}
+x <- "Why Do Financial Models Break?"
+strsplit( x, " " ) %>% unlist()
+
+x <- gsub( "[[:punct:]]", "", x )
+strsplit( x, " " ) %>% unlist()
+```
 
 <br>
 <hr>
@@ -341,13 +542,13 @@ first.six.titles %>% strsplit( " " ) %>% sapply( length )
 
 
 
-## **Q3 - Length of Title** 
+## Part 04: Title Length   
 
 Does the length of the title matter? 
 
 
 
-### **Q3-A:** Do titles with more words get better clap scores?** 
+### **Q3-A:** Do titles with more words get better clap scores? 
 
 Count the number of words in each title. 
 
@@ -366,7 +567,7 @@ plot( f, y )
 ```
 
 
-### **Q3-B:** Do longer titles get better clap scores?** 
+### **Q3-B:** Do longer titles get better clap scores? 
 
 Repeat the analysis from Q3-A but this time measuring title length by the number of characters in the title. 
 
@@ -379,7 +580,7 @@ Repeat the analysis from Q3-A but this time measuring title length by the number
 # CHALLENGE QUESTIONS
 
 
-## CHALLENGE Q1
+## Challenge Q1
 
 Is it better to use common words or unique words in your title? 
 
@@ -437,7 +638,7 @@ data.frame( x, rank.x, centile.x, top.25.x, bot.25.x ) %>% pander()
 ```
 
 
-## CHALLENGE Q2
+## Challenge Q2
 
 Find a package in R that will tabulate sentiment scores for a set of text. 
 
@@ -449,7 +650,7 @@ These packages will return counts or percentages of words with positive salience
 
 
 
-## CHALLENGE Q3 
+## Challenge Q3 
 
 Put all of the steps above together into a single regression model:
 

@@ -13,7 +13,7 @@
 
 <title>Lab 03 - Regular Expressions</title>
 
-<script src="lab-03-instructions_files/header-attrs-2.17/header-attrs.js"></script>
+<script src="lab-03-instructions_files/header-attrs-2.27/header-attrs.js"></script>
 <script src="lab-03-instructions_files/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="lab-03-instructions_files/bootstrap-3.3.5/css/readable.min.css" rel="stylesheet" />
@@ -54,7 +54,7 @@
 </style>
 <style type="text/css" data-origin="pandoc">
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -258,12 +258,22 @@ pre code {
 
 <div id="TOC">
 <ul>
-<li><a href="#data" id="toc-data">Data</a></li>
-<li><a href="#lab-questions" id="toc-lab-questions">Lab Questions</a>
+<li><a href="#data" id="toc-data">DATA</a></li>
+<li><a href="#lab-questions" id="toc-lab-questions">LAB QUESTIONS</a>
 <ul>
-<li><a href="#q1---comparing-title-styles"
-id="toc-q1---comparing-title-styles"><strong>Q1 - Comparing Title
-Styles</strong></a>
+<li><a href="#part-01-data-cleaning" id="toc-part-01-data-cleaning">Part
+01: Data Cleaning</a>
+<ul>
+<li><a href="#step-01-text-pre-processing"
+id="toc-step-01-text-pre-processing"><strong>Step 01:</strong> Text
+Pre-Processing</a></li>
+<li><a href="#step-02-create-a-performance-measure"
+id="toc-step-02-create-a-performance-measure"><strong>Step 02:</strong>
+Create a Performance Measure</a></li>
+</ul></li>
+<li><a href="#part-02-measuring-title-performance"
+id="toc-part-02-measuring-title-performance">Part 02: Measuring Title
+Performance</a>
 <ul>
 <li><a
 href="#q1-a-how-many-titles-did-you-identify-within-each-category"
@@ -280,15 +290,9 @@ Which style of title performs the best overall?</a></li>
 <li><a href="#q1-d-does-the-choice-of-average-matter"
 id="toc-q1-d-does-the-choice-of-average-matter"><strong>Q1-D:</strong>
 Does the choice of average matter?</a></li>
-<li><a href="#text-pre-processing-steps"
-id="toc-text-pre-processing-steps">Text Pre-Processing Steps</a></li>
-<li><a href="#create-a-performance-measure"
-id="toc-create-a-performance-measure">Create a Performance
-Measure</a></li>
 </ul></li>
-<li><a href="#q2---content-analysis"
-id="toc-q2---content-analysis"><strong>Q2 - Content
-Analysis</strong></a>
+<li><a href="#part-03-content-analysis"
+id="toc-part-03-content-analysis">Part 03: Content Analysis</a>
 <ul>
 <li><a
 href="#q2-a-what-are-the-25-most-common-words-used-across-all-titles"
@@ -308,23 +312,23 @@ href="#q2-d-what-is-the-most-common-word-used-at-the-end-of-a-title"
 id="toc-q2-d-what-is-the-most-common-word-used-at-the-end-of-a-title"><strong>Q2-D:</strong>
 What is the most common word used at the end of a title?</a></li>
 </ul></li>
-<li><a href="#q3---length-of-title"
-id="toc-q3---length-of-title"><strong>Q3 - Length of Title</strong></a>
+<li><a href="#part-04-title-length" id="toc-part-04-title-length">Part
+04: Title Length</a>
 <ul>
 <li><a href="#q3-a-do-titles-with-more-words-get-better-clap-scores"
 id="toc-q3-a-do-titles-with-more-words-get-better-clap-scores"><strong>Q3-A:</strong>
-Do titles with more words get better clap scores?**</a></li>
+Do titles with more words get better clap scores?</a></li>
 <li><a href="#q3-b-do-longer-titles-get-better-clap-scores"
 id="toc-q3-b-do-longer-titles-get-better-clap-scores"><strong>Q3-B:</strong>
-Do longer titles get better clap scores?**</a></li>
+Do longer titles get better clap scores?</a></li>
 </ul></li>
 </ul></li>
 <li><a href="#challenge-questions"
 id="toc-challenge-questions">CHALLENGE QUESTIONS</a>
 <ul>
-<li><a href="#challenge-q1" id="toc-challenge-q1">CHALLENGE Q1</a></li>
-<li><a href="#challenge-q2" id="toc-challenge-q2">CHALLENGE Q2</a></li>
-<li><a href="#challenge-q3" id="toc-challenge-q3">CHALLENGE Q3</a></li>
+<li><a href="#challenge-q1" id="toc-challenge-q1">Challenge Q1</a></li>
+<li><a href="#challenge-q2" id="toc-challenge-q2">Challenge Q2</a></li>
+<li><a href="#challenge-q3" id="toc-challenge-q3">Challenge Q3</a></li>
 </ul></li>
 <li><a href="#submission-instructions"
 id="toc-submission-instructions">Submission Instructions</a></li>
@@ -332,7 +336,7 @@ id="toc-submission-instructions">Submission Instructions</a></li>
 </div>
 
 <div id="data" class="section level1">
-<h1>Data</h1>
+<h1>DATA</h1>
 <p>This lab utilizes a <a
 href="https://www.kaggle.com/dorianlazar/medium-articles-dataset/notebooks">free
 Kaggle dataset</a> describing the popularity of articles on the blogging
@@ -353,12 +357,11 @@ each article</li>
 was published</li>
 <li><strong>date</strong> - date of publication in style YYYY-MM-DD</li>
 </ul>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="co"># URL &lt;- &quot;https://www.dropbox.com/s/tizgdsat2mziod6/medium-data-utf8.csv?dl=1&quot;</span></span>
-<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>URL <span class="ot">&lt;-</span> <span class="st">&quot;https://raw.githubusercontent.com/DS4PS/cpp-527-fall-2020/master/labs/data/medium-data-utf8-v2.csv&quot;</span></span>
-<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">read.csv</span>( URL )</span>
-<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a></span>
-<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>preview.these <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;title&quot;</span>, <span class="st">&quot;subtitle&quot;</span>, <span class="st">&quot;claps&quot;</span>, <span class="st">&quot;reading_time&quot;</span>, <span class="st">&quot;publication&quot;</span>, <span class="st">&quot;date&quot;</span>)</span>
-<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a><span class="fu">head</span>( d[preview.these] ) <span class="sc">%&gt;%</span> <span class="fu">pander</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a>URL <span class="ot">&lt;-</span> <span class="st">&quot;https://raw.githubusercontent.com/DS4PS/cpp-527-fall-2020/master/labs/data/medium-data-utf8-v2.csv&quot;</span></span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">read.csv</span>( URL )</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>preview.these <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;title&quot;</span>, <span class="st">&quot;subtitle&quot;</span>, <span class="st">&quot;claps&quot;</span>, <span class="st">&quot;reading_time&quot;</span>, <span class="st">&quot;publication&quot;</span>, <span class="st">&quot;date&quot;</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a><span class="fu">head</span>( d[preview.these] ) <span class="sc">%&gt;%</span> <span class="fu">pander</span>()</span></code></pre></div>
 <table style="width:100%;">
 <caption>Table continues below</caption>
 <colgroup>
@@ -377,8 +380,8 @@ was published</li>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="center">A Beginnerâ€™s Guide to Word Embedding with Gensim
-Word2VecÂ Model</td>
+<td align="center">A Beginner’s Guide to Word Embedding with Gensim
+Word2Vec Model</td>
 <td align="center"></td>
 <td align="center">850</td>
 <td align="center">8</td>
@@ -391,22 +394,22 @@ PyTorch Geometric</td>
 <td align="center">9</td>
 </tr>
 <tr class="odd">
-<td align="center">How to Use ggplot2 inÂ Python</td>
-<td align="center">A Grammar of Graphics forÂ Python</td>
+<td align="center">How to Use ggplot2 in Python</td>
+<td align="center">A Grammar of Graphics for Python</td>
 <td align="center">767</td>
 <td align="center">5</td>
 </tr>
 <tr class="even">
 <td align="center">Databricks: How to Save Files in CSV on Your
-LocalÂ Computer</td>
-<td align="center">When I work on Python projectsÂ dealingâ€¦</td>
+Local Computer</td>
+<td align="center">When I work on Python projects dealing…</td>
 <td align="center">354</td>
 <td align="center">4</td>
 </tr>
 <tr class="odd">
 <td align="center">A Step-by-Step Implementation of Gradient Descent and
 Backpropagation</td>
-<td align="center">One example of buildingÂ neuralâ€¦</td>
+<td align="center">One example of building neural…</td>
 <td align="center">211</td>
 <td align="center">4</td>
 </tr>
@@ -461,9 +464,273 @@ Backpropagation</td>
 <p><br></p>
 </div>
 <div id="lab-questions" class="section level1">
-<h1>Lab Questions</h1>
-<div id="q1---comparing-title-styles" class="section level2">
-<h2><strong>Q1 - Comparing Title Styles</strong></h2>
+<h1>LAB QUESTIONS</h1>
+<div id="part-01-data-cleaning" class="section level2">
+<h2>Part 01: Data Cleaning</h2>
+<div id="step-01-text-pre-processing" class="section level3">
+<h3><strong>Step 01:</strong> Text Pre-Processing</h3>
+<p>The takeaway of PART 01 is that text is a nuanced type of data that
+requires attention to some of the details. You will find lots of simple
+text cleaning recipes that allow you to quickly convert regular text
+into a format amenable to content analysis and modeling. The default
+steps will work pretty well, but might not capture all of the edge
+cases.</p>
+<p>You will rarely have enough time to identify all of the edge cases
+and <em>MOST</em> will not change the results of a study. Your level of
+fine-tuning will depend on whether you are in preliminary and
+exploratory phases of a study, or if you are fine-tuning something that
+needs to be 100 percent precise.</p>
+<p>The “regular expressions” framework is powerful syntax useful for
+cleaning both text and numeric datasets, parsing data from strings, and
+formatting output in reports. Although regex takes practice to master,
+the important skill is understanding how to recognize common problems
+encountered when working with text as data and using regular expressions
+to fix them.</p>
+<hr>
+<p>Typesetting is the practice of laying out text on a page so that it
+looks nice and is easy to read. Typesetting programs utilize many tools
+that will improve readability or branding but might cause problems for
+text analysis. For example, stylized quotation marks are not recognized
+as quotes by R, letters with accents or foreign language symbols get
+mistranslated into text when data is encoded as UTF-8 (the default
+encoding when reading data files), and long dashes will look like the
+subtraction operator but act like text.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="do">### stylized quote marks</span></span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="co">#   &quot; ’ &quot; == &quot; &#39; &quot;    </span></span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a><span class="co">#   [1] FALSE</span></span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a><span class="do">### regular dash</span></span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a><span class="co">#   9 - 6</span></span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a><span class="co">#   [1] 3</span></span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a><span class="do">### long dash</span></span>
+<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a><span class="co">#   9 – 6</span></span>
+<span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a><span class="co">#   &gt; Error: unexpected invalid token in &quot;9 –&quot;</span></span></code></pre></div>
+<div id="strange-spaces" class="section level4">
+<h4>Strange Spaces</h4>
+<p>Typesetting utilizes a variety of whitespace characters for aesthetic
+purposes. Check out a list here: <a
+href="https://en.wikipedia.org/wiki/Whitespace_character"
+class="uri">https://en.wikipedia.org/wiki/Whitespace_character</a></p>
+<p>Some of these special spaces appear randomly in some of the titles.
+They will appear identical to a regular space the invisible eye but will
+cause problems when you are trying to split titles into words.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>v <span class="ot">&lt;-</span> <span class="st">&quot;normal types of whitespace&quot;</span></span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="fu">strsplit</span>( v, <span class="st">&quot; &quot;</span> ) <span class="sc">%&gt;%</span> <span class="fu">unlist</span>()</span></code></pre></div>
+<pre><code>## [1] &quot;normal&quot;     &quot;types&quot;      &quot;of&quot;         &quot;whitespace&quot;</code></pre>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="co"># THE PROBLEM:</span></span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>v <span class="ot">&lt;-</span> <span class="st">&quot;four different types of whitespace&quot;</span></span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a><span class="fu">strsplit</span>( v, <span class="st">&quot; &quot;</span> ) <span class="sc">%&gt;%</span> <span class="fu">unlist</span>()</span></code></pre></div>
+<pre><code>## [1] &quot;four&quot;                          &quot;different types of whitespace&quot;</code></pre>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">cat</span>( v, <span class="at">sep=</span><span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span> )</span></code></pre></div>
+<pre><code>## four different types of whitespace</code></pre>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="fu">gsub</span>( <span class="st">&quot;[ ]&quot;</span>, <span class="st">&quot; _x_ &quot;</span>, v )  <span class="co"># NORMAL SPACE </span></span></code></pre></div>
+<pre><code>## [1] &quot;four _x_ different types of whitespace&quot;</code></pre>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="fu">gsub</span>( <span class="st">&quot;[ ]&quot;</span>, <span class="st">&quot; _x_ &quot;</span>, v )  <span class="co"># HAIRSPACE</span></span></code></pre></div>
+<pre><code>## [1] &quot;four different _x_ types of whitespace&quot;</code></pre>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="fu">gsub</span>( <span class="st">&quot;[ ]&quot;</span>, <span class="st">&quot; _x_ &quot;</span>, v )  <span class="co"># EM QUAD SPACE</span></span></code></pre></div>
+<pre><code>## [1] &quot;four different types _x_ of whitespace&quot;</code></pre>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a><span class="fu">gsub</span>( <span class="st">&quot;[ ]&quot;</span>, <span class="st">&quot; _x_ &quot;</span>, v )  <span class="co"># FIGURE SPACE</span></span></code></pre></div>
+<pre><code>## [1] &quot;four different types of _x_ whitespace&quot;</code></pre>
+<p><strong>Replacing special whitespaces with regular
+spaces:</strong></p>
+<p>Regular expressions have an operator <em>“\s”</em> that will match
+most types of spaces including tabs and newlines. R has some equivalent
+(but not identical) expressions that represent pre-defined sets of
+characters like numbers, letters, punctuation, and spaces. Both work
+fine in find-and-replace commands:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a><span class="co"># TYPICAL FIND AND REPLACE STRATEGIES </span></span>
+<span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a><span class="fu">gsub</span>( <span class="st">&quot;</span><span class="sc">\\</span><span class="st">s&quot;</span>, <span class="st">&quot; _x_ &quot;</span>, v )</span></code></pre></div>
+<pre><code>## [1] &quot;four _x_ different _x_ types _x_ of whitespace&quot;</code></pre>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a><span class="fu">gsub</span>( <span class="st">&quot;[[:space:]]&quot;</span>, <span class="st">&quot; _x_ &quot;</span>, v )</span></code></pre></div>
+<pre><code>## [1] &quot;four _x_ different _x_ types _x_ of whitespace&quot;</code></pre>
+<p>Note that the recommended regular expression “recipes” don’t address
+all of the whitespace problems here. They fail to identify the FIGURE
+SPACE character (I have no idea why that one is special). As a result,
+your processed text would look something like this:</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" tabindex="-1"></a><span class="co"># replace all spaces with regular space</span></span>
+<span id="cb21-2"><a href="#cb21-2" tabindex="-1"></a>v2 <span class="ot">&lt;-</span> <span class="fu">gsub</span>( <span class="st">&quot;[[:space:]]&quot;</span>, <span class="st">&quot; &quot;</span>, v )</span>
+<span id="cb21-3"><a href="#cb21-3" tabindex="-1"></a><span class="fu">strsplit</span>( v2, <span class="st">&quot; &quot;</span> ) <span class="sc">%&gt;%</span> <span class="fu">unlist</span>()</span></code></pre></div>
+<pre><code>## [1] &quot;four&quot;          &quot;different&quot;     &quot;types&quot;         &quot;of whitespace&quot;</code></pre>
+<p>Your counts of “OF” and “WHITESPACE” would be off because these words
+are not being successfully split. Start with the generic strategy and if
+you are still finding cases where the string split operation is not
+working properly then add new gsub() steps for those specific whitespace
+characters.</p>
+<p><strong>A note about the set operator:</strong></p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" tabindex="-1"></a><span class="co"># STRINGS VERSUS SETS </span></span>
+<span id="cb23-2"><a href="#cb23-2" tabindex="-1"></a>v <span class="ot">&lt;-</span> <span class="fu">c</span>( <span class="st">&quot;a&quot;</span>,<span class="st">&quot;b&quot;</span>,<span class="st">&quot;c&quot;</span>, <span class="st">&quot;abc&quot;</span> )</span>
+<span id="cb23-3"><a href="#cb23-3" tabindex="-1"></a></span>
+<span id="cb23-4"><a href="#cb23-4" tabindex="-1"></a><span class="co"># ORDER MATTERS IN STRINGS  </span></span>
+<span id="cb23-5"><a href="#cb23-5" tabindex="-1"></a><span class="fu">gsub</span>( <span class="st">&quot;ab&quot;</span>,   <span class="st">&quot;X&quot;</span>, v )     <span class="co"># string &#39;ab&#39;</span></span></code></pre></div>
+<pre><code>## [1] &quot;a&quot;  &quot;b&quot;  &quot;c&quot;  &quot;Xc&quot;</code></pre>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" tabindex="-1"></a><span class="fu">gsub</span>( <span class="st">&quot;[ab]&quot;</span>, <span class="st">&quot;X&quot;</span>, v )     <span class="co"># set a OR b</span></span></code></pre></div>
+<pre><code>## [1] &quot;X&quot;   &quot;X&quot;   &quot;c&quot;   &quot;XXc&quot;</code></pre>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" tabindex="-1"></a><span class="co"># NOT IN SETS </span></span>
+<span id="cb27-2"><a href="#cb27-2" tabindex="-1"></a><span class="fu">gsub</span>( <span class="st">&quot;ba&quot;</span>,   <span class="st">&quot;X&quot;</span>, v )     <span class="co"># b AND a in that order</span></span></code></pre></div>
+<pre><code>## [1] &quot;a&quot;   &quot;b&quot;   &quot;c&quot;   &quot;abc&quot;</code></pre>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" tabindex="-1"></a><span class="fu">gsub</span>( <span class="st">&quot;[ba]&quot;</span>, <span class="st">&quot;X&quot;</span>, v )     <span class="co"># b OR a</span></span></code></pre></div>
+<pre><code>## [1] &quot;X&quot;   &quot;X&quot;   &quot;c&quot;   &quot;XXc&quot;</code></pre>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" tabindex="-1"></a><span class="co"># THESE ARE EQUIVALENT</span></span>
+<span id="cb31-2"><a href="#cb31-2" tabindex="-1"></a><span class="fu">gsub</span>( <span class="st">&quot;b|a&quot;</span>,   <span class="st">&quot;X&quot;</span>, v )   <span class="co"># b OR a</span></span></code></pre></div>
+<pre><code>## [1] &quot;X&quot;   &quot;X&quot;   &quot;c&quot;   &quot;XXc&quot;</code></pre>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" tabindex="-1"></a><span class="fu">gsub</span>( <span class="st">&quot;[ba]&quot;</span>,  <span class="st">&quot;X&quot;</span>, v )   <span class="co"># b OR a</span></span></code></pre></div>
+<pre><code>## [1] &quot;X&quot;   &quot;X&quot;   &quot;c&quot;   &quot;XXc&quot;</code></pre>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" tabindex="-1"></a><span class="co"># ALSO THESE </span></span>
+<span id="cb35-2"><a href="#cb35-2" tabindex="-1"></a>v <span class="ot">&lt;-</span> <span class="st">&quot;four different types of whitespace&quot;</span></span>
+<span id="cb35-3"><a href="#cb35-3" tabindex="-1"></a><span class="fu">gsub</span>( <span class="st">&quot;[    ]&quot;</span>,  <span class="st">&quot; _x_ &quot;</span>, v )   <span class="co"># set of four</span></span></code></pre></div>
+<pre><code>## [1] &quot;four _x_ different _x_ types _x_ of _x_ whitespace&quot;</code></pre>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" tabindex="-1"></a><span class="fu">gsub</span>( <span class="st">&quot; | | | &quot;</span>, <span class="st">&quot; _x_ &quot;</span>, v )   <span class="co"># same using OR operators</span></span></code></pre></div>
+<pre><code>## [1] &quot;four _x_ different _x_ types _x_ of _x_ whitespace&quot;</code></pre>
+</div>
+<div id="html-tags" class="section level4">
+<h4>HTML Tags</h4>
+<p>Some titles include HTML tags for emphasis. They will always occur at
+the start and end of the titles:</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" tabindex="-1"></a><span class="st">&quot;&lt;strong class=</span><span class="sc">\&quot;</span><span class="st">markup--strong markup--h3-strong</span><span class="sc">\&quot;</span><span class="st">&gt;Why 70% of Entrepreneurs Are Ending Their Pitches the Wrong Way&lt;/strong&gt;&quot;</span></span>
+<span id="cb39-2"><a href="#cb39-2" tabindex="-1"></a><span class="st">&quot;&lt;strong class=</span><span class="sc">\&quot;</span><span class="st">markup--strong markup--h3-strong</span><span class="sc">\&quot;</span><span class="st">&gt;Tackle Negative Core Beliefs&lt;/strong&gt;&quot;</span></span></code></pre></div>
+<p>Similarly, there are some stylized typesetting characters that might
+appear as their unicode numbers instead of the text itself. For example,
+hairspaces will load as the following in UTF-8:</p>
+<pre><code>&lt;U+200A&gt;—&lt;U+200A&gt;</code></pre>
+<p>In both cases we want to remove these <code>&lt;tags&gt;</code> since
+their purpose is to format text, whereas we want to analyze the
+underlying text itself.</p>
+<p>Consider the following text and recipes for removing tags:</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="st">&quot;TEXT_00 &lt;tag1&gt;TEXT_01&lt;/tag1&gt; &lt;tag2&gt;-&lt;tag2&gt; TEXT_02 &lt;tag3&gt;TEXT_03&lt;/tag3&gt;&quot;</span></span>
+<span id="cb41-2"><a href="#cb41-2" tabindex="-1"></a></span>
+<span id="cb41-3"><a href="#cb41-3" tabindex="-1"></a><span class="co"># RECIPE: </span></span>
+<span id="cb41-4"><a href="#cb41-4" tabindex="-1"></a><span class="co"># start of string: &lt;</span></span>
+<span id="cb41-5"><a href="#cb41-5" tabindex="-1"></a><span class="co"># with any text in the middle: .</span></span>
+<span id="cb41-6"><a href="#cb41-6" tabindex="-1"></a><span class="co"># length can vary: *</span></span>
+<span id="cb41-7"><a href="#cb41-7" tabindex="-1"></a><span class="co"># end of string: &gt;</span></span>
+<span id="cb41-8"><a href="#cb41-8" tabindex="-1"></a></span>
+<span id="cb41-9"><a href="#cb41-9" tabindex="-1"></a><span class="co"># SHOULD RETURN: </span></span>
+<span id="cb41-10"><a href="#cb41-10" tabindex="-1"></a><span class="co"># &quot;TEXT_00 TEXT_01 - TEXT_02 TEXT_03&quot;</span></span>
+<span id="cb41-11"><a href="#cb41-11" tabindex="-1"></a></span>
+<span id="cb41-12"><a href="#cb41-12" tabindex="-1"></a><span class="fu">gsub</span>( <span class="st">&quot;&lt;.*&gt;&quot;</span>, <span class="st">&quot;&quot;</span>, x )</span></code></pre></div>
+<pre><code>## [1] &quot;TEXT_00 &quot;</code></pre>
+<p>What is happening here? Instead of matching each tag individually the
+expression matches the first <code>&lt;</code> and the last
+<code>&gt;</code> and removes everything between those characters, which
+includes most of the text.</p>
+<p>How can we be a bit more conservative? We might use a quantifier to
+limit the string length between tags:</p>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" tabindex="-1"></a><span class="fu">gsub</span>( <span class="st">&quot;&lt;.{1,15}&gt;&quot;</span>, <span class="st">&quot;&quot;</span>, x )</span></code></pre></div>
+<pre><code>## [1] &quot;TEXT_00 TEXT_01- TEXT_02 TEXT_03&quot;</code></pre>
+<p>But note that some HTML tags are quite long so this approach does not
+generalize well.</p>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" tabindex="-1"></a>x1 <span class="ot">&lt;-</span> <span class="st">&quot;&lt;strong class=markup--strong markup--h3-strong&gt;Why 70% of Entrepreneurs Are Ending Their Pitches the Wrong Way&lt;/strong&gt;&quot;</span></span>
+<span id="cb45-2"><a href="#cb45-2" tabindex="-1"></a>x2 <span class="ot">&lt;-</span> <span class="st">&quot;TEXT_00 &lt;U+200A&gt;T2&lt;U+200A&gt; TEXT_02&quot;</span></span>
+<span id="cb45-3"><a href="#cb45-3" tabindex="-1"></a><span class="fu">gsub</span>( <span class="st">&quot;&lt;.{1,20}&gt;&quot;</span>, <span class="st">&quot;&quot;</span>, x1 )   <span class="co"># misses one tag</span></span></code></pre></div>
+<pre><code>## [1] &quot;&lt;strong class=markup--strong markup--h3-strong&gt;Why 70% of Entrepreneurs Are Ending Their Pitches the Wrong Way&quot;</code></pre>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" tabindex="-1"></a><span class="fu">gsub</span>( <span class="st">&quot;&lt;.{1,20}&gt;&quot;</span>, <span class="st">&quot;&quot;</span>, x2 )   <span class="co"># removes text </span></span></code></pre></div>
+<pre><code>## [1] &quot;TEXT_00  TEXT_02&quot;</code></pre>
+<p>Another strategy might be to create a list of all tag types since
+removing the end tag first solves the problem:</p>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="st">&quot;&lt;strong class=markup--strong markup--h3-strong&gt;Why 70% of Entrepreneurs Are Ending Their Pitches the Wrong Way&lt;/strong&gt;&quot;</span></span>
+<span id="cb49-2"><a href="#cb49-2" tabindex="-1"></a>x1 <span class="ot">&lt;-</span> <span class="fu">gsub</span>( <span class="st">&quot;&lt;/strong&gt;&quot;</span>, <span class="st">&quot;&quot;</span>,  x )   </span>
+<span id="cb49-3"><a href="#cb49-3" tabindex="-1"></a>x2 <span class="ot">&lt;-</span> <span class="fu">gsub</span>( <span class="st">&quot;&lt;strong.*&gt;&quot;</span>, <span class="st">&quot;&quot;</span>, x1 )  </span>
+<span id="cb49-4"><a href="#cb49-4" tabindex="-1"></a>x2</span></code></pre></div>
+<pre><code>## [1] &quot;Why 70% of Entrepreneurs Are Ending Their Pitches the Wrong Way&quot;</code></pre>
+<p>But there are LOTS of HTML tags, and we would still have issues if
+there are multiple HTML tags present in the same title. So this strategy
+also does not generalize well.</p>
+<p>Instead, regular expressions have a way to modulate <a
+href="https://watts-college.github.io/paf-514-template/lectures/string-processing.html#greedy-vs-reluctant-search">GREEDY
+versus RELUCTANT searches</a>:</p>
+<p>Greedy search matches the start of the search string first (the &lt;
+part of the tag) then goes to the end of the string and starts working
+backwards, looking for the end part of the search string (the &gt; part
+of the tag). Once it finds the first match it stops and replaces
+EVERYTHING inbetween.</p>
+<p>The reluctant search, on the other hand, will identify the first part
+of the search string then keep moving forward until it finds the first
+instance of the <code>&gt;</code> tag, and only remove the text between.
+It thus can identify multiple matches within the same string and will be
+much more conservative about what is removed.</p>
+<pre><code>TEXT_00 &lt;tag1&gt;TEXT_01&lt;tag1&gt; TEXT_02
+        \__r_/       \__r_/          r = reluctant search
+        \________g________/          g = greedy search</code></pre>
+<p>The differences in expressions are:</p>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="st">&quot;TEXT_00 &lt;tag1&gt;TEXT_01&lt;tag1&gt; TEXT_02&quot;</span></span>
+<span id="cb52-2"><a href="#cb52-2" tabindex="-1"></a><span class="fu">gsub</span>( <span class="st">&quot;&lt;.*&gt;&quot;</span>, <span class="st">&quot;&quot;</span>, x )    <span class="co"># greedy search</span></span></code></pre></div>
+<pre><code>## [1] &quot;TEXT_00  TEXT_02&quot;</code></pre>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" tabindex="-1"></a><span class="fu">gsub</span>( <span class="st">&quot;&lt;.*?&gt;&quot;</span>, <span class="st">&quot;&quot;</span>, x )   <span class="co"># reluctant search</span></span></code></pre></div>
+<pre><code>## [1] &quot;TEXT_00 TEXT_01 TEXT_02&quot;</code></pre>
+</div>
+<div id="non-ascii-text" class="section level4">
+<h4>Non-Ascii Text</h4>
+<p>Many text sources will use encodings that not only include typeset
+characters, but also letters with special accents or symbols from
+foreign languages.</p>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" tabindex="-1"></a><span class="do">## Text with non-latin ascii characters </span></span>
+<span id="cb56-2"><a href="#cb56-2" tabindex="-1"></a><span class="fu">c</span>(<span class="st">&quot;Ekstr\u00f8m&quot;</span>, <span class="st">&quot;J\u00f6reskog&quot;</span>, <span class="st">&quot;bi\u00dfchen Z\u00fcrcher&quot;</span>)</span></code></pre></div>
+<pre><code>## [1] &quot;Ekstrøm&quot;         &quot;Jöreskog&quot;        &quot;bißchen Zürcher&quot;</code></pre>
+<p>It is problematic mostly when you are trying to count occurrences of
+things:</p>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" tabindex="-1"></a><span class="st">&quot;San José&quot;</span> <span class="sc">==</span> <span class="st">&quot;San Jose&quot;</span></span></code></pre></div>
+<pre><code>## [1] FALSE</code></pre>
+<p>The fix would be to go through and figure out every single
+substitution necessary to convert the text to a basic Latin encoding,
+which would be quite onerous.</p>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">gsub</span>( <span class="st">&#39;é&#39;</span>, <span class="st">&#39;e&#39;</span>, x )</span>
+<span id="cb60-2"><a href="#cb60-2" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">gsub</span>( <span class="st">&#39;ø&#39;</span>, <span class="st">&#39;o&#39;</span>, x )</span></code></pre></div>
+<p>Fortunately these libraries have already been built, making the
+substitutions quite simple:</p>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Ekstr\u00f8m&quot;</span>, <span class="st">&quot;J\u00f6reskog&quot;</span>, <span class="st">&quot;bi\u00dfchen Z\u00fcrcher&quot;</span>)</span>
+<span id="cb61-2"><a href="#cb61-2" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Ekstrøm&quot;         &quot;Jöreskog&quot;        &quot;bißchen Zürcher&quot;</span></span>
+<span id="cb61-3"><a href="#cb61-3" tabindex="-1"></a></span>
+<span id="cb61-4"><a href="#cb61-4" tabindex="-1"></a>stringi<span class="sc">::</span><span class="fu">stri_trans_general</span>( x, <span class="st">&quot;latin-ascii&quot;</span> )</span></code></pre></div>
+<pre><code>## [1] &quot;Ekstrom&quot;          &quot;Joreskog&quot;         &quot;bisschen Zurcher&quot;</code></pre>
+</div>
+<div id="apply-pre-processing-steps" class="section level4">
+<h4>Apply Pre-Processing Steps</h4>
+<p>The titles in the current dataset are fairly clean but they still
+need a little pre-processing to address some issues introduced by
+typesetting:</p>
+<ol style="list-style-type: decimal">
+<li>Convert strange spaces to regular spaces</li>
+<li>Remove HTML tags</li>
+<li>Convert all text to a Latin ASCII encoding</li>
+</ol>
+<br>
+<hr>
+<p><br></p>
+</div>
+</div>
+<div id="step-02-create-a-performance-measure" class="section level3">
+<h3><strong>Step 02:</strong> Create a Performance Measure</h3>
+<p>We can track article performance in many ways. This dataset contains
+“claps”, which are the equivalent of a thumbs-up or like on other
+platforms.</p>
+<p>It also contains a responses category, but that is a little more
+complicated to interpret because comment might be asking for
+clarification because the article was poorly-written or arguing a
+counter-point becaue the article was controversial.</p>
+<p>We will use <strong>claps</strong> to measure article popularity, but
+note the skew in the raw measure:</p>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" tabindex="-1"></a><span class="fu">hist</span>( d<span class="sc">$</span>clap, <span class="at">main=</span><span class="st">&quot;Raw Clap Count&quot;</span>,</span>
+<span id="cb63-2"><a href="#cb63-2" tabindex="-1"></a>      <span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">950</span>), <span class="at">breaks=</span><span class="dv">5000</span>, <span class="at">col=</span><span class="st">&quot;gray20&quot;</span>, <span class="at">border=</span><span class="st">&quot;white&quot;</span> )</span></code></pre></div>
+<p><img src="lab-03-instructions_files/figure-html/unnamed-chunk-17-1.png" width="960" /></p>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" tabindex="-1"></a><span class="fu">hist</span>( <span class="fu">log10</span>(d<span class="sc">$</span>clap<span class="sc">+</span><span class="dv">1</span>), <span class="at">main=</span><span class="st">&quot;Logged Clap Score&quot;</span>,</span>
+<span id="cb64-2"><a href="#cb64-2" tabindex="-1"></a>      <span class="at">col=</span><span class="st">&quot;gray20&quot;</span>, <span class="at">border=</span><span class="st">&quot;white&quot;</span>, <span class="at">breaks=</span><span class="dv">100</span> )</span></code></pre></div>
+<p><img src="lab-03-instructions_files/figure-html/unnamed-chunk-17-2.png" width="960" /></p>
+<p>Create a new <strong>clap score</strong> to measure performance using
+the following log transformation:</p>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" tabindex="-1"></a>d<span class="sc">$</span>clap.score <span class="ot">&lt;-</span> <span class="fu">log10</span>( d<span class="sc">$</span>clap <span class="sc">+</span> <span class="dv">1</span> )</span></code></pre></div>
+<br>
+<hr>
+<p><br></p>
+<p><strong>Create your clap score, then answer Q1A-Q1D using the clean
+title strings.</strong></p>
+<br>
+<hr>
+<p><br></p>
+</div>
+</div>
+<div id="part-02-measuring-title-performance" class="section level2">
+<h2>Part 02: Measuring Title Performance</h2>
 <p>The list below contains examples of blogs belonging to groups of
 title styles. Which title style consistently gets the most claps (clap
 score)?</p>
@@ -503,10 +770,18 @@ the titles that belong in each category above</strong> (approximately
 one expression per style category). The regular expressions will match
 patterns that correspond to the stylistic genres of titles rather than
 trying to match any exact title.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="co"># grepl returns TRUE for all cases that </span></span>
-<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="co"># match the expression and FALSE otherwise </span></span>
-<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a></span>
-<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>category.members <span class="ot">&lt;-</span> <span class="fu">grepl</span>( <span class="st">&quot;expression&quot;</span>, titles )</span></code></pre></div>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" tabindex="-1"></a><span class="co"># grepl returns TRUE for all cases that </span></span>
+<span id="cb66-2"><a href="#cb66-2" tabindex="-1"></a><span class="co"># match the expression and FALSE otherwise </span></span>
+<span id="cb66-3"><a href="#cb66-3" tabindex="-1"></a></span>
+<span id="cb66-4"><a href="#cb66-4" tabindex="-1"></a>category.members <span class="ot">&lt;-</span> <span class="fu">grepl</span>( <span class="st">&quot;expression&quot;</span>, titles )</span></code></pre></div>
+<p>Note that some titles might belong to multiple styles. For this
+assignment treat each style as discrete (a title uses the style or does
+not) and ignore the fact that some titles might end up in a couple of
+categories.</p>
+<p>![images/title-sets.png]</p>
+<p>Also note that the OTHER category will be defined as (NOT STYLE A)
+AND (NOT STYLE B) etc, so you may need to review your compound regular
+expressions.</p>
 <blockquote>
 <p><strong>For each of the styles above report the following while
 showing your work:</strong></p>
@@ -538,72 +813,11 @@ of the <strong>mean</strong>?</p>
 <hr>
 <p><br></p>
 </div>
-<div id="text-pre-processing-steps" class="section level3">
-<h3>Text Pre-Processing Steps</h3>
-<p>The article title text is fairly clean and needs little
-pre-processing, but there are a couple of important issues that need to
-be addressed.</p>
-<ol style="list-style-type: decimal">
-<li>Remove strange spaces</li>
-<li>Remove HTML tags</li>
-<li>Remove “hair space” dash marks</li>
-</ol>
-<p>There are special spaces that appear randomly in some titles. They
-will appear identical to the invisible eye but will cause problems when
-you are trying to split titles into words. Replace them with regular
-spaces:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="co"># replace all versions of space </span></span>
-<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="co"># including special styles like</span></span>
-<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="co"># the &#39;hair space&#39;  with regular spaces</span></span>
-<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>d<span class="sc">$</span>title <span class="ot">&lt;-</span> <span class="fu">gsub</span>( <span class="st">&quot;</span><span class="sc">\\</span><span class="st">s&quot;</span>, <span class="st">&quot; &quot;</span>, d<span class="sc">$</span>title )</span></code></pre></div>
-<p>Some titles include HTML tags for emphasis. They will always occur at
-the start and end of the titles:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="st">&quot;&lt;strong class=</span><span class="sc">\&quot;</span><span class="st">markup--strong markup--h3-strong</span><span class="sc">\&quot;</span><span class="st">&gt;Why 70% of Entrepreneurs Are Ending Their Pitches the Wrong Way&lt;/strong&gt;&quot;</span></span>
-<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="st">&quot;&lt;strong class=</span><span class="sc">\&quot;</span><span class="st">markup--strong markup--h3-strong</span><span class="sc">\&quot;</span><span class="st">&gt;Tackle Negative Core Beliefs&lt;/strong&gt;&quot;</span></span></code></pre></div>
-<p>There are some stylized dashes in the text that are book-ended with
-“hair space” characters, which are thinner-than-usual spaces.</p>
-<p>In the UTF-8 text encoding they come out as:</p>
-<pre><code>&lt;U+200A&gt;—&lt;U+200A&gt;</code></pre>
-<p>Since they are not actual words, remove all of these hairspace-dashes
-from the text.</p>
-<br>
-<hr>
-<p><br></p>
 </div>
-<div id="create-a-performance-measure" class="section level3">
-<h3>Create a Performance Measure</h3>
-<p>We can track article performance in many ways. This dataset contains
-“claps”, which are the equivalent of a thumbs-up or like on other
-platforms.</p>
-<p>It also contains a responses category, but that is a little more
-complicated to interpret because comment might be asking for
-clarification because the article was poorly-written or arguing a
-counter-point becaue the article was controversial.</p>
-<p>We will use <strong>claps</strong> to measure article popularity, but
-note the skew in the raw measure:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="fu">hist</span>( d<span class="sc">$</span>clap, <span class="at">main=</span><span class="st">&quot;Raw Clap Count&quot;</span>,</span>
-<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>      <span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">950</span>), <span class="at">breaks=</span><span class="dv">5000</span>, <span class="at">col=</span><span class="st">&quot;gray20&quot;</span>, <span class="at">border=</span><span class="st">&quot;white&quot;</span> )</span></code></pre></div>
-<p><img src="lab-03-instructions_files/figure-html/unnamed-chunk-5-1.png" width="960" /></p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">hist</span>( <span class="fu">log10</span>(d<span class="sc">$</span>clap<span class="sc">+</span><span class="dv">1</span>), <span class="at">main=</span><span class="st">&quot;Logged Clap Score&quot;</span>,</span>
-<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>      <span class="at">col=</span><span class="st">&quot;gray20&quot;</span>, <span class="at">border=</span><span class="st">&quot;white&quot;</span>, <span class="at">breaks=</span><span class="dv">100</span> )</span></code></pre></div>
-<p><img src="lab-03-instructions_files/figure-html/unnamed-chunk-5-2.png" width="960" /></p>
-<p>Create a new <strong>clap score</strong> to measure performance using
-the following log transformation:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>d<span class="sc">$</span>clap.score <span class="ot">&lt;-</span> <span class="fu">log10</span>( d<span class="sc">$</span>clap <span class="sc">+</span> <span class="dv">1</span> )</span></code></pre></div>
-<br>
-<hr>
-<p><br></p>
-<p><strong>First apply the text pre-processing steps to the titles and
-create your clap score, then answer Q1A-Q1D using the clean title
-strings.</strong></p>
-<br>
-<hr>
-<p><br></p>
-</div>
-</div>
-<div id="q2---content-analysis" class="section level2">
-<h2><strong>Q2 - Content Analysis</strong></h2>
-<p>Split each title into a group of distinct words.</p>
+<div id="part-03-content-analysis" class="section level2">
+<h2>Part 03: Content Analysis</h2>
+<p>Conduct basic content analysis by splitting each title into a set of
+distinct words, then answer the following:</p>
 <div id="q2-a-what-are-the-25-most-common-words-used-across-all-titles"
 class="section level3">
 <h3><strong>Q2-A:</strong> What are the 25 most common words used across
@@ -627,7 +841,15 @@ class="section level3">
 of a title?</h3>
 <p><em>Hint: be sure to convert all words to the same case so that
 variants like “How” and “how” are treated the same.</em></p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">tolower</span>( x )</span></code></pre></div>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">tolower</span>( x )</span></code></pre></div>
+<p><em>Hint: remove punctuation so that it does not impact your word
+count.</em></p>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="st">&quot;Why Do Financial Models Break?&quot;</span></span>
+<span id="cb68-2"><a href="#cb68-2" tabindex="-1"></a><span class="fu">strsplit</span>( x, <span class="st">&quot; &quot;</span> ) <span class="sc">%&gt;%</span> <span class="fu">unlist</span>()</span></code></pre></div>
+<pre><code>## [1] &quot;Why&quot;       &quot;Do&quot;        &quot;Financial&quot; &quot;Models&quot;    &quot;Break?&quot;</code></pre>
+<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">gsub</span>( <span class="st">&quot;[[:punct:]]&quot;</span>, <span class="st">&quot;&quot;</span>, x )</span>
+<span id="cb70-2"><a href="#cb70-2" tabindex="-1"></a><span class="fu">strsplit</span>( x, <span class="st">&quot; &quot;</span> ) <span class="sc">%&gt;%</span> <span class="fu">unlist</span>()</span></code></pre></div>
+<pre><code>## [1] &quot;Why&quot;       &quot;Do&quot;        &quot;Financial&quot; &quot;Models&quot;    &quot;Break&quot;</code></pre>
 <br>
 <hr>
 <p><br></p>
@@ -636,15 +858,15 @@ returns a list.</p>
 <p>This is a sensible data structure since you want to keep the atomized
 words grouped by their original titles, but it makes it hard to do
 content analysis:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a>first.six.titles <span class="ot">&lt;-</span> </span>
-<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a>  <span class="fu">c</span>(<span class="st">&quot;A Beginner’s Guide to Word Embedding with Gensim Word2Vec Model&quot;</span>, </span>
-<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a>    <span class="st">&quot;Hands-on Graph Neural Networks with PyTorch &amp; PyTorch Geometric&quot;</span>, </span>
-<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a>    <span class="st">&quot;How to Use ggplot2 in Python&quot;</span>, <span class="st">&quot;Databricks: How to Save Files in CSV on Your Local Computer&quot;</span>, </span>
-<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a>    <span class="st">&quot;A Step-by-Step Implementation of Gradient Descent and Backpropagation&quot;</span>, </span>
-<span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a>    <span class="st">&quot;An Easy Introduction to SQL for Data Scientists&quot;</span>)</span>
-<span id="cb10-7"><a href="#cb10-7" tabindex="-1"></a></span>
-<span id="cb10-8"><a href="#cb10-8" tabindex="-1"></a>word.list <span class="ot">&lt;-</span> <span class="fu">strsplit</span>( first.six.titles, <span class="st">&quot; &quot;</span> )</span>
-<span id="cb10-9"><a href="#cb10-9" tabindex="-1"></a>word.list</span></code></pre></div>
+<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" tabindex="-1"></a>first.six.titles <span class="ot">&lt;-</span> </span>
+<span id="cb72-2"><a href="#cb72-2" tabindex="-1"></a>  <span class="fu">c</span>(<span class="st">&quot;A Beginner’s Guide to Word Embedding with Gensim Word2Vec Model&quot;</span>, </span>
+<span id="cb72-3"><a href="#cb72-3" tabindex="-1"></a>    <span class="st">&quot;Hands-on Graph Neural Networks with PyTorch &amp; PyTorch Geometric&quot;</span>, </span>
+<span id="cb72-4"><a href="#cb72-4" tabindex="-1"></a>    <span class="st">&quot;How to Use ggplot2 in Python&quot;</span>, <span class="st">&quot;Databricks: How to Save Files in CSV on Your Local Computer&quot;</span>, </span>
+<span id="cb72-5"><a href="#cb72-5" tabindex="-1"></a>    <span class="st">&quot;A Step-by-Step Implementation of Gradient Descent and Backpropagation&quot;</span>, </span>
+<span id="cb72-6"><a href="#cb72-6" tabindex="-1"></a>    <span class="st">&quot;An Easy Introduction to SQL for Data Scientists&quot;</span>)</span>
+<span id="cb72-7"><a href="#cb72-7" tabindex="-1"></a></span>
+<span id="cb72-8"><a href="#cb72-8" tabindex="-1"></a>word.list <span class="ot">&lt;-</span> <span class="fu">strsplit</span>( first.six.titles, <span class="st">&quot; &quot;</span> )</span>
+<span id="cb72-9"><a href="#cb72-9" tabindex="-1"></a>word.list</span></code></pre></div>
 <pre><code>## [[1]]
 ##  [1] &quot;A&quot;          &quot;Beginner’s&quot; &quot;Guide&quot;      &quot;to&quot;         &quot;Word&quot;      
 ##  [6] &quot;Embedding&quot;  &quot;with&quot;       &quot;Gensim&quot;     &quot;Word2Vec&quot;   &quot;Model&quot;     
@@ -670,8 +892,8 @@ content analysis:</p>
 ## [6] &quot;for&quot;          &quot;Data&quot;         &quot;Scientists&quot;</code></pre>
 <p>Similar to re-casting data types, you can convert the list to a
 character vector using <strong>unlist()</strong>:</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a>word.vector <span class="ot">&lt;-</span> <span class="fu">unlist</span>( word.list )</span>
-<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a>word.vector</span></code></pre></div>
+<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" tabindex="-1"></a>word.vector <span class="ot">&lt;-</span> <span class="fu">unlist</span>( word.list )</span>
+<span id="cb74-2"><a href="#cb74-2" tabindex="-1"></a>word.vector</span></code></pre></div>
 <pre><code>##  [1] &quot;A&quot;               &quot;Beginner’s&quot;      &quot;Guide&quot;           &quot;to&quot;             
 ##  [5] &quot;Word&quot;            &quot;Embedding&quot;       &quot;with&quot;            &quot;Gensim&quot;         
 ##  [9] &quot;Word2Vec&quot;        &quot;Model&quot;           &quot;Hands-on&quot;        &quot;Graph&quot;          
@@ -691,18 +913,18 @@ character vector using <strong>unlist()</strong>:</p>
 <p><strong>Counting the first or last words:</strong></p>
 <p>These questions require you to break into the list version of the
 results and extract either the first or last word from each.</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="co"># x is a single title</span></span>
-<span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a>get_first_word <span class="ot">&lt;-</span> <span class="cf">function</span>( x )</span>
-<span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a>{</span>
-<span id="cb14-4"><a href="#cb14-4" tabindex="-1"></a>  <span class="co"># split title x into words</span></span>
-<span id="cb14-5"><a href="#cb14-5" tabindex="-1"></a>  <span class="co"># unlist results</span></span>
-<span id="cb14-6"><a href="#cb14-6" tabindex="-1"></a>  <span class="co"># select the first word</span></span>
-<span id="cb14-7"><a href="#cb14-7" tabindex="-1"></a>  <span class="co"># return first word</span></span>
-<span id="cb14-8"><a href="#cb14-8" tabindex="-1"></a>}</span>
-<span id="cb14-9"><a href="#cb14-9" tabindex="-1"></a></span>
-<span id="cb14-10"><a href="#cb14-10" tabindex="-1"></a><span class="co"># test your function</span></span>
-<span id="cb14-11"><a href="#cb14-11" tabindex="-1"></a>x <span class="ot">&lt;-</span> d<span class="sc">$</span>title[<span class="dv">1</span>]</span>
-<span id="cb14-12"><a href="#cb14-12" tabindex="-1"></a><span class="fu">get_first_word</span>( x )</span></code></pre></div>
+<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" tabindex="-1"></a><span class="co"># x is a single title</span></span>
+<span id="cb76-2"><a href="#cb76-2" tabindex="-1"></a>get_first_word <span class="ot">&lt;-</span> <span class="cf">function</span>( x )</span>
+<span id="cb76-3"><a href="#cb76-3" tabindex="-1"></a>{</span>
+<span id="cb76-4"><a href="#cb76-4" tabindex="-1"></a>  <span class="co"># split title x into words</span></span>
+<span id="cb76-5"><a href="#cb76-5" tabindex="-1"></a>  <span class="co"># unlist results</span></span>
+<span id="cb76-6"><a href="#cb76-6" tabindex="-1"></a>  <span class="co"># select the first word</span></span>
+<span id="cb76-7"><a href="#cb76-7" tabindex="-1"></a>  <span class="co"># return first word</span></span>
+<span id="cb76-8"><a href="#cb76-8" tabindex="-1"></a>}</span>
+<span id="cb76-9"><a href="#cb76-9" tabindex="-1"></a></span>
+<span id="cb76-10"><a href="#cb76-10" tabindex="-1"></a><span class="co"># test your function</span></span>
+<span id="cb76-11"><a href="#cb76-11" tabindex="-1"></a>x <span class="ot">&lt;-</span> d<span class="sc">$</span>title[<span class="dv">1</span>]</span>
+<span id="cb76-12"><a href="#cb76-12" tabindex="-1"></a><span class="fu">get_first_word</span>( x )</span></code></pre></div>
 <p>When results are stored as lists there is an extra step to the
 analysis.</p>
 <p>You need to <strong>apply</strong> your function to each element in
@@ -714,68 +936,67 @@ a list</li>
 a vector</li>
 </ul>
 <p><strong>lapply version:</strong></p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a><span class="co"># lapply applies the length function to each list element and returns a list</span></span>
-<span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a></span>
-<span id="cb15-3"><a href="#cb15-3" tabindex="-1"></a>word.list <span class="ot">&lt;-</span> <span class="fu">strsplit</span>( first.six.titles, <span class="st">&quot; &quot;</span> )</span>
-<span id="cb15-4"><a href="#cb15-4" tabindex="-1"></a>word.count <span class="ot">&lt;-</span> <span class="fu">lapply</span>( word.list, length )</span>
-<span id="cb15-5"><a href="#cb15-5" tabindex="-1"></a>word.count <span class="ot">&lt;-</span> <span class="fu">unlist</span>( word.count ) <span class="co"># convert to a vector</span></span>
-<span id="cb15-6"><a href="#cb15-6" tabindex="-1"></a>word.count</span></code></pre></div>
+<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" tabindex="-1"></a><span class="co"># lapply applies the length function to each list element and returns a list</span></span>
+<span id="cb77-2"><a href="#cb77-2" tabindex="-1"></a></span>
+<span id="cb77-3"><a href="#cb77-3" tabindex="-1"></a>word.list <span class="ot">&lt;-</span> <span class="fu">strsplit</span>( first.six.titles, <span class="st">&quot; &quot;</span> )</span>
+<span id="cb77-4"><a href="#cb77-4" tabindex="-1"></a>word.count <span class="ot">&lt;-</span> <span class="fu">lapply</span>( word.list, length )</span>
+<span id="cb77-5"><a href="#cb77-5" tabindex="-1"></a>word.count <span class="ot">&lt;-</span> <span class="fu">unlist</span>( word.count ) <span class="co"># convert to a vector</span></span>
+<span id="cb77-6"><a href="#cb77-6" tabindex="-1"></a>word.count</span></code></pre></div>
 <pre><code>## [1] 10  9  6 11  8  8</code></pre>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a><span class="co"># sapply applies the function to all titles in the vector</span></span>
-<span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a><span class="co"># the default prints the original title with the return values</span></span>
-<span id="cb17-3"><a href="#cb17-3" tabindex="-1"></a></span>
-<span id="cb17-4"><a href="#cb17-4" tabindex="-1"></a>word.list <span class="ot">&lt;-</span> <span class="fu">strsplit</span>( first.six.titles, <span class="st">&quot; &quot;</span> )</span>
-<span id="cb17-5"><a href="#cb17-5" tabindex="-1"></a><span class="fu">sapply</span>( word.list, length )</span></code></pre></div>
+<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" tabindex="-1"></a><span class="co"># sapply applies the function to all titles in the vector</span></span>
+<span id="cb79-2"><a href="#cb79-2" tabindex="-1"></a><span class="co"># the default prints the original title with the return values</span></span>
+<span id="cb79-3"><a href="#cb79-3" tabindex="-1"></a></span>
+<span id="cb79-4"><a href="#cb79-4" tabindex="-1"></a>word.list <span class="ot">&lt;-</span> <span class="fu">strsplit</span>( first.six.titles, <span class="st">&quot; &quot;</span> )</span>
+<span id="cb79-5"><a href="#cb79-5" tabindex="-1"></a><span class="fu">sapply</span>( word.list, length )</span></code></pre></div>
 <pre><code>## [1] 10  9  6 11  8  8</code></pre>
 <p>To create a vector of the first title words only would then be
 something like:</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a><span class="co"># add USE.NAMES=F to only print return values</span></span>
-<span id="cb19-2"><a href="#cb19-2" tabindex="-1"></a><span class="fu">sapply</span>( first.six.titles, get_first_word, <span class="at">USE.NAMES=</span><span class="cn">FALSE</span> )</span></code></pre></div>
+<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" tabindex="-1"></a><span class="co"># add USE.NAMES=F to only print return values</span></span>
+<span id="cb81-2"><a href="#cb81-2" tabindex="-1"></a><span class="fu">sapply</span>( first.six.titles, get_first_word, <span class="at">USE.NAMES=</span><span class="cn">FALSE</span> )</span></code></pre></div>
 <p>The apply functions are a more efficient version of loops - the
 repetition of a single operation over and over on different data
 elements. So the logic would be equivalent to this loop version:</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
-<span id="cb20-2"><a href="#cb20-2" tabindex="-1"></a><span class="cf">for</span>( i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(d<span class="sc">$</span>title) )</span>
-<span id="cb20-3"><a href="#cb20-3" tabindex="-1"></a>{</span>
-<span id="cb20-4"><a href="#cb20-4" tabindex="-1"></a>  results[i] <span class="ot">&lt;-</span> <span class="fu">get_first_word</span>( d<span class="sc">$</span>title[i] )</span>
-<span id="cb20-5"><a href="#cb20-5" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb82-1"><a href="#cb82-1" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb82-2"><a href="#cb82-2" tabindex="-1"></a><span class="cf">for</span>( i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(d<span class="sc">$</span>title) )</span>
+<span id="cb82-3"><a href="#cb82-3" tabindex="-1"></a>{</span>
+<span id="cb82-4"><a href="#cb82-4" tabindex="-1"></a>  results[i] <span class="ot">&lt;-</span> <span class="fu">get_first_word</span>( d<span class="sc">$</span>title[i] )</span>
+<span id="cb82-5"><a href="#cb82-5" tabindex="-1"></a>}</span></code></pre></div>
 <p>Loops are effective for these types of analysis, but are extremely
 inefficient as the size of your dataset grows and should be avoided when
 possible.</p>
 <p>And as you become more comfortable with lists they become easier to
 manage:</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" tabindex="-1"></a><span class="co"># efficiently core R version:  </span></span>
-<span id="cb21-2"><a href="#cb21-2" tabindex="-1"></a>first.six.titles <span class="sc">%&gt;%</span> <span class="fu">strsplit</span>( <span class="st">&quot; &quot;</span> ) <span class="sc">%&gt;%</span> <span class="fu">sapply</span>( length )  </span></code></pre></div>
+<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" tabindex="-1"></a><span class="co"># efficiently core R version:  </span></span>
+<span id="cb83-2"><a href="#cb83-2" tabindex="-1"></a>first.six.titles <span class="sc">%&gt;%</span> <span class="fu">strsplit</span>( <span class="st">&quot; &quot;</span> ) <span class="sc">%&gt;%</span> <span class="fu">sapply</span>( length )  </span></code></pre></div>
 <pre><code>## [1] 10  9  6 11  8  8</code></pre>
 <br>
 <hr>
 <p><br></p>
 </div>
 </div>
-<div id="q3---length-of-title" class="section level2">
-<h2><strong>Q3 - Length of Title</strong></h2>
+<div id="part-04-title-length" class="section level2">
+<h2>Part 04: Title Length</h2>
 <p>Does the length of the title matter?</p>
 <div id="q3-a-do-titles-with-more-words-get-better-clap-scores"
 class="section level3">
 <h3><strong>Q3-A:</strong> Do titles with more words get better clap
-scores?**</h3>
+scores?</h3>
 <p>Count the number of words in each title.</p>
 <p>Then examine the clap score as a function of word count by regressing
 the clap score onto word count.</p>
 <p>Visualize the relationship using a box and whisker plot:</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" tabindex="-1"></a><span class="co"># creating random non-meaningful data for demo</span></span>
-<span id="cb23-2"><a href="#cb23-2" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">sample</span>( <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="at">size=</span><span class="dv">1000</span>, <span class="at">replace=</span><span class="cn">TRUE</span> )</span>
-<span id="cb23-3"><a href="#cb23-3" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="dv">3</span><span class="sc">*</span>x <span class="sc">-</span> <span class="fl">0.5</span><span class="sc">*</span>x<span class="sc">*</span>x <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="dv">1000</span>,<span class="dv">0</span>,<span class="dv">5</span>)</span>
-<span id="cb23-4"><a href="#cb23-4" tabindex="-1"></a>f <span class="ot">&lt;-</span> <span class="fu">factor</span>(x)</span>
-<span id="cb23-5"><a href="#cb23-5" tabindex="-1"></a></span>
-<span id="cb23-6"><a href="#cb23-6" tabindex="-1"></a><span class="co"># plot( factor, numeric.vector )</span></span>
-<span id="cb23-7"><a href="#cb23-7" tabindex="-1"></a><span class="fu">plot</span>( f, y )</span></code></pre></div>
-<p><img src="lab-03-instructions_files/figure-html/unnamed-chunk-17-1.png" width="960" /></p>
+<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1" tabindex="-1"></a><span class="co"># creating random non-meaningful data for demo</span></span>
+<span id="cb85-2"><a href="#cb85-2" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">sample</span>( <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="at">size=</span><span class="dv">1000</span>, <span class="at">replace=</span><span class="cn">TRUE</span> )</span>
+<span id="cb85-3"><a href="#cb85-3" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="dv">3</span><span class="sc">*</span>x <span class="sc">-</span> <span class="fl">0.5</span><span class="sc">*</span>x<span class="sc">*</span>x <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="dv">1000</span>,<span class="dv">0</span>,<span class="dv">5</span>)</span>
+<span id="cb85-4"><a href="#cb85-4" tabindex="-1"></a>f <span class="ot">&lt;-</span> <span class="fu">factor</span>(x)</span>
+<span id="cb85-5"><a href="#cb85-5" tabindex="-1"></a></span>
+<span id="cb85-6"><a href="#cb85-6" tabindex="-1"></a><span class="co"># plot( factor, numeric.vector )</span></span>
+<span id="cb85-7"><a href="#cb85-7" tabindex="-1"></a><span class="fu">plot</span>( f, y )</span></code></pre></div>
+<p><img src="lab-03-instructions_files/figure-html/unnamed-chunk-31-1.png" width="960" /></p>
 </div>
 <div id="q3-b-do-longer-titles-get-better-clap-scores"
 class="section level3">
-<h3><strong>Q3-B:</strong> Do longer titles get better clap
-scores?**</h3>
+<h3><strong>Q3-B:</strong> Do longer titles get better clap scores?</h3>
 <p>Repeat the analysis from Q3-A but this time measuring title length by
 the number of characters in the title.</p>
 <br>
@@ -787,7 +1008,7 @@ the number of characters in the title.</p>
 <div id="challenge-questions" class="section level1">
 <h1>CHALLENGE QUESTIONS</h1>
 <div id="challenge-q1" class="section level2">
-<h2>CHALLENGE Q1</h2>
+<h2>Challenge Q1</h2>
 <p>Is it better to use common words or unique words in your title?</p>
 <p>Create a count of the number of times each word appears in the
 collection of titles.</p>
@@ -808,34 +1029,34 @@ the number of uncommon words used.</p>
 <p>Regress the clap score onto the numer or proportion of uncommon
 words.</p>
 <p><strong>Creating top and bottom percentile categories:</strong></p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" tabindex="-1"></a><span class="co"># x &lt;- sample( 1:100, 25, replace=T )</span></span>
-<span id="cb24-2"><a href="#cb24-2" tabindex="-1"></a><span class="co"># dput( sort( x ) )</span></span>
-<span id="cb24-3"><a href="#cb24-3" tabindex="-1"></a></span>
-<span id="cb24-4"><a href="#cb24-4" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(1L, 2L, 19L, 19L, 20L, 21L, 23L, 24L, 31L, 34L, 36L, 40L, 48L, </span>
-<span id="cb24-5"><a href="#cb24-5" tabindex="-1"></a>50L, 51L, 56L, 63L, 67L, 73L, 74L, 83L, 84L, 91L, 92L, 96L)</span>
-<span id="cb24-6"><a href="#cb24-6" tabindex="-1"></a></span>
-<span id="cb24-7"><a href="#cb24-7" tabindex="-1"></a><span class="fu">summary</span>( x )</span></code></pre></div>
+<div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1" tabindex="-1"></a><span class="co"># x &lt;- sample( 1:100, 25, replace=T )</span></span>
+<span id="cb86-2"><a href="#cb86-2" tabindex="-1"></a><span class="co"># dput( sort( x ) )</span></span>
+<span id="cb86-3"><a href="#cb86-3" tabindex="-1"></a></span>
+<span id="cb86-4"><a href="#cb86-4" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span><span class="dt">L</span>, <span class="dv">2</span><span class="dt">L</span>, <span class="dv">19</span><span class="dt">L</span>, <span class="dv">19</span><span class="dt">L</span>, <span class="dv">20</span><span class="dt">L</span>, <span class="dv">21</span><span class="dt">L</span>, <span class="dv">23</span><span class="dt">L</span>, <span class="dv">24</span><span class="dt">L</span>, <span class="dv">31</span><span class="dt">L</span>, <span class="dv">34</span><span class="dt">L</span>, <span class="dv">36</span><span class="dt">L</span>, <span class="dv">40</span><span class="dt">L</span>, <span class="dv">48</span><span class="dt">L</span>, </span>
+<span id="cb86-5"><a href="#cb86-5" tabindex="-1"></a><span class="dv">50</span><span class="dt">L</span>, <span class="dv">51</span><span class="dt">L</span>, <span class="dv">56</span><span class="dt">L</span>, <span class="dv">63</span><span class="dt">L</span>, <span class="dv">67</span><span class="dt">L</span>, <span class="dv">73</span><span class="dt">L</span>, <span class="dv">74</span><span class="dt">L</span>, <span class="dv">83</span><span class="dt">L</span>, <span class="dv">84</span><span class="dt">L</span>, <span class="dv">91</span><span class="dt">L</span>, <span class="dv">92</span><span class="dt">L</span>, <span class="dv">96</span><span class="dt">L</span>)</span>
+<span id="cb86-6"><a href="#cb86-6" tabindex="-1"></a></span>
+<span id="cb86-7"><a href="#cb86-7" tabindex="-1"></a><span class="fu">summary</span>( x )</span></code></pre></div>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 ##    1.00   23.00   48.00   47.92   73.00   96.00</code></pre>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" tabindex="-1"></a><span class="co"># get cut points</span></span>
-<span id="cb26-2"><a href="#cb26-2" tabindex="-1"></a><span class="fu">quantile</span>( x, <span class="at">probs=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="fl">0.25</span>,<span class="fl">0.5</span>,<span class="fl">0.75</span>,<span class="dv">1</span>) )</span></code></pre></div>
+<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb88-1"><a href="#cb88-1" tabindex="-1"></a><span class="co"># get cut points</span></span>
+<span id="cb88-2"><a href="#cb88-2" tabindex="-1"></a><span class="fu">quantile</span>( x, <span class="at">probs=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="fl">0.25</span>,<span class="fl">0.5</span>,<span class="fl">0.75</span>,<span class="dv">1</span>) )</span></code></pre></div>
 <pre><code>##   0%  25%  50%  75% 100% 
 ##    1   23   48   73   96</code></pre>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" tabindex="-1"></a><span class="co"># rank x by order and percentile </span></span>
-<span id="cb28-2"><a href="#cb28-2" tabindex="-1"></a>rank.x <span class="ot">&lt;-</span> <span class="fu">rank</span>(x)</span>
-<span id="cb28-3"><a href="#cb28-3" tabindex="-1"></a>centile.x <span class="ot">&lt;-</span> <span class="dv">100</span> <span class="sc">*</span> ( <span class="fu">rank</span>(x) <span class="sc">/</span> <span class="fu">length</span>(x) )</span>
-<span id="cb28-4"><a href="#cb28-4" tabindex="-1"></a></span>
-<span id="cb28-5"><a href="#cb28-5" tabindex="-1"></a><span class="co"># create variable by values break points</span></span>
-<span id="cb28-6"><a href="#cb28-6" tabindex="-1"></a>x<span class="fl">.25</span> <span class="ot">&lt;-</span> <span class="fu">quantile</span>( x, <span class="at">probs=</span><span class="fl">0.25</span> )</span>
-<span id="cb28-7"><a href="#cb28-7" tabindex="-1"></a>x<span class="fl">.75</span> <span class="ot">&lt;-</span> <span class="fu">quantile</span>( x, <span class="at">probs=</span><span class="fl">0.75</span> )</span>
-<span id="cb28-8"><a href="#cb28-8" tabindex="-1"></a>top.<span class="fl">25.</span>x <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>( x <span class="sc">&gt;=</span> x<span class="fl">.75</span> )  <span class="co"># x &gt;= 73</span></span>
-<span id="cb28-9"><a href="#cb28-9" tabindex="-1"></a>bot.<span class="fl">25.</span>x <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>( x <span class="sc">&lt;=</span> x<span class="fl">.25</span> )  <span class="co"># x &lt;= 23 </span></span>
-<span id="cb28-10"><a href="#cb28-10" tabindex="-1"></a></span>
-<span id="cb28-11"><a href="#cb28-11" tabindex="-1"></a><span class="co"># create variable by percentile break points </span></span>
-<span id="cb28-12"><a href="#cb28-12" tabindex="-1"></a>top.<span class="fl">25.</span>x <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>( centile.x <span class="sc">&gt;=</span> <span class="dv">75</span> )  <span class="co"># x &gt;= 73</span></span>
-<span id="cb28-13"><a href="#cb28-13" tabindex="-1"></a>bot.<span class="fl">25.</span>x <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>( centile.x <span class="sc">&lt;=</span> <span class="dv">25</span> )  <span class="co"># x &lt;= 23 </span></span>
-<span id="cb28-14"><a href="#cb28-14" tabindex="-1"></a></span>
-<span id="cb28-15"><a href="#cb28-15" tabindex="-1"></a><span class="fu">data.frame</span>( x, rank.x, centile.x, top.<span class="fl">25.</span>x, bot.<span class="fl">25.</span>x ) <span class="sc">%&gt;%</span> <span class="fu">pander</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb90-1"><a href="#cb90-1" tabindex="-1"></a><span class="co"># rank x by order and percentile </span></span>
+<span id="cb90-2"><a href="#cb90-2" tabindex="-1"></a>rank.x <span class="ot">&lt;-</span> <span class="fu">rank</span>(x)</span>
+<span id="cb90-3"><a href="#cb90-3" tabindex="-1"></a>centile.x <span class="ot">&lt;-</span> <span class="dv">100</span> <span class="sc">*</span> ( <span class="fu">rank</span>(x) <span class="sc">/</span> <span class="fu">length</span>(x) )</span>
+<span id="cb90-4"><a href="#cb90-4" tabindex="-1"></a></span>
+<span id="cb90-5"><a href="#cb90-5" tabindex="-1"></a><span class="co"># create variable by values break points</span></span>
+<span id="cb90-6"><a href="#cb90-6" tabindex="-1"></a>x<span class="fl">.25</span> <span class="ot">&lt;-</span> <span class="fu">quantile</span>( x, <span class="at">probs=</span><span class="fl">0.25</span> )</span>
+<span id="cb90-7"><a href="#cb90-7" tabindex="-1"></a>x<span class="fl">.75</span> <span class="ot">&lt;-</span> <span class="fu">quantile</span>( x, <span class="at">probs=</span><span class="fl">0.75</span> )</span>
+<span id="cb90-8"><a href="#cb90-8" tabindex="-1"></a>top.<span class="fl">25.</span>x <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>( x <span class="sc">&gt;=</span> x<span class="fl">.75</span> )  <span class="co"># x &gt;= 73</span></span>
+<span id="cb90-9"><a href="#cb90-9" tabindex="-1"></a>bot.<span class="fl">25.</span>x <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>( x <span class="sc">&lt;=</span> x<span class="fl">.25</span> )  <span class="co"># x &lt;= 23 </span></span>
+<span id="cb90-10"><a href="#cb90-10" tabindex="-1"></a></span>
+<span id="cb90-11"><a href="#cb90-11" tabindex="-1"></a><span class="co"># create variable by percentile break points </span></span>
+<span id="cb90-12"><a href="#cb90-12" tabindex="-1"></a>top.<span class="fl">25.</span>x <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>( centile.x <span class="sc">&gt;=</span> <span class="dv">75</span> )  <span class="co"># x &gt;= 73</span></span>
+<span id="cb90-13"><a href="#cb90-13" tabindex="-1"></a>bot.<span class="fl">25.</span>x <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>( centile.x <span class="sc">&lt;=</span> <span class="dv">25</span> )  <span class="co"># x &lt;= 23 </span></span>
+<span id="cb90-14"><a href="#cb90-14" tabindex="-1"></a></span>
+<span id="cb90-15"><a href="#cb90-15" tabindex="-1"></a><span class="fu">data.frame</span>( x, rank.x, centile.x, top.<span class="fl">25.</span>x, bot.<span class="fl">25.</span>x ) <span class="sc">%&gt;%</span> <span class="fu">pander</span>()</span></code></pre></div>
 <table style="width:67%;">
 <colgroup>
 <col width="6%" />
@@ -1033,7 +1254,7 @@ words.</p>
 </table>
 </div>
 <div id="challenge-q2" class="section level2">
-<h2>CHALLENGE Q2</h2>
+<h2>Challenge Q2</h2>
 <p>Find a package in R that will tabulate sentiment scores for a set of
 text.</p>
 <p>These packages will return counts or percentages of words with
@@ -1044,7 +1265,7 @@ smirk</em>).</p>
 salience? Or those with high negative salience?</strong></p>
 </div>
 <div id="challenge-q3" class="section level2">
-<h2>CHALLENGE Q3</h2>
+<h2>Challenge Q3</h2>
 <p>Put all of the steps above together into a single regression
 model:</p>
 <ul>
@@ -1059,7 +1280,7 @@ model:</p>
 <li>Months since it was published</li>
 <li>The Medium community in which the blog appears:</li>
 </ul>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" tabindex="-1"></a><span class="fu">table</span>( d<span class="sc">$</span>publication ) <span class="sc">%&gt;%</span> <span class="fu">pander</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb91-1"><a href="#cb91-1" tabindex="-1"></a><span class="fu">table</span>( d<span class="sc">$</span>publication ) <span class="sc">%&gt;%</span> <span class="fu">pander</span>()</span></code></pre></div>
 <table>
 <caption>Table continues below</caption>
 <colgroup>
