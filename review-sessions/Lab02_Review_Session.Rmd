@@ -1,7 +1,7 @@
 ---
 title: "Lab 02 - Simulations and Packages"
 author: "Courtney Stowers"
-#date: "2024-08-09"
+#date: "2025-01-11"
 output:
     rmdformats::downcute:
     toc_depth: 3
@@ -165,7 +165,7 @@ monty_hall_100doors <- function(switch_choice) {
   
   envelopes <- start_game()
   contestant_choice <- select_contestant_choice()
-  host_choice <- select_host_choice(envelopes, contestant_choice)
+  host_choice <- sort(select_host_choice(envelopes, contestant_choice))
   final_choice <- final_contestant_choice(envelopes, contestant_choice, host_choice, switch_choice)
   outcome <- game_outcome(final_choice)
   
