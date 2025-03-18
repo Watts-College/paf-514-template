@@ -26,41 +26,15 @@
 // Variables
 // ========================================================================
 
-$modal-z-index:                                  $global-z-index + 10 !default;
-$modal-background:                               rgba(0,0,0,0.6) !default;
 
-$modal-padding-horizontal:                       15px !default;
-$modal-padding-horizontal-s:                     $global-gutter !default;
-$modal-padding-horizontal-m:                     $global-medium-gutter !default;
-$modal-padding-vertical:                         $modal-padding-horizontal !default;
-$modal-padding-vertical-s:                       50px !default;
 
-$modal-dialog-width:                             600px !default;
-$modal-dialog-background:                        $global-background !default;
 
-$modal-container-width:                          1200px !default;
 
-$modal-body-padding-horizontal:                  $global-gutter !default;
-$modal-body-padding-vertical:                    $global-gutter !default;
 
-$modal-header-padding-horizontal:                $global-gutter !default;
-$modal-header-padding-vertical:                  ($modal-header-padding-horizontal / 2) !default;
-$modal-header-background:                        $global-muted-background !default;
 
-$modal-footer-padding-horizontal:                $global-gutter !default;
-$modal-footer-padding-vertical:                  ($modal-footer-padding-horizontal / 2) !default;
-$modal-footer-background:                        $global-muted-background !default;
 
-$modal-title-font-size:                          $global-xlarge-font-size !default;
-$modal-title-line-height:                        1.3 !default;
 
-$modal-close-position:                           $global-small-margin !default;
-$modal-close-padding:                            5px !default;
 
-$modal-close-outside-position:                   0 !default;
-$modal-close-outside-translate:                  100% !default;
-$modal-close-outside-color:                      lighten($global-inverse-color, 20%) !default;
-$modal-close-outside-hover-color:                $global-inverse-color !default;
 
 
 /* ========================================================================
@@ -88,7 +62,6 @@ $modal-close-outside-hover-color:                $global-inverse-color !default;
     z-index: $modal-z-index;
     /* 3 */
     overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
     /* 4 */
     padding: $modal-padding-vertical $modal-padding-horizontal;
     /* 5 */
@@ -139,8 +112,7 @@ $modal-close-outside-hover-color:                $global-inverse-color !default;
 /*
  * 1. Create position context for spinner and close button
  * 2. Dimensions
- * 3. Fix `max-width: 100%` not working in combination with flex and responsive images in IE11
- *    `!important` needed to overwrite `uk-width-auto`. See `#modal-media-image` in tests
+ * 3. `!important` is needed to overwrite `uk-width-auto`. See `#modal-media-image` in tests
  * 4. Style
  * 5. Slide-in transition
  */
@@ -153,7 +125,7 @@ $modal-close-outside-hover-color:                $global-inverse-color !default;
     margin: 0 auto;
     width: $modal-dialog-width;
     /* 3 */
-    max-width: unquote('calc(100% - 0.01px)') !important;
+    max-width: 100% !important;
     /* 4 */
     background: $modal-dialog-background;
     /* 5 */
@@ -210,39 +182,33 @@ $modal-close-outside-hover-color:                $global-inverse-color !default;
  ========================================================================== */
 
 .uk-modal-body {
+    display: flow-root;
     padding: $modal-body-padding-vertical $modal-body-padding-horizontal;
     @if(mixin-exists(hook-modal-body)) {@include hook-modal-body();}
 }
 
 .uk-modal-header {
+    display: flow-root;
     padding: $modal-header-padding-vertical $modal-header-padding-horizontal;
     background: $modal-header-background;
     @if(mixin-exists(hook-modal-header)) {@include hook-modal-header();}
 }
 
 .uk-modal-footer {
+    display: flow-root;
     padding: $modal-footer-padding-vertical $modal-footer-padding-horizontal;
     background: $modal-footer-background;
     @if(mixin-exists(hook-modal-footer)) {@include hook-modal-footer();}
 }
 
-/*
- * Micro clearfix
- */
+/* Phone landscape and bigger */
+@media (min-width: $breakpoint-small) {
 
-.uk-modal-body::before,
-.uk-modal-body::after,
-.uk-modal-header::before,
-.uk-modal-header::after,
-.uk-modal-footer::before,
-.uk-modal-footer::after {
-    content: "";
-    display: table;
+    .uk-modal-body { padding: $modal-body-padding-vertical-s $modal-body-padding-horizontal-s; }
+    .uk-modal-header { padding: $modal-header-padding-vertical-s $modal-header-padding-horizontal-s; }
+    .uk-modal-footer { padding: $modal-footer-padding-vertical-s $modal-footer-padding-horizontal-s; }
+
 }
-
-.uk-modal-body::after,
-.uk-modal-header::after,
-.uk-modal-footer::after { clear: both; }
 
 /*
  * Remove margin from the last-child
@@ -267,7 +233,7 @@ $modal-close-outside-hover-color:                $global-inverse-color !default;
  * Adopts `uk-close`
  ========================================================================== */
 
-[class*='uk-modal-close-'] {
+[class*="uk-modal-close-"] {
     position: absolute;
     z-index: $modal-z-index;
     top: $modal-close-position;
@@ -280,13 +246,13 @@ $modal-close-outside-hover-color:                $global-inverse-color !default;
  * Remove margin from adjacent element
  */
 
-[class*='uk-modal-close-']:first-child + * { margin-top: 0; }
+[class*="uk-modal-close-"]:first-child + * { margin-top: 0; }
 
 /*
  * Hover
  */
 
-[class*='uk-modal-close-']:hover {
+[class*="uk-modal-close-"]:hover {
     @if(mixin-exists(hook-modal-close-hover)) {@include hook-modal-close-hover();}
 }
 

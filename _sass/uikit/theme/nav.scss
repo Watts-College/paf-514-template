@@ -7,23 +7,18 @@
 // Variables
 // ========================================================================
 
+
+
 //
 // New
 //
 
-$nav-default-font-size:                          $global-small-font-size !default;
 
 
 // Sublists
 // ========================================================================
 
 // @mixin hook-nav-sub(){}
-
-
-// Parent icon modifier
-// ========================================================================
-
-// @mixin hook-nav-parent-icon(){}
 
 
 // Header
@@ -41,13 +36,15 @@ $nav-default-font-size:                          $global-small-font-size !defaul
 // Default style modifier
 // ========================================================================
 
-
+// @mixin hook-nav-default(){}
 
 // @mixin hook-nav-default-item(){}
 
 // @mixin hook-nav-default-item-hover(){}
 
 // @mixin hook-nav-default-item-active(){}
+
+// @mixin hook-nav-default-subtitle(){}
 
 // @mixin hook-nav-default-header(){}
 
@@ -65,9 +62,39 @@ $nav-default-font-size:                          $global-small-font-size !defaul
 
 // @mixin hook-nav-primary-item-active(){}
 
+// @mixin hook-nav-primary-subtitle(){}
+
 // @mixin hook-nav-primary-header(){}
 
 // @mixin hook-nav-primary-divider(){}
+
+
+// Secondary style modifier
+// ========================================================================
+
+
+
+
+
+
+
+
+
+// @mixin hook-nav-secondary-subtitle(){}
+
+// @mixin hook-nav-secondary-subtitle-hover(){}
+
+// @mixin hook-nav-secondary-subtitle-active(){}
+
+// @mixin hook-nav-secondary-header(){}
+
+// @mixin hook-nav-secondary-divider(){}
+
+
+// Style modifier
+// ========================================================================
+
+// @mixin hook-nav-dividers(){}
 
 
 // Miscellaneous
@@ -79,7 +106,6 @@ $nav-default-font-size:                          $global-small-font-size !defaul
 // Inverse
 // ========================================================================
 
-// @mixin hook-inverse-nav-parent-icon(){}
 
 // @mixin hook-inverse-nav-default-item(){}
 // @mixin hook-inverse-nav-default-item-hover(){}
@@ -92,3 +118,14 @@ $nav-default-font-size:                          $global-small-font-size !defaul
 // @mixin hook-inverse-nav-primary-item-active(){}
 // @mixin hook-inverse-nav-primary-header(){}
 // @mixin hook-inverse-nav-primary-divider(){}
+
+// @mixin hook-inverse-nav-secondary-item(){}
+
+
+// @mixin hook-inverse-nav-secondary-subtitle(){}
+// @mixin hook-inverse-nav-secondary-subtitle-hover(){}
+// @mixin hook-inverse-nav-secondary-subtitle-active(){}
+// @mixin hook-inverse-nav-secondary-header(){}
+// @mixin hook-inverse-nav-secondary-divider(){}
+
+// @mixin hook-inverse-nav-dividers(){}

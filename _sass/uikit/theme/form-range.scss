@@ -7,28 +7,18 @@
 // Variables
 // ========================================================================
 
-$form-range-thumb-background:                    $global-background !default;
 
 //
 // New
 //
 
-$form-range-thumb-border-width:                  $global-border-width !default;
-$form-range-thumb-border:                        darken($global-border, 10%) !default;
 
-$form-range-track-border-radius:                 500px !default;
 
 
 // Component
 // ========================================================================
 
 // @mixin hook-form-range(){}
-
-
-// Thumb
-// ========================================================================
-
-
 
 
 // Track
@@ -39,7 +29,23 @@ $form-range-track-border-radius:                 500px !default;
 // @mixin hook-form-range-track-focus(){}
 
 
+// Thumb
+// ========================================================================
+
+
+
+
 // Miscellaneous
 // ========================================================================
 
 // @mixin hook-form-range-misc(){}
+
+
+// Inverse
+// ========================================================================
+
+
+
+// @mixin hook-inverse-form-range-track(){}
+// @mixin hook-inverse-form-range-track-focus(){}
+

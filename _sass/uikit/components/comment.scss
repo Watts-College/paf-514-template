@@ -18,18 +18,9 @@
 // Variables
 // ========================================================================
 
-$comment-header-margin-bottom:                   $global-margin !default;
 
-$comment-title-font-size:                        $global-medium-font-size !default;
-$comment-title-line-height:                      1.4 !default;
 
-$comment-meta-font-size:                         $global-small-font-size !default;
-$comment-meta-line-height:                       1.4 !default;
-$comment-meta-color:                             $global-muted-color !default;
 
-$comment-list-margin-top:                        $global-large-margin !default;
-$comment-list-padding-left:                      30px !default;
-$comment-list-padding-left-m:                    100px !default;
 
 
 /* ========================================================================
@@ -45,28 +36,17 @@ $comment-list-padding-left-m:                    100px !default;
  ========================================================================== */
 
 .uk-comment-body {
+    display: flow-root;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
     @if(mixin-exists(hook-comment-body)) {@include hook-comment-body();}
 }
 
 .uk-comment-header {
+    display: flow-root;
     margin-bottom: $comment-header-margin-bottom;
     @if(mixin-exists(hook-comment-header)) {@include hook-comment-header();}
 }
-
-/*
- * Micro clearfix
- */
-
-.uk-comment-body::before,
-.uk-comment-body::after,
-.uk-comment-header::before,
-.uk-comment-header::after {
-    content: "";
-    display: table;
-}
-
-.uk-comment-body::after,
-.uk-comment-header::after { clear: both; }
 
 /*
  * Remove margin from the last-child

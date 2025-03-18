@@ -11,8 +11,6 @@
 // New
 //
 
-$list-striped-border-width:                      $global-border-width !default;
-$list-striped-border:                            $global-border !default;
 
 
 // Style modifiers
@@ -21,8 +19,6 @@ $list-striped-border:                            $global-border !default;
 // @mixin hook-list-divider(){}
 
 
-
-// @mixin hook-list-bullet(){}
 
 
 // Miscellaneous
@@ -36,4 +32,3 @@ $list-striped-border:                            $global-border !default;
 
 // @mixin hook-inverse-list-divider(){}
 
-// @mixin hook-inverse-list-bullet(){}

@@ -26,7 +26,7 @@
   "homepage": "https://github.com/",
   "dependencies": {
     "bibtex": "^0.9.0",
-    "gulp": "^4.0.2",
+    "gulp": "^5.0.0",
     "jquery": "^3.5.0",
     "jspdf": "^3.0.1",
     "markdown-it": "^12.3.2",
@@ -37,9 +37,10 @@
     "uikit": "^3.0.0-beta.42"
   },
   "devDependencies": {
+    "gulp-uglify-es": "^3.0.0",
     "jshint": "^2.13.5",
     "ncp": "latest",
     "uglify-js": "^3.2.1",
-    "watch": "^1.0.2"
+    "watch": "^0.13.0"
   }
 }

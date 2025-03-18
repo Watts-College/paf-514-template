@@ -17,11 +17,8 @@
 // Variables
 // ========================================================================
 
-$sortable-dragged-z-index:                       $global-z-index + 50 !default;
 
-$sortable-placeholder-opacity:                   0 !default;
 
-$sortable-empty-height:                          50px !default;
 
 
 /* ========================================================================
@@ -34,18 +31,6 @@ $sortable-empty-height:                          50px !default;
 }
 
 /*
- * Deactivate browser touch actions in IE11 and Edge
- */
-
-.uk-sortable > * { touch-action: none; }
-
-/*
- * Deactivate pointer-events on SVGs in Safari
- */
-
-.uk-sortable svg { pointer-events: none; }
-
-/*
  * Remove margin from the last-child
  */
 
@@ -56,7 +41,7 @@ $sortable-empty-height:                          50px !default;
  ========================================================================== */
 
 .uk-sortable-drag {
-    position: absolute !important;
+    position: fixed !important;
     z-index: $sortable-dragged-z-index !important;
     pointer-events: none;
     @if(mixin-exists(hook-sortable-drag)) {@include hook-sortable-drag();}
@@ -68,6 +53,7 @@ $sortable-empty-height:                          50px !default;
 
 .uk-sortable-placeholder {
     opacity: $sortable-placeholder-opacity;
+    pointer-events: none;
     @if(mixin-exists(hook-sortable-placeholder)) {@include hook-sortable-placeholder();}
 }
 
