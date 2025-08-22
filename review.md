@@ -9,7 +9,7 @@ Passcode:
 
 session: 
 - week0:
-  date:  'Friday, August 22, 12:30pm: COURSE OVERVIEW'  
+  date:  'COURSE OVERVIEW'  
   video: ''
   password: ''
 - week1:
