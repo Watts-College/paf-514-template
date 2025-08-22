@@ -17,7 +17,7 @@ info:
  course_start_end_dates: August 21st to October 9th, 2025
  course_prerequisites:  
  class_meets_when:  Asynchronous  
- class_meets_where:  'https://asu.zoom.us/j/89752412079'
+ class_meets_where:  'https://asu.zoom.us/j/83509478842'
  review_sessions_when: Monday, 3pm AZ 
  review_sessions_where: Zoom
  discussion_board_url: 'https://watts-college.github.io/paf-514-template/help/'
@@ -26,7 +26,7 @@ instructor:
 -  name: Jesse Lecy
    title: Professor
    email: jlecy@asu.edu   
-   office_location: 'https://asu.zoom.us/j/89752412079'
+   office_location: 'https://asu.zoom.us/j/83509478842'
    website_url: http://www.lecy.info/
    github_url: 'https://github.com/lecy' 
    twitter_url: 
