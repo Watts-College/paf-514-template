@@ -155,19 +155,10 @@ The assigned work for the term comes in the form of four elements, described bel
 
 - **R Package (10%):**  Labs 01 and 02 require you to write functions to generate your solution. You will have an additional assignment to build an R package with these functions and make it available for others to use. 
 
-- **RMD to Jekyll Project (15%):**  The final project in the course will require you to create a template for automating a report in R. You will publish the report as a GitHub (Jekyll) website. 
+- **Practice Problems (20%):**  Each week I will post a list of review questions or brain teasers about the R language. You will be invited to submit solutions or explanations to the problems on Yellowdig and discuss with classmates. There are five quizzes associated with the practice problems worth up to 25 points. You need to earn at least 20 points to receive full credit for this component of the class. 
 
-- **Data Wrangling Assignment (10%):**  The biggest task on almost every project is building the dataset (not doing the analysis). The data wrangling assignment is designed to give you more practice with data steps and data workflows. 
-
-- **Yellowdig Practice Problems (15%):**  Each week I will post a list of review questions or brain teasers about the R language. You will be invited to submit solutions or explanations to the problems on Yellowdig and discuss with classmates. You need to earn 100 points over the 7 weeks to earn full credit for participation in practice problems. The points will be allocated as follows:
-
-  - 4 points for a new pin.
-  - 3 points for a comment made to another pin.
-  - 2 point if you receive a comment on your pin.
-  - 1 point for liking another pin.
-  - 5 points if you earn an instructor badge for an informative post.
-  - max of 20 points can be earned each week.
-
+- **Data Workflow Project (10%):**  The final project in the course will require you to create a template for automating a report in R. You will publish the report as a GitHub (Jekyll) website.
+  
 <br>
 
 
@@ -181,7 +172,7 @@ In general, any submitted work written work (assignments and/or exams) is assess
 
 Most assignments in this course are labs that are graded pass-fail based upon completeness and correctness of responses (every attempt must be made to complete labs, and they must be more than 50% correct to receive credit). Discussion boards that accumulate points through each activity on the board. 
 
-The final project will be accompanied by a rubric describing the allocation of points and criteria for evaluation. 
+The final project will be accompanied by a rubric describing the criteria for evaluation. 
 
 ## E. Late and Missing Assignments
 
