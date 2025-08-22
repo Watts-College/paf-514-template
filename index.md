@@ -13,8 +13,8 @@ info:
  course_title: Foundations of Data Science Part II
  course_number: PAF 514 
  course_level: Graduate 
- course_website: 'https://asu.instructure.com/courses/178112'
- course_start_end_dates: January 08 to February 27, 2024
+ course_website: 'https://canvas.asu.edu/courses/236080'
+ course_start_end_dates: August 21st to October 9th, 2025
  course_prerequisites:  
  class_meets_when:  Asynchronous  
  class_meets_where:  'https://asu.zoom.us/j/89752412079'
@@ -155,9 +155,9 @@ The assigned work for the term comes in the form of four elements, described bel
 
 - **R Package (10%):**  Labs 01 and 02 require you to write functions to generate your solution. You will have an additional assignment to build an R package with these functions and make it available for others to use. 
 
-- **Practice Problems (20%):**  Each week I will post a list of review questions or brain teasers about the R language. You will be invited to submit solutions or explanations to the problems on Yellowdig and discuss with classmates. There are five quizzes associated with the practice problems worth up to 25 points. You need to earn at least 20 points to receive full credit for this component of the class. 
+- **Practice Problems (25%):**  Each week I will post a list of review questions or brain teasers about the R language. You will be invited to submit solutions or explanations to the problems on Yellowdig and discuss with classmates. There are five quizzes associated with the practice problems worth up to 30 points. You need to earn 25 of the 30 points to receive full credit for this component of the class. The Yellowdig discussions are voluntary and are an opportunity to practice the problems and discuss solutions in preparation for the quizzes. 
 
-- **Data Workflow Project (10%):**  The final project in the course will require you to create a template for automating a report in R. You will publish the report as a GitHub (Jekyll) website.
+- **Data Workflow Project (15%):**  The final project in the course will require you to create a template for automating a report in R. You will publish the report as a GitHub (Jekyll) website.
   
 <br>
 
