@@ -99,7 +99,6 @@ For easy reference, you have the following due dates this term:
 **Projects:**
 
 * **R Package**: {{page.projects.r-package}}
-* **Data Wrangling Exercise**: {{page.projects.data-wrangling}}  
 * **Customized Report Template**: {{page.projects.report-template}} 
 
 
