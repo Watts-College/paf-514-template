@@ -9,52 +9,48 @@ Passcode:
 
 session: 
 - week0:
-  date:  'Friday, Jan 12th, 12:30pm: COURSE OVERVIEW'  
-  video: 'https://asu.zoom.us/rec/share/g8ooQ5HZ9fguPeQdwUxaqpqRpSyGghdFCMv6_1PdER0MYnPZ7zj41g8laD8RJJCw.Vh76k7MOdifOYVeU?startTime=1705088034000'
-  password: '0@SXL@HL'
+  date:  'Friday, August 22, 12:30pm: COURSE OVERVIEW'  
+  video: ''
+  password: ''
 - week1:
-  date:  'Friday, Jan 12th, 3:00pm: LAB 01 GETTING STARTED'  
-  video: 'https://asu.zoom.us/rec/share/o3ePQO50NTXEUJWjBdr3rA5D3DDdehQl3GqvDvt8EOPmGYlxMOde_xG-xaM3CIRX.UMTLTZjuEOlsagR7'
-  password: 'WMC&NLs1'
+  date:  'Monday, August 25, 3:00pm: LAB 01'  
+  video: ''
+  password: ''
   sample-code: 'week-01-control-structures.R' 
   session-code: 'week-01-control-structures-v4.Rhistory' 
 - week2:
-  date:  'Tues, Jan 16th, 3pm'  
-  video: 'https://asu.zoom.us/rec/share/Yydn_WRVkbVAxN1bvpaf6HWQuMpj7y4eg7wW2-b7Smtda10MlqvsYEn7A-zQHJTe.vlVF-U9dCs5mA-jN?startTime=1705442637000' 
-  password: '!WK0mnY4'
+  date:  'Tuesday, Sept 2nd, 3pm'  
+  video: '' 
+  password: ''
   sample-code: 'week-02-loops.R' 
   session-code: 'week-02-loops-v2.Rhistory' 
 - week3:
-  date:  'Mon Jan 22nd'  
-  video: 'https://asu.zoom.us/rec/share/PpHj7F6Eaz93l4d47h_gBk3wy9HNmsInn8WXAb-WAmc_4d5y2rz1xuyqiTtbnnvV.At825diC81PoJDuL?startTime=1705962245000'
-  password: '?Sh4$S0h'
+  date:  'Monday, Sept 8th'  
+  video: ''
+  password: ''
   sample-code: 'week-03-regular-expressions.R' 
   session-code: 'week-03-regex.Rhistory' 
 - week4:
-  date:  'Mon Jan 29th'  
-  video: 'https://asu.zoom.us/rec/share/z8rdbXDoVc4twdRutbkHE__GSHbyWr5DY7VXYwHXdBPqEOtKl-Fgojl2Ez5NxuHQ.tYepI3W6AvugotaR'
-  password: '8mJf=Y+2'
+  date:  'Monday, Sept 15th'  
+  video: ''
+  password: ''
   sample-code: 'week-04-quanteda.R'
 - week5:
-  date:  'Mon Feb 5th'  
-  video: 'https://asu.zoom.us/rec/share/CbGM5iKZs0hBaThglZFTfzn1wXeHwAGbVf19mWpt6geH2LxDZPN-Dh-v_tqszpjK.w-9vTqxtiHg2upsT'
-  password: 'o4=iqJLA'  
+  date:  'Monday, Sept 22nd'  
+  video: ''
+  password: ''  
   sample-code: 'week-05.R'  
 - week6:
-  date:  'Wed Feb 12th'  
-  video: 'https://asu.zoom.us/rec/share/qxBaskgl68zkMlLZdkMMIuIXsD5sIwygWyN5rDbQ1W_LYwGuyeC6LNjt0kUAy_4.2GecGbSNTv1sUNng'
-  password: '0QygPZf*'
+  date:  'Monday, Sept 29th'  
+  video: ''
+  password: ''
   sample-code: 'week-06-data-apis.R'
 - week7:
-  date:  'Mon Feb 19th'  
-  video: 'https://asu.zoom.us/rec/share/AAK7mKyTRFHsxGSxr4VGbD3947dQUH-XuwCsVss5amNUOKpJnT5YVTlYIdMHno6N.SX3I2_UZNcGfGIjG'
-  password: '?BN@X%5!'
-  link: 'https://github.com/Watts-College/paf-514-template/tree/main/labs/batch-demo'
-- week8:
-  date:  'Mon Feb 26th'  
+  date:  'Monday, Oct 6th'  
   video: ''
   password: ''
   link: 'https://github.com/Watts-College/paf-514-template/tree/main/labs/batch-demo'
+
 ---
 
 
