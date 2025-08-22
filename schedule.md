@@ -3,33 +3,32 @@ layout: default
 title: Schedule
 
 canvas: 
-  assignment_url: 'https://asu.instructure.com/courses/178112/assignments'
+  assignment_url: 'https://canvas.asu.edu/courses/236080/assignments'
   
-yellowdig_url: 'https://asu.instructure.com/courses/178112/assignments/4874980'
+yellowdig_url: 'https://canvas.asu.edu/courses/236080/assignments/6634594'
 
 yellowdig: 
-  post-01: 'Wednesday, January 10th'
-  post-02: 'Wednesday, January 17th' 
-  post-03: 'Wednesday, January 24th' 
-  post-04: 'Wednesday, January 31st' 
-  post-05: 'Wednesday, February 7th' 
-  post-06: 'Wednesday, February 14th' 
-  post-07: 'Wednesday, February 21st' 
+  post-01: 'Friday, August 22'
+  post-02: 'Friday, August 29th' 
+  post-03: 'Friday, September 5th' 
+  post-04: 'Friday, September 12th' 
+  post-05: 'Friday, September 19th' 
+  post-06: 'Friday, September 26th' 
+  post-07: 'Friday, October 3rd' 
   
 
 labs:
-  lab-01:  'Wednesday, January 17th' 
-  lab-02:  'Wednesday, January 24th'
-  lab-03:  'Wednesday, January 31st'
-  lab-04:  'Wednesday, February 7th'
-  lab-05:  'Wednesday, February 14th'
-  lab-06:  'Wednesday, February 21st'
+  lab-01:  'Wednesday, August 27th' 
+  lab-02:  'Wednesday, September 3rd'
+  lab-03:  'Wednesday, September 10th'
+  lab-04:  'Wednesday, September 17th'
+  lab-05:  'Wednesday, September 24th'
+  lab-06:  'Wednesday, October 1st'
   
   
 projects: 
-  r-package:  'Monday, February 5th'
-  report-template:  'Tuesday, February 27th'
-  data-wrangling:  'Ongoing'
+  r-package:  'Friday, September 19th'
+  report-template:  'Wednesday, October 8th'
   
   
 ---
@@ -86,7 +85,7 @@ For easy reference, you have the following due dates this term:
 * {{page.labs.lab-05}} 
 * {{page.labs.lab-06}} 
 
-**Post Practice Problems on YellowDig:**
+**Practice Problems on YellowDig:**
  
 * {{page.yellowdig.post-01}} 
 * {{page.yellowdig.post-02}} 
@@ -787,25 +786,8 @@ Also share your page link on YellowDig:
 
 **Post on {{page.yellowdig.post-07}}**
   
+
 <hr>
-<br>
-
-## Data Wrangling Exercise
-
-**Due {{page.projects.data-wrangling}}**
-
-Coming soon....
-
-<a class="uk-button uk-button-default" href="">Instructions</a>
-
----
-
-<br>
-<br>
-
-
-
-
 <br>
 
 
