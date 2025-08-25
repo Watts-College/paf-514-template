@@ -17,19 +17,19 @@ session:
   video: ''
   password: ''
   sample-code: 'week-01-control-structures.R' 
-  session-code: 'week-01-control-structures-v4.Rhistory' 
+  session-code: '' 
 - week2:
   date:  'Tuesday, Sept 2nd, 3pm'  
   video: '' 
   password: ''
   sample-code: 'week-02-loops.R' 
-  session-code: 'week-02-loops-v2.Rhistory' 
+  session-code: '' 
 - week3:
   date:  'Monday, Sept 8th'  
   video: ''
   password: ''
   sample-code: 'week-03-regular-expressions.R' 
-  session-code: 'week-03-regex.Rhistory' 
+  session-code: '' 
 - week4:
   date:  'Monday, Sept 15th'  
   video: ''
