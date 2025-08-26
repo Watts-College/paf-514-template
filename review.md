@@ -8,16 +8,12 @@ root-url: 'https://raw.githubusercontent.com/Watts-College/paf-514-template/main
 Passcode: 
 
 session: 
-- week0:
-  date:  'COURSE OVERVIEW'  
-  video: ''
-  password: ''
 - week1:
   date:  'Monday, August 25, 3:00pm: LAB 01'  
-  video: ''
-  password: ''
+  video: 'https://asu.zoom.us/rec/share/ezYYev-nbMHFZNUqMYJWkM-tGSA8q1xh4ZlT6y5y1ztJaEbpevspqmDLEj9DTdWC.8bqS7dTtRZcKzIuc'
+  password: '2aq=qeW%'
   sample-code: 'week-01-control-structures.R' 
-  session-code: '' 
+  link: 'https://github.com/Watts-College/paf-514-template/blob/main/lectures/ai-philosophy.pdf' 
 - week2:
   date:  'Tuesday, Sept 2nd, 3pm'  
   video: '' 
