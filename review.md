@@ -10,7 +10,7 @@ Passcode:
 session: 
 - week1:
   date:  'Monday, August 25, 3:00pm: LAB 01'  
-  video: 'https://asu.zoom.us/rec/share/ezYYev-nbMHFZNUqMYJWkM-tGSA8q1xh4ZlT6y5y1ztJaEbpevspqmDLEj9DTdWC.8bqS7dTtRZcKzIuc'
+  video: 'https://asu.zoom.us/rec/play/HxcjJpbrGbGsmpME3jOZZeZpe9VUnBd4p4mjVoT6V4UfABh2NhO72PmuemzlBQvBy46BUGh0pZsMByhl.ubqAoItSZ1OoewY2'
   password: '2aq=qeW%'
   sample-code: 'week-01-control-structures.R' 
   link: 'https://github.com/Watts-College/paf-514-template/blob/main/lectures/ai-philosophy.pdf' 
