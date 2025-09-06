@@ -181,6 +181,8 @@ has_devel()
 ```
 
 ```{r, echo=F}
+library(devtools)
+options( buildtools.check = function(action) TRUE )
 devtools::has_devel()
 ```
 
@@ -296,7 +298,9 @@ Do you want to create anyway?
 
 ### Document Your Functions
 
-Add your roxygen comments to your R scripts:
+Provide documentation for the functions in your package by adding [roxygen comments](https://rverse-tutorials.github.io/RWorkflow-NWFSC-2020/week5-roxygen.html) to your R scripts. The template script provided in Step 1.1 above includes complete roxygen comments for one function and some placeholder tags for the others. 
+
+The example here is showing the documentation for the base R **sum()** function. 
 
 ```{r, eval=F}
 #' @title
@@ -337,7 +341,11 @@ sum <- function(..., na.rm = TRUE) {}
 
 Note that good documentation describes all of the arguments needed by the function, including the required data types of each object. And clearly describe what will be returned when the function runs (type of object, what it contains). 
 
-The information you provide becomes the documentation that appears when you type `help("function_name")`: 
+The information you provide becomes the documentation that appears when you type `help("function_name")`.
+
+```
+help( "sum" )
+```
 
 ![](images/r-package-docs.png)
 
