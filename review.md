@@ -22,10 +22,9 @@ session:
   session-code: '' 
 - week3:
   date:  'Monday, Sept 8th'  
-  video: ''
-  password: ''
+  video: 'https://asu.zoom.us/rec/share/D4hE_26ufuFJuW2-HaAoU7-FUvgIKfHBrw_5feVnB6bHJF28SuWlb3ePGkgukseG.WUoOZ2hTAzSGhlaf?startTime=1757371137000'
+  password: 'u7%VDf.c'
   sample-code: 'week-03-regular-expressions.R' 
-  session-code: '' 
 - week4:
   date:  'Monday, Sept 15th'  
   video: ''
@@ -48,7 +47,6 @@ session:
   link: 'https://github.com/Watts-College/paf-514-template/tree/main/labs/batch-demo'
 
 ---
-
 
 
 
