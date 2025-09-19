@@ -3300,7 +3300,7 @@ move up one level in the directory first:</p>
 <p>In a new R session try:</p>
 <div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" tabindex="-1"></a><span class="fu">library</span>( montyhall )</span>
 <span id="cb25-2"><a href="#cb25-2" tabindex="-1"></a><span class="fu">create_game</span>()</span></code></pre></div>
-<pre><code>## [1] &quot;car&quot;  &quot;goat&quot; &quot;goat&quot;</code></pre>
+<pre><code>## [1] &quot;goat&quot; &quot;car&quot;  &quot;goat&quot;</code></pre>
 <br> <br>
 <hr>
 </div>
@@ -3431,36 +3431,128 @@ documentation for all functions and that the examples are able to
 execute without error.</p>
 <p>You can check your own work ahead of time by generating the report
 using the following script after adding your GitHub username.</p>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" tabindex="-1"></a>pkgs <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;tools&quot;</span>,<span class="st">&quot;devtools&quot;</span>,<span class="st">&quot;purrr&quot;</span>,<span class="st">&quot;rmarkdown&quot;</span>)</span>
-<span id="cb34-2"><a href="#cb34-2" tabindex="-1"></a><span class="fu">install.packages</span>()</span>
-<span id="cb34-3"><a href="#cb34-3" tabindex="-1"></a></span>
-<span id="cb34-4"><a href="#cb34-4" tabindex="-1"></a>wd <span class="ot">&lt;-</span> <span class="fu">getwd</span>()</span>
-<span id="cb34-5"><a href="#cb34-5" tabindex="-1"></a><span class="fu">dir.create</span>(<span class="st">&quot;MONTY&quot;</span>)</span>
-<span id="cb34-6"><a href="#cb34-6" tabindex="-1"></a></span>
-<span id="cb34-7"><a href="#cb34-7" tabindex="-1"></a><span class="do">################</span></span>
-<span id="cb34-8"><a href="#cb34-8" tabindex="-1"></a></span>
-<span id="cb34-9"><a href="#cb34-9" tabindex="-1"></a>  git.hub.name  <span class="ot">&lt;-</span>  <span class="co"># YOUR GITHUB USERNAME </span></span>
-<span id="cb34-10"><a href="#cb34-10" tabindex="-1"></a></span>
-<span id="cb34-11"><a href="#cb34-11" tabindex="-1"></a><span class="do">###############</span></span>
-<span id="cb34-12"><a href="#cb34-12" tabindex="-1"></a>  </span>
-<span id="cb34-13"><a href="#cb34-13" tabindex="-1"></a><span class="do">## GENERATE PACKAGE REPORT </span></span>
-<span id="cb34-14"><a href="#cb34-14" tabindex="-1"></a></span>
-<span id="cb34-15"><a href="#cb34-15" tabindex="-1"></a>filepath <span class="ot">&lt;-</span> <span class="fu">paste0</span>( wd, <span class="st">&quot;/MONTY/montyhall-test-&quot;</span>, <span class="fu">toupper</span>(git.hub.name), <span class="st">&quot;.HTML&quot;</span> )</span>
-<span id="cb34-16"><a href="#cb34-16" tabindex="-1"></a></span>
-<span id="cb34-17"><a href="#cb34-17" tabindex="-1"></a><span class="fu">download.file</span>( </span>
-<span id="cb34-18"><a href="#cb34-18" tabindex="-1"></a>  <span class="at">url=</span><span class="st">&quot;https://raw.githubusercontent.com/Watts-College/paf-514-template/main/labs/create-r-package-test.rmd&quot;</span>,</span>
-<span id="cb34-19"><a href="#cb34-19" tabindex="-1"></a>  <span class="at">destfile=</span><span class="st">&quot;./MONTY/create-r-package-test.rmd&quot;</span> )</span>
-<span id="cb34-20"><a href="#cb34-20" tabindex="-1"></a></span>
-<span id="cb34-21"><a href="#cb34-21" tabindex="-1"></a>rmarkdown<span class="sc">::</span><span class="fu">render</span>( </span>
-<span id="cb34-22"><a href="#cb34-22" tabindex="-1"></a>  <span class="at">input =</span> <span class="st">&quot;./MONTY/create-r-package-test.rmd&quot;</span>, </span>
-<span id="cb34-23"><a href="#cb34-23" tabindex="-1"></a>  <span class="at">output_file =</span> filepath,</span>
-<span id="cb34-24"><a href="#cb34-24" tabindex="-1"></a>  <span class="at">params =</span> <span class="fu">list</span>( <span class="at">name=</span>git.hub.name ) )</span>
-<span id="cb34-25"><a href="#cb34-25" tabindex="-1"></a></span>
-<span id="cb34-26"><a href="#cb34-26" tabindex="-1"></a><span class="co"># file location</span></span>
-<span id="cb34-27"><a href="#cb34-27" tabindex="-1"></a>filepath</span>
-<span id="cb34-28"><a href="#cb34-28" tabindex="-1"></a></span>
-<span id="cb34-29"><a href="#cb34-29" tabindex="-1"></a><span class="co"># preview file </span></span>
-<span id="cb34-30"><a href="#cb34-30" tabindex="-1"></a><span class="fu">shell</span>( filepath )</span></code></pre></div>
+<p>First, delete your current package installation. Close down all
+instances of R or R Studio, open a new R environment and try:</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" tabindex="-1"></a><span class="co"># library() attaches the package to the current environment</span></span>
+<span id="cb34-2"><a href="#cb34-2" tabindex="-1"></a><span class="co"># detach is the opposite of library() - closes the package </span></span>
+<span id="cb34-3"><a href="#cb34-3" tabindex="-1"></a><span class="fu">detach</span>( <span class="st">&quot;package:montyhall&quot;</span> )   <span class="co"># closes the package so not locked</span></span>
+<span id="cb34-4"><a href="#cb34-4" tabindex="-1"></a><span class="fu">remove.packages</span>( <span class="st">&quot;montyhall&quot;</span> )  <span class="co"># deletes from your computer </span></span></code></pre></div>
+<p>Then you can run the testing script:</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" tabindex="-1"></a><span class="co"># IF NOT ALREADY INSTALLED:</span></span>
+<span id="cb35-2"><a href="#cb35-2" tabindex="-1"></a>pkgs <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;devtools&quot;</span>,<span class="st">&quot;purrr&quot;</span>,<span class="st">&quot;rmarkdown&quot;</span>)</span>
+<span id="cb35-3"><a href="#cb35-3" tabindex="-1"></a><span class="fu">install.packages</span>(pkgs)</span>
+<span id="cb35-4"><a href="#cb35-4" tabindex="-1"></a></span>
+<span id="cb35-5"><a href="#cb35-5" tabindex="-1"></a>wd <span class="ot">&lt;-</span> <span class="fu">getwd</span>()</span>
+<span id="cb35-6"><a href="#cb35-6" tabindex="-1"></a><span class="fu">dir.create</span>(<span class="st">&quot;MONTY&quot;</span>)</span>
+<span id="cb35-7"><a href="#cb35-7" tabindex="-1"></a></span>
+<span id="cb35-8"><a href="#cb35-8" tabindex="-1"></a><span class="do">################</span></span>
+<span id="cb35-9"><a href="#cb35-9" tabindex="-1"></a></span>
+<span id="cb35-10"><a href="#cb35-10" tabindex="-1"></a>  git.hub.name  <span class="ot">&lt;-</span>  <span class="co"># YOUR GITHUB USERNAME </span></span>
+<span id="cb35-11"><a href="#cb35-11" tabindex="-1"></a></span>
+<span id="cb35-12"><a href="#cb35-12" tabindex="-1"></a><span class="do">###############</span></span>
+<span id="cb35-13"><a href="#cb35-13" tabindex="-1"></a>  </span>
+<span id="cb35-14"><a href="#cb35-14" tabindex="-1"></a><span class="do">## GENERATE PACKAGE REPORT </span></span>
+<span id="cb35-15"><a href="#cb35-15" tabindex="-1"></a></span>
+<span id="cb35-16"><a href="#cb35-16" tabindex="-1"></a>filepath <span class="ot">&lt;-</span> <span class="fu">paste0</span>( wd, <span class="st">&quot;/MONTY/montyhall-test-&quot;</span>, <span class="fu">toupper</span>(git.hub.name), <span class="st">&quot;.HTML&quot;</span> )</span>
+<span id="cb35-17"><a href="#cb35-17" tabindex="-1"></a></span>
+<span id="cb35-18"><a href="#cb35-18" tabindex="-1"></a><span class="fu">download.file</span>( </span>
+<span id="cb35-19"><a href="#cb35-19" tabindex="-1"></a>  <span class="at">url=</span><span class="st">&quot;https://raw.githubusercontent.com/Watts-College/paf-514-template/main/labs/create-r-package-test.rmd&quot;</span>,</span>
+<span id="cb35-20"><a href="#cb35-20" tabindex="-1"></a>  <span class="at">destfile=</span><span class="st">&quot;./MONTY/create-r-package-test.rmd&quot;</span> )</span>
+<span id="cb35-21"><a href="#cb35-21" tabindex="-1"></a></span>
+<span id="cb35-22"><a href="#cb35-22" tabindex="-1"></a>rmarkdown<span class="sc">::</span><span class="fu">render</span>( </span>
+<span id="cb35-23"><a href="#cb35-23" tabindex="-1"></a>  <span class="at">input =</span> <span class="st">&quot;./MONTY/create-r-package-test.rmd&quot;</span>, </span>
+<span id="cb35-24"><a href="#cb35-24" tabindex="-1"></a>  <span class="at">output_file =</span> filepath,</span>
+<span id="cb35-25"><a href="#cb35-25" tabindex="-1"></a>  <span class="at">params =</span> <span class="fu">list</span>( <span class="at">name=</span>git.hub.name ) )</span>
+<span id="cb35-26"><a href="#cb35-26" tabindex="-1"></a></span>
+<span id="cb35-27"><a href="#cb35-27" tabindex="-1"></a><span class="co"># file location</span></span>
+<span id="cb35-28"><a href="#cb35-28" tabindex="-1"></a>filepath</span>
+<span id="cb35-29"><a href="#cb35-29" tabindex="-1"></a></span>
+<span id="cb35-30"><a href="#cb35-30" tabindex="-1"></a><span class="co"># preview file </span></span>
+<span id="cb35-31"><a href="#cb35-31" tabindex="-1"></a><span class="fu">shell</span>( filepath )</span></code></pre></div>
+<p>This script will install your package from GitHub, parse the
+documentation files you have created (RD files in the “man” folder), and
+attempt to execute all of the examples you created in the
+<strong>Examples</strong> section.</p>
+<p>To receive full credit for the assignment:</p>
+<ul>
+<li>Your package must install without errors</li>
+<li>The documentation for all functions must be complete</li>
+<li>The code snippets you provided in “Examples” must execute without
+error</li>
+</ul>
+<p><strong>What you should see:</strong></p>
+<p>If your package is running properly you will see a documentation
+section that shows you the helpfiles the user will see if they type
+<code>help( &quot;function_name&quot; )</code>:</p>
+<pre><code>#####   
+#####     CREATE GAME 
+#####   
+
+
+create_game             package:montyhall              R Documentation
+
+Create a new Monty Hall Problem game.
+
+Description:
+
+     &#39;create_game()&#39; generates a new game that consists of two doors
+     with goats behind them, and one with a car.
+
+Usage:
+
+     create_game()
+     
+Arguments:
+
+     ...: no arguments are used by the function.
+
+Details:
+
+     The game setup replicates the game on the TV show &quot;Let&#39;s Make a
+     Deal&quot; where there are three doors for a contestant to choose from,
+     one of which has a car behind it and two have goats. The
+     contestant selects a door, then the host opens a door to reveal a
+     goat, and then the contestant is given an opportunity to stay with
+     their original selection or switch to the other unopened door.
+     There was a famous debate about whether it was optimal to stay or
+     switch when given the option to switch, so this simulation was
+     created to test both strategies.
+
+Value:
+
+     The function returns a length 3 character vector indicating the
+     positions of goats and the car.
+
+Examples:
+
+       create_game()</code></pre>
+<p>You will also see if the code snippets you provide as examples for
+each function are running properly:</p>
+<pre><code>#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+
+#####  
+#####   play_game
+#####  
+
+&gt;   play_game()
+  strategy outcome
+1     stay     WIN
+2   switch    LOSE
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+
+#####  
+#####   determine_winner
+#####  
+
+&gt;   determine_winner()
+
+&gt;&gt;&gt;
+&gt;&gt;&gt;  Error in determine_winner() : argument &quot;game&quot; is missing, with no default
+&gt;&gt;&gt;
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#</code></pre>
+<p><br> <br></p>
 </div>
 </div>
 <div id="additional-resources" class="section level1" number="2">

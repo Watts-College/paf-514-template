@@ -1,0 +1,1201 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>How to Break A Function</title>
+
+<script src="q-01-review-functions_files/header-attrs-2.29/header-attrs.js"></script>
+<script src="q-01-review-functions_files/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="q-01-review-functions_files/bootstrap-3.3.5/css/readable.min.css" rel="stylesheet" />
+<script src="q-01-review-functions_files/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="q-01-review-functions_files/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="q-01-review-functions_files/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="q-01-review-functions_files/navigation-1.1/tabsets.js"></script>
+<link href="q-01-review-functions_files/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="q-01-review-functions_files/pagedtable-1.1/js/pagedtable.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #204a87; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #8f5902; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #204a87; font-weight: bold; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #ce5c00; font-weight: bold; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<link rel="stylesheet" href="textbook.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">How to Break A Function</h1>
+
+</div>
+
+<div id="TOC">
+<ul>
+<li><a href="#example-functions" id="toc-example-functions">Example
+Functions</a></li>
+<li><a href="#argument-types" id="toc-argument-types">Argument
+Types</a></li>
+<li><a href="#implicit-argument-calls"
+id="toc-implicit-argument-calls">Implicit Argument Calls</a></li>
+<li><a href="#argument-matching" id="toc-argument-matching">Argument
+Matching</a></li>
+<li><a href="#argument-defaults" id="toc-argument-defaults">Argument
+Defaults</a></li>
+<li><a href="#return-values" id="toc-return-values">Return
+Values</a></li>
+<li><a href="#function-scope" id="toc-function-scope">Function
+Scope</a></li>
+<li><a href="#lexical-scoping" id="toc-lexical-scoping">Lexical
+Scoping</a></li>
+<li><a href="#aside-on-snake-case" id="toc-aside-on-snake-case">Aside on
+Snake Case</a></li>
+</ul>
+</div>
+
+<div class="tip">
+<p>KEY TAKEAWAYS</p>
+<p>For functions to work properly, focus on the following:</p>
+<ol style="list-style-type: decimal">
+<li>Pay attention to the data type of arguments.</li>
+<li>When possible, use argument defaults to make functions more
+flexible.</li>
+<li>Use of implicit argument calls is convenient but can introduce
+errors.</li>
+<li>Get in the habit of using explicit return() statements.</li>
+<li>Make sure you pass all arguments needed for your function to avoid
+scope problems.</li>
+<li>Lexical Scoping is powerful but use sparingly.</li>
+</ol>
+</div>
+<p>This is a review of material that is covered in the <a
+href="https://ds4ps.org/dp4ss-textbook/ch-040-functions.html">Introduction
+to Functions</a> lecture. For more depth you might find the following
+resources helpful as well:</p>
+<ul>
+<li><a href="https://r4ds.had.co.nz/functions.html">Writing Functions: R
+for Data Science by Hadley Wickam</a></li>
+<li><a
+href="https://www.stat.berkeley.edu/~statcur/Workshop2/Presentations/functions.pdf">Notes
+on R Functions: Johns Hopkins Biostatistics Course 140.776</a></li>
+</ul>
+<p>The purpose of this review is to highlight the most common ways in
+which you might break functions while you are creating them or while you
+are using them in a workflow.</p>
+<p>The following packages are used:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>( dplyr )   <span class="co"># data wrangling</span></span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">library</span>( pander )  <span class="co"># pretty printing</span></span></code></pre></div>
+<div id="example-functions" class="section level2">
+<h2>Example Functions</h2>
+<p>The goal of a function is to enable the re-use of code. If I find
+myself having to do a lot of temperature conversions in my analysis, I
+might consider converting a “recipe” into a function.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="do">###  original data recipe </span></span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>temp.in.celsius <span class="ot">&lt;-</span> <span class="dv">100</span></span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>temp.in.fahrenheit <span class="ot">&lt;-</span> ( temp.in.celsius <span class="sc">*</span> <span class="dv">9</span><span class="sc">/</span><span class="dv">5</span> ) <span class="sc">+</span> <span class="dv">32</span></span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>temp.in.fahrenheit  <span class="co"># print the new temp  </span></span></code></pre></div>
+<pre><code>## [1] 212</code></pre>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="do">### repackage the recipe as a function</span></span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>celsius_to_fahrenheit <span class="ot">&lt;-</span> <span class="cf">function</span>( <span class="at">celsius=</span><span class="dv">100</span> )</span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>{</span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>  fahrenheit <span class="ot">&lt;-</span> ( celsius <span class="sc">*</span> <span class="dv">9</span><span class="sc">/</span><span class="dv">5</span> ) <span class="sc">+</span> <span class="dv">32</span></span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>  <span class="fu">return</span>( fahrenheit )</span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a>}</span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a>                       </span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a><span class="fu">celsius_to_fahrenheit</span>( <span class="dv">100</span> )  <span class="co"># test the function </span></span></code></pre></div>
+<pre><code>## [1] 212</code></pre>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>sum_ab <span class="ot">&lt;-</span> <span class="cf">function</span>( a, b ) {</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>  sum.ab <span class="ot">&lt;-</span> a <span class="sc">+</span> b </span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>  <span class="fu">return</span>( sum.ab )</span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>}</span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a></span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a>A <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a>B <span class="ot">&lt;-</span> <span class="dv">3</span></span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a><span class="fu">sum_ab</span>( <span class="at">a=</span>A, <span class="at">b=</span>B )</span></code></pre></div>
+<pre><code>## [1] 5</code></pre>
+</div>
+<div id="argument-types" class="section level2">
+<h2>Argument Types</h2>
+<ul>
+<li>object arguments are typically quoted</li>
+<li>object names are NOT quoted</li>
+<li>numbers are also NOT quoted</li>
+<li>logical T/F can be either</li>
+</ul>
+<p>Passing values:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="fu">sum_ab</span>( <span class="at">a=</span><span class="dv">7</span>, <span class="at">b=</span><span class="dv">3</span> )</span></code></pre></div>
+<pre><code>## [1] 10</code></pre>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="fu">sum_ab</span>( <span class="at">a=</span><span class="st">&quot;7&quot;</span>, <span class="at">b=</span><span class="st">&quot;3&quot;</span> )</span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a><span class="co"># Error in a + b : non-numeric argument to binary operator</span></span></code></pre></div>
+<p>Passing objects:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a>A <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a>B <span class="ot">&lt;-</span> <span class="dv">3</span></span>
+<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a><span class="fu">sum_ab</span>( <span class="at">a=</span>A, <span class="at">b=</span>B )</span></code></pre></div>
+<pre><code>## [1] 5</code></pre>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="fu">sum_ab</span>( <span class="at">a=</span><span class="st">&quot;A&quot;</span>, <span class="at">b=</span><span class="st">&quot;B&quot;</span> )  </span>
+<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a><span class="co"># Error in a + b : non-numeric argument to binary operator</span></span></code></pre></div>
+<p>Passing TRUE/FALSE values:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a>if_a_else_b <span class="ot">&lt;-</span> <span class="cf">function</span>( case_a ){</span>
+<span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a>  <span class="cf">if</span>(   case_a ){ <span class="fu">return</span>(<span class="dv">5</span>) }</span>
+<span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a>  <span class="cf">if</span>( <span class="sc">!</span> case_a ){ <span class="fu">return</span>(<span class="dv">0</span>) }</span>
+<span id="cb14-4"><a href="#cb14-4" tabindex="-1"></a>}</span>
+<span id="cb14-5"><a href="#cb14-5" tabindex="-1"></a></span>
+<span id="cb14-6"><a href="#cb14-6" tabindex="-1"></a><span class="fu">if_a_else_b</span>( <span class="at">case_a=</span><span class="cn">TRUE</span> )</span></code></pre></div>
+<pre><code>## [1] 5</code></pre>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a><span class="fu">if_a_else_b</span>( <span class="at">case_a=</span><span class="cn">FALSE</span> )</span></code></pre></div>
+<pre><code>## [1] 0</code></pre>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a><span class="co"># DOES THIS WORK?</span></span>
+<span id="cb18-2"><a href="#cb18-2" tabindex="-1"></a><span class="fu">if_a_else_b</span>( <span class="at">case_a=</span><span class="st">&quot;TRUE&quot;</span> )</span></code></pre></div>
+<pre><code>## [1] 5</code></pre>
+<p>Which should see odd because it is the wrong data type:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a><span class="fu">class</span>( <span class="st">&quot;TRUE&quot;</span> )</span></code></pre></div>
+<pre><code>## [1] &quot;character&quot;</code></pre>
+<p>However, the if() function will coerce the string into a logical
+value.</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" tabindex="-1"></a><span class="cf">if</span>(<span class="st">&quot;TRUE&quot;</span>){<span class="fu">print</span>(<span class="dv">7</span>)}</span></code></pre></div>
+<pre><code>## [1] 7</code></pre>
+<p>But in other cases passing the characters “T”/“F” when the logical
+values T/F are expected will result in errors. For example:</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" tabindex="-1"></a><span class="fu">if_a_else_b</span>( <span class="at">case_a=</span><span class="st">&quot;FALSE&quot;</span> )</span>
+<span id="cb24-2"><a href="#cb24-2" tabindex="-1"></a><span class="co"># Error in !condition : invalid argument type</span></span></code></pre></div>
+<div class="question">
+<p>Can you see why a=“FALSE” fails but a=“TRUE” was fine?</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" tabindex="-1"></a>if_a_else_b <span class="ot">&lt;-</span> <span class="cf">function</span>( case_a ){</span>
+<span id="cb25-2"><a href="#cb25-2" tabindex="-1"></a>  <span class="cf">if</span>(   case_a ){ <span class="fu">return</span>(<span class="dv">5</span>) }</span>
+<span id="cb25-3"><a href="#cb25-3" tabindex="-1"></a>  <span class="cf">if</span>( <span class="sc">!</span> case_a ){ <span class="fu">return</span>(<span class="dv">0</span>) }</span>
+<span id="cb25-4"><a href="#cb25-4" tabindex="-1"></a>}</span></code></pre></div>
+<p>Hint, what are the order of operations for these equations?</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" tabindex="-1"></a><span class="cf">if</span>(   (<span class="dv">3</span><span class="sc">+</span><span class="dv">4</span>) <span class="sc">&gt;</span> <span class="dv">5</span> )</span></code></pre></div>
+<ul>
+<li>Add 3+4</li>
+<li>Compare to 5</li>
+<li>Evaluate if() condition</li>
+</ul>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" tabindex="-1"></a><span class="cf">if</span>( <span class="sc">!</span> (<span class="dv">3</span><span class="sc">+</span><span class="dv">4</span>) <span class="sc">&gt;</span> <span class="dv">5</span> )</span></code></pre></div>
+<ul>
+<li>Add 3+4</li>
+<li>Compare to 5</li>
+<li>Apply opposite (!) operator</li>
+<li>Evaluate if() condition</li>
+</ul>
+<p>What happen here then?</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" tabindex="-1"></a><span class="cf">if</span>( <span class="st">&quot;FALSE&quot;</span> )    <span class="co"># works fine</span></span>
+<span id="cb28-2"><a href="#cb28-2" tabindex="-1"></a><span class="cf">if</span>( <span class="sc">!</span> <span class="st">&quot;FALSE&quot;</span> )  <span class="co"># fails</span></span></code></pre></div>
+</div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" tabindex="-1"></a>print_2_4 <span class="ot">&lt;-</span> <span class="cf">function</span>( <span class="at">v=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>, rows ){</span>
+<span id="cb29-2"><a href="#cb29-2" tabindex="-1"></a>  <span class="fu">return</span>( v[rows] )</span>
+<span id="cb29-3"><a href="#cb29-3" tabindex="-1"></a>}</span>
+<span id="cb29-4"><a href="#cb29-4" tabindex="-1"></a></span>
+<span id="cb29-5"><a href="#cb29-5" tabindex="-1"></a><span class="co"># SELECTS EVEN ROWS THROUGH RECYCLING</span></span>
+<span id="cb29-6"><a href="#cb29-6" tabindex="-1"></a><span class="fu">print_2_4</span>( <span class="at">rows=</span><span class="fu">c</span>(F,T) )</span></code></pre></div>
+<pre><code>## [1] 2 4</code></pre>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" tabindex="-1"></a><span class="co"># LOOKING FOR ROWNAMES &quot;T&quot; AND &quot;F&quot;</span></span>
+<span id="cb31-2"><a href="#cb31-2" tabindex="-1"></a><span class="fu">print_2_4</span>( <span class="at">rows=</span><span class="fu">c</span>(<span class="st">&quot;F&quot;</span>,<span class="st">&quot;T&quot;</span>) )</span></code></pre></div>
+<pre><code>## [1] NA NA</code></pre>
+<div class="question">
+<p>When data types are very sensitive, potential errors can be managed
+with error handling:</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" tabindex="-1"></a>print_2_4 <span class="ot">&lt;-</span> <span class="cf">function</span>( <span class="at">v=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>, rows ){</span>
+<span id="cb33-2"><a href="#cb33-2" tabindex="-1"></a>  <span class="cf">if</span>( <span class="fu">class</span>(rows) <span class="sc">!=</span> <span class="st">&quot;logical&quot;</span> ){ </span>
+<span id="cb33-3"><a href="#cb33-3" tabindex="-1"></a>    <span class="fu">stop</span>( <span class="st">&quot;Input &#39;rows&#39; must be a logical vector.&quot;</span> ) </span>
+<span id="cb33-4"><a href="#cb33-4" tabindex="-1"></a>  }</span>
+<span id="cb33-5"><a href="#cb33-5" tabindex="-1"></a>  <span class="fu">return</span>( v[rows] )</span>
+<span id="cb33-6"><a href="#cb33-6" tabindex="-1"></a>}</span></code></pre></div>
+<p>In this case the initial type condition ensures that data will not be
+corrupted by attempting to perform a subset operation using the wrong
+data type.</p>
+</div>
+</div>
+<div id="implicit-argument-calls" class="section level2">
+<h2>Implicit Argument Calls</h2>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" tabindex="-1"></a>a_minus_b <span class="ot">&lt;-</span> <span class="cf">function</span>( a, b ) {</span>
+<span id="cb34-2"><a href="#cb34-2" tabindex="-1"></a>  a.minus.b <span class="ot">&lt;-</span> a <span class="sc">-</span> b </span>
+<span id="cb34-3"><a href="#cb34-3" tabindex="-1"></a>  <span class="fu">return</span>( a.minus.b )</span>
+<span id="cb34-4"><a href="#cb34-4" tabindex="-1"></a>}</span></code></pre></div>
+<p>An <strong>explicit</strong> argument call is one that uses the names
+directly:</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" tabindex="-1"></a><span class="fu">a_minus_b</span>( <span class="at">a=</span><span class="dv">5</span>, <span class="at">b=</span><span class="dv">2</span> )</span></code></pre></div>
+<pre><code>## [1] 3</code></pre>
+<p>We can also reference arguments implicitly by omitting the argument
+names and we get identical behavior:</p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" tabindex="-1"></a><span class="fu">a_minus_b</span>( <span class="dv">5</span>, <span class="dv">2</span> )</span></code></pre></div>
+<pre><code>## [1] 3</code></pre>
+<p>However, the risk is that implicit calls are always sensitive to
+order:</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" tabindex="-1"></a><span class="fu">a_minus_b</span>( <span class="dv">2</span>, <span class="dv">5</span> )</span></code></pre></div>
+<pre><code>## [1] -3</code></pre>
+<p>Note that order does NOT matter in explicit calls:</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" tabindex="-1"></a><span class="fu">a_minus_b</span>( <span class="at">a=</span><span class="dv">5</span>, <span class="at">b=</span><span class="dv">2</span> )</span></code></pre></div>
+<pre><code>## [1] 3</code></pre>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" tabindex="-1"></a><span class="fu">a_minus_b</span>( <span class="at">b=</span><span class="dv">2</span>, <span class="at">a=</span><span class="dv">5</span> )</span></code></pre></div>
+<pre><code>## [1] 3</code></pre>
+</div>
+<div id="argument-matching" class="section level2">
+<h2>Argument Matching</h2>
+<p>In the example above you can also get away with arguments referenced
+in the wrong order <strong>IF</strong> at least one is named:</p>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" tabindex="-1"></a><span class="fu">a_minus_b</span>( <span class="at">a=</span><span class="dv">5</span>, <span class="dv">2</span> )</span></code></pre></div>
+<pre><code>## [1] 3</code></pre>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" tabindex="-1"></a><span class="fu">a_minus_b</span>( <span class="at">b=</span><span class="dv">2</span>, <span class="dv">5</span> )</span></code></pre></div>
+<pre><code>## [1] 3</code></pre>
+<p>That is because named arguments are assigned first then the remaining
+values are assigned to arguments by position. Consequently, these would
+all get you to the same place through matching by position:</p>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" tabindex="-1"></a>divide <span class="ot">&lt;-</span> <span class="cf">function</span>( cat, dog, mouse ){</span>
+<span id="cb49-2"><a href="#cb49-2" tabindex="-1"></a>  ( cat <span class="sc">-</span> mouse ) <span class="sc">/</span> dog</span>
+<span id="cb49-3"><a href="#cb49-3" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" tabindex="-1"></a><span class="fu">divide</span>( <span class="at">cat=</span><span class="dv">8</span>, <span class="at">dog=</span><span class="dv">1</span>, <span class="at">mouse=</span><span class="dv">2</span> )</span></code></pre></div>
+<pre><code>## [1] 6</code></pre>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" tabindex="-1"></a><span class="fu">divide</span>( <span class="at">cat=</span><span class="dv">8</span>, <span class="dv">1</span>, <span class="dv">2</span> )</span></code></pre></div>
+<pre><code>## [1] 6</code></pre>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" tabindex="-1"></a><span class="fu">divide</span>( <span class="at">dog=</span><span class="dv">1</span>, <span class="dv">8</span>, <span class="dv">2</span> )</span></code></pre></div>
+<pre><code>## [1] 6</code></pre>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" tabindex="-1"></a><span class="fu">divide</span>( <span class="at">mouse=</span><span class="dv">2</span>, <span class="dv">8</span>, <span class="dv">1</span> )</span></code></pre></div>
+<pre><code>## [1] 6</code></pre>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" tabindex="-1"></a><span class="fu">divide</span>( <span class="at">mouse=</span><span class="dv">2</span>, <span class="at">dog=</span><span class="dv">1</span>, <span class="dv">8</span> )</span></code></pre></div>
+<pre><code>## [1] 6</code></pre>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" tabindex="-1"></a><span class="fu">divide</span>( <span class="dv">8</span>, <span class="dv">1</span>, <span class="dv">2</span> )</span></code></pre></div>
+<pre><code>## [1] 6</code></pre>
+<p>Interestingly, we can also match based upon partial argument names.
+Even though the arguments are out of order, here, the values are still
+passed to the correct arguments because R will try to match the partial
+argument name with the argument list.</p>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" tabindex="-1"></a><span class="fu">divide</span>( <span class="at">m=</span><span class="dv">2</span>, <span class="at">c=</span><span class="dv">8</span>, <span class="at">d=</span><span class="dv">1</span> )</span></code></pre></div>
+<pre><code>## [1] 6</code></pre>
+<p>It will, however, fail if the match is not unique</p>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" tabindex="-1"></a>divide <span class="ot">&lt;-</span> <span class="cf">function</span>( xx, xy, zz ){</span>
+<span id="cb64-2"><a href="#cb64-2" tabindex="-1"></a>  zz <span class="sc">+</span> xx <span class="sc">-</span> xy</span>
+<span id="cb64-3"><a href="#cb64-3" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" tabindex="-1"></a><span class="fu">divide</span>( <span class="at">xx=</span><span class="dv">5</span>, <span class="at">z=</span><span class="dv">4</span>, <span class="dv">3</span> )</span></code></pre></div>
+<pre><code>## [1] 6</code></pre>
+<p>In this case the partial argument name “x” is indeterminate between
+“xx” and “xy”:</p>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" tabindex="-1"></a><span class="fu">divide</span>( <span class="at">x=</span><span class="dv">5</span>, <span class="at">z=</span><span class="dv">4</span>, <span class="dv">3</span> )</span>
+<span id="cb67-2"><a href="#cb67-2" tabindex="-1"></a><span class="co"># Error in divide(x = 5, z = 4, 3) : </span></span>
+<span id="cb67-3"><a href="#cb67-3" tabindex="-1"></a><span class="co">#  argument 1 matches multiple formal arguments</span></span></code></pre></div>
+<p>Same here, but since the “xy” argument is already provided R can now
+find a unique match for “x”.</p>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" tabindex="-1"></a><span class="fu">divide</span>( <span class="at">x=</span><span class="dv">5</span>, <span class="at">z=</span><span class="dv">4</span>, <span class="at">xy=</span><span class="dv">3</span> )</span></code></pre></div>
+<pre><code>## [1] 6</code></pre>
+<div class="question">
+<p><strong>CODE MAINTENANCE</strong></p>
+<p>If you writing code for a quick analysis or a report due in a few
+weeks then using implicit argument calls or partial argument names can
+save time.</p>
+<p>If, however, you are writing LEGACY CODE that your organization plans
+to use over time then explicit argument names become a lot more
+important.</p>
+<p>The reason is that your code probably depends upon packages that
+others have developed. Packages are updated all the time, and on
+occasion the arguments in functions change.</p>
+<p>For example, if a function that formerly only required two
+arguments:</p>
+<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" tabindex="-1"></a><span class="fu">fx</span>( x, <span class="at">y=</span><span class="cn">FALSE</span> )</span></code></pre></div>
+<p>Now requires three:</p>
+<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" tabindex="-1"></a><span class="fu">fx</span>( x1, x2, <span class="at">y=</span><span class="cn">FALSE</span> )</span></code></pre></div>
+<p>And you have:</p>
+<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" tabindex="-1"></a><span class="fu">fx</span>( <span class="dv">10</span>, <span class="cn">TRUE</span> )</span></code></pre></div>
+<p>Your code may still run, but now the argument “y” will default to
+FALSE and your results will differ!</p>
+<p>Most often these types of package changes cause your code to break,
+which is actually helpful because it is then easier to identify which
+functions have changed. Otherwise you might be scratching your head
+wondering why your results don’t make sense even though you are not
+receiving any errors.</p>
+<p>In this example explicit argument calls would have caught the issue
+because if you tried to execute fx( x=10, y=TRUE ) you would have gotten
+an error that x2 was not provided or that x matches multiple
+arguments.</p>
+<p>Although using explicit argument names is tedious, it is helpful for
+code that you will likely reuse in the future.</p>
+</div>
+</div>
+<div id="argument-defaults" class="section level2">
+<h2>Argument Defaults</h2>
+<pre><code>fx &lt;- function( x )    VS    fx &lt;- function( x=10 )</code></pre>
+<p>In some instances default values might make a function easier to use,
+especially when a function has a lot of arguments. For example, you can
+create a scatterplot by typing only:</p>
+<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" tabindex="-1"></a><span class="fu">plot</span>( x, y )</span></code></pre></div>
+<p>When the scatterplot function requires a MINIMUM of 18 arguments:</p>
+<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" tabindex="-1"></a><span class="fu">args</span>( plot.default )</span></code></pre></div>
+<pre><code>## function (x, y = NULL, type = &quot;p&quot;, xlim = NULL, ylim = NULL, 
+##     log = &quot;&quot;, main = NULL, sub = NULL, xlab = NULL, ylab = NULL, 
+##     ann = par(&quot;ann&quot;), axes = TRUE, frame.plot = axes, panel.first = NULL, 
+##     panel.last = NULL, asp = NA, xgap.axis = NA, ygap.axis = NA, 
+##     ...) 
+## NULL</code></pre>
+<p>It works because 17 of the 18 arguments are supplied with default
+values. Consider the mortgage calculator example. Since a 30-year
+mortgage is the most common type we might assume that is what the
+customer wants.</p>
+<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" tabindex="-1"></a> calcMortgage <span class="ot">&lt;-</span> <span class="cf">function</span>( principal, APR, <span class="at">years=</span><span class="dv">30</span> )</span>
+<span id="cb77-2"><a href="#cb77-2" tabindex="-1"></a> {</span>
+<span id="cb77-3"><a href="#cb77-3" tabindex="-1"></a>   </span>
+<span id="cb77-4"><a href="#cb77-4" tabindex="-1"></a>    months <span class="ot">&lt;-</span> years <span class="sc">*</span> <span class="dv">12</span>   <span class="co"># covert years to months</span></span>
+<span id="cb77-5"><a href="#cb77-5" tabindex="-1"></a>    int.rate <span class="ot">&lt;-</span> APR <span class="sc">/</span> <span class="dv">12</span>   <span class="co"># convert annual rate to monthly</span></span>
+<span id="cb77-6"><a href="#cb77-6" tabindex="-1"></a>    </span>
+<span id="cb77-7"><a href="#cb77-7" tabindex="-1"></a>    <span class="co"># amortization formula</span></span>
+<span id="cb77-8"><a href="#cb77-8" tabindex="-1"></a>    monthly.payment <span class="ot">&lt;-</span> ( principal <span class="sc">*</span> int.rate ) <span class="sc">/</span> </span>
+<span id="cb77-9"><a href="#cb77-9" tabindex="-1"></a>                       (<span class="dv">1</span> <span class="sc">-</span> (<span class="dv">1</span> <span class="sc">+</span> int.rate)<span class="sc">^</span>(<span class="sc">-</span>months) )</span>
+<span id="cb77-10"><a href="#cb77-10" tabindex="-1"></a>    </span>
+<span id="cb77-11"><a href="#cb77-11" tabindex="-1"></a>    monthly.payment <span class="ot">&lt;-</span> <span class="fu">round</span>( monthly.payment, <span class="dv">2</span> )</span>
+<span id="cb77-12"><a href="#cb77-12" tabindex="-1"></a>    </span>
+<span id="cb77-13"><a href="#cb77-13" tabindex="-1"></a>    <span class="fu">return</span>( monthly.payment )</span>
+<span id="cb77-14"><a href="#cb77-14" tabindex="-1"></a> </span>
+<span id="cb77-15"><a href="#cb77-15" tabindex="-1"></a> }</span></code></pre></div>
+<p>We can then use the function by providing the loan amount and today’s
+interest rate:</p>
+<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" tabindex="-1"></a><span class="fu">calcMortgage</span>( <span class="at">principal=</span><span class="dv">200000</span>, <span class="at">APR=</span><span class="fl">0.06</span> )</span></code></pre></div>
+<pre><code>## [1] 1199.1</code></pre>
+<p>We an also using implicit argument calls:</p>
+<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1" tabindex="-1"></a><span class="fu">calcMortgage</span>( <span class="dv">200000</span>, <span class="fl">0.06</span> )</span></code></pre></div>
+<pre><code>## [1] 1199.1</code></pre>
+<p>And we can always override the default value provided if we want
+another value used:</p>
+<div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb82-1"><a href="#cb82-1" tabindex="-1"></a><span class="fu">calcMortgage</span>( <span class="at">principal=</span><span class="dv">200000</span>, <span class="at">APR=</span><span class="fl">0.06</span>, <span class="at">years=</span><span class="dv">15</span> )</span></code></pre></div>
+<pre><code>## [1] 1687.71</code></pre>
+<p>Note what happens, though, if we are not careful with our implicit
+calls. For example, after we change the order of the arguments:</p>
+<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1" tabindex="-1"></a> calcMortgage <span class="ot">&lt;-</span> <span class="cf">function</span>( principal, <span class="at">years=</span><span class="dv">30</span>, APR )</span>
+<span id="cb84-2"><a href="#cb84-2" tabindex="-1"></a> { ... }</span></code></pre></div>
+<p>We can use the function when providing values for only two
+arguments:</p>
+<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1" tabindex="-1"></a><span class="fu">calcMortgage</span>( <span class="at">principal=</span><span class="dv">200000</span>, <span class="at">APR=</span><span class="fl">0.06</span>, <span class="at">years=</span><span class="dv">30</span> )  <span class="co"># fine</span></span></code></pre></div>
+<pre><code>## [1] 1199.1</code></pre>
+<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1" tabindex="-1"></a><span class="fu">calcMortgage</span>( <span class="at">principal=</span><span class="dv">200000</span>, <span class="at">APR=</span><span class="fl">0.06</span> )            <span class="co"># fine</span></span></code></pre></div>
+<pre><code>## [1] 1199.1</code></pre>
+<p>Except here we get an error:</p>
+<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="#cb89-1" tabindex="-1"></a><span class="fu">calcMortgage</span>( <span class="dv">200000</span>, <span class="fl">0.06</span> )</span>
+<span id="cb89-2"><a href="#cb89-2" tabindex="-1"></a><span class="co"># Error in calcMortgage(2e+05, 0.06) : </span></span>
+<span id="cb89-3"><a href="#cb89-3" tabindex="-1"></a><span class="co">#  argument &quot;APR&quot; is missing, with no default</span></span></code></pre></div>
+<p>Note that we have one explicit argument (principal), one that has a
+default value (years), and only one remaining argument (APR).</p>
+<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb90-1"><a href="#cb90-1" tabindex="-1"></a><span class="fu">calcMortgage</span>( <span class="at">principal=</span><span class="dv">200000</span>, <span class="fl">0.06</span> )</span>
+<span id="cb90-2"><a href="#cb90-2" tabindex="-1"></a><span class="co"># Error in calcMortgage(principal = 2e+05, 0.06) : </span></span>
+<span id="cb90-3"><a href="#cb90-3" tabindex="-1"></a><span class="co">#  argument &quot;APR&quot; is missing, with no default</span></span></code></pre></div>
+<p>In theory we have enough information to proceed, but R will only
+eliminate arguments that are explicitly named, regardless of whether
+others have default values provided.</p>
+<p>Which is why you would typically see arguments with defaults listed
+last when a function is defined:</p>
+<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb91-1"><a href="#cb91-1" tabindex="-1"></a> calcMortgage <span class="ot">&lt;-</span> <span class="cf">function</span>( principal, APR, <span class="at">years=</span><span class="dv">30</span> )</span>
+<span id="cb91-2"><a href="#cb91-2" tabindex="-1"></a> { ... }</span></code></pre></div>
+</div>
+<div id="return-values" class="section level2">
+<h2>Return Values</h2>
+<p>It is best practice to use explicit returns from functions:</p>
+<div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb92-1"><a href="#cb92-1" tabindex="-1"></a>sum_xy <span class="ot">&lt;-</span> <span class="cf">function</span>( x, y ){</span>
+<span id="cb92-2"><a href="#cb92-2" tabindex="-1"></a>  xy <span class="ot">&lt;-</span> x <span class="sc">+</span> y</span>
+<span id="cb92-3"><a href="#cb92-3" tabindex="-1"></a>  <span class="fu">return</span>( xy )</span>
+<span id="cb92-4"><a href="#cb92-4" tabindex="-1"></a>}</span>
+<span id="cb92-5"><a href="#cb92-5" tabindex="-1"></a><span class="fu">sum_xy</span>( <span class="dv">4</span>, <span class="dv">5</span> )</span></code></pre></div>
+<pre><code>## [1] 9</code></pre>
+<p>However, if you omit an explicit return call it will automatically
+return the results from the last executable line of code, so this would
+be equivalent in behavior to the function above:</p>
+<div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb94-1"><a href="#cb94-1" tabindex="-1"></a>sum_xy <span class="ot">&lt;-</span> <span class="cf">function</span>( x, y ){</span>
+<span id="cb94-2"><a href="#cb94-2" tabindex="-1"></a>  x <span class="sc">+</span> y</span>
+<span id="cb94-3"><a href="#cb94-3" tabindex="-1"></a>}</span>
+<span id="cb94-4"><a href="#cb94-4" tabindex="-1"></a><span class="fu">sum_xy</span>( <span class="dv">4</span>, <span class="dv">5</span> )</span></code></pre></div>
+<pre><code>## [1] 9</code></pre>
+<p>Unless the last line of code is not returning a result, for example
+if it includes assignment:</p>
+<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb96-1"><a href="#cb96-1" tabindex="-1"></a>sum_xy <span class="ot">&lt;-</span> <span class="cf">function</span>( x, y ){</span>
+<span id="cb96-2"><a href="#cb96-2" tabindex="-1"></a>  xy <span class="ot">&lt;-</span> x <span class="sc">+</span> y</span>
+<span id="cb96-3"><a href="#cb96-3" tabindex="-1"></a>}</span>
+<span id="cb96-4"><a href="#cb96-4" tabindex="-1"></a><span class="fu">sum_xy</span>( <span class="dv">4</span>, <span class="dv">5</span> )</span></code></pre></div>
+<p><strong>NULL RETURNS</strong></p>
+<p>There are many instances when you want a function to execute but not
+return anything. For example, graphing functions produce plots but do
+not need to return other values. Printing functions might send a warning
+message or a nicely formatted table to the console, things that are
+usually not useful to preserve for later steps. So it is fine to NOT
+include a return() call at the end of the function if that is your
+intended behavior.</p>
+<p><strong>MULTIPLE RETURNS</strong></p>
+<p>Note that a function will only ever return at most one object. If you
+have multiple return calls, once the first executes then the rest of the
+code in the function is ignored.</p>
+<div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb97-1"><a href="#cb97-1" tabindex="-1"></a>sum_xy <span class="ot">&lt;-</span> <span class="cf">function</span>( x, y ){</span>
+<span id="cb97-2"><a href="#cb97-2" tabindex="-1"></a>  </span>
+<span id="cb97-3"><a href="#cb97-3" tabindex="-1"></a>  xy <span class="ot">&lt;-</span> x <span class="sc">+</span> y</span>
+<span id="cb97-4"><a href="#cb97-4" tabindex="-1"></a>  <span class="fu">return</span>( xy )</span>
+<span id="cb97-5"><a href="#cb97-5" tabindex="-1"></a>  </span>
+<span id="cb97-6"><a href="#cb97-6" tabindex="-1"></a>  xyxy <span class="ot">&lt;-</span> xy <span class="sc">+</span> xy</span>
+<span id="cb97-7"><a href="#cb97-7" tabindex="-1"></a>  <span class="fu">return</span>( xyxy )</span>
+<span id="cb97-8"><a href="#cb97-8" tabindex="-1"></a>}</span>
+<span id="cb97-9"><a href="#cb97-9" tabindex="-1"></a><span class="fu">sum_xy</span>( <span class="dv">4</span>, <span class="dv">5</span> )</span></code></pre></div>
+<pre><code>## [1] 9</code></pre>
+<p>Typically you only have multiple return calls when you have
+conditionality. For example, if you want to apply a log transformation
+only if X is greater than zero, and return zero otherwise.</p>
+<p>In these cases where the return calls are only executed if the
+conditions are met it is helpful to print a message to show that none of
+the conditions were met so you can make sure your workflow doesn’t break
+because one function fails to execute.</p>
+<div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb99-1"><a href="#cb99-1" tabindex="-1"></a>log_x <span class="ot">&lt;-</span> <span class="cf">function</span>(x){</span>
+<span id="cb99-2"><a href="#cb99-2" tabindex="-1"></a>  <span class="cf">if</span>( x <span class="sc">&gt;</span> <span class="dv">0</span> ){ <span class="fu">return</span>( <span class="fu">log</span>(x) ) }</span>
+<span id="cb99-3"><a href="#cb99-3" tabindex="-1"></a>  <span class="cf">if</span>( x <span class="sc">&lt;</span> <span class="dv">0</span> ){ <span class="fu">return</span>( <span class="dv">0</span> ) }</span>
+<span id="cb99-4"><a href="#cb99-4" tabindex="-1"></a>  <span class="fu">print</span>( <span class="st">&quot;Did not meet any conditions&quot;</span> )</span>
+<span id="cb99-5"><a href="#cb99-5" tabindex="-1"></a>}</span>
+<span id="cb99-6"><a href="#cb99-6" tabindex="-1"></a></span>
+<span id="cb99-7"><a href="#cb99-7" tabindex="-1"></a><span class="fu">log_x</span>(  <span class="dv">10</span> )</span></code></pre></div>
+<pre><code>## [1] 2.302585</code></pre>
+<div class="sourceCode" id="cb101"><pre
+class="sourceCode r"><code class="sourceCode r"><span id="cb101-1"><a href="#cb101-1" tabindex="-1"></a><span class="fu">log_x</span>( <span class="sc">-</span><span class="dv">10</span> )</span></code></pre></div>
+<pre><code>## [1] 0</code></pre>
+<div class="sourceCode" id="cb103"><pre
+class="sourceCode r"><code class="sourceCode r"><span id="cb103-1"><a href="#cb103-1" tabindex="-1"></a><span class="fu">log_x</span>(  <span class="dv">0</span> )</span></code></pre></div>
+<pre><code>## [1] &quot;Did not meet any conditions&quot;</code></pre>
+<p><strong>INVISIBLE RETURNS</strong></p>
+<p>The alternative type of return that you see on occasion uses the
+invisible() return call. This operates the same as a regular return
+except that it will not print the return object by default. In order to
+see the returned values you need to assign them to a new object:</p>
+<div class="sourceCode" id="cb105"><pre
+class="sourceCode r"><code class="sourceCode r"><span id="cb105-1"><a href="#cb105-1" tabindex="-1"></a>bplot_x <span class="ot">&lt;-</span> <span class="cf">function</span>( x, y ){</span>
+<span id="cb105-2"><a href="#cb105-2" tabindex="-1"></a>  xx <span class="ot">&lt;-</span> <span class="fu">cut</span>(x,<span class="dv">10</span>,<span class="at">labels=</span><span class="fu">paste0</span>(<span class="st">&quot;bin&quot;</span>,<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>))</span>
+<span id="cb105-3"><a href="#cb105-3" tabindex="-1"></a>  tt <span class="ot">&lt;-</span> <span class="fu">table</span>(xx)</span>
+<span id="cb105-4"><a href="#cb105-4" tabindex="-1"></a>  <span class="fu">barplot</span>(tt,<span class="at">axes=</span>F,<span class="at">axisnames=</span>F)</span>
+<span id="cb105-5"><a href="#cb105-5" tabindex="-1"></a>  <span class="fu">invisible</span>(tt)</span>
+<span id="cb105-6"><a href="#cb105-6" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb106"><pre
+class="sourceCode r"><code class="sourceCode r"><span id="cb106-1"><a href="#cb106-1" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">1000</span>,<span class="dv">500</span>,<span class="dv">50</span>) <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="dv">1000</span>,<span class="dv">700</span>,<span class="dv">50</span>)</span>
+<span id="cb106-2"><a href="#cb106-2" tabindex="-1"></a><span class="fu">bplot_x</span>(x)</span></code></pre></div>
+<p><img src="q-01-review-functions_files/figure-html/unnamed-chunk-42-1.png" width="960" /></p>
+<p>After the graphic is created nothing is returned.</p>
+<div class="sourceCode" id="cb107"><pre
+class="sourceCode r"><code class="sourceCode r"><span id="cb107-1"><a href="#cb107-1" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">bplot_x</span>(x)</span></code></pre></div>
+<p><img src="q-01-review-functions_files/figure-html/unnamed-chunk-43-1.png" width="960" /></p>
+<div class="sourceCode" id="cb108"><pre
+class="sourceCode r"><code class="sourceCode r"><span id="cb108-1"><a href="#cb108-1" tabindex="-1"></a>y <span class="sc">|&gt;</span> <span class="fu">pander</span>()</span></code></pre></div>
+<table style="width:99%;">
+<colgroup>
+<col width="9%" />
+<col width="9%" />
+<col width="9%" />
+<col width="9%" />
+<col width="9%" />
+<col width="9%" />
+<col width="9%" />
+<col width="9%" />
+<col width="9%" />
+<col width="11%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">bin1</th>
+<th align="center">bin2</th>
+<th align="center">bin3</th>
+<th align="center">bin4</th>
+<th align="center">bin5</th>
+<th align="center">bin6</th>
+<th align="center">bin7</th>
+<th align="center">bin8</th>
+<th align="center">bin9</th>
+<th align="center">bin10</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">8</td>
+<td align="center">30</td>
+<td align="center">78</td>
+<td align="center">168</td>
+<td align="center">217</td>
+<td align="center">212</td>
+<td align="center">172</td>
+<td align="center">81</td>
+<td align="center">26</td>
+<td align="center">8</td>
+</tr>
+</tbody>
+</table>
+<p>It is useful when the primary purpose of the function is for plotting
+or printing, but you might want to capture some information that is
+useful for later in the workflow.</p>
+</div>
+<div id="function-scope" class="section level2">
+<h2>Function Scope</h2>
+<p>Function scope means that any assignment done inside of a function
+will not impact variables in the global environment. The prevents
+conflicts that would arise when variable names are used within a
+workflow and within a function.</p>
+<div class="sourceCode" id="cb109"><pre
+class="sourceCode r"><code class="sourceCode r"><span id="cb109-1"><a href="#cb109-1" tabindex="-1"></a>sum_xy <span class="ot">&lt;-</span> <span class="cf">function</span>( x, y ) {</span>
+<span id="cb109-2"><a href="#cb109-2" tabindex="-1"></a>  z <span class="ot">&lt;-</span> x <span class="sc">+</span> y</span>
+<span id="cb109-3"><a href="#cb109-3" tabindex="-1"></a>  <span class="fu">return</span>( z )</span>
+<span id="cb109-4"><a href="#cb109-4" tabindex="-1"></a>}</span>
+<span id="cb109-5"><a href="#cb109-5" tabindex="-1"></a></span>
+<span id="cb109-6"><a href="#cb109-6" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb109-7"><a href="#cb109-7" tabindex="-1"></a><span class="fu">sum_xy</span>( <span class="at">x=</span><span class="dv">3</span>, <span class="at">y=</span><span class="dv">5</span> )</span></code></pre></div>
+<pre><code>## [1] 8</code></pre>
+<div class="sourceCode" id="cb111"><pre
+class="sourceCode r"><code class="sourceCode r"><span id="cb111-1"><a href="#cb111-1" tabindex="-1"></a><span class="co"># what will z be now? 2 or 8? </span></span></code></pre></div>
+<p>We can see that when we run sum_xy() we are assigning the value of
+x+y to z. So does assignment that happens within the function overwrite
+the z we have defined in our environment?</p>
+<div class="sourceCode" id="cb112"><pre
+class="sourceCode r"><code class="sourceCode r"><span id="cb112-1"><a href="#cb112-1" tabindex="-1"></a>z</span></code></pre></div>
+<pre><code>## [1] 2</code></pre>
+<p>No, because function scope protects the variables in our global
+environment (our current R session), otherwise we would constantly be
+overwriting our data whenever functions we called happen to use the same
+variable names as we did.</p>
+<p>The important thing to note is that when a function is called a new
+function environment is created. All of the steps are executed. A single
+object can be passed back to the global environment through the return()
+call. Then the function environment is deleted and R returns to the main
+global environment. The only way to overwrite the value of z would be to
+assign a new value to it:</p>
+<div class="sourceCode" id="cb114"><pre
+class="sourceCode r"><code class="sourceCode r"><span id="cb114-1"><a href="#cb114-1" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb114-2"><a href="#cb114-2" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="fu">sum_xy</span>( <span class="at">x=</span><span class="dv">3</span>, <span class="at">y=</span><span class="dv">5</span> )</span>
+<span id="cb114-3"><a href="#cb114-3" tabindex="-1"></a>z</span></code></pre></div>
+<pre><code>## [1] 8</code></pre>
+<p>Note that the global environment is not impacted by the function
+environment, but the reverse is not true. Consider:</p>
+<div class="sourceCode" id="cb116"><pre
+class="sourceCode r"><code class="sourceCode r"><span id="cb116-1"><a href="#cb116-1" tabindex="-1"></a>fx <span class="ot">&lt;-</span> <span class="cf">function</span>( y ){</span>
+<span id="cb116-2"><a href="#cb116-2" tabindex="-1"></a>  <span class="fu">return</span>( x <span class="sc">+</span> y )</span>
+<span id="cb116-3"><a href="#cb116-3" tabindex="-1"></a>}</span>
+<span id="cb116-4"><a href="#cb116-4" tabindex="-1"></a></span>
+<span id="cb116-5"><a href="#cb116-5" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">3</span></span>
+<span id="cb116-6"><a href="#cb116-6" tabindex="-1"></a><span class="fu">fx</span>( <span class="at">y=</span><span class="dv">2</span> )</span></code></pre></div>
+<pre><code>## [1] 5</code></pre>
+<p>We are only passing the value <strong>y=2</strong> to the function,
+so how can it add <strong>x+y</strong>?</p>
+<p>A function will first search locally for all of the variables it
+needs to execute. When it cannot find one it will then check the global
+environment to see if it exists. In this case it finds
+<strong>x=3</strong> in the global environment, so uses that value for
+the calculation.</p>
+<p>This is an example of breaking function scope.</p>
+<p>Typically, we want functions to be self-contained input-output
+machines. We give them arguments, they execute the data recipe, and they
+return the result.</p>
+<p>It is bad practice to create under-specified functions that do not
+have all of the arguments they need to execute.</p>
+<p>However, there are certain instances where it might be necessary or
+convenient, so like implicit casting and recycling, R tolerates it to
+avoid run time errors.</p>
+<div class="tip">
+<p>SCOPE:</p>
+<p>What happens in Vegas stays in Vegas.</p>
+<p>Any assignment that happens inside a function stays inside the
+function.</p>
+</div>
+</div>
+<div id="lexical-scoping" class="section level2">
+<h2>Lexical Scoping</h2>
+<p>To fully understand function scope we need to understand the concept
+of parent environments. Consider the following case:</p>
+<div class="sourceCode" id="cb118"><pre
+class="sourceCode r"><code class="sourceCode r"><span id="cb118-1"><a href="#cb118-1" tabindex="-1"></a>f <span class="ot">&lt;-</span> <span class="cf">function</span>( x ){</span>
+<span id="cb118-2"><a href="#cb118-2" tabindex="-1"></a>  </span>
+<span id="cb118-3"><a href="#cb118-3" tabindex="-1"></a>  y <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">*</span>x</span>
+<span id="cb118-4"><a href="#cb118-4" tabindex="-1"></a>  </span>
+<span id="cb118-5"><a href="#cb118-5" tabindex="-1"></a>  g <span class="ot">&lt;-</span> <span class="cf">function</span>(){ <span class="fu">return</span>( y <span class="sc">+</span> z ) }</span>
+<span id="cb118-6"><a href="#cb118-6" tabindex="-1"></a>  </span>
+<span id="cb118-7"><a href="#cb118-7" tabindex="-1"></a>  yz <span class="ot">&lt;-</span> <span class="fu">g</span>()</span>
+<span id="cb118-8"><a href="#cb118-8" tabindex="-1"></a>  </span>
+<span id="cb118-9"><a href="#cb118-9" tabindex="-1"></a>  <span class="fu">return</span>( yz )</span>
+<span id="cb118-10"><a href="#cb118-10" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb119"><pre
+class="sourceCode r"><code class="sourceCode r"><span id="cb119-1"><a href="#cb119-1" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">3</span></span>
+<span id="cb119-2"><a href="#cb119-2" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb119-3"><a href="#cb119-3" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb119-4"><a href="#cb119-4" tabindex="-1"></a><span class="fu">f</span>(x)</span></code></pre></div>
+<p>We pass the value of <strong>x</strong> to f(), which then calculates
+a <strong>new</strong> value for <strong>y</strong>. However, we don’t
+pass <strong>y</strong> to the function g(). The function g() must pull
+values of <strong>y</strong> and <strong>z</strong> from other
+environments. Since <strong>z</strong> has only been defined once we can
+guess that it will still be <strong>1</strong>. However,
+<strong>y</strong> was defined both in the global environment and again
+in the f() environment. Which version will be used here,
+<strong>2</strong> or <strong>6</strong>?</p>
+<div class="sourceCode" id="cb120"><pre
+class="sourceCode r"><code class="sourceCode r"><span id="cb120-1"><a href="#cb120-1" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">3</span></span>
+<span id="cb120-2"><a href="#cb120-2" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb120-3"><a href="#cb120-3" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb120-4"><a href="#cb120-4" tabindex="-1"></a><span class="fu">f</span>(x)     <span class="co"># y=6 + z=1</span></span></code></pre></div>
+<pre><code>## [1] 7</code></pre>
+<p>This example demonstrates the concept of a parent environment. When a
+function can’t find a variable it needs it will look to the parent
+environment. The global environment will always be the final parent
+environment, but it is not the first environment that is checked.</p>
+<p>Since the function g() was called <em>INSIDE</em> of the function
+f(), then f() is the parent environment. It will look there first. Note
+that the function g() was able to retrieve <strong>y</strong> from the
+parent environment and <strong>z</strong> from the global environment
+and still execute fine.</p>
+<p>This example is a little more challenging.</p>
+<div class="sourceCode" id="cb122"><pre
+class="sourceCode r"><code class="sourceCode r"><span id="cb122-1"><a href="#cb122-1" tabindex="-1"></a>f <span class="ot">&lt;-</span> <span class="cf">function</span>( x ){</span>
+<span id="cb122-2"><a href="#cb122-2" tabindex="-1"></a>  </span>
+<span id="cb122-3"><a href="#cb122-3" tabindex="-1"></a>  y <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">*</span>x</span>
+<span id="cb122-4"><a href="#cb122-4" tabindex="-1"></a>  </span>
+<span id="cb122-5"><a href="#cb122-5" tabindex="-1"></a>  g <span class="ot">&lt;-</span> <span class="cf">function</span>(){ <span class="fu">return</span>( x <span class="sc">+</span> y <span class="sc">+</span> z ) }</span>
+<span id="cb122-6"><a href="#cb122-6" tabindex="-1"></a>  </span>
+<span id="cb122-7"><a href="#cb122-7" tabindex="-1"></a>  xyz <span class="ot">&lt;-</span> <span class="fu">g</span>()</span>
+<span id="cb122-8"><a href="#cb122-8" tabindex="-1"></a>  </span>
+<span id="cb122-9"><a href="#cb122-9" tabindex="-1"></a>  <span class="fu">return</span>( xyz )</span>
+<span id="cb122-10"><a href="#cb122-10" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb123"><pre
+class="sourceCode r"><code class="sourceCode r"><span id="cb123-1"><a href="#cb123-1" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">3</span></span>
+<span id="cb123-2"><a href="#cb123-2" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb123-3"><a href="#cb123-3" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb123-4"><a href="#cb123-4" tabindex="-1"></a><span class="fu">f</span>(<span class="dv">4</span>)</span></code></pre></div>
+<p>We can see g() will use z from the global environment, and we know
+from the previous example that g() will use the version of
+<strong>y</strong> from the parent environment. What about
+<strong>x</strong>? We pass the value 4 to f(), but we never assign it
+explicitly to <strong>x</strong>. Which <strong>x</strong> will be
+used?</p>
+<div class="sourceCode" id="cb124"><pre
+class="sourceCode r"><code class="sourceCode r"><span id="cb124-1"><a href="#cb124-1" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">3</span></span>
+<span id="cb124-2"><a href="#cb124-2" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb124-3"><a href="#cb124-3" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb124-4"><a href="#cb124-4" tabindex="-1"></a><span class="fu">f</span>(<span class="dv">4</span>)     <span class="co"># x=4 + y=8 + z=1</span></span></code></pre></div>
+<pre><code>## [1] 13</code></pre>
+<p>This example shows that calling f(x=4) is equivalent to assigning the
+value of 4 to x within the function scope.</p>
+<p>One more example:</p>
+<div class="sourceCode" id="cb126"><pre
+class="sourceCode r"><code class="sourceCode r"><span id="cb126-1"><a href="#cb126-1" tabindex="-1"></a>f <span class="ot">&lt;-</span> <span class="cf">function</span>(x){</span>
+<span id="cb126-2"><a href="#cb126-2" tabindex="-1"></a>  </span>
+<span id="cb126-3"><a href="#cb126-3" tabindex="-1"></a>  g <span class="ot">&lt;-</span> <span class="cf">function</span>(){ </span>
+<span id="cb126-4"><a href="#cb126-4" tabindex="-1"></a>    y <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">*</span>x </span>
+<span id="cb126-5"><a href="#cb126-5" tabindex="-1"></a>    <span class="fu">return</span>(y)</span>
+<span id="cb126-6"><a href="#cb126-6" tabindex="-1"></a>  }</span>
+<span id="cb126-7"><a href="#cb126-7" tabindex="-1"></a>  </span>
+<span id="cb126-8"><a href="#cb126-8" tabindex="-1"></a>  h <span class="ot">&lt;-</span> <span class="cf">function</span>(){</span>
+<span id="cb126-9"><a href="#cb126-9" tabindex="-1"></a>    z <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">*</span>y</span>
+<span id="cb126-10"><a href="#cb126-10" tabindex="-1"></a>    <span class="fu">return</span>(z)</span>
+<span id="cb126-11"><a href="#cb126-11" tabindex="-1"></a>  }</span>
+<span id="cb126-12"><a href="#cb126-12" tabindex="-1"></a>  </span>
+<span id="cb126-13"><a href="#cb126-13" tabindex="-1"></a>  res_g <span class="ot">&lt;-</span> <span class="fu">g</span>()</span>
+<span id="cb126-14"><a href="#cb126-14" tabindex="-1"></a>  res_h <span class="ot">&lt;-</span> <span class="fu">h</span>()</span>
+<span id="cb126-15"><a href="#cb126-15" tabindex="-1"></a>  </span>
+<span id="cb126-16"><a href="#cb126-16" tabindex="-1"></a>  <span class="fu">return</span>( <span class="fu">c</span>(res_g,res_h) )</span>
+<span id="cb126-17"><a href="#cb126-17" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb127"><pre
+class="sourceCode r"><code class="sourceCode r"><span id="cb127-1"><a href="#cb127-1" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">3</span></span>
+<span id="cb127-2"><a href="#cb127-2" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb127-3"><a href="#cb127-3" tabindex="-1"></a><span class="fu">f</span>(x)</span></code></pre></div>
+<p>We can see that <strong>res_g</strong> will be <strong>2x</strong> or
+<strong>6</strong>. But what about <strong>res_h</strong>? Will h()
+return <strong>2x2</strong> or <strong>2x6</strong>? Which value of
+<strong>y</strong> will be used?</p>
+<div class="sourceCode" id="cb128"><pre
+class="sourceCode r"><code class="sourceCode r"><span id="cb128-1"><a href="#cb128-1" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">3</span></span>
+<span id="cb128-2"><a href="#cb128-2" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb128-3"><a href="#cb128-3" tabindex="-1"></a><span class="fu">f</span>(x)     <span class="co"># inside h() y=2; z=2*y</span></span></code></pre></div>
+<pre><code>## [1] 6 4</code></pre>
+<p>The answer is 2x2 because the parent environment for h() is f(), NOT
+g(). Once g() finishes executing the temporary variables are all
+deleted, so the new <strong>y</strong> created inside of g() will
+disappear and the only one remaining when h() is called is the
+<strong>y</strong> from the global environment.</p>
+<p>We could alter this behavior by assigning a new value for
+<strong>y</strong> inside of f() prior to calling h():</p>
+<div class="sourceCode" id="cb130"><pre
+class="sourceCode r"><code class="sourceCode r"><span id="cb130-1"><a href="#cb130-1" tabindex="-1"></a>f <span class="ot">&lt;-</span> <span class="cf">function</span>(x){</span>
+<span id="cb130-2"><a href="#cb130-2" tabindex="-1"></a>  </span>
+<span id="cb130-3"><a href="#cb130-3" tabindex="-1"></a>  g <span class="ot">&lt;-</span> <span class="cf">function</span>(){ </span>
+<span id="cb130-4"><a href="#cb130-4" tabindex="-1"></a>    y <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">*</span>x </span>
+<span id="cb130-5"><a href="#cb130-5" tabindex="-1"></a>    <span class="fu">return</span>(y)</span>
+<span id="cb130-6"><a href="#cb130-6" tabindex="-1"></a>  }</span>
+<span id="cb130-7"><a href="#cb130-7" tabindex="-1"></a>  </span>
+<span id="cb130-8"><a href="#cb130-8" tabindex="-1"></a>  h <span class="ot">&lt;-</span> <span class="cf">function</span>(){</span>
+<span id="cb130-9"><a href="#cb130-9" tabindex="-1"></a>    z <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">*</span>y</span>
+<span id="cb130-10"><a href="#cb130-10" tabindex="-1"></a>    <span class="fu">return</span>(z)</span>
+<span id="cb130-11"><a href="#cb130-11" tabindex="-1"></a>  }</span>
+<span id="cb130-12"><a href="#cb130-12" tabindex="-1"></a>  </span>
+<span id="cb130-13"><a href="#cb130-13" tabindex="-1"></a>  y <span class="ot">&lt;-</span> <span class="fu">g</span>()</span>
+<span id="cb130-14"><a href="#cb130-14" tabindex="-1"></a>  z <span class="ot">&lt;-</span> <span class="fu">h</span>()</span>
+<span id="cb130-15"><a href="#cb130-15" tabindex="-1"></a>  </span>
+<span id="cb130-16"><a href="#cb130-16" tabindex="-1"></a>  <span class="fu">return</span>( z )</span>
+<span id="cb130-17"><a href="#cb130-17" tabindex="-1"></a>}</span>
+<span id="cb130-18"><a href="#cb130-18" tabindex="-1"></a></span>
+<span id="cb130-19"><a href="#cb130-19" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">3</span></span>
+<span id="cb130-20"><a href="#cb130-20" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb130-21"><a href="#cb130-21" tabindex="-1"></a><span class="fu">f</span>(x)     <span class="co"># inside h() y=6; z=2*y</span></span></code></pre></div>
+<pre><code>## [1] 12</code></pre>
+<p>Since we assigned the result of h() to a new <strong>y</strong>
+inside of f(), the function h() will now use the <strong>y</strong> from
+its parent environment f() and will not have to revert back to
+<strong>y</strong> in the global environment.</p>
+<div class="tip">
+<p>Lexical scoping are the rules for what happens when a variable is
+used within a function but is <strong>NOT</strong> passed as an argument
+to the function, <strong>NOR</strong> is it defined within that
+function’s local environment.</p>
+<div class="sourceCode" id="cb132"><pre
+class="sourceCode r"><code class="sourceCode r"><span id="cb132-1"><a href="#cb132-1" tabindex="-1"></a>f <span class="ot">&lt;-</span> <span class="cf">function</span>(y){ x <span class="sc">+</span> y }     <span class="co"># f assumes x exists elsewhere</span></span></code></pre></div>
+<p>When encountering an undefined variable, the function will
+recursively search within parent environments until it finds an instance
+where <strong>x</strong> is defined.</p>
+<p>The final parent environment is always the global environment.</p>
+</div>
+</div>
+<div id="aside-on-snake-case" class="section level2">
+<h2>Aside on Snake Case</h2>
+<div class="question">
+<p>Note the following conventions in this script:</p>
+<ul>
+<li>functions are named using <strong>snake_case</strong></li>
+<li>objects are named using <strong>dot.case</strong></li>
+</ul>
+</div>
+<p>This is far from a universal convention - you will see a lot of base
+R functions named using <strong>camelCase</strong> (start of new word
+designated by a capital letter). You rarely see
+<strong>dot.case</strong> used by tidyverse acolytes, as they tend to
+use <strong>snake_case</strong> for all objects. I find it useful,
+however, to differentiate <strong>functions</strong> from <strong>data
+objects</strong> for pedagogical purposes.</p>
+<p>As an aside, the reason the convention has moved toward using
+<strong>snake_case</strong> for everything is because Python uses
+periods as an operator, not a character. It is used when functions have
+multiple “methods”, for example the function fx() might have different
+behaviors for different data types. You can invoke the method directly
+by typing <strong>function_name.method_name()</strong>.</p>
+<ul>
+<li><code>fx.f_method()  # code to execute for factors</code></li>
+<li><code>fx.n_method()  # code to execute for numbers</code></li>
+<li><code>fx.c_method()  # code to execute for strings</code></li>
+</ul>
+<p>The most analogous operation is R is calling a package function
+without first loading the package using a library() call using the
+package::function() convention. It can be especially useful when two
+packages contain functions with the same name and you want to make sure
+you are using the correct version:</p>
+<ul>
+<li><code>dplyr::filter()</code></li>
+<li><code>stats::filter()</code></li>
+</ul>
+<p>It used to be the case that statisticians primarily used R for data
+programming and computer scientists primarily used Python. But as data
+science has emerged as a coherent field more data scientists are using R
+and Python somewhat interchangeably. RMD files can now run both R and
+Python code, for example.</p>
+<p>If you have ever wondered why these conventions changed, this history
+is helpful. The inventors of R were both statisticians, so you
+frequently see <strong>camelCase</strong> and <strong>dot.case</strong>
+in base R code or older packages. The folks that developed the tidyverse
+framework were traditional computer scientists and were fluent in both
+languages. They adopted the <strong>snake_case</strong> naming
+convention to prevent Python programmers from getting confused when
+encountering <strong>dot.case</strong> in R code.</p>
+<p><br> <br></p>
+<hr />
+<p><br> <br></p>
+<style>
+blockquote {
+    padding: 11px 22px;
+    margin: 0 0 22px;
+    font-size: 18px;
+    border-left: 5px solid lightgray;
+}
+</style>
+</div>
+
+<div class="footer">
+    <div class="footerFloatOuter"><br></div>
+    <div class="footerFloatInner1">
+
+       <a  href="https://ds4ps.org/">
+         <img src="images/ps1-gray.png" alt="ds4ps" width="200" align="middle">
+         <h4 style="text-align:center;color:white;">Data Science for<br>Public Service</h4>
+       </a>
+
+    </div>
+
+    <div class="footerFloatInner2">
+
+     <br>
+     <ul style="list-style-type:none;">
+
+        <li>Designed by <a href=https:lecy.info target="_blank">Jesse D. Lecy</a></li>
+        <li>Source code is available on <a href="https://github.com/watts-college/paf-514-template" target="_blank">GitHub</a></li>
+        <br>
+        <li>Creative Common License:</li>
+        <li><a href=https://creativecommons.org/licenses/by-nc-sa/4.0/ target="_blank"> (CC BY-NC-SA 4.0)</a></li>
+        <br>
+        <li>CPP 527 <a href="https://watts-college.github.io/paf-514-template/schedule/" target="_blank">Foundations of Data Science II</a></li>
+        <li>Part of the <a href=http://ds4ps.org/ms-prog-eval-data-analytics/ target="_blank">MS in Evaluation and Analytics</a></li>
+        <li>@ <a href=https://asuonline.asu.edu/online-degree-programs/graduate/program-evaluation-and-data-analytics-ms/ target="_blank">Arizona State University</a></li>
+        <br>
+        <li><p style="font-size:110%;color:#f0ead6;"><b>Solutions posted online</b><br>
+         are in violation of ASU student policies <br>and federal copyright laws <b>&copy;</b></li>
+     </ul>
+
+
+    </div>
+
+    <div class="footerFloatOuter"><br>
+    </div>
+
+</div>
+
+
+
+
+<style>
+
+blockquote {
+    padding: 11px 22px;
+    margin: 0 0 22px;
+    font-size: 18px;
+    border-left: 5px solid lightgray;
+}
+
+.footer {
+  color:white;
+  min-height: 450px !important;
+  background-color: #696969;
+  padding-bottom: 3em;
+  padding-top: 3em;
+  margin: auto;
+}
+
+.footer a {
+  color: orange;
+}
+
+.footer body{
+     font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+     font-size:calc(1.5em + 0.25vw);
+     font-weight:300;line-height:1.65;
+     -webkit-font-smoothing:antialiased;
+     -moz-osx-font-smoothing:grayscale;
+     margin-left:20%;
+     margin-right:20%
+}
+
+footer.body{
+     font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+     font-size:calc(1.5em + 0.25vw);
+     font-weight:300;line-height:1.65;
+     -webkit-font-smoothing:antialiased;
+     -moz-osx-font-smoothing:grayscale;
+     margin-left:20%;
+     margin-right:20%
+}
+
+.footerFloatOuter {
+	width: 25%;
+	float: left;
+}
+
+.footerFloatInner1 {
+	width: 20%;
+	float: left;
+	align: left;
+	margin-left: 0px;
+}
+
+.footerFloatInner2 {
+	width: 50%;
+	float: left;
+	text-align: left;
+}
+
+
+
+.footer ul li {
+	font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  font-size:calc(0.55em + 0.25vw) !important;
+  font-weight:300;
+  line-height:1.2 !important;
+  color: #FFF;
+	text-transform: uppercase;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+</style>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

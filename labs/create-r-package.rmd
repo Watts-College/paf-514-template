@@ -699,9 +699,22 @@ I will grade assignments by running the script below, which generates a report w
 
 You can check your own work ahead of time by generating the report using the following script after adding your GitHub username.
 
+First, delete your current package installation. Close down all instances of R or R Studio, open a new R environment and try: 
+
+```r
+# library() attaches the package to the current environment
+# detach is the opposite of library() - closes the package 
+detach( "package:montyhall" )   # closes the package so not locked
+remove.packages( "montyhall" )  # deletes from your computer 
+```
+
+Then you can run the testing script: 
+
+
 ```{r, eval=F}
-pkgs <- c("tools","devtools","purrr","rmarkdown")
-install.packages()
+# IF NOT ALREADY INSTALLED:
+pkgs <- c("devtools","purrr","rmarkdown")
+install.packages(pkgs)
 
 wd <- getwd()
 dir.create("MONTY")
@@ -733,6 +746,95 @@ shell( filepath )
 ```
 
 
+This script will install your package from GitHub, parse the documentation files you have created (RD files in the "man" folder), and attempt to execute all of the examples you created in the **Examples** section.
+
+To receive full credit for the assignment:
+
+- Your package must install without errors
+- The documentation for all functions must be complete
+- The code snippets you provided in "Examples" must execute without error
+
+**What you should see:**
+
+If your package is running properly you will see a documentation section that shows you the helpfiles the user will see if they type `help( "function_name" )`:
+
+```
+#####   
+#####     CREATE GAME 
+#####   
+
+
+create_game             package:montyhall              R Documentation
+
+Create a new Monty Hall Problem game.
+
+Description:
+
+     'create_game()' generates a new game that consists of two doors
+     with goats behind them, and one with a car.
+
+Usage:
+
+     create_game()
+     
+Arguments:
+
+     ...: no arguments are used by the function.
+
+Details:
+
+     The game setup replicates the game on the TV show "Let's Make a
+     Deal" where there are three doors for a contestant to choose from,
+     one of which has a car behind it and two have goats. The
+     contestant selects a door, then the host opens a door to reveal a
+     goat, and then the contestant is given an opportunity to stay with
+     their original selection or switch to the other unopened door.
+     There was a famous debate about whether it was optimal to stay or
+     switch when given the option to switch, so this simulation was
+     created to test both strategies.
+
+Value:
+
+     The function returns a length 3 character vector indicating the
+     positions of goats and the car.
+
+Examples:
+
+       create_game()
+```
+
+You will also see if the code snippets you provide as examples for each function are running properly: 
+
+
+```
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+
+#####  
+#####   play_game
+#####  
+
+>   play_game()
+  strategy outcome
+1     stay     WIN
+2   switch    LOSE
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+
+#####  
+#####   determine_winner
+#####  
+
+>   determine_winner()
+
+>>>
+>>>  Error in determine_winner() : argument "game" is missing, with no default
+>>>
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+```
+
+<br>
+<br>
 
 # Additional Resources
 
