@@ -32,8 +32,8 @@ session:
   sample-code: 'week-04-quanteda.R'
 - week5:
   date:  'Monday, Sept 22nd'  
-  video: ''
-  password: ''  
+  video: 'https://asu.zoom.us/rec/share/7ZNrQIXJanJX4xajIwJO4ZhDAHpbAY-ba8pELg4R9B82tE5L6tlYIHE3Xdf90at9.S_5GcP31TyxXBxdw?startTime=1758580385000'
+  password: '3%+Uf9N?'  
   sample-code: 'week-05.R'  
 - week6:
   date:  'Monday, Sept 29th'  
