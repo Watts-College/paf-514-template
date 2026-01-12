@@ -9,42 +9,46 @@ Passcode:
 
 session: 
 - week1:
-  date:  'Monday, August 25, 3:00pm: LAB 01'  
-  video: 'https://asu.zoom.us/rec/play/HxcjJpbrGbGsmpME3jOZZeZpe9VUnBd4p4mjVoT6V4UfABh2NhO72PmuemzlBQvBy46BUGh0pZsMByhl.ubqAoItSZ1OoewY2'
-  password: '2aq=qeW%'
+  date:  'Friday, January 16, 12pm: WELCOME'  
+  video: ''
+  password: ''
   sample-code: 'week-01-control-structures.R' 
   link: 'https://github.com/Watts-College/paf-514-template/blob/main/lectures/ai-philosophy.pdf' 
 - week2:
-  date:  'Tuesday, Sept 2nd, 3pm'  
+  date:  'Tuesday, January 20, 10am: LAB 01 & 02'  
   video: '' 
   password: ''
   sample-code: 'week-02-loops.R' 
   session-code: '' 
 - week3:
-  date:  'Monday, Sept 8th'  
-  video: 'https://asu.zoom.us/rec/share/D4hE_26ufuFJuW2-HaAoU7-FUvgIKfHBrw_5feVnB6bHJF28SuWlb3ePGkgukseG.WUoOZ2hTAzSGhlaf?startTime=1757371137000'
-  password: 'u7%VDf.c'
+  date:  'Monday, January 26, 12pm: LAB 03'  
+  video: ''
+  password: ''
   sample-code: 'week-03-regular-expressions.R' 
 - week4:
-  date:  'Monday, Sept 15th'  
-  video: 'https://asu.zoom.us/rec/share/E3cCLMXe6ljuboZReZmNZG0vSgQVLhF7_oULC48WEo9ykyPLD5TC_lAtixzDjr80.NM-XBOdV89RR8IAp'
-  password: '9^kBRQ??'
+  date:  'Monday, February 2, 12pm'   
+  video: '' 
+  password: ''
   sample-code: 'week-04-quanteda.R'
 - week5:
-  date:  'Monday, Sept 22nd'  
-  video: 'https://asu.zoom.us/rec/share/7ZNrQIXJanJX4xajIwJO4ZhDAHpbAY-ba8pELg4R9B82tE5L6tlYIHE3Xdf90at9.S_5GcP31TyxXBxdw?startTime=1758580385000'
-  password: '3%+Uf9N?'  
+  date:  'Monday, February 9, 12pm'  
+  video: '' 
+  password: '' 
   sample-code: 'week-05.R'  
 - week6:
-  date:  'Monday, Sept 29th'  
+  date:  'Monday, February 16, 12pm'
   video: ''
   password: ''
   sample-code: 'week-06-data-apis.R'
 - week7:
-  date:  'Monday, Oct 6th'  
+  date:  'Monday, February 23, 12pm'  
   video: ''
   password: ''
   link: 'https://github.com/Watts-College/paf-514-template/tree/main/labs/batch-demo'
+- week8:
+  date:  'Monday, March 2, 12pm'  
+  video: ''
+  password: ''
 
 ---
 
@@ -67,9 +71,9 @@ Live review sessions will be held each week in order to:
 
 
 > **MONDAYS**    
-> **3pm AZ time** 
+> **12pm AZ time** 
 
-<a href='https://asu.zoom.us/j/83509478842' target=""> <button class="zoom">JOIN ZOOM MEETING</button></a>
+<a href='https://asu.zoom.us/j/89548220705' target=""> <button class="zoom">JOIN ZOOM MEETING</button></a>
 
 <br>
 
