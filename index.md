@@ -155,7 +155,7 @@ The assigned work for the term comes in the form of four elements, described bel
 
 - **R Package (10%):**  Labs 01 and 02 require you to write functions to generate your solution. You will have an additional assignment to build an R package with these functions and make it available for others to use. 
 
-- **Practice Problems (25%):**  Each week I will post a list of review questions or brain teasers about the R language. You will be invited to submit solutions or explanations to the problems on Yellowdig and discuss with classmates. There are five quizzes associated with the practice problems worth up to 30 points. You need to earn 25 of the 30 points to receive full credit for this component of the class. The Yellowdig discussions are voluntary and are an opportunity to practice the problems and discuss solutions in preparation for the quizzes. 
+- **Practice Problems (25%):**  Each week I will post a list of review questions or brain teasers about the R language. You will be invited to submit solutions or explanations to the problems on Yellowdig and discuss with classmates. There are short quizzes associated with material covered on the practice problems, worth up to 30 points. You can also earn up to 10 points for participation on YellowDig. You need to reach 25 points out of the 40 practice problems total (quizzes plus YellowDig) to receive full credit for this component of the class. The Yellowdig discussions are otherwise voluntary, but most students find them to be a good opportunity to connect with classmates, practice the problems, and discuss solutions in preparation for the quizzes. 
 
 - **Data Workflow Project (15%):**  The final project in the course will require you to create a template for automating a report in R. You will publish the report as a GitHub (Jekyll) website.
   
@@ -176,7 +176,7 @@ The final project will be accompanied by a rubric describing the criteria for ev
 
 ## E. Late and Missing Assignments
 
-Grades for the course are largely based on weekly labs. Assigned work is accompanied by detailed instructions, adequate time for completion and opportunities to consult the instructor with questions. As a result, each assignment element in the course is expected to be completed in a timely fashion by the due date. Once solutions are posted it is no longer possible to receive points for assignments. 
+Grades for the course are largely based on weekly labs. Assigned work is accompanied by detailed instructions, adequate time for completion and opportunities to consult the instructor with questions. As a result, each assignment element in the course is expected to be completed in a timely fashion by the due date. **Once solutions are posted it is no longer possible to receive points for assignments.**
 
 ## F.  Course Communications and Instructor Feedback:
 
