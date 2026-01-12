@@ -219,17 +219,17 @@ Use the **Schedule** tab on the navigation bar for detailed information each wee
 
 ### Unit 1: Programming Control Structures 
 
-### Unit 2: Simulation 
+### Unit 2: Loops and Simulation 
  
-### Unit 3: GitHub Pages 
+### Unit 3: Text as Data 
 
-### Unit 4: Regular Expressions 
+### Unit 4: Text Analysis
 
-### Unit 5: Data APIs 
+### Unit 5: GitHub Pages
 
-### Unit 6: Tidy Data 
+### Unit 6: Report Templating 
 
-### Unit 7: Customized Reports in RMD 
+### Unit 7: Workflows and Automation
 
 
 
