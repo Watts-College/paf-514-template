@@ -10,7 +10,7 @@ yellowdig:
   post-05: 'Friday, February 20th' 
   post-06: 'Friday, February 27th' 
 
-yellowdig_url: 'https://canvas.asu.edu/courses/236080/assignments/6634594'
+yellowdig_url: 'https://canvas.asu.edu/courses/251527/assignments/7140514'
 
 ---
 
