@@ -1,17 +1,13 @@
 ---
 layout: review
 
-
 root-url: 'https://raw.githubusercontent.com/Watts-College/paf-514-template/main/review-sessions/'
-
- 
-Passcode: 
 
 session: 
 - week1:
   date:  'Friday, January 16, 12pm: WELCOME'  
-  video: ''
-  password: ''
+  video: 'https://asu.zoom.us/rec/share/IlhiGx5Ul-Aka8cnJLeb04IZdo9nbRZT9f8Kz1ZwWFmscE1EzwPfLMeyqFZfJgkv.Arf68lPm2Gu4MZ4q'
+  password: 'Sax8+m3T'
   sample-code: 'week-01-control-structures.R' 
   link: 'https://github.com/Watts-College/paf-514-template/blob/main/lectures/ai-philosophy.pdf' 
 - week2:
