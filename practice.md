@@ -2,13 +2,13 @@
 layout: default
 
 yellowdig: 
-  post-00: 'Friday, August 22'
-  post-01: 'Friday, August 29th' 
-  post-02: 'Friday, September 5th' 
-  post-03: 'Friday, September 12th' 
-  post-04: 'Friday, September 19th' 
-  post-05: 'Friday, September 26th' 
-  post-06: 'Friday, October 3rd' 
+  post-00: 'Friday, January 16th'
+  post-01: 'Friday, January 23rd' 
+  post-02: 'Friday, January 30th' 
+  post-03: 'Friday, February 6th' 
+  post-04: 'Friday, February 13th' 
+  post-05: 'Friday, February 20th' 
+  post-06: 'Friday, February 27th' 
 
 yellowdig_url: 'https://canvas.asu.edu/courses/236080/assignments/6634594'
 
