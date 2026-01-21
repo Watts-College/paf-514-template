@@ -12,8 +12,8 @@ session:
   link: 'https://github.com/Watts-College/paf-514-template/blob/main/lectures/ai-philosophy.pdf' 
 - week2:
   date:  'Tuesday, January 20, 10am: LAB 01 & 02'  
-  video: '' 
-  password: ''
+  video: 'https://asu.zoom.us/rec/share/0JCzHuCsuNsvzpGztgHzwD4OoE77pij1IUYTFxraehb4AGE0BlArE_PxvJUv3GFu.CRPDABrEp2a-w52e?startTime=1768930571000' 
+  password: '6Fe0x^Tk'
   sample-code: 'week-02-loops.R' 
   session-code: '' 
 - week3:
