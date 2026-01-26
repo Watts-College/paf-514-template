@@ -17,9 +17,9 @@ session:
   sample-code: 'week-02-loops.R' 
   session-code: '' 
 - week3:
-  date:  'Monday, January 26, 12pm: LAB 03'  
-  video: ''
-  password: ''
+  date:  'Monday, January 26, 12pm: LAB 03'
+  video: 'https://asu.zoom.us/rec/share/FVSGOZZ89Gs1H3NUuYkxtjx5P7LKACLvdg7Lm8PvqVUYsILWZaFk-eZ_ZEJOyv84.WKNFTADgqDQVSeso'
+  password: 'P3*q!B$2'
   sample-code: 'week-03-regular-expressions.R' 
 - week4:
   date:  'Monday, February 2, 12pm'   
