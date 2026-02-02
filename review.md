@@ -23,8 +23,8 @@ session:
   sample-code: 'week-03-regular-expressions.R' 
 - week4:
   date:  'Monday, February 2, 12pm'   
-  video: '' 
-  password: ''
+  video: 'https://asu.zoom.us/rec/share/PDmqI2IVQlkdfpJF054FATQHyKuZIFF7sjiOGQOYjDe0aOZPmkrni90MOwh0r0-g.2hcfM3EqIC0l_QYy'
+  password: 'Q9RzU!s4'
   sample-code: 'week-04-quanteda.R'
 - week5:
   date:  'Monday, February 9, 12pm'  
