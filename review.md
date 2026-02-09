@@ -18,14 +18,14 @@ session:
   session-code: '' 
 - week3:
   date:  'Monday, January 26, 12pm: LAB 03'
-  video: 'https://asu.zoom.us/rec/share/FVSGOZZ89Gs1H3NUuYkxtjx5P7LKACLvdg7Lm8PvqVUYsILWZaFk-eZ_ZEJOyv84.WKNFTADgqDQVSeso'
-  password: 'P3*q!B$2'
+  video: 'https://asu.zoom.us/rec/share/FVSGOZZ89Gs1H3NUuYkxtjx5P7LKACLvdg7Lm8PvqVUYsILWZaFk-eZ_ZEJOyv84.WKNFTADgqDQVSeso' 
+  password: 'P3*q!B$2' 
   sample-code: 'week-03-regular-expressions.R' 
-- week4:
+- week4: 
   date:  'Monday, February 2, 12pm'   
-  video: 'https://asu.zoom.us/rec/share/PDmqI2IVQlkdfpJF054FATQHyKuZIFF7sjiOGQOYjDe0aOZPmkrni90MOwh0r0-g.2hcfM3EqIC0l_QYy'
-  password: 'Q9RzU!s4'
-  sample-code: 'week-04-quanteda.R'
+  video: 'https://asu.zoom.us/rec/share/PDmqI2IVQlkdfpJF054FATQHyKuZIFF7sjiOGQOYjDe0aOZPmkrni90MOwh0r0-g.2hcfM3EqIC0l_QYy' 
+  password: 'Q9RzU!s4' 
+  sample-code: 'week-04-quanteda.R' 
 - week5:
   date:  'Monday, February 9, 12pm'  
   video: '' 
