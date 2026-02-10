@@ -190,6 +190,7 @@ In the example below we will split missions into sets of words, apply a "diction
 dat$mission <- tolower( dat$mission )
 
 # use a sample for demo purposes
+set.seed( 1234 )
 dat.sample <- dat[ sample( 1:50000, size=1000 ) , ]
 
 corp <- corpus( dat.sample,  text_field="mission" )
@@ -218,16 +219,19 @@ tokens <- tokens_remove( tokens, c( stopwords("english"), "nbsp" ), padding=F )
 
 
 ```{r}
-my_dictionary <- dictionary( list( five01_c_3= c("501 c 3","section 501 c 3") ,
-                             united_states = c("united states"),
-                             high_school=c("high school"),
-                             non_profit=c("non-profit", "non profit"),
-                             stem=c("science technology engineering math", 
-                                    "science technology engineering mathematics" ),
-                             los_angeles=c("los angeles"),
-                             ny_state=c("new york state"),
-                             ny=c("new york")
-                           ))
+my_dictionary <- 
+  dictionary( 
+    
+    list(  five01_c_3     = c("501 c 3", "section 501 c 3") ,
+           united_states  = c("united states"),
+           high_school    = c("high school"),
+           non_profit     = c("non-profit", "non profit"),
+           stem           = c("science technology engineering math", 
+                              "science technology engineering mathematics" ),
+           los_angeles    = c("los angeles"),
+           ny_state       = c("new york state"),
+           ny             = c("new york")
+    ))
 
 # apply the dictionary to the text 
 tokens <- tokens_compound( tokens, pattern=my_dictionary )
@@ -254,7 +258,9 @@ ngram3 %>% textstat_frequency( n=10 )
 
 
 ```{r}
-tokens %>% dfm( stem=F ) %>% topfeatures( )
+tokens %>% 
+  dfm() %>% 
+  topfeatures()
 ```
 
 
@@ -268,7 +274,10 @@ Stemming removes the last part of the word such that the word is reduced to it's
 Quanteda already has a powerful stemming function included. 
 
 ```{r}
-tokens %>% dfm( stem=T ) %>% topfeatures( )
+tokens %>%
+  dfm() %>% 
+  dfm_wordstem() %>%  
+  topfeatures()
 ```
 
 

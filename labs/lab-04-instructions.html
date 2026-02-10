@@ -13,7 +13,7 @@
 
 <title>Lab 04 - Regular Expressions</title>
 
-<script src="lab-04-instructions_files/header-attrs-2.17/header-attrs.js"></script>
+<script src="lab-04-instructions_files/header-attrs-2.29/header-attrs.js"></script>
 <script src="lab-04-instructions_files/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="lab-04-instructions_files/bootstrap-3.3.5/css/readable.min.css" rel="stylesheet" />
@@ -53,6 +53,7 @@
   }
 </style>
 <style type="text/css" data-origin="pandoc">
+html { -webkit-text-size-adjust: 100%; }
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -609,52 +610,53 @@ possible - count word frequency.</p>
 <span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a>dat<span class="sc">$</span>mission <span class="ot">&lt;-</span> <span class="fu">tolower</span>( dat<span class="sc">$</span>mission )</span>
 <span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a></span>
 <span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a><span class="co"># use a sample for demo purposes</span></span>
-<span id="cb10-7"><a href="#cb10-7" tabindex="-1"></a>dat.sample <span class="ot">&lt;-</span> dat[ <span class="fu">sample</span>( <span class="dv">1</span><span class="sc">:</span><span class="dv">50000</span>, <span class="at">size=</span><span class="dv">1000</span> ) , ]</span>
-<span id="cb10-8"><a href="#cb10-8" tabindex="-1"></a></span>
-<span id="cb10-9"><a href="#cb10-9" tabindex="-1"></a>corp <span class="ot">&lt;-</span> <span class="fu">corpus</span>( dat.sample,  <span class="at">text_field=</span><span class="st">&quot;mission&quot;</span> )</span>
-<span id="cb10-10"><a href="#cb10-10" tabindex="-1"></a>corp</span></code></pre></div>
+<span id="cb10-7"><a href="#cb10-7" tabindex="-1"></a><span class="fu">set.seed</span>( <span class="dv">1234</span> )</span>
+<span id="cb10-8"><a href="#cb10-8" tabindex="-1"></a>dat.sample <span class="ot">&lt;-</span> dat[ <span class="fu">sample</span>( <span class="dv">1</span><span class="sc">:</span><span class="dv">50000</span>, <span class="at">size=</span><span class="dv">1000</span> ) , ]</span>
+<span id="cb10-9"><a href="#cb10-9" tabindex="-1"></a></span>
+<span id="cb10-10"><a href="#cb10-10" tabindex="-1"></a>corp <span class="ot">&lt;-</span> <span class="fu">corpus</span>( dat.sample,  <span class="at">text_field=</span><span class="st">&quot;mission&quot;</span> )</span>
+<span id="cb10-11"><a href="#cb10-11" tabindex="-1"></a>corp</span></code></pre></div>
 <pre><code>## Corpus consisting of 1,000 documents and 36 docvars.
 ## text1 :
-## &quot;the association strive to promote and sustain alumni involve...&quot;
+## &quot;to facilitate the restoration and conservation of native spe...&quot;
 ## 
 ## text2 :
-## &quot; &quot;
+## &quot;fol is an independent nonprofit corporation, organized and o...&quot;
 ## 
 ## text3 :
-## &quot;florida veterans housing associates inc. will assist veteran...&quot;
+## &quot;the mission of the warrior mystic therapy foundation is to p...&quot;
 ## 
 ## text4 :
-## &quot;turning house into homes fr veterans in need, we will be fur...&quot;
+## &quot;to develop a team of christian missionaries with a mission t...&quot;
 ## 
 ## text5 :
-## &quot; &quot;
+## &quot;to develop educational programs for families and youth.  the...&quot;
 ## 
 ## text6 :
-## &quot;we provide youth bowlers with an opportunity to compete in l...&quot;
+## &quot; &quot;
 ## 
 ## [ reached max_ndoc ... 994 more documents ]</code></pre>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a><span class="co"># print first five missions </span></span>
 <span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a>corp[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>] </span></code></pre></div>
 <pre><code>## Corpus consisting of 5 documents and 36 docvars.
 ## text1 :
-## &quot;the association strive to promote and sustain alumni involve...&quot;
+## &quot;to facilitate the restoration and conservation of native spe...&quot;
 ## 
 ## text2 :
-## &quot; &quot;
+## &quot;fol is an independent nonprofit corporation, organized and o...&quot;
 ## 
 ## text3 :
-## &quot;florida veterans housing associates inc. will assist veteran...&quot;
+## &quot;the mission of the warrior mystic therapy foundation is to p...&quot;
 ## 
 ## text4 :
-## &quot;turning house into homes fr veterans in need, we will be fur...&quot;
+## &quot;to develop a team of christian missionaries with a mission t...&quot;
 ## 
 ## text5 :
-## &quot; &quot;</code></pre>
+## &quot;to develop educational programs for families and youth.  the...&quot;</code></pre>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="co"># summarize corpus</span></span>
 <span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a><span class="fu">summary</span>(corp)[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>,] </span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Text"],"name":[1],"type":["chr"],"align":["left"]},{"label":["Types"],"name":[2],"type":["int"],"align":["right"]},{"label":["Tokens"],"name":[3],"type":["int"],"align":["right"]},{"label":["Sentences"],"name":[4],"type":["int"],"align":["right"]},{"label":["ein"],"name":[5],"type":["chr"],"align":["left"]},{"label":["orgname"],"name":[6],"type":["chr"],"align":["left"]},{"label":["code01"],"name":[7],"type":["chr"],"align":["left"]},{"label":["codedef01"],"name":[8],"type":["chr"],"align":["left"]},{"label":["code02"],"name":[9],"type":["chr"],"align":["left"]},{"label":["codedef02"],"name":[10],"type":["chr"],"align":["left"]},{"label":["orgpurposecharitable"],"name":[11],"type":["int"],"align":["right"]},{"label":["orgpurposereligious"],"name":[12],"type":["int"],"align":["right"]},{"label":["orgpurposeeducational"],"name":[13],"type":["int"],"align":["right"]},{"label":["orgpurposescientific"],"name":[14],"type":["int"],"align":["right"]},{"label":["orgpurposeliterary"],"name":[15],"type":["int"],"align":["right"]},{"label":["orgpurposepublicsafety"],"name":[16],"type":["int"],"align":["right"]},{"label":["orgpurposeamateursports"],"name":[17],"type":["int"],"align":["right"]},{"label":["orgpurposecrueltyprevention"],"name":[18],"type":["int"],"align":["right"]},{"label":["leginflno"],"name":[19],"type":["int"],"align":["right"]},{"label":["leginflyes"],"name":[20],"type":["int"],"align":["right"]},{"label":["donatefundsno"],"name":[21],"type":["int"],"align":["right"]},{"label":["donatefundsyes"],"name":[22],"type":["int"],"align":["right"]},{"label":["conductactyoutsideusno"],"name":[23],"type":["int"],"align":["right"]},{"label":["conductactyoutsideusyes"],"name":[24],"type":["int"],"align":["right"]},{"label":["compofcrdirtrustno"],"name":[25],"type":["int"],"align":["right"]},{"label":["compofcrdirtrustyes"],"name":[26],"type":["int"],"align":["right"]},{"label":["financialtransofcrsno"],"name":[27],"type":["int"],"align":["right"]},{"label":["financialtransofcrsyes"],"name":[28],"type":["int"],"align":["right"]},{"label":["unrelgrossincm1000moreno"],"name":[29],"type":["int"],"align":["right"]},{"label":["unrelgrossincm1000moreyes"],"name":[30],"type":["int"],"align":["right"]},{"label":["gamingactyno"],"name":[31],"type":["int"],"align":["right"]},{"label":["gamingactyyes"],"name":[32],"type":["int"],"align":["right"]},{"label":["disasterreliefno"],"name":[33],"type":["int"],"align":["right"]},{"label":["disasterreliefyes"],"name":[34],"type":["int"],"align":["right"]},{"label":["onethirdsupportpublic"],"name":[35],"type":["int"],"align":["right"]},{"label":["onethirdsupportgifts"],"name":[36],"type":["int"],"align":["right"]},{"label":["benefitofcollege"],"name":[37],"type":["int"],"align":["right"]},{"label":["privatefoundation508e"],"name":[38],"type":["int"],"align":["right"]},{"label":["hospitalorchurchno"],"name":[39],"type":["int"],"align":["right"]},{"label":["hospitalorchurchyes"],"name":[40],"type":["int"],"align":["right"]}],"data":[{"1":"text1","2":"27","3":"34","4":"1","5":"820842066","6":"ECORSE RAIDER ALUMNI ASSOCIATION","7":"B","8":"Educational Institutions","9":"B84","10":"Alumni Associations","11":"1","12":"0","13":"0","14":"0","15":"0","16":"0","17":"0","18":"0","19":"1","20":"0","21":"1","22":"0","23":"1","24":"0","25":"1","26":"0","27":"1","28":"0","29":"1","30":"0","31":"1","32":"0","33":"1","34":"0","35":"1","36":"0","37":"0","38":"0","39":"1","40":"0","_rn_":"1"},{"1":"text2","2":"0","3":"0","4":"0","5":"823659038","6":"DIAPER BANK OF SKAGIT COUNTY","7":"P","8":"Human Services","9":"P40","10":"Family Services","11":"1","12":"0","13":"1","14":"0","15":"0","16":"0","17":"0","18":"0","19":"1","20":"0","21":"1","22":"0","23":"1","24":"0","25":"1","26":"0","27":"1","28":"0","29":"1","30":"0","31":"1","32":"0","33":"1","34":"0","35":"1","36":"0","37":"0","38":"0","39":"0","40":"0","_rn_":"2"},{"1":"text3","2":"23","3":"28","4":"1","5":"832169669","6":"FLORIDA VETERANS HOUSING ASSOCIATESINC","7":"L","8":"Housing, Shelter","9":"L30","10":"Housing Search Assistance","11":"1","12":"0","13":"0","14":"0","15":"0","16":"0","17":"0","18":"0","19":"1","20":"0","21":"1","22":"0","23":"1","24":"0","25":"1","26":"0","27":"1","28":"0","29":"1","30":"0","31":"1","32":"0","33":"1","34":"0","35":"0","36":"1","37":"0","38":"0","39":"1","40":"0","_rn_":"3"},{"1":"text4","2":"21","3":"22","4":"1","5":"825492640","6":"VETSTRONG","7":"L","8":"Housing, Shelter","9":"L80","10":"Other Housing Support Services","11":"1","12":"0","13":"0","14":"0","15":"0","16":"0","17":"0","18":"0","19":"1","20":"0","21":"1","22":"0","23":"1","24":"0","25":"1","26":"0","27":"1","28":"0","29":"1","30":"0","31":"1","32":"0","33":"1","34":"0","35":"0","36":"1","37":"0","38":"0","39":"1","40":"0","_rn_":"4"},{"1":"text5","2":"0","3":"0","4":"0","5":"823706125","6":"LIFE FINANCE FOUNDATION INC","7":"T","8":"Philanthropy, Voluntarism, and Grantmaking","9":"T20","10":"Private Grantmaking Foundations","11":"1","12":"0","13":"1","14":"1","15":"0","16":"0","17":"0","18":"0","19":"1","20":"0","21":"1","22":"0","23":"1","24":"0","25":"1","26":"0","27":"0","28":"1","29":"1","30":"0","31":"1","32":"0","33":"1","34":"0","35":"0","36":"0","37":"0","38":"1","39":"0","40":"0","_rn_":"5"},{"1":"text6","2":"29","3":"31","4":"1","5":"320566641","6":"TONY REYES JUNIOR BOWLING PROGRAM","7":"N","8":"Recreation, Sports, Leisure, Athletics","9":"N60","10":"Amateur Sports Clubs, Leagues","11":"1","12":"0","13":"1","14":"0","15":"0","16":"0","17":"0","18":"0","19":"1","20":"0","21":"1","22":"0","23":"1","24":"0","25":"1","26":"0","27":"1","28":"0","29":"1","30":"0","31":"1","32":"0","33":"1","34":"0","35":"0","36":"1","37":"0","38":"0","39":"1","40":"0","_rn_":"6"},{"1":"text7","2":"26","3":"37","4":"1","5":"383784901","6":"MCKEES ROCKS HISTORICAL SOCIETY","7":"A","8":"Arts, Culture, and Humanities","9":"A80","10":"Historical Societies and Related Activities","11":"1","12":"0","13":"1","14":"0","15":"1","16":"0","17":"0","18":"0","19":"1","20":"0","21":"1","22":"0","23":"1","24":"0","25":"1","26":"0","27":"1","28":"0","29":"1","30":"0","31":"1","32":"0","33":"1","34":"0","35":"1","36":"0","37":"0","38":"0","39":"1","40":"0","_rn_":"7"},{"1":"text8","2":"14","3":"15","4":"1","5":"010946699","6":"BELLAIRE JUNIOR SPORTS INC","7":"B","8":"Educational Institutions","9":"B99","10":"Education N.E.C.","11":"0","12":"0","13":"1","14":"0","15":"0","16":"0","17":"0","18":"0","19":"1","20":"0","21":"1","22":"0","23":"1","24":"0","25":"1","26":"0","27":"1","28":"0","29":"1","30":"0","31":"1","32":"0","33":"1","34":"0","35":"0","36":"1","37":"0","38":"0","39":"1","40":"0","_rn_":"8"},{"1":"text9","2":"12","3":"13","4":"1","5":"831767826","6":"LALA PROJECT INC","7":"P","8":"Human Services","9":"P58","10":"Gift Distribution","11":"1","12":"0","13":"0","14":"0","15":"0","16":"0","17":"0","18":"0","19":"1","20":"0","21":"1","22":"0","23":"1","24":"0","25":"1","26":"0","27":"1","28":"0","29":"1","30":"0","31":"1","32":"0","33":"1","34":"0","35":"1","36":"0","37":"0","38":"0","39":"1","40":"0","_rn_":"9"},{"1":"text10","2":"16","3":"16","4":"1","5":"824612109","6":"MUNDELEIN STAND-UP","7":"F","8":"Mental Health, Crisis Intervention","9":"F21","10":"Alcohol, Drug Abuse (Prevention Only)","11":"1","12":"0","13":"1","14":"0","15":"0","16":"0","17":"0","18":"0","19":"1","20":"0","21":"1","22":"0","23":"1","24":"0","25":"1","26":"0","27":"1","28":"0","29":"1","30":"0","31":"1","32":"0","33":"1","34":"0","35":"0","36":"1","37":"0","38":"0","39":"1","40":"0","_rn_":"10"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Text"],"name":[1],"type":["chr"],"align":["left"]},{"label":["Types"],"name":[2],"type":["int"],"align":["right"]},{"label":["Tokens"],"name":[3],"type":["int"],"align":["right"]},{"label":["Sentences"],"name":[4],"type":["int"],"align":["right"]},{"label":["ein"],"name":[5],"type":["chr"],"align":["left"]},{"label":["orgname"],"name":[6],"type":["chr"],"align":["left"]},{"label":["code01"],"name":[7],"type":["chr"],"align":["left"]},{"label":["codedef01"],"name":[8],"type":["chr"],"align":["left"]},{"label":["code02"],"name":[9],"type":["chr"],"align":["left"]},{"label":["codedef02"],"name":[10],"type":["chr"],"align":["left"]},{"label":["orgpurposecharitable"],"name":[11],"type":["int"],"align":["right"]},{"label":["orgpurposereligious"],"name":[12],"type":["int"],"align":["right"]},{"label":["orgpurposeeducational"],"name":[13],"type":["int"],"align":["right"]},{"label":["orgpurposescientific"],"name":[14],"type":["int"],"align":["right"]},{"label":["orgpurposeliterary"],"name":[15],"type":["int"],"align":["right"]},{"label":["orgpurposepublicsafety"],"name":[16],"type":["int"],"align":["right"]},{"label":["orgpurposeamateursports"],"name":[17],"type":["int"],"align":["right"]},{"label":["orgpurposecrueltyprevention"],"name":[18],"type":["int"],"align":["right"]},{"label":["leginflno"],"name":[19],"type":["int"],"align":["right"]},{"label":["leginflyes"],"name":[20],"type":["int"],"align":["right"]},{"label":["donatefundsno"],"name":[21],"type":["int"],"align":["right"]},{"label":["donatefundsyes"],"name":[22],"type":["int"],"align":["right"]},{"label":["conductactyoutsideusno"],"name":[23],"type":["int"],"align":["right"]},{"label":["conductactyoutsideusyes"],"name":[24],"type":["int"],"align":["right"]},{"label":["compofcrdirtrustno"],"name":[25],"type":["int"],"align":["right"]},{"label":["compofcrdirtrustyes"],"name":[26],"type":["int"],"align":["right"]},{"label":["financialtransofcrsno"],"name":[27],"type":["int"],"align":["right"]},{"label":["financialtransofcrsyes"],"name":[28],"type":["int"],"align":["right"]},{"label":["unrelgrossincm1000moreno"],"name":[29],"type":["int"],"align":["right"]},{"label":["unrelgrossincm1000moreyes"],"name":[30],"type":["int"],"align":["right"]},{"label":["gamingactyno"],"name":[31],"type":["int"],"align":["right"]},{"label":["gamingactyyes"],"name":[32],"type":["int"],"align":["right"]},{"label":["disasterreliefno"],"name":[33],"type":["int"],"align":["right"]},{"label":["disasterreliefyes"],"name":[34],"type":["int"],"align":["right"]},{"label":["onethirdsupportpublic"],"name":[35],"type":["int"],"align":["right"]},{"label":["onethirdsupportgifts"],"name":[36],"type":["int"],"align":["right"]},{"label":["benefitofcollege"],"name":[37],"type":["int"],"align":["right"]},{"label":["privatefoundation508e"],"name":[38],"type":["int"],"align":["right"]},{"label":["hospitalorchurchno"],"name":[39],"type":["int"],"align":["right"]},{"label":["hospitalorchurchyes"],"name":[40],"type":["int"],"align":["right"]}],"data":[{"1":"text1","2":"17","3":"18","4":"1","5":"831051907","6":"THE UNDERSTORY INITIATIVE","7":"C","8":"Environmental Quality Protection, Beautification","9":"C30","10":"Natural Resource Conservation and Protection","11":"1","12":"0","13":"1","14":"0","15":"0","16":"0","17":"0","18":"0","19":"1","20":"0","21":"1","22":"0","23":"1","24":"0","25":"1","26":"0","27":"1","28":"0","29":"1","30":"0","31":"1","32":"0","33":"1","34":"0","35":"0","36":"1","37":"0","38":"0","39":"1","40":"0","_rn_":"1"},{"1":"text2","2":"29","3":"34","4":"1","5":"825069032","6":"FRIENDS OF LIEBER STATE RECREATION AREA","7":"C","8":"Environmental Quality Protection, Beautification","9":"C30","10":"Natural Resource Conservation and Protection","11":"1","12":"0","13":"1","14":"1","15":"0","16":"0","17":"0","18":"0","19":"1","20":"0","21":"1","22":"0","23":"1","24":"0","25":"1","26":"0","27":"1","28":"0","29":"1","30":"0","31":"1","32":"0","33":"1","34":"0","35":"0","36":"1","37":"0","38":"0","39":"1","40":"0","_rn_":"2"},{"1":"text3","2":"30","3":"36","4":"1","5":"825189980","6":"WARRIOR MYSTIC THERAPY FOUNDATION INC","7":"F","8":"Mental Health, Crisis Intervention","9":"F30","10":"Mental Health Treatment","11":"1","12":"1","13":"1","14":"0","15":"0","16":"0","17":"0","18":"0","19":"1","20":"0","21":"1","22":"0","23":"1","24":"0","25":"1","26":"0","27":"1","28":"0","29":"1","30":"0","31":"1","32":"0","33":"1","34":"0","35":"0","36":"1","37":"0","38":"0","39":"1","40":"0","_rn_":"3"},{"1":"text4","2":"26","3":"36","4":"1","5":"824858101","6":"REAL CHURCH HELP INC","7":"P","8":"Human Services","9":"P20","10":"Human Service Organizations","11":"1","12":"1","13":"0","14":"0","15":"0","16":"0","17":"0","18":"0","19":"1","20":"0","21":"1","22":"0","23":"1","24":"0","25":"1","26":"0","27":"1","28":"0","29":"1","30":"0","31":"1","32":"0","33":"1","34":"0","35":"0","36":"1","37":"0","38":"0","39":"1","40":"0","_rn_":"4"},{"1":"text5","2":"23","3":"27","4":"1","5":"825258709","6":"SCMBA","7":"O","8":"Youth Development","9":"O50","10":"Youth Development Programs","11":"1","12":"0","13":"1","14":"0","15":"1","16":"0","17":"0","18":"0","19":"1","20":"0","21":"1","22":"0","23":"1","24":"0","25":"1","26":"0","27":"1","28":"0","29":"1","30":"0","31":"1","32":"0","33":"1","34":"0","35":"0","36":"1","37":"0","38":"0","39":"1","40":"0","_rn_":"5"},{"1":"text6","2":"0","3":"0","4":"0","5":"815179769","6":"DREAM A DREAM FOUNDATION INC","7":"O","8":"Youth Development","9":"O11","10":"Single Organization Support","11":"0","12":"0","13":"1","14":"0","15":"0","16":"0","17":"0","18":"0","19":"1","20":"0","21":"1","22":"0","23":"1","24":"0","25":"1","26":"0","27":"1","28":"0","29":"1","30":"0","31":"1","32":"0","33":"1","34":"0","35":"0","36":"1","37":"0","38":"0","39":"0","40":"0","_rn_":"6"},{"1":"text7","2":"19","3":"22","4":"1","5":"823594106","6":"DANCE 4 LIFE","7":"P","8":"Human Services","9":"P20","10":"Human Service Organizations","11":"1","12":"0","13":"1","14":"0","15":"0","16":"0","17":"0","18":"0","19":"1","20":"0","21":"0","22":"1","23":"1","24":"0","25":"0","26":"1","27":"1","28":"0","29":"1","30":"0","31":"1","32":"0","33":"1","34":"0","35":"0","36":"1","37":"0","38":"0","39":"1","40":"0","_rn_":"7"},{"1":"text8","2":"20","3":"20","4":"1","5":"824564174","6":"FRESH START TRANSITIONAL AND ASSISTED LIVING HOUSING INC","7":"P","8":"Human Services","9":"P20","10":"Human Service Organizations","11":"1","12":"0","13":"0","14":"0","15":"0","16":"0","17":"0","18":"0","19":"1","20":"0","21":"1","22":"0","23":"1","24":"0","25":"1","26":"0","27":"1","28":"0","29":"1","30":"0","31":"1","32":"0","33":"1","34":"0","35":"0","36":"1","37":"0","38":"0","39":"1","40":"0","_rn_":"8"},{"1":"text9","2":"7","3":"7","4":"1","5":"820999504","6":"ARISE CHILDRENS FUND","7":"P","8":"Human Services","9":"P30","10":"Children's and Youth Services","11":"1","12":"0","13":"0","14":"0","15":"0","16":"0","17":"0","18":"0","19":"1","20":"0","21":"1","22":"0","23":"0","24":"1","25":"1","26":"0","27":"1","28":"0","29":"1","30":"0","31":"1","32":"0","33":"1","34":"0","35":"0","36":"1","37":"0","38":"0","39":"1","40":"0","_rn_":"9"},{"1":"text10","2":"30","3":"41","4":"1","5":"821652847","6":"COMMUNITY CHRISTMAS CHOIR INC","7":"A","8":"Arts, Culture, and Humanities","9":"A6B","10":"Singing Choral","11":"1","12":"1","13":"0","14":"0","15":"0","16":"0","17":"0","18":"0","19":"1","20":"0","21":"1","22":"0","23":"1","24":"0","25":"1","26":"0","27":"1","28":"0","29":"1","30":"0","31":"1","32":"0","33":"1","34":"0","35":"0","36":"1","37":"0","38":"0","39":"1","40":"0","_rn_":"10"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a><span class="co"># pre-processing steps:</span></span>
@@ -667,114 +669,118 @@ possible - count word frequency.</p>
 <span id="cb15-8"><a href="#cb15-8" tabindex="-1"></a><span class="fu">head</span>( tokens )</span></code></pre></div>
 <pre><code>## Tokens consisting of 6 documents and 36 docvars.
 ## text1 :
-##  [1] &quot;the&quot;         &quot;association&quot; &quot;strive&quot;      &quot;to&quot;          &quot;promote&quot;    
-##  [6] &quot;and&quot;         &quot;sustain&quot;     &quot;alumni&quot;      &quot;involvement&quot; &quot;ecorse&quot;     
-## [11] &quot;public&quot;      &quot;schools&quot;    
-## [ ... and 20 more ]
+##  [1] &quot;to&quot;           &quot;facilitate&quot;   &quot;the&quot;          &quot;restoration&quot;  &quot;and&quot;         
+##  [6] &quot;conservation&quot; &quot;of&quot;           &quot;native&quot;       &quot;species&quot;      &quot;habitat&quot;     
+## [11] &quot;through&quot;      &quot;partnership&quot; 
+## [ ... and 4 more ]
 ## 
-## text3 :
-##  [1] &quot;florida&quot;    &quot;veterans&quot;   &quot;housing&quot;    &quot;associates&quot; &quot;inc&quot;       
-##  [6] &quot;will&quot;       &quot;assist&quot;     &quot;veterans&quot;   &quot;locate&quot;     &quot;affordable&quot;
-## [11] &quot;housing&quot;    &quot;and&quot;       
-## [ ... and 14 more ]
-## 
-## text4 :
-##  [1] &quot;turning&quot;    &quot;house&quot;      &quot;into&quot;       &quot;homes&quot;      &quot;fr&quot;        
-##  [6] &quot;veterans&quot;   &quot;in&quot;         &quot;need&quot;       &quot;we&quot;         &quot;will&quot;      
-## [11] &quot;be&quot;         &quot;furnishing&quot;
-## [ ... and 8 more ]
-## 
-## text6 :
-##  [1] &quot;we&quot;          &quot;provide&quot;     &quot;youth&quot;       &quot;bowlers&quot;     &quot;with&quot;       
-##  [6] &quot;an&quot;          &quot;opportunity&quot; &quot;to&quot;          &quot;compete&quot;     &quot;in&quot;         
-## [11] &quot;league&quot;      &quot;and&quot;        
+## text2 :
+##  [1] &quot;fol&quot;         &quot;is&quot;          &quot;an&quot;          &quot;independent&quot; &quot;nonprofit&quot;  
+##  [6] &quot;corporation&quot; &quot;organized&quot;   &quot;and&quot;         &quot;operated&quot;    &quot;exclusively&quot;
+## [11] &quot;for&quot;         &quot;charitable&quot; 
 ## [ ... and 18 more ]
 ## 
-## text7 :
-##  [1] &quot;to&quot;          &quot;reconstruct&quot; &quot;and&quot;         &quot;preserve&quot;    &quot;the&quot;        
-##  [6] &quot;history&quot;     &quot;of&quot;          &quot;mckees&quot;      &quot;rocks&quot;       &quot;and&quot;        
-## [11] &quot;stowe&quot;       &quot;through&quot;    
-## [ ... and 23 more ]
-## 
-## text8 :
-##  [1] &quot;the&quot;          &quot;organization&quot; &quot;will&quot;         &quot;conduct&quot;      &quot;a&quot;           
-##  [6] &quot;youth&quot;        &quot;sports&quot;       &quot;program&quot;      &quot;in&quot;           &quot;the&quot;         
-## [11] &quot;bellaire&quot;     &quot;ohio&quot;        
-## [ ... and 1 more ]</code></pre>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a><span class="co"># remove filler words like the, and, a, to</span></span>
-<span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a>tokens <span class="ot">&lt;-</span> <span class="fu">tokens_remove</span>( tokens, <span class="fu">c</span>( <span class="fu">stopwords</span>(<span class="st">&quot;english&quot;</span>), <span class="st">&quot;nbsp&quot;</span> ), <span class="at">padding=</span>F )</span></code></pre></div>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a>my_dictionary <span class="ot">&lt;-</span> <span class="fu">dictionary</span>( <span class="fu">list</span>( <span class="at">five01_c_3=</span> <span class="fu">c</span>(<span class="st">&quot;501 c 3&quot;</span>,<span class="st">&quot;section 501 c 3&quot;</span>) ,</span>
-<span id="cb18-2"><a href="#cb18-2" tabindex="-1"></a>                             <span class="at">united_states =</span> <span class="fu">c</span>(<span class="st">&quot;united states&quot;</span>),</span>
-<span id="cb18-3"><a href="#cb18-3" tabindex="-1"></a>                             <span class="at">high_school=</span><span class="fu">c</span>(<span class="st">&quot;high school&quot;</span>),</span>
-<span id="cb18-4"><a href="#cb18-4" tabindex="-1"></a>                             <span class="at">non_profit=</span><span class="fu">c</span>(<span class="st">&quot;non-profit&quot;</span>, <span class="st">&quot;non profit&quot;</span>),</span>
-<span id="cb18-5"><a href="#cb18-5" tabindex="-1"></a>                             <span class="at">stem=</span><span class="fu">c</span>(<span class="st">&quot;science technology engineering math&quot;</span>, </span>
-<span id="cb18-6"><a href="#cb18-6" tabindex="-1"></a>                                    <span class="st">&quot;science technology engineering mathematics&quot;</span> ),</span>
-<span id="cb18-7"><a href="#cb18-7" tabindex="-1"></a>                             <span class="at">los_angeles=</span><span class="fu">c</span>(<span class="st">&quot;los angeles&quot;</span>),</span>
-<span id="cb18-8"><a href="#cb18-8" tabindex="-1"></a>                             <span class="at">ny_state=</span><span class="fu">c</span>(<span class="st">&quot;new york state&quot;</span>),</span>
-<span id="cb18-9"><a href="#cb18-9" tabindex="-1"></a>                             <span class="at">ny=</span><span class="fu">c</span>(<span class="st">&quot;new york&quot;</span>)</span>
-<span id="cb18-10"><a href="#cb18-10" tabindex="-1"></a>                           ))</span>
-<span id="cb18-11"><a href="#cb18-11" tabindex="-1"></a></span>
-<span id="cb18-12"><a href="#cb18-12" tabindex="-1"></a><span class="co"># apply the dictionary to the text </span></span>
-<span id="cb18-13"><a href="#cb18-13" tabindex="-1"></a>tokens <span class="ot">&lt;-</span> <span class="fu">tokens_compound</span>( tokens, <span class="at">pattern=</span>my_dictionary )</span>
-<span id="cb18-14"><a href="#cb18-14" tabindex="-1"></a><span class="fu">head</span>( tokens )</span></code></pre></div>
-<pre><code>## Tokens consisting of 6 documents and 36 docvars.
-## text1 :
-##  [1] &quot;association&quot; &quot;strive&quot;      &quot;promote&quot;     &quot;sustain&quot;     &quot;alumni&quot;     
-##  [6] &quot;involvement&quot; &quot;ecorse&quot;      &quot;public&quot;      &quot;schools&quot;     &quot;program&quot;    
-## [11] &quot;well&quot;        &quot;increase&quot;   
-## [ ... and 9 more ]
-## 
 ## text3 :
-##  [1] &quot;florida&quot;    &quot;veterans&quot;   &quot;housing&quot;    &quot;associates&quot; &quot;inc&quot;       
-##  [6] &quot;assist&quot;     &quot;veterans&quot;   &quot;locate&quot;     &quot;affordable&quot; &quot;housing&quot;   
-## [11] &quot;provide&quot;    &quot;assistance&quot;
-## [ ... and 7 more ]
+##  [1] &quot;the&quot;        &quot;mission&quot;    &quot;of&quot;         &quot;the&quot;        &quot;warrior&quot;   
+##  [6] &quot;mystic&quot;     &quot;therapy&quot;    &quot;foundation&quot; &quot;is&quot;         &quot;to&quot;        
+## [11] &quot;provide&quot;    &quot;effective&quot; 
+## [ ... and 19 more ]
 ## 
 ## text4 :
-##  [1] &quot;turning&quot;    &quot;house&quot;      &quot;homes&quot;      &quot;fr&quot;         &quot;veterans&quot;  
-##  [6] &quot;need&quot;       &quot;furnishing&quot; &quot;household&quot;  &quot;good&quot;       &quot;furniture&quot; 
-## [11] &quot;recently&quot;   &quot;rehoused&quot;  
-## [ ... and 1 more ]
+##  [1] &quot;to&quot;           &quot;develop&quot;      &quot;a&quot;            &quot;team&quot;         &quot;of&quot;          
+##  [6] &quot;christian&quot;    &quot;missionaries&quot; &quot;with&quot;         &quot;a&quot;            &quot;mission&quot;     
+## [11] &quot;to&quot;           &quot;help&quot;        
+## [ ... and 21 more ]
 ## 
-## text6 :
-##  [1] &quot;provide&quot;     &quot;youth&quot;       &quot;bowlers&quot;     &quot;opportunity&quot; &quot;compete&quot;    
-##  [6] &quot;league&quot;      &quot;tournament&quot;  &quot;bowling&quot;     &quot;earning&quot;     &quot;college&quot;    
-## [11] &quot;scholarship&quot; &quot;money&quot;      
-## [ ... and 5 more ]
+## text5 :
+##  [1] &quot;to&quot;          &quot;develop&quot;     &quot;educational&quot; &quot;programs&quot;    &quot;for&quot;        
+##  [6] &quot;families&quot;    &quot;and&quot;         &quot;youth&quot;       &quot;these&quot;       &quot;programs&quot;   
+## [11] &quot;are&quot;         &quot;centered&quot;   
+## [ ... and 13 more ]
 ## 
 ## text7 :
-##  [1] &quot;reconstruct&quot;  &quot;preserve&quot;     &quot;history&quot;      &quot;mckees&quot;       &quot;rocks&quot;       
-##  [6] &quot;stowe&quot;        &quot;collection&quot;   &quot;preservation&quot; &quot;historically&quot; &quot;significant&quot; 
-## [11] &quot;documents&quot;    &quot;materials&quot;   
-## [ ... and 6 more ]
+##  [1] &quot;we&quot;         &quot;plan&quot;       &quot;to&quot;         &quot;provide&quot;    &quot;fitness&quot;   
+##  [6] &quot;classes&quot;    &quot;dance&quot;      &quot;lessons&quot;    &quot;and&quot;        &quot;other&quot;     
+## [11] &quot;activities&quot; &quot;to&quot;        
+## [ ... and 8 more ]</code></pre>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a><span class="co"># remove filler words like the, and, a, to</span></span>
+<span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a>tokens <span class="ot">&lt;-</span> <span class="fu">tokens_remove</span>( tokens, <span class="fu">c</span>( <span class="fu">stopwords</span>(<span class="st">&quot;english&quot;</span>), <span class="st">&quot;nbsp&quot;</span> ), <span class="at">padding=</span>F )</span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a>my_dictionary <span class="ot">&lt;-</span> </span>
+<span id="cb18-2"><a href="#cb18-2" tabindex="-1"></a>  <span class="fu">dictionary</span>( </span>
+<span id="cb18-3"><a href="#cb18-3" tabindex="-1"></a>    </span>
+<span id="cb18-4"><a href="#cb18-4" tabindex="-1"></a>    <span class="fu">list</span>(  <span class="at">five01_c_3     =</span> <span class="fu">c</span>(<span class="st">&quot;501 c 3&quot;</span>, <span class="st">&quot;section 501 c 3&quot;</span>) ,</span>
+<span id="cb18-5"><a href="#cb18-5" tabindex="-1"></a>           <span class="at">united_states  =</span> <span class="fu">c</span>(<span class="st">&quot;united states&quot;</span>),</span>
+<span id="cb18-6"><a href="#cb18-6" tabindex="-1"></a>           <span class="at">high_school    =</span> <span class="fu">c</span>(<span class="st">&quot;high school&quot;</span>),</span>
+<span id="cb18-7"><a href="#cb18-7" tabindex="-1"></a>           <span class="at">non_profit     =</span> <span class="fu">c</span>(<span class="st">&quot;non-profit&quot;</span>, <span class="st">&quot;non profit&quot;</span>),</span>
+<span id="cb18-8"><a href="#cb18-8" tabindex="-1"></a>           <span class="at">stem           =</span> <span class="fu">c</span>(<span class="st">&quot;science technology engineering math&quot;</span>, </span>
+<span id="cb18-9"><a href="#cb18-9" tabindex="-1"></a>                              <span class="st">&quot;science technology engineering mathematics&quot;</span> ),</span>
+<span id="cb18-10"><a href="#cb18-10" tabindex="-1"></a>           <span class="at">los_angeles    =</span> <span class="fu">c</span>(<span class="st">&quot;los angeles&quot;</span>),</span>
+<span id="cb18-11"><a href="#cb18-11" tabindex="-1"></a>           <span class="at">ny_state       =</span> <span class="fu">c</span>(<span class="st">&quot;new york state&quot;</span>),</span>
+<span id="cb18-12"><a href="#cb18-12" tabindex="-1"></a>           <span class="at">ny             =</span> <span class="fu">c</span>(<span class="st">&quot;new york&quot;</span>)</span>
+<span id="cb18-13"><a href="#cb18-13" tabindex="-1"></a>    ))</span>
+<span id="cb18-14"><a href="#cb18-14" tabindex="-1"></a></span>
+<span id="cb18-15"><a href="#cb18-15" tabindex="-1"></a><span class="co"># apply the dictionary to the text </span></span>
+<span id="cb18-16"><a href="#cb18-16" tabindex="-1"></a>tokens <span class="ot">&lt;-</span> <span class="fu">tokens_compound</span>( tokens, <span class="at">pattern=</span>my_dictionary )</span>
+<span id="cb18-17"><a href="#cb18-17" tabindex="-1"></a><span class="fu">head</span>( tokens )</span></code></pre></div>
+<pre><code>## Tokens consisting of 6 documents and 36 docvars.
+## text1 :
+##  [1] &quot;facilitate&quot;   &quot;restoration&quot;  &quot;conservation&quot; &quot;native&quot;       &quot;species&quot;     
+##  [6] &quot;habitat&quot;      &quot;partnership&quot;  &quot;education&quot;    &quot;community&quot;    &quot;engagement&quot;  
 ## 
-## text8 :
-## [1] &quot;organization&quot; &quot;conduct&quot;      &quot;youth&quot;        &quot;sports&quot;       &quot;program&quot;     
-## [6] &quot;bellaire&quot;     &quot;ohio&quot;         &quot;area&quot;</code></pre>
+## text2 :
+##  [1] &quot;fol&quot;         &quot;independent&quot; &quot;nonprofit&quot;   &quot;corporation&quot; &quot;organized&quot;  
+##  [6] &quot;operated&quot;    &quot;exclusively&quot; &quot;charitable&quot;  &quot;educational&quot; &quot;scientific&quot; 
+## [11] &quot;purposes&quot;    &quot;outlined&quot;   
+## [ ... and 7 more ]
+## 
+## text3 :
+##  [1] &quot;mission&quot;    &quot;warrior&quot;    &quot;mystic&quot;     &quot;therapy&quot;    &quot;foundation&quot;
+##  [6] &quot;provide&quot;    &quot;effective&quot;  &quot;treatment&quot;  &quot;post&quot;       &quot;traumatic&quot; 
+## [11] &quot;stress&quot;     &quot;combat&quot;    
+## [ ... and 9 more ]
+## 
+## text4 :
+##  [1] &quot;develop&quot;      &quot;team&quot;         &quot;christian&quot;    &quot;missionaries&quot; &quot;mission&quot;     
+##  [6] &quot;help&quot;         &quot;churches&quot;     &quot;develop&quot;      &quot;systems&quot;      &quot;guarantees&quot;  
+## [11] &quot;real&quot;         &quot;church&quot;      
+## [ ... and 10 more ]
+## 
+## text5 :
+##  [1] &quot;develop&quot;       &quot;educational&quot;   &quot;programs&quot;      &quot;families&quot;     
+##  [5] &quot;youth&quot;         &quot;programs&quot;      &quot;centered&quot;      &quot;around&quot;       
+##  [9] &quot;providing&quot;     &quot;people&quot;        &quot;opportunities&quot; &quot;make&quot;         
+## [ ... and 4 more ]
+## 
+## text7 :
+##  [1] &quot;plan&quot;       &quot;provide&quot;    &quot;fitness&quot;    &quot;classes&quot;    &quot;dance&quot;     
+##  [6] &quot;lessons&quot;    &quot;activities&quot; &quot;community&quot;  &quot;improve&quot;    &quot;health&quot;    
+## [11] &quot;well-being&quot;</code></pre>
 <div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a><span class="co"># find frequently co-occuring words (typically compound words)</span></span>
 <span id="cb20-2"><a href="#cb20-2" tabindex="-1"></a>ngram2 <span class="ot">&lt;-</span> <span class="fu">tokens_ngrams</span>( tokens, <span class="at">n=</span><span class="dv">2</span> ) <span class="sc">%&gt;%</span> <span class="fu">dfm</span>()</span>
 <span id="cb20-3"><a href="#cb20-3" tabindex="-1"></a>ngram2 <span class="sc">%&gt;%</span> <span class="fu">textstat_frequency</span>( <span class="at">n=</span><span class="dv">10</span> )</span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["feature"],"name":[1],"type":["chr"],"align":["left"]},{"label":["frequency"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["rank"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["docfreq"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["group"],"name":[5],"type":["chr"],"align":["left"]}],"data":[{"1":"mission_provide","2":"27","3":"1","4":"27","5":"all","_rn_":"1"},{"1":"exclusively_charitable","2":"20","3":"2","4":"20","5":"all","_rn_":"2"},{"1":"jesus_christ","2":"19","3":"3","4":"19","5":"all","_rn_":"3"},{"1":"charitable_educational","2":"19","3":"3","4":"18","5":"all","_rn_":"4"},{"1":"mental_health","2":"15","3":"5","4":"14","5":"all","_rn_":"5"},{"1":"quality_life","2":"14","3":"6","4":"14","5":"all","_rn_":"6"},{"1":"life_skills","2":"14","3":"6","4":"14","5":"all","_rn_":"7"},{"1":"internal_revenue","2":"14","3":"6","4":"14","5":"all","_rn_":"8"},{"1":"provide_assistance","2":"13","3":"9","4":"13","5":"all","_rn_":"9"},{"1":"provide_support","2":"13","3":"9","4":"13","5":"all","_rn_":"10"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["feature"],"name":[1],"type":["chr"],"align":["left"]},{"label":["frequency"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["rank"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["docfreq"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["group"],"name":[5],"type":["chr"],"align":["left"]}],"data":[{"1":"jesus_christ","2":"21","3":"1","4":"20","5":"all","_rn_":"1"},{"1":"mission_provide","2":"20","3":"2","4":"20","5":"all","_rn_":"2"},{"1":"raise_funds","2":"19","3":"3","4":"19","5":"all","_rn_":"3"},{"1":"quality_life","2":"16","3":"4","4":"16","5":"all","_rn_":"4"},{"1":"exclusively_charitable","2":"15","3":"5","4":"15","5":"all","_rn_":"5"},{"1":"financial_support","2":"15","3":"5","4":"15","5":"all","_rn_":"6"},{"1":"provide_educational","2":"15","3":"5","4":"15","5":"all","_rn_":"7"},{"1":"corporation_organized","2":"14","3":"8","4":"13","5":"all","_rn_":"8"},{"1":"charitable_educational","2":"14","3":"8","4":"14","5":"all","_rn_":"9"},{"1":"domestic_violence","2":"13","3":"10","4":"11","5":"all","_rn_":"10"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" tabindex="-1"></a>ngram3 <span class="ot">&lt;-</span> <span class="fu">tokens_ngrams</span>( tokens, <span class="at">n=</span><span class="dv">3</span> ) <span class="sc">%&gt;%</span> <span class="fu">dfm</span>()</span>
 <span id="cb21-2"><a href="#cb21-2" tabindex="-1"></a>ngram3 <span class="sc">%&gt;%</span> <span class="fu">textstat_frequency</span>( <span class="at">n=</span><span class="dv">10</span> )</span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["feature"],"name":[1],"type":["chr"],"align":["left"]},{"label":["frequency"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["rank"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["docfreq"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["group"],"name":[5],"type":["chr"],"align":["left"]}],"data":[{"1":"internal_revenue_code","2":"12","3":"1","4":"12","5":"all","_rn_":"1"},{"1":"gospel_jesus_christ","2":"10","3":"2","4":"10","5":"all","_rn_":"2"},{"1":"organized_exclusively_charitable","2":"10","3":"2","4":"10","5":"all","_rn_":"3"},{"1":"section_501_c_3_internal_revenue","2":"9","3":"4","4":"9","5":"all","_rn_":"4"},{"1":"improve_quality_life","2":"8","3":"5","4":"8","5":"all","_rn_":"5"},{"1":"educational_scientific_purposes","2":"7","3":"6","4":"7","5":"all","_rn_":"6"},{"1":"charitable_religious_educational","2":"6","3":"7","4":"6","5":"all","_rn_":"7"},{"1":"charitable_educational_scientific","2":"6","3":"7","4":"6","5":"all","_rn_":"8"},{"1":"exclusively_charitable_educational","2":"6","3":"7","4":"6","5":"all","_rn_":"9"},{"1":"charitable_educational_purposes","2":"6","3":"7","4":"6","5":"all","_rn_":"10"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["feature"],"name":[1],"type":["chr"],"align":["left"]},{"label":["frequency"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["rank"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["docfreq"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["group"],"name":[5],"type":["chr"],"align":["left"]}],"data":[{"1":"improve_quality_life","2":"9","3":"1","4":"9","5":"all","_rn_":"1"},{"1":"gospel_jesus_christ","2":"9","3":"1","4":"9","5":"all","_rn_":"2"},{"1":"organized_exclusively_charitable","2":"7","3":"3","4":"7","5":"all","_rn_":"3"},{"1":"internal_revenue_code","2":"7","3":"3","4":"7","5":"all","_rn_":"4"},{"1":"educational_scientific_purposes","2":"6","3":"5","4":"6","5":"all","_rn_":"5"},{"1":"charitable_religious_educational","2":"6","3":"5","4":"6","5":"all","_rn_":"6"},{"1":"charitable_educational_purposes","2":"6","3":"5","4":"6","5":"all","_rn_":"7"},{"1":"section_501_c_3_internal_revenue","2":"6","3":"5","4":"6","5":"all","_rn_":"8"},{"1":"exclusively_charitable_religious","2":"5","3":"9","4":"5","5":"all","_rn_":"9"},{"1":"organization's_mission_provide","2":"5","3":"9","4":"5","5":"all","_rn_":"10"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" tabindex="-1"></a><span class="co"># note that textstat_frequency() has been moved </span></span>
 <span id="cb22-2"><a href="#cb22-2" tabindex="-1"></a><span class="co"># to the *quanteda.textstats* package</span></span></code></pre></div>
 <div id="tabulate-top-word-counts" class="section level3">
 <h3>Tabulate top word counts</h3>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" tabindex="-1"></a>tokens <span class="sc">%&gt;%</span> <span class="fu">dfm</span>( <span class="at">stem=</span>F ) <span class="sc">%&gt;%</span> <span class="fu">topfeatures</span>( )</span></code></pre></div>
-<pre><code>##    provid      educ communiti     organ   support   mission     youth    promot 
-##       395       296       281       215       193       154       137       136 
-##   develop    servic 
-##       125       123</code></pre>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" tabindex="-1"></a>tokens <span class="sc">%&gt;%</span> </span>
+<span id="cb23-2"><a href="#cb23-2" tabindex="-1"></a>  <span class="fu">dfm</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb23-3"><a href="#cb23-3" tabindex="-1"></a>  <span class="fu">topfeatures</span>()</span></code></pre></div>
+<pre><code>##    community      provide      support    education      mission        youth 
+##          271          257          169          146          136          129 
+## organization     children  educational      promote 
+##          121          116          111          100</code></pre>
 </div>
 <div id="stemming" class="section level3">
 <h3>Stemming</h3>
@@ -786,11 +792,14 @@ reduced to it’s most basic stem. For example, <em>running</em> would
 become <em>run</em>, and <em>Tuesdays</em> would become
 <em>Tuesday</em>.</p>
 <p>Quanteda already has a powerful stemming function included.</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" tabindex="-1"></a>tokens <span class="sc">%&gt;%</span> <span class="fu">dfm</span>( <span class="at">stem=</span>T ) <span class="sc">%&gt;%</span> <span class="fu">topfeatures</span>( )</span></code></pre></div>
-<pre><code>##    provid      educ communiti     organ   support   mission     youth    promot 
-##       395       296       281       215       193       154       137       136 
-##   develop    servic 
-##       125       123</code></pre>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" tabindex="-1"></a>tokens <span class="sc">%&gt;%</span></span>
+<span id="cb25-2"><a href="#cb25-2" tabindex="-1"></a>  <span class="fu">dfm</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb25-3"><a href="#cb25-3" tabindex="-1"></a>  <span class="fu">dfm_wordstem</span>() <span class="sc">%&gt;%</span>  </span>
+<span id="cb25-4"><a href="#cb25-4" tabindex="-1"></a>  <span class="fu">topfeatures</span>()</span></code></pre></div>
+<pre><code>##    provid communiti      educ     organ   support   mission     youth    promot 
+##       356       330       326       237       192       140       138       129 
+##    servic  children 
+##       122       121</code></pre>
 </div>
 <div id="instructions" class="section level3">
 <h3>Instructions</h3>
