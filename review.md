@@ -33,14 +33,15 @@ session:
   sample-code: 'week-05.R'  
 - week6:
   date:  'Monday, February 16, 12pm'
-  video: ''
-  password: ''
-  sample-code: 'week-06-data-apis.R'
+  video: 'https://asu.zoom.us/rec/share/JkuRBbDNh6skUDo4M7nrlmOkWRbM60HfR4SWE7hxJcLfU7Tl0dZ-O6wH5mm0WTZZ.MIvOBfv6M7O7c1jy'
+  password: 'fPch&.0g'
+  link: 'https://github.com/Watts-College/paf-514-template/blob/main/lectures/github-pages.pdf'
 - week7:
   date:  'Monday, February 23, 12pm'  
   video: ''
   password: ''
   link: 'https://github.com/Watts-College/paf-514-template/tree/main/labs/batch-demo'
+  sample-code: 'week-06-data-apis.R'
 - week8:
   date:  'Monday, March 2, 12pm'  
   video: ''
