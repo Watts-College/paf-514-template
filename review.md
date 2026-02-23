@@ -38,8 +38,8 @@ session:
   link: 'https://github.com/Watts-College/paf-514-template/blob/main/lectures/github-pages.pdf'
 - week7:
   date:  'Monday, February 23, 12pm'  
-  video: ''
-  password: ''
+  video: 'https://asu.zoom.us/rec/share/ZHceBaGKed25Kpg4srhRetHOTGpxM3hpy7RdOinKD2Irt01-yC2XEP0ww_6KWhcO.OLaUixgzwRuL7Z0e'
+  password: 'f?bGw2V1'
   link: 'https://github.com/Watts-College/paf-514-template/tree/main/labs/batch-demo'
   sample-code: 'week-06-data-apis.R'
 - week8:
