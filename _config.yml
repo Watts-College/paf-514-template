@@ -135,6 +135,7 @@ exclude:
   - Gemfile
   - Gemfile.lock
   - node_modules
+  - labs/create-r-package-test.rmd  
 
 sass:
   style:            compressed
