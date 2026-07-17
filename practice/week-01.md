@@ -87,10 +87,90 @@ class( z )
 Which case is most likely to introduce errors in your analysis? Explain why and present an example. 
      
      
-     
+## Q2: NUMBERS
 
+Computers by default treat numbers as continuous (can take on negative or positive values AND decimals). Integers are a subclass because they are continuous numbers (negative or positive) that always have NO decimals. As a result they are easier to represent in memory. 
 
-      
+Integers, for example, require 32 bits of memory, meaning a 'shelf' in the computer storage that has space or slots for 32 bits: `[ 01 02 03 ... 30 31 31 ]`
+
+A bit is the smallest unit of memory in a computer that takes on values of 0 or 1, so a 32 bit number would really look like: `[01000101100001100010001011000101]`
+
+If you do the math, there are 2^32 ways to combine 32 zeros and ones, and if you divide that by two you get the possible range of a regular integer: -2,147,483,648 to +2,147,483,648.
+
+```r
+x <- 10     # regular number
+y <- 10L    # integer
+
+class(x)
+# "numeric"
+typeof(x)
+# "double"
+
+class(y)
+# "integer"
+typeof(y)
+# "integer"
+
+identical(x, y)
+# FALSE
+
+x == y
+# TRUE
+```
+
+The **class()** function tells you what type of object it is (a label that is meaningful to the programer). The **typeof()** function tells you how R stores it in memory (an internal construct).
+
+Integers are stored as integers. Numbers (numeric objects) are stored as **doubles**. What is a double? It literally means, continous numbers require twice as much space in memory as integers. Since integers require 32 bits, doubles require 64 bits. 
+
+Why are they equal but not identical? Similar to previous examples, to compare two things with the `==` operator they need to be the same class. So x and y are **recast implicitly** (or "coerced") before comparisons are made. 
+
+The **identical(x,y)** operation instead asks, _**are these objects exactly the same in every important way?**_ That includes:
+
+- value
+- length
+- storage type
+- class
+- attributes
+
+And importantly, there is **NO coercion** before comparing. So identical() is more strict than `==`.
+
+Now consider this example: 
+
+```r
+x <- 10.0   
+y <- 10   
+
+typeof(x)
+typeof(y)
+
+x == y
+identical(x, y)
+```
+
+Can you guess what each will return? 
+
+What about implicit casting? If the goal is to preserve as much information as possible, which numeric type will R choose, integer or double? 
+
+```r
+x <- 10.0
+y <- 10L
+class( c(x,y) )
+```
+
+Would this make it easier to guess? 
+
+```r
+x <- 10.96
+y <- 10L
+class( c(x,y) )
+```
+
+Which results in a loss of information? 
+
+```r
+as.integer(x)
+as.numeric(y)
+```
   
 ## Q2: FACTORS
 
