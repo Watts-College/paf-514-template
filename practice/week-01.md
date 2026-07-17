@@ -120,7 +120,7 @@ x == y
 
 The **class()** function tells you what type of object it is (a label that is meaningful to the programer). The **typeof()** function tells you how R stores it in memory (an internal construct).
 
-Integers are stored as integers. Numbers (numeric objects) are stored as **doubles**. What is a double? It literally means, continous numbers require twice as much space in memory as integers. Since integers require 32 bits, doubles require 64 bits. 
+Integers are stored as integers. Numbers (numeric objects) are stored as **doubles**. What is a double? It literally means, continous numbers require twice as much space in memory as integers. Since integers require 32 bits, doubles require 64 bits. More on this in the Numeric Precision section below. 
 
 Why are they equal but not identical? Similar to previous examples, to compare two things with the `==` operator they need to be the same class. So x and y are **recast implicitly** (or "coerced") before comparisons are made. 
 
@@ -147,6 +147,8 @@ x == y
 identical(x, y)
 ```
 
+### Q2-A: Number Casting
+
 Can you guess what each will return? 
 
 What about implicit casting? If the goal is to preserve as much information as possible, which numeric type will R choose, integer or double? 
@@ -172,9 +174,9 @@ as.integer(x)
 as.numeric(y)
 ```
   
-## Q2: FACTORS
+## Q3: FACTORS
 
-### Q2-A: Ordering Levels
+### Q3-A: Ordering Levels
 
 By default factors created in R will order levels (categories) alphabetically. 
 
@@ -204,7 +206,7 @@ f
 *Make a mental note that __factor__ and __level__ are both precise technical terms that have different meanings in computer science and statistics.* 
 
 
-### Q2-B: Empty Levels
+### Q3-B: Empty Levels
 
 How can we drop empty levels from a factor? 
 
@@ -218,7 +220,7 @@ table( f2 )
 ```
 
 
-### Q2-C: Counting Zeros
+### Q3-C: Counting Zeros
 
 What about cases where counts of zeros are important? What if we wanted to note here days that events did not occur? 
 
@@ -246,7 +248,7 @@ table( f3 )
 -----
 
 
-## Q3: COMPARISON OF SETS
+## Q4: COMPARISON OF SETS
 
 Recall the structure of IF STATEMENTS:
 
@@ -280,7 +282,7 @@ if( identical( x, y ) )
 ```
 
 
-### Q3-A: Ignore Order
+### Q4-A: Ignore Order
 
 Perhaps you want to run a chunk of code only IF two vectors contain the same elements, but order is irrelevant. 
 
@@ -304,7 +306,7 @@ identical( x, y )
 [1] FALSE
 ```
 
-### Q3-B: Ignore Vector Length
+### Q4-B: Ignore Vector Length
 
 Similar to the case above, we want to compare these two sets to ensure they contain the same elements. We don't care about how many times each element occurs, just that the two sets are the same. 
 
@@ -318,7 +320,7 @@ identical( x, y )
 [1] FALSE
 ```
 
-### Q3-C: Data Types
+### Q4-C: Data Types
 
 This is an interesting case because the logical operator **==** will consider these vectors to be identical, but the **identical()** function will not.
 
@@ -362,7 +364,7 @@ y <- c("01","02","03")
 
 
 
-### Q3-D: Comparisons with Missing Values
+### Q4-D: Comparisons with Missing Values
 
 Missing values are important in statistics and data analytics, but they pose some challenges for computer logic. 
 
@@ -407,7 +409,7 @@ y <- c("A",NA,"B",NA,"C","C")
 -----
 
 
-## Q4: APPROXIMATE MATCHES
+## Q5: APPROXIMATE MATCHES
 
 In this example vectors represent sets of traits of pairs of individuals in a study. 
 
@@ -455,7 +457,7 @@ compare_pairs( x4, y4 )
   
   
   
-## Q5: NUMERIC CASTING
+## Q6: NUMERIC PRECISION
      
 A numeric vector is a generic category for vectors of numbers, but computers have different rules for storing integers versus decimals. The rules determine how much memory is allocated for each object. 
 
@@ -484,7 +486,7 @@ How many different integer values can we represent with 4 bytes of memory then?
   
 Vectors of **decimal numbers are called doubles because the computer allocates 8 bytes or twice as much memory** for each element as allocated for elements in an integer vector. So more precise numbers are more "expensive" in computational terms. *Modern computers typically allocate more than 8 bytes per element for doubles and it varies by operating system.*
 
-### Q5-A: Default Numeric Type
+### Q6-A: Default Numeric Type
 
 Based upon these examples, what are the rules R applies for numeric casting when combining integers and doubles? Does this rule optimize performance (smaller objects = faster computing time), or information integrity (preventing loss of precision)? 
   
@@ -615,11 +617,11 @@ Based upon these examples, what are the rules R applies for numeric casting when
   
   
   
-### Q5-B: Memory Allocation and Precision
-  
-Since computers only allocate a certain amount of memory for numbers at some point they will need to truncate a number in order to store it in memory. 
+### Q6-B: Memory PRECISION Errors
 
-Explain why the following might happen
+Computers only allocate a certain amount of memory for a number so at some point they will need to truncate the value to store it in memory. 
+
+Explain why the following might happen:
   
 ```r
 x <- 6.001
@@ -635,10 +637,74 @@ x
 [1] TRUE
 ```
 
+Consider this example. 
+
+```
+# 1.051
+# 1.052
+1.1 equals 1.1 
+1.05 equals 1.05
+1.051  does NOT equal  1.052 
+```
+
+If we were to compare two numbers that differ by a tiny amount, how many decimals can we add before we encounter a rounding error? Stated differently, how far can we go before we get TRUE? 
+
+```
+4.0 == 4.1
+4.00 == 4.01
+4.000 == 4.001
+```
+
+Similarly:
+
+```
+101 == 100
+1001 == 1000
+10001 == 10000
+```
   
-  
-  
-### Q5-C: Comparisons with Rounding Errors 
+### Q6-C: Memory REPRESENTATION Errors
+
+Computers can only store information in binary representations (strings of 1's and 0's). As a result, these can all be represented EXACTLY:
+
+```
+10
+10.5
+10.25
+10.125
+```
+
+because they are sums of powers of two. But
+
+```
+0.1
+```
+
+is not, and thus it cannot be represented EXACTLY.
+
+Internally it is approximately
+
+```
+0.10000000000000000555...
+```
+
+Likewise
+
+```
+0.1 + 0.2
+```
+
+returns
+
+```
+0.30000000000000004
+```
+
+at full precision (the value stored in memory), even though R will normally print just:
+
+```
+0.3
+```
 
 This is one of the most unexpected and somewhat shocking errors you can encounter in computer science: 
 
@@ -667,21 +733,28 @@ x - y
 [1] 2.775558e-17
 ```
 
+These are called **binary bit encoding problems** or more often **floating point errors**. 
+
 It turns out that numbers with decimals are hard to represent in computer memory, so very tiny rounding errors can be introduced in calculations. They are not noticed unless the numbers are compared at the smallest scale. 
-
-```
-# 1.051
-# 1.052
-1.1 equals 1.1 
-1.05 equals 1.05
-1.051  does NOT equal  1.052 
-```
-
-In the example above the variables X and Y are identical up until the 17th decimal point. 
 
 The tiny difference was introduced by converting decimal numbers to their binary representation as a string of 0'a and 1's in ther computer's memory while doing the mathematical calculations behind the scenes. 
 
-This tiny tiny rounding error will tyically **only** pose a problem in logical statements. And only if the conversion introduces a rounding error, which is typically not the case: 
+This tiny tiny number representation problem will tyically **only** pose a problem in logical statements, but often get ironed out before they ever cause an issue. For example:
+
+```r
+x <- 0.5 - 0.3
+y <- 0.3 - 0.1
+x == y
+# FALSE
+sum(x,y) == 0.4
+# TRUE
+(x+y) == 0.4
+# TRUE
+```
+
+Since R can store numbers precisely up until about 15 significant digits and the bit encoding error is smaller than that it gets washed out when R truncates the number around the 15th decimal zero. 
+
+The problem ONLY arises if the math introduces a binary bit encoding error, which is typically not the case: 
 
 ```r
 x <- 5 - 3
@@ -699,9 +772,9 @@ x == y
 [1] TRUE
 ```
 
-The formal and robust solution is to use the **all.equal()** function when comparing numerical objects.  
+THE FIX: The formal and robust solution is to use the **all.equal()** function **when comparing two numbers**. This comparison operator accounts for potential floating point errors JUST IN CASE you would be so unlucky to encounter them. 
 
-*USE THIS APPROACH IN YOUR CODE.*
+*USE THIS APPROACH IN YOUR CODE:* 
 
 ```r
 x <- 0.5 - 0.3
@@ -739,6 +812,27 @@ x3 == y3
 [1] TRUE
 ```
 
+### Q6-D: Precision vs Representation Errors
+
+Explain the difference between a truncation or coerced rounding error: 
+
+```r
+6.000000000000000000000000000001 == 6
+# TRUE
+```
+
+And a floating point or binary bit error: 
+
+```r
+x <- 0.5 - 0.3
+y <- 0.3 - 0.1
+x == y   
+# FALSE 
+```
+
+You can fix some truncation errors by telling the computer to use special large number formats. If you double the memory slots, for example, you double the number of significant digits you can store before hitting a truncation problem. 
+
+Can you solve representation problems in the same way? Why or why not? 
   
 <br>
 <br>
@@ -749,7 +843,7 @@ x3 == y3
 <br>
   
 
-## Q6: COUNTING SUBSTRINGS
+## Q7: COUNTING SUBSTRINGS
 
 **CHALLENGE QUESTION**
   
@@ -773,16 +867,16 @@ sum( x == 9 )
 ```
 
 
-**Q6-A: How would you count all nine's in the vector?**
+**Q7-A: How would you count all nine's in the vector?**
 
 For example, 19 contains one nine, 99 contains two nines. 
 
 
-**Q6-B: How would you count all of the elements of X that CONTAIN a nine?**
+**Q7-B: How would you count all of the elements of X that CONTAIN a nine?**
 
 For example, 19 contains a nine. 
 
-**Q6-C: Count all 17's in a vector X containing all integers from 1 to 2,000.**
+**Q7-C: Count all 17's in a vector X containing all integers from 1 to 2,000.**
 
 ```r
 x <- 1:2000
