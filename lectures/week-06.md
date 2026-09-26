@@ -134,14 +134,13 @@ HTML output that is added to your RMD doc during knitting:
 
 [GitHub Pages Jekyll Tools Library](https://github.com/cagrimmett/jekyll-tools)
 
-*If you want to take your skills to the next level consider how report templates can be used to implement experiments with the presentation of information such as [A/B Testing for your resume](https://davidlindelof.com/a-b-testing-my-resume/). These sorts of skills are in high-demand as they are useful for refining content for large-scale marketing campaigns, outreach material, or user experience on a website.* 
+*If you want to take your skills to the next level consider how report templates can be used to implement experiments with the presentation of information such as [A/B Testing for your resume](https://blog.davidlindelof.com/posts/2020/11/a-b-testing-my-resume/). These sorts of skills are in high-demand as they are useful for refining content for large-scale marketing campaigns, outreach material, or user experience on a website.* 
   
 <br>
 <hr>
 <br>  
   
   
-
 
 
   
