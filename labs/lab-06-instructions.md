@@ -24,7 +24,7 @@ image-width: 150px
 
 For Part I on this lab you will learn how to create a template function for use in RMD docs.
 
-You will convert the following [R Epidemics Member Gallery](https://www.repidemicsconsortium.org/people/) into a RMD format: 
+You will convert the following [R Epidemics Member Gallery](https://www.repidemicsconsortium.org/people/) into a RMD format (WayBack Machine Archive is available here if the main website is down [https://web.archive.org/web/20260518230812/http://www.repidemicsconsortium.org/people/](https://web.archive.org/web/20260518230812/http://www.repidemicsconsortium.org/people/)): 
 
 ![](../../lectures/figures/r-epidemics-consortium-people.png)
 
